@@ -1,0 +1,14 @@
+{
+  "name": "@parkyourself-frontend/shared",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "@apollo/client": "*",
+    "aws-amplify": "*",
+    "aws-appsync": "*",
+    "redux": "*",
+    "redux-thunk": "*",
+    "react-redux-loading": "*"
+  },
+  "license": "MIT"
+}

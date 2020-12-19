@@ -1,0 +1,26 @@
+{
+  "name": "monorepo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "mobile": "yarn workspace @parkyourself-frontend/mobile run start",
+    "android": "yarn workspace @parkyourself-frontend/mobile run android",
+    "ios": "yarn workspace @parkyourself-frontend/mobile run ios",
+    "web": "yarn workspace @parkyourself-frontend/web run dev",
+    "web:build": "yarn workspace @parkyourself-frontend/web run build",
+    "web:start": "yarn workspace @parkyourself-frontend/web run start",
+    "web:deploy": "yarn workspace @parkyourself-frontend/web run deploy"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": []
+  },
+  "dependencies": {
+    "react-native": "*"
+  },
+  "author": "vivekvt",
+  "license": "MIT"
+}
