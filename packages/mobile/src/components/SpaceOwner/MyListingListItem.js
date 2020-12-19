@@ -322,8 +322,11 @@ function MyListingListItem({
                 ? {uri: streetViewImages[0]}
                 : require('../../assets/images/cars.jpg')
             }
+            // source={
+            //   require('../../assets/images/cars.jpg')
+            // }
             resizeMode="stretch"
-            style={styles.image}></Image>
+            style={styles.image}/>
         </View>
         <View style={styles.title}>
           <Text style={styles.location}>

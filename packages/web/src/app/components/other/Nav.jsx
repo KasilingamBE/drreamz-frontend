@@ -100,6 +100,7 @@ const NavC = (props) => {
                       <li
                         className="d-block nav-li"
                         onClick={() => {
+                          localStorage.setItem('isSpaceOwner',!props.isSpaceOwner)
                           props.dispatch(toggleUserType());
                         }}
                       >

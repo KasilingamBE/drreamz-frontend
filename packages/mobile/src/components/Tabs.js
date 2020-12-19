@@ -9,6 +9,7 @@ import {connect} from 'react-redux';
 import MyListingsDrawer from './SpaceOwner/MyListingsDrawer';
 import ParkingOrderDrawer from './SpaceOwner/ParkingOrderDrawer';
 import SpaceOwnerDrawer from './SpaceOwner/SpaceOwnerDrawer';
+import { Platform } from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
@@ -36,12 +37,12 @@ function Tabs({isSpaceOwner}) {
         inactiveBackgroundColor: '#fff',
         activeBackgroundColor: '#fff',
         labelStyle: {
-          marginBottom: 10,
+          marginBottom: Platform.OS === 'ios' ? 0 : 10,
           fontSize: 12,
         },
         style: {
-          paddingTop: 10,
-          height: 70,
+          paddingTop: 5,
+          height: Platform.OS === 'ios' ? 80 : 70,
           justifyContent: 'center',
           alignItems: 'center',
           elevation: 10,

@@ -38,9 +38,6 @@ export default function (state = initialState, action) {
         isSpaceOwner: payload
       }
     case TOGGLE_USER_TYPE:
-      if(typeof window !== undefined){
-      localStorage.setItem('isSpaceOwner',!state.isSpaceOwner);
-      }
       return {
         ...state,
         isSpaceOwner: !state.isSpaceOwner,

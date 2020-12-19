@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
     padding: 20,
+    paddingTop:Platform.OS === 'ios' ? 30 : 20,
   },
   image: {
     width: '100%',
