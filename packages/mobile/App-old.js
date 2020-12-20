@@ -6,6 +6,7 @@ import {
   View,
   Text,
   StatusBar,
+  Linking,
 } from 'react-native';
 
 import {
@@ -16,7 +17,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import sampleString from '@parkyourself-frontend/shared'
+import sampleString from '@parkyourself-frontend/shared';
 
 const App: () => React$Node = () => {
   return (
@@ -34,10 +35,10 @@ const App: () => React$Node = () => {
           )}
           <View style={styles.body}>
             <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>sampleString = {sampleString} </Text>
-              <Text style={styles.sectionDescription}>
-                @monorepo/mobile
+              <Text style={styles.sectionTitle}>
+                sampleString = {sampleString}{' '}
               </Text>
+              <Text style={styles.sectionDescription}>@monorepo/mobile</Text>
             </View>
           </View>
         </ScrollView>

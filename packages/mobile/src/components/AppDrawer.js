@@ -62,13 +62,12 @@ function AppDrawer({
         </TouchableOpacity>
         <TouchableOpacity style={styles.rect5}>
           <View style={styles.icon13Row}>
-            <FontAwesomeIcon
-              name="credit-card"
-              style={styles.icon13}></FontAwesomeIcon>
+            <FontAwesomeIcon name="credit-card" style={styles.icon13} />
             <Text style={styles.onGoingParkings}>On-Going Parkings</Text>
             <MaterialCommunityIconsIcon
               name="chevron-right"
-              style={styles.icon3}></MaterialCommunityIconsIcon>
+              style={styles.icon3}
+            />
           </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.rect6}>

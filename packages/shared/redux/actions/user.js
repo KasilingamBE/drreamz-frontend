@@ -12,65 +12,70 @@ const {
   LOAD_USER_BOOKINGS,
   TOGGLE_PROFILE_TYPE,
   LOAD_USER_TYPE,
-} = require("./types");
+  TOGGLE_ADMIN_MODE
+} = require('./types');
 
 export const initializeUser = () => {
   return {
-    type: INITIALIZE_USER,
+    type: INITIALIZE_USER
+  };
+};
+export const toggleAdminMode = () => {
+  return {
+    type: TOGGLE_ADMIN_MODE
   };
 };
 
 export const loadUserType = (data) => {
   return {
     type: LOAD_USER_TYPE,
-    payload: data,
+    payload: data
   };
 };
 
 export const toggleUserType = () => async (dispatch) => {
   dispatch({
-    type: TOGGLE_USER_TYPE,
+    type: TOGGLE_USER_TYPE
   });
 };
 
 export const toggleProfileType = () => async (dispatch) => {
   dispatch({
-    type: TOGGLE_PROFILE_TYPE,
+    type: TOGGLE_PROFILE_TYPE
   });
 };
 
 export const toggleLoading = () => async (dispatch) => {
   dispatch({
-    type: TOGGLE_LOADING,
+    type: TOGGLE_LOADING
   });
 };
 
 export const loadUserListings = (data) => async (dispatch) => {
   dispatch({
     type: LOAD_USER_LISTINGS,
-    payload: data,
+    payload: data
   });
 };
 
 export const addListingLocal = (data) => async (dispatch) => {
   dispatch({
     type: ADD_LISTING,
-    payload: data,
+    payload: data
   });
 };
 
 export const updateListingLocal = (data) => async (dispatch) => {
   dispatch({
     type: UPDATE_LISTING,
-    payload: data,
+    payload: data
   });
 };
 
 export const deleteListingLocal = (id) => async (dispatch) => {
-  console.log("delete : ", id);
   dispatch({
     type: DELETE_LISTING,
-    payload: id,
+    payload: id
   });
 };
 
@@ -78,28 +83,27 @@ export const deleteListingLocal = (id) => async (dispatch) => {
 export const loadUserBookings = (data) => async (dispatch) => {
   dispatch({
     type: LOAD_USER_BOOKINGS,
-    payload: data,
+    payload: data
   });
 };
 
 export const addBookingLocal = (data) => async (dispatch) => {
   dispatch({
     type: ADD_BOOKING,
-    payload: data,
+    payload: data
   });
 };
 
 export const updateBookingLocal = (data) => async (dispatch) => {
   dispatch({
     type: UPDATE_BOOKING,
-    payload: data,
+    payload: data
   });
 };
 
 export const deleteBookingLocal = (id) => async (dispatch) => {
-  console.log("delete : ", id);
   dispatch({
     type: DELETE_BOOKING,
-    payload: id,
+    payload: id
   });
 };

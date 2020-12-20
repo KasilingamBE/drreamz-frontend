@@ -1,6 +1,6 @@
 import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import AppDrawer from './AppDrawer';
+import AppDrawer from './common/AppDrawer';
 import DashboardStack from './DashboardStack';
 const drawer = createDrawerNavigator();
 

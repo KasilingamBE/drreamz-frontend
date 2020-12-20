@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Switch,
   StyleSheet,
+  Platform,
 } from 'react-native';
 import {Auth} from 'aws-amplify';
 import PropTypes from 'prop-types';
@@ -30,18 +31,20 @@ const SpaceOwnerDashboardComponent = ({
       <Image
         source={require('../../assets/images/headerlogo.jpg')}
         resizeMode="contain"
-        style={styles.image}></Image>
+        style={styles.image}
+      />
       <View style={styles.rect13}>
         <Switch
           value={isSpaceOwner}
           trackColor={{true: 'rgba(74,144,226,1)', false: 'rgba(0,0,0,1)'}}
           style={styles.switch}
-          onValueChange={toggleUserType}></Switch>
+          onValueChange={toggleUserType}
+        />
         <Text style={styles.switchToDriver}>Switch to DRIVER</Text>
       </View>
       <TouchableOpacity style={styles.rect12} onPress={() => handleLogout()}>
         <View style={styles.icon21Row}>
-          <IoniconsIcon name="ios-log-out" style={styles.icon21}></IoniconsIcon>
+          <IoniconsIcon name="ios-log-out" style={styles.icon21} />
           <Text style={styles.logOut1}>LOG OUT</Text>
         </View>
       </TouchableOpacity>
@@ -53,7 +56,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
     padding: 20,
-    paddingTop:Platform.OS === 'ios' ? 30 : 20,
+    paddingTop: Platform.OS === 'ios' ? 30 : 20,
   },
   image: {
     width: '100%',
