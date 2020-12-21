@@ -1,0 +1,18 @@
+version: 0.2
+phases:
+  install:
+    commands:
+      - npm install -g yarn
+      - npm install -g serverless
+      - yarn install
+  pre_build:
+    commands:
+      - aws s3 sync s3://codemarket-cicd/parkyourself/$SERVICE_NAME/.serverless packages/web/.serverless --delete
+  build:
+    commands:
+      - yarn web:deploy
+
+  post_build:
+    commands:
+      - aws s3 sync packages/web/.serverless s3://codemarket-cicd/parkyourself/$SERVICE_NAME/.serverless --delete
+      - echo Build completed on `date`

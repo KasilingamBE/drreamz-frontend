@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import DatePicker from "react-date-picker";
-import moment from "moment";
-import { Form } from "react-bootstrap";
-import { roundTime } from "../../helpers/utilities";
-import $ from "jquery";
-import { connect } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import DatePicker from 'react-date-picker/dist/entry.nostyle';
+import moment from 'moment';
+import { Form } from 'react-bootstrap';
+import { roundTime } from '../../helpers/utilities';
+import $ from 'jquery';
+import { connect } from 'react-redux';
 
 const StartEndDateTimePicker = ({
   startDisabled,
@@ -18,10 +18,10 @@ const StartEndDateTimePicker = ({
   onChange,
   // onStartTimeChange,
   // onEndTimeChange,
-  className = "",
+  className = ''
 }) => {
-  console.log("start : ", start);
-  console.log("end : ", end);
+  console.log('start : ', start);
+  console.log('end : ', end);
   const { duration } = findParking;
   // let timeArray = [];
   const [startTimeArr, setStartTimeArr] = useState([]);
@@ -31,27 +31,27 @@ const StartEndDateTimePicker = ({
   const [endLocal, setEndLocal] = useState(end);
 
   const setStartTimeArray = (start) => {
-    console.log("set start time ", start);
-    var d = moment(`${moment(new Date()).format("ll")} 12:00 AM`)._d;
-    if (moment(d).format("ll") == moment(start).format("ll")) {
+    console.log('set start time ', start);
+    var d = moment(`${moment(new Date()).format('ll')} 12:00 AM`)._d;
+    if (moment(d).format('ll') == moment(start).format('ll')) {
       d = start;
     }
     let timeArray = [];
     for (let i = 0; i < 96; i++) {
       if (
         moment(d)
-          .add(15 * i, "minutes")
-          .format("L") !== moment(d).format("L")
+          .add(15 * i, 'minutes')
+          .format('L') !== moment(d).format('L')
       ) {
         break;
       }
       let s = moment(d)
-        .add(15 * i, "minutes")
-        .format("LT");
+        .add(15 * i, 'minutes')
+        .format('LT');
 
       let t = roundTime(s, 15);
 
-      let ft = t + (s.substring(s.length - 3) === " AM" ? " AM" : " PM");
+      let ft = t + (s.substring(s.length - 3) === ' AM' ? ' AM' : ' PM');
       // console.log("time :",ft);
       timeArray.push(ft);
     }
@@ -60,27 +60,27 @@ const StartEndDateTimePicker = ({
 
   const setEndTimeArray = (end) => {
     let timeArray = [];
-    var d = moment(`${moment(new Date()).format("ll")} 12:00 AM`)._d;
-    if (moment(d).format("ll") == moment(end).format("ll")) {
+    var d = moment(`${moment(new Date()).format('ll')} 12:00 AM`)._d;
+    if (moment(d).format('ll') == moment(end).format('ll')) {
       d = end;
     }
     for (let i = 0; i < 96; i++) {
       if (
         moment(d)
-          .add(15 * i, "minutes")
-          .format("L") !== moment(d).format("L")
+          .add(15 * i, 'minutes')
+          .format('L') !== moment(d).format('L')
       ) {
         break;
       }
       let ss = moment(d)
-        .add(15 * i, "minutes")
-        .format("LT");
+        .add(15 * i, 'minutes')
+        .format('LT');
 
       let t = roundTime(ss, 15);
-      let ft = t + (ss.substring(ss.length - 3) === " AM" ? " AM" : " PM");
+      let ft = t + (ss.substring(ss.length - 3) === ' AM' ? ' AM' : ' PM');
       timeArray.push(ft);
     }
-    console.log("end time arr:", timeArray);
+    console.log('end time arr:', timeArray);
     setEndTimeArr([...timeArray]);
   };
 
@@ -92,21 +92,21 @@ const StartEndDateTimePicker = ({
     //  }
   }, []);
 
-  $(".start-time-input").on("click", function () {
-    $(this).val("");
+  $('.start-time-input').on('click', function () {
+    $(this).val('');
   });
-  $(".start-time-input").on("mouseleave", function () {
-    if ($(this).val() == "") {
-      $(this).val(moment(startLocal).format("LT"));
+  $('.start-time-input').on('mouseleave', function () {
+    if ($(this).val() == '') {
+      $(this).val(moment(startLocal).format('LT'));
     }
   });
-  $(".end-time-input").on("click", function () {
-    $(this).val("");
+  $('.end-time-input').on('click', function () {
+    $(this).val('');
   });
-  $(".end-time-input").on("mouseleave", function () {
-    if ($(this).val() == "") {
-      console.log("End Local : ", endLocal);
-      $(this).val(moment(endLocal).format("LT"));
+  $('.end-time-input').on('mouseleave', function () {
+    if ($(this).val() == '') {
+      console.log('End Local : ', endLocal);
+      $(this).val(moment(endLocal).format('LT'));
     }
   });
 
@@ -127,47 +127,31 @@ const StartEndDateTimePicker = ({
             minDate={new Date()}
             onChange={(value) => {
               let s = startLocal;
-              setStartLocal(
-                moment(
-                  `${moment(value).format("ll")} ${moment(s).format("LT")}`
-                )._d
-              );
+              setStartLocal(moment(`${moment(value).format('ll')} ${moment(s).format('LT')}`)._d);
               setStartTimeArray(
-                moment(
-                  `${moment(value).format("ll")} ${moment(s).format("LT")}`
-                )._d
+                moment(`${moment(value).format('ll')} ${moment(s).format('LT')}`)._d
               );
-              if (duration === "hourly") {
+              if (duration === 'hourly') {
                 onChange(
-                  moment(
-                    `${moment(value).format("ll")} ${moment(s).format("LT")}`
-                  )._d,
-                  moment(
-                    `${moment(value).format("ll")} ${moment(s).format("LT")}`
-                  ).add(2, "hour")._d
+                  moment(`${moment(value).format('ll')} ${moment(s).format('LT')}`)._d,
+                  moment(`${moment(value).format('ll')} ${moment(s).format('LT')}`).add(2, 'hour')
+                    ._d
                 );
                 setEndLocal(
-                  moment(
-                    `${moment(value).format("ll")} ${moment(s).format("LT")}`
-                  ).add(2, "hour")._d
+                  moment(`${moment(value).format('ll')} ${moment(s).format('LT')}`).add(2, 'hour')
+                    ._d
                 );
-              } else if (duration === "monthly") {
+              } else if (duration === 'monthly') {
                 onChange(
-                  moment(
-                    `${moment(value).format("ll")} ${moment(s).format("LT")}`
-                  )._d,
-                  moment(
-                    `${moment(value).format("ll")} ${moment(s).format("LT")}`
-                  )
-                    .add(1, "month")
-                    .subtract(1, "day")._d
+                  moment(`${moment(value).format('ll')} ${moment(s).format('LT')}`)._d,
+                  moment(`${moment(value).format('ll')} ${moment(s).format('LT')}`)
+                    .add(1, 'month')
+                    .subtract(1, 'day')._d
                 );
                 setEndLocal(
-                  moment(
-                    `${moment(value).format("ll")} ${moment(s).format("LT")}`
-                  )
-                    .add(1, "month")
-                    .subtract(1, "day")._d
+                  moment(`${moment(value).format('ll')} ${moment(s).format('LT')}`)
+                    .add(1, 'month')
+                    .subtract(1, 'day')._d
                 );
               }
             }}
@@ -175,78 +159,52 @@ const StartEndDateTimePicker = ({
           <Form>
             <Form.Group
               controlId="exampleForm.SelectCustom"
-              style={{ marginTop: "5px !important" }}
-            >
+              style={{ marginTop: '5px !important' }}>
               <Form.Label>Start Time</Form.Label>
               <input
                 disabled={startDisabled}
                 list="start-time"
-                value={moment(startLocal).format("LT")}
+                value={moment(startLocal).format('LT')}
                 className="form-control start-time-input"
                 placeholder="Start Time"
                 onChange={(event) => {
                   setStartLocal(
-                    moment(
-                      `${moment(startLocal).format("ll")} ${event.target.value}`
-                    )._d
+                    moment(`${moment(startLocal).format('ll')} ${event.target.value}`)._d
                   );
-                  if (duration === "hourly") {
+                  if (duration === 'hourly') {
                     onChange(
-                      moment(
-                        `${moment(startLocal).format("ll")} ${
-                          event.target.value
-                        }`
-                      )._d,
-                      moment(
-                        `${moment(startLocal).format("ll")} ${
-                          event.target.value
-                        }`
-                      ).add(2, "hour")._d
-                    );
-                    setEndLocal(
-                      moment(
-                        `${moment(startLocal).format("ll")} ${
-                          event.target.value
-                        }`
-                      ).add(2, "hour")._d
-                    );
-                    setEndTimeArray(
-                      moment(
-                        `${moment(startLocal).format("ll")} ${
-                          event.target.value
-                        }`
-                      ).add(2, "hour")._d
-                    );
-                  } else if (duration === "monthly") {
-                    onChange(
-                      moment(
-                        `${moment(startLocal).format("ll")} ${
-                          event.target.value
-                        }`
-                      )._d,
-                      moment(
-                        `${moment(startLocal).format("ll")} ${
-                          event.target.value
-                        }`
-                      )
-                        .add(1, "month")
-                        .subtract(1, "day")._d
-                    );
-                    setEndLocal(
-                      moment(
-                        `${moment(startLocal).format("ll")} ${
-                          event.target.value
-                        }`
-                      )
-                        .add(1, "month")
-                        .subtract(1, "day")._d
-                    );
-                    setEndTimeArray(
-                      moment(
-                        `${moment(startLocal).format("ll")} ${
-                          event.target.value
-                        }`
+                      moment(`${moment(startLocal).format('ll')} ${event.target.value}`)._d,
+                      moment(`${moment(startLocal).format('ll')} ${event.target.value}`).add(
+                        2,
+                        'hour'
                       )._d
+                    );
+                    setEndLocal(
+                      moment(`${moment(startLocal).format('ll')} ${event.target.value}`).add(
+                        2,
+                        'hour'
+                      )._d
+                    );
+                    setEndTimeArray(
+                      moment(`${moment(startLocal).format('ll')} ${event.target.value}`).add(
+                        2,
+                        'hour'
+                      )._d
+                    );
+                  } else if (duration === 'monthly') {
+                    onChange(
+                      moment(`${moment(startLocal).format('ll')} ${event.target.value}`)._d,
+                      moment(`${moment(startLocal).format('ll')} ${event.target.value}`)
+                        .add(1, 'month')
+                        .subtract(1, 'day')._d
+                    );
+                    setEndLocal(
+                      moment(`${moment(startLocal).format('ll')} ${event.target.value}`)
+                        .add(1, 'month')
+                        .subtract(1, 'day')._d
+                    );
+                    setEndTimeArray(
+                      moment(`${moment(startLocal).format('ll')} ${event.target.value}`)._d
                     );
                   }
                 }}
@@ -269,54 +227,34 @@ const StartEndDateTimePicker = ({
             minDate={new Date(startLocal)}
             onChange={(value) => {
               let e = endLocal;
-              setEndLocal(
-                moment(
-                  `${moment(value).format("ll")} ${moment(e).format("LT")}`
-                )._d
-              );
-              setEndTimeArray(
-                moment(
-                  `${moment(value).format("ll")} ${moment(e).format("LT")}`
-                )._d
-              );
+              setEndLocal(moment(`${moment(value).format('ll')} ${moment(e).format('LT')}`)._d);
+              setEndTimeArray(moment(`${moment(value).format('ll')} ${moment(e).format('LT')}`)._d);
               onChange(
-                moment(
-                  `${moment(startLocal).format("ll")} ${moment(
-                    startLocal
-                  ).format("LT")}`
-                )._d,
-                moment(
-                  `${moment(value).format("ll")} ${moment(e).format("LT")}`
-                )._d
+                moment(`${moment(startLocal).format('ll')} ${moment(startLocal).format('LT')}`)._d,
+                moment(`${moment(value).format('ll')} ${moment(e).format('LT')}`)._d
               );
             }}
           />
           <Form>
             <Form.Group
               controlId="exampleForm.SelectCustom mt-2"
-              style={{ marginTop: "5px !important" }}
-            >
+              style={{ marginTop: '5px !important' }}>
               <Form.Label>End Time</Form.Label>
 
               <input
                 disabled={endDisabled}
                 list="end-time"
-                value={moment(endLocal).format("LT")}
+                value={moment(endLocal).format('LT')}
                 className="form-control end-time-input"
                 placeholder="End Time"
                 onChange={(event) => {
                   let e = endLocal;
-                  console.log("end time val :", event.target.value);
-                  setEndLocal(
-                    moment(`${moment(e).format("ll")} ${event.target.value}`)._d
-                  );
+                  console.log('end time val :', event.target.value);
+                  setEndLocal(moment(`${moment(e).format('ll')} ${event.target.value}`)._d);
                   onChange(
-                    moment(
-                      `${moment(startLocal).format("ll")} ${moment(
-                        startLocal
-                      ).format("LT")}`
-                    )._d,
-                    moment(`${moment(e).format("ll")} ${event.target.value}`)._d
+                    moment(`${moment(startLocal).format('ll')} ${moment(startLocal).format('LT')}`)
+                      ._d,
+                    moment(`${moment(e).format('ll')} ${event.target.value}`)._d
                   );
                 }}
               />
@@ -339,7 +277,7 @@ const StartEndDateTimePicker = ({
 };
 
 const mapStateToProps = ({ findParking }) => ({
-  findParking: findParking,
+  findParking: findParking
 });
 
 export default connect(mapStateToProps)(StartEndDateTimePicker);
