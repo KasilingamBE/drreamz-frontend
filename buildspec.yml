@@ -8,6 +8,8 @@ phases:
   pre_build:
     commands:
       - aws s3 sync s3://codemarket-cicd/parkyourself/$SERVICE_NAME/.serverless packages/web/.serverless --delete
+      - yarn web:build
+      - echo Build completed on `date`
   build:
     commands:
       - yarn web:deploy
@@ -15,4 +17,4 @@ phases:
   post_build:
     commands:
       - aws s3 sync packages/web/.serverless s3://codemarket-cicd/parkyourself/$SERVICE_NAME/.serverless --delete
-      - echo Build completed on `date`
+      - echo Deploy completed on `date`
