@@ -18,13 +18,15 @@ import {
 } from '@parkyourself-frontend/shared/redux/actions/auth';
 import { loadUserType } from '@parkyourself-frontend/shared/redux/actions/user';
 
+// CSS Imports
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 // import "../src/assets/scss/style.scss";
 // import "../src/assets1/scss/style.scss";
 import '../src/assets1/css/App.css';
 import '../styles/styles.scss';
 import '../src/app/assets/css/stripestyles.css';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';

@@ -1,9 +1,8 @@
 // Components/MessagesList.js
 
-import React from "react";
-import { ChatFeed, Message } from "react-chat-ui";
-import { FaUserCircle } from "react-icons/fa";
-import moment from "moment";
+import React from 'react';
+import { FaUserCircle } from 'react-icons/fa';
+import moment from 'moment';
 
 const MyMessage = ({ body, senderName, createdAt }) => {
   return (
@@ -11,9 +10,7 @@ const MyMessage = ({ body, senderName, createdAt }) => {
       <div className="message-content">
         <p className="sender-name">{senderName}</p>
         <p className="message-body">{body}</p>
-        <small className="message-time">
-          {moment(new Date(createdAt)).format("lll")}
-        </small>
+        <small className="message-time">{moment(new Date(createdAt)).format('lll')}</small>
       </div>
       <div className="user-avatar">
         {/* <img src={} alt="user-img"/> */}
@@ -33,9 +30,7 @@ const YourMessage = ({ body, senderName, createdAt }) => {
       <div className="message-content">
         <p className="sender-name">{senderName}</p>
         <p className="message-body">{body}</p>
-        <small className="message-time">
-          {moment(new Date(createdAt)).format("lll")}
-        </small>
+        <small className="message-time">{moment(new Date(createdAt)).format('lll')}</small>
       </div>
     </div>
   );
@@ -69,11 +64,7 @@ const MessagesList = ({ messages, username }) => (
   // />
   <div className="message-list">
     {messages.map((item) =>
-      item.senderName === username ? (
-        <MyMessage {...item} />
-      ) : (
-        <YourMessage {...item} />
-      )
+      item.senderName === username ? <MyMessage {...item} /> : <YourMessage {...item} />
     )}
   </div>
 );
