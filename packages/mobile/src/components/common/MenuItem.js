@@ -1,11 +1,11 @@
 import React from 'react';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '@parkyourself-frontend/shared/config/colors';
 
 export default function MenuItem(props) {
   return (
-    <TouchableOpacity style={styles.item}>
+    <TouchableOpacity style={[styles.item, { ...props.style }]} onPress={props.onPress}>
       <View style={styles.row}>
         {props.children}
         <Text style={styles.label}>{props.label}</Text>
@@ -29,20 +29,20 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0,0,0,1)',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 2
     },
     elevation: 20,
     shadowOpacity: 0.26,
     shadowRadius: 10,
-    backgroundColor: '#fff',
+    backgroundColor: '#fff'
   },
   row: {
     display: 'flex',
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 5,
+    marginLeft: 5
   },
-  label: {fontSize: 17, marginLeft: 10},
-  icon: {fontSize: 34, color: colors.primary},
+  label: { fontSize: 17, marginLeft: 10 },
+  icon: { fontSize: 34, color: colors.primary }
 });

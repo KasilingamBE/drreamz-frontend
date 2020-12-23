@@ -22,9 +22,12 @@ module.exports = {
   },
   plugins: ['react'],
   rules: {
+    'react/destructuring-assignment': 'never',
     'no-console': 'warn',
     'no-underscore-dangle': 'off',
+    '"no-use-before-define"': 'off',
     'react/react-in-jsx-scope': 'off',
+    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'jsx-a11y/anchor-is-valid': [
       'error',
       {

@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { Button } from "react-bootstrap";
-import Link from "next/link";
-import { useMutation, gql } from "@apollo/client";
-import { deleteListingLocal, updateListingLocal } from "../redux/actions/user";
-import { connect } from "react-redux";
-import placeholderImg from "../../assets1/images/placeholder-img.jpg";
-import { loadUserListings } from "../redux/actions/user";
-import { client } from "../graphql";
-import { useRouter } from "next/router";
+import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
+import Link from 'next/link';
+import { useMutation, gql } from '@apollo/client';
+import { deleteListingLocal, updateListingLocal } from '../redux/actions/user';
+import { connect } from 'react-redux';
+import placeholderImg from '../../assets1/images/placeholder-img.jpg';
+import { loadUserListings } from '../redux/actions/user';
+import { client } from '../graphql';
+import { useRouter } from 'next/router';
 
 const PUBLISH_LISTING = gql`
   mutation UpdateListing($id: ID!, $published: Boolean) {
@@ -167,7 +167,7 @@ const MyListingItem = ({
   updateListingLocal,
   listings,
   loadUserListings,
-  userId,
+  userId
   // handleDeleteUI,
 }) => {
   const router = useRouter();
@@ -191,7 +191,7 @@ const MyListingItem = ({
     streetViewImages,
     parkingEntranceImages,
     parkingSpaceImages,
-    features,
+    features
   } = locationDetails;
 
   const {
@@ -215,7 +215,7 @@ const MyListingItem = ({
     isLabelled,
     spaceLabels,
     aboutSpace,
-    accessInstructions,
+    accessInstructions
   } = spaceDetails;
 
   const {
@@ -234,7 +234,7 @@ const MyListingItem = ({
     advanceBookingTime,
     minTime,
     maxTime,
-    instantBooking,
+    instantBooking
   } = spaceAvailable;
 
   const { pricingType, pricingRates } = pricingDetails;
@@ -243,7 +243,7 @@ const MyListingItem = ({
     var flag = true;
     spaceLabels.forEach((item) => {
       if (!item.label || !item.largestSize) {
-        console.log("found invalid space label");
+        console.log('found invalid space label');
         flag = false;
       }
     });
@@ -253,30 +253,30 @@ const MyListingItem = ({
   const checkWithdrawalSettings = async () => {
     let { data } = await client.query({
       query: stripe_Retrieve_Account,
-      variables: { userId: userId },
+      variables: { userId: userId }
     });
     // .then(({data})=>{
-    console.log("data :", data);
+    console.log('data :', data);
     if (data.stripeRetrieveAccount) {
-      console.log("data :", data.stripeRetrieveAccount);
+      console.log('data :', data.stripeRetrieveAccount);
       let stripeData = JSON.parse(data.stripeRetrieveAccount);
       console.log(stripeData);
       if (!stripeData.details_submitted) {
-        alert("Details not submitted");
-        router.push("/withdrawal-settings");
+        alert('Details not submitted');
+        router.push('/withdrawal-settings');
         return false;
       } else {
         if (!stripeData.payouts_enabled) {
-          alert("Please Update your Withdrawal Settings");
-          router.push("/withdrawal-settings");
+          alert('Please Update your Withdrawal Settings');
+          router.push('/withdrawal-settings');
           return false;
         } else {
           return true;
         }
       }
     } else {
-      alert("Withdrawal Settings not Set Up. Please Set it and Try again");
-      router.push("/withdrawal-settings");
+      alert('Withdrawal Settings not Set Up. Please Set it and Try again');
+      router.push('/withdrawal-settings');
       return false;
     }
     // }).catch((error)=>{console.log(error);});
@@ -327,23 +327,21 @@ const MyListingItem = ({
       (isLabelled ? checkAllSpaceLabels() : true) &&
       aboutSpace &&
       accessInstructions &&
-      (scheduleType == "24hours" ||
-        (scheduleType == "fixed" &&
+      (scheduleType == '24hours' ||
+        (scheduleType == 'fixed' &&
           (monday.isActive ? monday.startTime && monday.endTime : true) &&
           (tuesday.isActive ? tuesday.startTime && tuesday.endTime : true) &&
-          (wednesday.isActive
-            ? wednesday.startTime && wednesday.endTime
-            : true) &&
+          (wednesday.isActive ? wednesday.startTime && wednesday.endTime : true) &&
           (thursday.isActive ? thursday.startTime && thursday.endTime : true) &&
           (friday.isActive ? friday.startTime && friday.endTime : true) &&
           (saturday.isActive ? saturday.startTime && saturday.endTime : true) &&
           (sunday.isActive ? sunday.startTime && sunday.endTime : true)) ||
-        (scheduleType == "custom" && customTimeRange.length > 0)) &&
+        (scheduleType == 'custom' && customTimeRange.length > 0)) &&
       noticeTime.value >= 0 &&
       advanceBookingTime.value >= 0 &&
       minTime.value >= 0 &&
       maxTime.value >= 0 &&
-      !(instantBooking === "") &&
+      !(instantBooking === '') &&
       pricingRates.perHourRate >= 0 &&
       pricingRates.perDayRate >= 0 &&
       pricingRates.perWeekRate >= 0 &&
@@ -357,7 +355,7 @@ const MyListingItem = ({
         return true;
       }
     } else {
-      alert("Listing Incomplete!", "Please Complete and Try Again");
+      alert('Listing Incomplete!', 'Please Complete and Try Again');
       return false;
     }
   };
@@ -365,19 +363,19 @@ const MyListingItem = ({
   const handlePublish = async () => {
     try {
       updateDisabled(true);
-      console.log("Check if complete :", await checkIfComplete());
+      console.log('Check if complete :', await checkIfComplete());
       if (await checkIfComplete()) {
         // props.dispatch(showLoading());
         let res = await publishListing({
           variables: {
             id: _id,
-            published: !published,
-          },
+            published: !published
+          }
         });
         if (published) {
-          alert("Listing Inactivated Successfully");
+          alert('Listing Inactivated Successfully');
         } else {
-          alert("Listing Activated Successfully");
+          alert('Listing Activated Successfully');
         }
         updateListingLocal(res.data.updateListing);
       } else {
@@ -390,19 +388,19 @@ const MyListingItem = ({
       updateDisabled(false);
       // props.dispatch(hideLoading());
       console.log(error);
-      alert("Something went wrong!", "Please try again");
+      alert('Something went wrong!', 'Please try again');
     }
   };
 
   const handleDelete = async () => {
     try {
       updateDisabled(true);
-      if (window.confirm("Are you sure you want to delete this listing?")) {
+      if (window.confirm('Are you sure you want to delete this listing?')) {
         // props.dispatch(showLoading());
         const response = await deleteListing({
           variables: {
-            id: _id,
-          },
+            id: _id
+          }
         });
         updateDisabled(false);
         // handleDeleteUI(_id);
@@ -410,7 +408,7 @@ const MyListingItem = ({
         console.log(response);
         // window.location.reload();
 
-        alert("Listing deleted successfully");
+        alert('Listing deleted successfully');
 
         // props.dispatch(hideLoading());
         await deleteListingLocal(_id);
@@ -421,7 +419,7 @@ const MyListingItem = ({
       // props.dispatch(hideLoading());
       console.log(error);
       updateDisabled(false);
-      alert("Something went wrong!", "Please try again");
+      alert('Something went wrong!', 'Please try again');
     }
   };
 
@@ -436,15 +434,13 @@ const MyListingItem = ({
       </div> */}
       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 listing-content">
         <div className="top row">
-          <h4 className="col-10">
-            {listBy === "address" ? address : propertyName}
-          </h4>
-          <div class="tag col-2">Manager</div>
+          <h4 className="col-10">{listBy === 'address' ? address : propertyName}</h4>
+          <div className="tag col-2">Manager</div>
         </div>
 
         <div className="booking-count">
-          {bookings.length > 0 ? bookings.length : "No"} Upcoming{" "}
-          {bookings.length > 1 ? "Bookings" : "Booking"}
+          {bookings.length > 0 ? bookings.length : 'No'} Upcoming{' '}
+          {bookings.length > 1 ? 'Bookings' : 'Booking'}
         </div>
 
         <div className="listing-btn-row">
@@ -481,23 +477,15 @@ const MyListingItem = ({
               Promo Codes
             </Button>
           </Link>
-          <Button
-            variant="outline-success"
-            onClick={handlePublish}
-            disabled={disabled}
-          >
-            {published ? "Inactive" : "Active"}
+          <Button variant="outline-success" onClick={handlePublish} disabled={disabled}>
+            {published ? 'Inactive' : 'Active'}
           </Button>
           <Link href={`/listings/inbox/${_id}`}>
             <Button variant="outline-primary" disabled={disabled}>
               Inbox
             </Button>
           </Link>
-          <Button
-            variant="outline-danger"
-            onClick={handleDelete}
-            disabled={disabled}
-          >
+          <Button variant="outline-danger" onClick={handleDelete} disabled={disabled}>
             Delete
           </Button>
         </div>
@@ -508,11 +496,11 @@ const MyListingItem = ({
 
 const mapStateToProps = ({ user, auth }) => ({
   listings: user.listings,
-  userId: auth.data.attributes.sub,
+  userId: auth.data.attributes.sub
 });
 
 export default connect(mapStateToProps, {
   deleteListingLocal,
   updateListingLocal,
-  loadUserListings,
+  loadUserListings
 })(MyListingItem);

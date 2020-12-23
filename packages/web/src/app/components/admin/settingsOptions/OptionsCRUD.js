@@ -1,19 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import { useMutation, gql } from "@apollo/client";
-import { showLoading, hideLoading } from "react-redux-loading";
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { useMutation, gql } from '@apollo/client';
+import { showLoading, hideLoading } from 'react-redux-loading';
 // import { client } from "../../../graphql/index";
-import { client } from '@parkyourself-frontend/shared/graphql'
-import { Modal, Button, Form, Row, Col, Spinner } from "react-bootstrap";
-import { Edit, Eye, EyeOff } from "react-feather";
-import Table from "./OptionsTable";
+import { client } from '@parkyourself-frontend/shared/graphql';
+import { Modal, Button, Form, Row, Col, Spinner } from 'react-bootstrap';
+import { Edit, Eye, EyeOff } from 'react-feather';
+import Table from './OptionsTable';
 
 const UPDATE_ONE = gql`
-  mutation UpdateOneFormOption(
-    $id: ID!
-    $options: [FormOptionInput]
-    $updatedBy: String
-  ) {
+  mutation UpdateOneFormOption($id: ID!, $options: [FormOptionInput], $updatedBy: String) {
     updateOneFormOption(id: $id, options: $options, updatedBy: $updatedBy) {
       _id
       title
@@ -48,7 +44,7 @@ function FormOptionCRUD(props) {
   const [updateOneFormOption] = useMutation(UPDATE_ONE);
   const [payload, setPayload] = useState({
     index: 0,
-    options: [],
+    options: []
   });
   const [edit, setEdit] = useState(false);
   const [disabled, updateDisabled] = useState(false);
@@ -62,7 +58,7 @@ function FormOptionCRUD(props) {
     try {
       let { data } = await client.query({
         query: GET_ONE,
-        variables: { id: props.id },
+        variables: { id: props.id }
       });
       setOneData(data.getOneFormOption);
       setLoading(false);
@@ -79,7 +75,7 @@ function FormOptionCRUD(props) {
   const handleDelete = async (index) => {
     try {
       updateDisabled(true);
-      if (window.confirm("Are you sure you want to delete this item!")) {
+      if (window.confirm('Are you sure you want to delete this item!')) {
         props.dispatch(showLoading());
         let tempOptions = oneData.options.filter((o, i) => i !== index);
         let { data } = await updateOneFormOption({
@@ -88,14 +84,14 @@ function FormOptionCRUD(props) {
             options: tempOptions.map((i) => ({
               value: i.value,
               label: i.label,
-              published: i.published,
+              published: i.published
             })),
-            updatedBy: props.userId,
-          },
+            updatedBy: props.userId
+          }
         });
         setOneData({
           ...oneData,
-          options: data.updateOneFormOption.options,
+          options: data.updateOneFormOption.options
         });
         updateDisabled(false);
         props.dispatch(hideLoading());
@@ -106,7 +102,7 @@ function FormOptionCRUD(props) {
       // console.log("Error", error);
       props.dispatch(hideLoading());
       updateDisabled(false);
-      alert("Something went wrong!");
+      alert('Something went wrong!');
     }
   };
 
@@ -119,12 +115,12 @@ function FormOptionCRUD(props) {
         variables: {
           id: props.id,
           options: payload.options,
-          updatedBy: props.userId,
-        },
+          updatedBy: props.userId
+        }
       });
       setOneData({
         ...oneData,
-        options: data.updateOneFormOption.options,
+        options: data.updateOneFormOption.options
       });
       props.dispatch(hideLoading());
       updateDisabled(false);
@@ -133,7 +129,7 @@ function FormOptionCRUD(props) {
       // console.log(error);
       updateDisabled(false);
       props.dispatch(hideLoading());
-      alert("Something went wrong please try again");
+      alert('Something went wrong please try again');
     }
   };
 
@@ -146,33 +142,33 @@ function FormOptionCRUD(props) {
           id: props.id,
           options: oneData.options.map((o, i) => {
             if (i === index) {
-              console.log("Changed Status");
+              console.log('Changed Status');
               return {
                 value: o.value,
                 label: o.label,
-                published: !o.published,
+                published: !o.published
               };
             } else {
               return {
                 value: o.value,
                 label: o.label,
-                published: o.published,
+                published: o.published
               };
             }
           }),
-          updatedBy: props.userId,
-        },
+          updatedBy: props.userId
+        }
       });
       setOneData({
         ...oneData,
-        options: data.updateOneFormOption.options,
+        options: data.updateOneFormOption.options
       });
       updateDisabled(false);
       props.dispatch(hideLoading());
     } catch (error) {
       updateDisabled(false);
       props.dispatch(hideLoading());
-      alert("Something went wrong!");
+      alert('Something went wrong!');
     }
   };
 
@@ -191,7 +187,7 @@ function FormOptionCRUD(props) {
     });
     setPayload({
       ...payload,
-      options: tempA,
+      options: tempA
     });
   };
 
@@ -202,10 +198,10 @@ function FormOptionCRUD(props) {
         ...oneData.options.map((i) => ({
           value: i.value,
           label: i.label,
-          published: i.published,
+          published: i.published
         })),
-        { value: "", label: "", published: true },
-      ],
+        { value: '', label: '', published: true }
+      ]
     });
     setEdit(false);
     setShowModal(true);
@@ -217,8 +213,8 @@ function FormOptionCRUD(props) {
       options: oneData.options.map((i) => ({
         value: i.value,
         label: i.label,
-        published: i.published,
-      })),
+        published: i.published
+      }))
     });
     setEdit(true);
     setShowModal(true);
@@ -226,23 +222,14 @@ function FormOptionCRUD(props) {
 
   return (
     <>
-      <Modal
-        size="lg"
-        centered
-        show={showModal}
-        onHide={() => setShowModal(false)}
-      >
+      <Modal size="lg" centered show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Body>
           <Form onSubmit={handleSubmit} className="pt-3">
             <Form.Group>
               <Form.Label>Name</Form.Label>
               <Form.Control
                 onChange={handleChangeFormOption}
-                value={
-                  payload.options[payload.index]
-                    ? payload.options[payload.index].value
-                    : ""
-                }
+                value={payload.options[payload.index] ? payload.options[payload.index].value : ''}
                 type="text"
                 name="value"
                 placeholder="Name"
@@ -260,18 +247,17 @@ function FormOptionCRUD(props) {
                     aria-hidden="true"
                   />
                 ) : edit ? (
-                  "Update"
+                  'Update'
                 ) : (
-                      "Create"
-                    )}
-              </Button>{" "}
+                  'Create'
+                )}
+              </Button>{' '}
               <Button
                 className="ml-2"
                 disabled={disabled}
                 type="button"
                 variant="danger"
-                onClick={() => setShowModal(false)}
-              >
+                onClick={() => setShowModal(false)}>
                 Cancel
               </Button>
             </div>
@@ -279,23 +265,15 @@ function FormOptionCRUD(props) {
         </Modal.Body>
       </Modal>
       {preview ? (
-        <Edit
-          size={30}
-          className="cursor-pointer ml-3"
-          onClick={() => setPreview(false)}
-        />
+        <Edit size={30} className="cursor-pointer ml-3" onClick={() => setPreview(false)} />
       ) : (
-          <>
-            <Button variant="primary" onClick={handleAddNew}>
-              Add New
+        <>
+          <Button variant="primary" onClick={handleAddNew}>
+            Add New
           </Button>
-            <Eye
-              size={30}
-              className="cursor-pointer ml-3"
-              onClick={() => setPreview(true)}
-            />
-          </>
-        )}
+          <Eye size={30} className="cursor-pointer ml-3" onClick={() => setPreview(true)} />
+        </>
+      )}
       {loading && (
         <div className="text-center pt-5">
           <Spinner animation="border" role="status">
@@ -319,14 +297,14 @@ function FormOptionCRUD(props) {
           </Form.Group>
         </Form>
       ) : (
-          <Table
-            oneData={oneData}
-            handleDelete={handleDelete}
-            handleEdit={handleEdit}
-            handlePublish={handlePublish}
-            disabled={disabled}
-          />
-        )}
+        <Table
+          oneData={oneData}
+          handleDelete={handleDelete}
+          handleEdit={handleEdit}
+          handlePublish={handlePublish}
+          disabled={disabled}
+        />
+      )}
     </>
   );
 }
@@ -334,7 +312,7 @@ function FormOptionCRUD(props) {
 const mapStateToProps = ({ auth }) => {
   return {
     authenticated: auth.authenticated,
-    userId: auth.authenticated ? auth.data.attributes.sub : null,
+    userId: auth.authenticated ? auth.data.attributes.sub : null
   };
 };
 

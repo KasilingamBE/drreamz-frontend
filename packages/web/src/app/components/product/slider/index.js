@@ -1,6 +1,6 @@
-import React from "react";
-import "./index.css";
-import ImageGallery from "react-image-gallery";
+import React from 'react';
+import './index.css';
+import ImageGallery from 'react-image-gallery';
 
 class Sample extends React.Component {
   constructor(props) {
@@ -19,41 +19,37 @@ class Sample extends React.Component {
       slideDuration: 450,
       slideInterval: 2000,
       slideOnThumbnailOver: false,
-      thumbnailPosition: "bottom",
-      showVideo: {},
+      thumbnailPosition: 'bottom',
+      showVideo: {}
     };
 
     this.customImages = [];
     this.props.room.images.map((i) => {
-      let extension = i.split(".").pop().toLowerCase();
+      let extension = i.split('.').pop().toLowerCase();
       if (
-        extension === "png" ||
-        extension === "jpg" ||
-        extension === "jpeg" ||
-        extension === "gif"
+        extension === 'png' ||
+        extension === 'jpg' ||
+        extension === 'jpeg' ||
+        extension === 'gif'
       ) {
         return (this.customImages = [
           ...this.customImages,
           {
             original: i,
-            thumbnail: i,
-          },
+            thumbnail: i
+          }
         ]);
-      } else if (
-        extension === "mp4" ||
-        extension === "webm" ||
-        extension === "ogg"
-      ) {
+      } else if (extension === 'mp4' || extension === 'webm' || extension === 'ogg') {
         return (this.customImages = [
           ...this.customImages,
           {
             thumbnail:
-              "https://image.freepik.com/free-vector/video-player-template-media-player-web-page_186930-293.jpg",
+              'https://image.freepik.com/free-vector/video-player-template-media-player-web-page_186930-293.jpg',
             embedUrl: i,
             original: `https://www.xmple.com/wallpaper/solid-color-single-one-colour-pink-plain-1920x1080-c-ffcbef-f-24.svg`,
             // description: "Render custom slides within the gallery",
-            renderItem: this._renderVideo.bind(this),
-          },
+            renderItem: this._renderVideo.bind(this)
+          }
         ]);
       }
     });
@@ -72,32 +68,32 @@ class Sample extends React.Component {
 
   _onImageClick(event) {
     console.debug(
-      "clicked on image",
+      'clicked on image',
       event.target,
-      "at index",
+      'at index',
       this._imageGallery.getCurrentIndex()
     );
   }
 
   _onImageLoad(event) {
-    console.debug("loaded image", event.target.src);
+    console.debug('loaded image', event.target.src);
   }
 
   _onSlide(index) {
     this._resetVideo();
-    console.debug("slid to index", index);
+    console.debug('slid to index', index);
   }
 
   _onPause(index) {
-    console.debug("paused on index", index);
+    console.debug('paused on index', index);
   }
 
   _onScreenChange(fullScreenElement) {
-    console.debug("isFullScreen?", !!fullScreenElement);
+    console.debug('isFullScreen?', !!fullScreenElement);
   }
 
   _onPlay(index) {
-    console.debug("playing from index", index);
+    console.debug('playing from index', index);
   }
 
   _handleInputChange(state, event) {
@@ -127,7 +123,7 @@ class Sample extends React.Component {
   _toggleShowVideo(url) {
     this.state.showVideo[url] = !Boolean(this.state.showVideo[url]);
     this.setState({
-      showVideo: this.state.showVideo,
+      showVideo: this.state.showVideo
     });
 
     if (this.state.showVideo[url]) {
@@ -142,9 +138,9 @@ class Sample extends React.Component {
   }
 
   _renderVideo(item) {
-    let extension = item.embedUrl.split(".").pop().toLowerCase();
+    let extension = item.embedUrl.split('.').pop().toLowerCase();
     return (
-      <video style={{ width: "100%" }} controls>
+      <video style={{ width: '100%' }} controls>
         <source src={item.embedUrl} type={`video/${extension}`} />
         Your browser does not support the video tag.
       </video>
@@ -203,7 +199,7 @@ class Sample extends React.Component {
             slideDuration={parseInt(this.state.slideDuration)}
             slideInterval={parseInt(this.state.slideInterval)}
             slideOnThumbnailOver={this.state.slideOnThumbnailOver}
-            additionalClass="app-image-gallery"
+            additionalclassName="app-image-gallery"
           />
         )}
       </section>

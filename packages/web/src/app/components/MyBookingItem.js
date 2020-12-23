@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { Button, Spinner } from "react-bootstrap";
-import { IoIosCard, IoIosStar, IoIosStarHalf } from "react-icons/io";
-import Link from "next/link";
-import placeholderImg from "../../assets1/images/placeholder-img.jpg";
-import { MdKeyboardArrowRight } from "react-icons/md";
-import moment from "moment";
-import AddListingReviewModal from "./AddListingReviewModal";
-import AddOwnerReviewModal from "./AddOwnerReviewModal";
-import { client } from "../graphql";
-import { gql, useMutation, useSubscription } from "@apollo/client";
-import { connect } from "react-redux";
-import { toast } from "react-toastify";
-import { updateListingLocal } from "../redux/actions/user";
-import StarRatings from "react-star-ratings";
-import CheckInTicketModal from "./booking/CheckInTicketModal";
+import React, { useState, useEffect } from 'react';
+import { Button, Spinner } from 'react-bootstrap';
+import { IoIosCard, IoIosStar, IoIosStarHalf } from 'react-icons/io';
+import Link from 'next/link';
+import placeholderImg from '../../assets1/images/placeholder-img.jpg';
+import { MdKeyboardArrowRight } from 'react-icons/md';
+import moment from 'moment';
+import AddListingReviewModal from './AddListingReviewModal';
+import AddOwnerReviewModal from './AddOwnerReviewModal';
+import { client } from '../graphql';
+import { gql, useMutation, useSubscription } from '@apollo/client';
+import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
+import { updateListingLocal } from '../redux/actions/user';
+import StarRatings from 'react-star-ratings';
+import CheckInTicketModal from './booking/CheckInTicketModal';
 // import EarlyCheckInSuccessModal from "./EarlyCheckInSuccessModal";
-import EarlyCheckInModal from "./EarlyCheckInModal";
+import EarlyCheckInModal from './EarlyCheckInModal';
 
 const GET_LISTING_REVIEWS = gql`
   query GetListingReviews($listingId: String!) {
@@ -303,7 +303,7 @@ const MyBookingItem = ({
   spaceLabel,
   profileCategory,
   userData,
-  updateListingLocal,
+  updateListingLocal
 }) => {
   const [createListingReview] = useMutation(CREATE_LISTING_REVIEW);
   const [createOwnerReview] = useMutation(CREATE_OWNER_REVIEW);
@@ -327,7 +327,7 @@ const MyBookingItem = ({
       // console.log(listing, _id);
       if (listing != null) {
         if (listing.reviews.includes(_id)) {
-          toast.warn("Review Already Added!");
+          toast.warn('Review Already Added!');
           return;
         }
       }
@@ -341,25 +341,25 @@ const MyBookingItem = ({
           driverName: userData.name,
           rating: data.rating,
           feedback: data.feedback,
-          date: new Date().toString(),
-        },
+          date: new Date().toString()
+        }
       });
       // console.log(response.data.createListingReview);
 
       const response2 = await updateListing({
         variables: {
           id: listingId,
-          reviews: [...listing.reviews, response.data.createListingReview._id],
-        },
+          reviews: [...listing.reviews, response.data.createListingReview._id]
+        }
       });
 
       // console.log(response2.data.updateListing);
 
       updateListingLocal(response2.data.updateListing);
 
-      toast.success("Review Added Successfully");
+      toast.success('Review Added Successfully');
     } catch (error) {
-      toast.warn("Something Went Wrong!");
+      toast.warn('Something Went Wrong!');
       // console.log(error);
     }
   };
@@ -376,14 +376,14 @@ const MyBookingItem = ({
           driverName: userData.name,
           rating: data.rating,
           feedback: data.feedback,
-          date: new Date().toString(),
-        },
+          date: new Date().toString()
+        }
       });
       // console.log(response.data.createOwnerReview);
 
-      toast.success("Review Added Successfully");
+      toast.success('Review Added Successfully');
     } catch (error) {
-      toast.warn("Something Went Wrong!");
+      toast.warn('Something Went Wrong!');
       // console.log(error);
     }
   };
@@ -400,7 +400,7 @@ const MyBookingItem = ({
     client
       .query({
         query: GET_LISTING,
-        variables: { id: listingId },
+        variables: { id: listingId }
       })
       .then(({ data }) => {
         // console.log(data.getListing);
@@ -413,7 +413,7 @@ const MyBookingItem = ({
     client
       .query({
         query: GET_LISTING_REVIEWS,
-        variables: { listingId: listingId },
+        variables: { listingId: listingId }
       })
       .then(({ data }) => {
         if (data.getListingReviews) {
@@ -451,21 +451,19 @@ const MyBookingItem = ({
       const { data } = await updateBooking({
         variables: {
           id: _id,
-          status: "cancelled",
+          status: 'cancelled',
           driverEmail: driverEmail,
           ownerEmail: ownerEmail,
-          driverId: driverId,
-        },
+          driverId: driverId
+        }
       });
-      console.log("data.updateBookingStatus ", data);
-      setUpcoming(
-        upcoming.filter((u) => u._id !== data.updateBookingStatus._id)
-      );
+      console.log('data.updateBookingStatus ', data);
+      setUpcoming(upcoming.filter((u) => u._id !== data.updateBookingStatus._id));
       setCancelled([...cancelled, data.updateBookingStatus]);
       setDisabled(false);
       setCanceling(false);
     } catch (error) {
-      alert("Something went wrong!");
+      alert('Something went wrong!');
       // console.log("handleCancelBooking error", error);
       setDisabled(false);
       setCanceling(false);
@@ -486,25 +484,24 @@ const MyBookingItem = ({
       <div className="col-xl-9 col-lg-9 col-md-8 col-sm-12 col-xs-12 listing-content">
         <div className="top row">
           <h4 className="col-10">{address}</h4>
-          <div class="tag col-2">
-            {profileCategory === "personal" ? "Personal" : "Business"}
+          <div className="tag col-2">
+            {profileCategory === 'personal' ? 'Personal' : 'Business'}
           </div>
         </div>
 
         <div className="booking-count">
-          {moment(new Date(start)).format("lll")} to{" "}
-          {moment(new Date(end)).format("lll")}
+          {moment(new Date(start)).format('lll')} to {moment(new Date(end)).format('lll')}
         </div>
 
         <div className="listing-btn-row">
           <div className="card-number">
             <IoIosCard
               style={{
-                fontSize: "20px",
-                color: "#000",
-                marginRight: "10px",
+                fontSize: '20px',
+                color: '#000',
+                marginRight: '10px'
               }}
-            />{" "}
+            />{' '}
             ${payment}
           </div>
           <Link href={`/parkings/${listingId}`}>
@@ -521,27 +518,25 @@ const MyBookingItem = ({
                 name="rating"
                 isAggregateRating={true}
               />
-              {listing ? listing.reviews.length : "No Reviews"}
+              {listing ? listing.reviews.length : 'No Reviews'}
               <MdKeyboardArrowRight className="arrow-right" />
             </Button>
           </Link>
-          {tabStatus === "completed" && (
+          {tabStatus === 'completed' && (
             <>
               <Button
                 variant="outline-success"
                 disabled={checkIfAdded()}
                 onClick={() => {
                   setShowListingReviewModal(true);
-                }}
-              >
+                }}>
                 Rate Space
               </Button>
               <Link
                 href={{
                   pathname: `messages/${listingId}`,
-                  query: { driverId: driverId },
-                }}
-              >
+                  query: { driverId: driverId }
+                }}>
                 <Button variant="outline-dark">Chat with Owner</Button>
               </Link>
               <Button
@@ -549,8 +544,7 @@ const MyBookingItem = ({
                 disabled={checkIfAdded()}
                 onClick={() => {
                   setShowOwnerReviewModal(true);
-                }}
-              >
+                }}>
                 Rate Owner
               </Button>
               <AddListingReviewModal
@@ -575,26 +569,24 @@ const MyBookingItem = ({
           )}
         </div>
         <div className="listing-btn-row">
-          {(tabStatus === "current" || tabStatus === "upcoming") && (
+          {(tabStatus === 'current' || tabStatus === 'upcoming') && (
             <>
               <Button
                 variant="outline-success"
                 onClick={() => {
                   setShowCheckInTicketModal(true);
                 }}
-                disabled={disabled}
-              >
+                disabled={disabled}>
                 Ticket
               </Button>
-              {tabStatus === "upcoming" && new Date() < new Date(start) && (
+              {tabStatus === 'upcoming' && new Date() < new Date(start) && (
                 <>
                   <Button
                     variant="outline-success"
                     onClick={() => {
                       setShowEarlyCheckInModal(true);
                     }}
-                    disabled={disabled}
-                  >
+                    disabled={disabled}>
                     Early Check-In
                   </Button>
                   <EarlyCheckInModal
@@ -621,8 +613,7 @@ const MyBookingItem = ({
                   <Button
                     variant="outline-success"
                     onClick={() => setShowLateCheckOutModal(true)}
-                    disabled={disabled}
-                  >
+                    disabled={disabled}>
                     Late Check-Out
                   </Button>
                   <EarlyCheckInModal
@@ -633,13 +624,7 @@ const MyBookingItem = ({
                     }}
                     address={address}
                     start={new Date(end)}
-                    end={
-                      new Date(
-                        new Date(new Date(end)).setHours(
-                          new Date(end).getHours() + 2
-                        )
-                      )
-                    }
+                    end={new Date(new Date(new Date(end)).setHours(new Date(end).getHours() + 2))}
                     profileType={profileCategory}
                     listingId={listingId}
                     setUpcoming={setUpcoming}
@@ -649,13 +634,12 @@ const MyBookingItem = ({
                   />
                 </>
               )}
-              {tabStatus === "upcoming" && (
+              {tabStatus === 'upcoming' && (
                 <>
                   <Button
                     variant="outline-danger"
                     onClick={handleCancelBooking}
-                    disabled={disabled}
-                  >
+                    disabled={disabled}>
                     {canceling ? (
                       <Spinner
                         as="span"
@@ -665,7 +649,7 @@ const MyBookingItem = ({
                         aria-hidden="true"
                       />
                     ) : (
-                      "Cancel Booking"
+                      'Cancel Booking'
                     )}
                   </Button>
                 </>
@@ -689,7 +673,7 @@ const MyBookingItem = ({
 };
 
 const mapStateToProps = ({ auth }) => ({
-  userData: auth.data.attributes,
+  userData: auth.data.attributes
 });
 
 export default connect(mapStateToProps, { updateListingLocal })(MyBookingItem);

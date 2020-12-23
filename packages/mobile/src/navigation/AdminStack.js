@@ -1,26 +1,98 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import AdminDashboard from '../screens/admin/AdminDashboard';
+import AdminBooking from '../screens/admin/AdminBooking';
+import AdminParking from '../screens/admin/AdminParking';
+import AdminPropertyType from '../screens/admin/AdminPropertyType';
+import AdminListingType from '../screens/admin/AdminListingType';
+import AdminAppFee from '../screens/admin/AdminAppFee';
+import AdminUsers from '../screens/admin/AdminUsers';
+import AppDrawer from '../components/common/AppDrawer';
+import HeaderLogo from '../components/HeaderLogo';
+import MenuButton from '../components/MenuButton';
+
+const drawer = createDrawerNavigator();
 
 const Stack = createStackNavigator();
 
-export default function AdminStack() {
+const AdminStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
+        title: '',
+        headerTitle: () => <HeaderLogo />,
         headerStyle: {
           elevation: 0,
-          shadowOpacity: 0,
-        },
+          shadowOpacity: 0
+        }
       }}>
       <Stack.Screen
         name="AdminDashboard"
         component={AdminDashboard}
-        options={{
-          headerShown: false,
+        options={({ navigation }) => ({
           title: '',
-        }}
+          headerTitle: () => <HeaderLogo />,
+          headerLeft: () => <MenuButton navigation={navigation} />,
+          headerTitleAlign: 'center'
+        })}
+      />
+      <Stack.Screen
+        name="AdminBooking"
+        component={AdminBooking}
+        options={({ navigation }) => ({
+          headerTitle: () => <HeaderLogo />,
+          headerTitleAlign: 'center'
+        })}
+      />
+      <Stack.Screen
+        name="AdminParking"
+        component={AdminParking}
+        options={({ navigation }) => ({
+          headerTitle: () => <HeaderLogo />,
+          headerTitleAlign: 'center'
+        })}
+      />
+      <Stack.Screen
+        name="AdminUsers"
+        component={AdminUsers}
+        options={({ navigation }) => ({
+          headerTitle: () => <HeaderLogo />,
+          headerTitleAlign: 'center'
+        })}
+      />
+      <Stack.Screen
+        name="AdminPropertyType"
+        component={AdminPropertyType}
+        options={({ navigation }) => ({
+          headerTitle: () => <HeaderLogo />,
+          headerTitleAlign: 'center'
+        })}
+      />
+      <Stack.Screen
+        name="AdminListingType"
+        component={AdminListingType}
+        options={({ navigation }) => ({
+          headerTitle: () => <HeaderLogo />,
+          headerTitleAlign: 'center'
+        })}
+      />
+      <Stack.Screen
+        name="AdminAppFee"
+        component={AdminAppFee}
+        options={({ navigation }) => ({
+          headerTitle: () => <HeaderLogo />,
+          headerTitleAlign: 'center'
+        })}
       />
     </Stack.Navigator>
+  );
+};
+
+export default function SpaceOwnerDrawer() {
+  return (
+    <drawer.Navigator drawerContent={() => <AppDrawer />}>
+      <drawer.Screen name="AdminStack" component={AdminStack} />
+    </drawer.Navigator>
   );
 }

@@ -1,33 +1,21 @@
-import React, { useEffect, useState } from "react";
-import {
-  Accordion,
-  Card,
-  Form,
-  Button,
-  Nav,
-  ListGroup,
-  Table,
-} from "react-bootstrap";
-import {
-  IoIosArrowUp,
-  IoIosArrowDown,
-  IoIosArrowForward,
-} from "react-icons/io";
-import { MdEdit, MdDelete } from "react-icons/md";
-import { connect } from "react-redux";
-import { toggleLoading, toggleProfileType } from "../app/redux/actions/user";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useEffect, useState } from 'react';
+import { Accordion, Card, Form, Button, Nav, ListGroup, Table } from 'react-bootstrap';
+import { IoIosArrowUp, IoIosArrowDown, IoIosArrowForward } from 'react-icons/io';
+import { MdEdit, MdDelete } from 'react-icons/md';
+import { connect } from 'react-redux';
+import { toggleLoading, toggleProfileType } from '../app/redux/actions/user';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   createSpaceOwnerProfileLocal,
   loadUserSpaceOwnerProfile,
   updateSpaceOwnerProfileLocal,
-  deleteSpaceOwnerProfileLocal,
-} from "../app/redux/actions/spaceOwnerProfile";
-import { gql, useMutation } from "@apollo/client";
-import { client } from "../app/graphql";
-import SpaceOwnerProfileModal from "../app/components/SpaceOwnerProfileModal";
-import Link from "next/link";
+  deleteSpaceOwnerProfileLocal
+} from '../app/redux/actions/spaceOwnerProfile';
+import { gql, useMutation } from '@apollo/client';
+import { client } from '../app/graphql';
+import SpaceOwnerProfileModal from '../app/components/SpaceOwnerProfileModal';
+import Link from 'next/link';
 
 const GET_USER_SPACEOWNER_PROFILE = gql`
   query GetUserSpaceOwnerProfile($userId: String!) {
@@ -113,20 +101,18 @@ const SpaceOwnerDashboard = ({
   createSpaceOwnerProfileLocal,
   loadUserSpaceOwnerProfile,
   updateSpaceOwnerProfileLocal,
-  deleteSpaceOwnerProfileLocal,
+  deleteSpaceOwnerProfileLocal
 }) => {
   const [createSpaceOwnerProfile] = useMutation(CREATE_SPACEOWNER_PROFILE);
   const [updateSpaceOwnerProfile] = useMutation(UPDATE_SPACEOWNER_PROFILE);
   const [deleteSpaceOwnerProfile] = useMutation(DELETE_SPACEOWNER_PROFILE);
 
   const { name, email, sub } = userData;
-  const [activeKey, setActiveKey] = useState("");
+  const [activeKey, setActiveKey] = useState('');
   const [showProfileForm, setShowProfileForm] = useState(false);
   // const [profileType,setProfileType] = useState('personal');
 
-  const [showSpaceOwnerProfileModal, setShowSpaceOwnerProfileModal] = useState(
-    false
-  );
+  const [showSpaceOwnerProfileModal, setShowSpaceOwnerProfileModal] = useState(false);
   const [spaceOwnerProfileEdit, setSpaceOwnerProfileEdit] = useState(false);
 
   useEffect(() => {
@@ -135,7 +121,7 @@ const SpaceOwnerDashboard = ({
       client
         .query({
           query: GET_USER_SPACEOWNER_PROFILE,
-          variables: { userId: sub },
+          variables: { userId: sub }
         })
         .then(({ data }) => {
           console.log(data.getUserSpaceOwnerProfile);
@@ -152,14 +138,14 @@ const SpaceOwnerDashboard = ({
   const createSpaceOwnerProfileHandler = async (data) => {
     try {
       const response = await createSpaceOwnerProfile({
-        variables: data,
+        variables: data
       });
       createSpaceOwnerProfileLocal(response.data.createSpaceOwnerProfile);
 
       console.log(response.data.createSpaceOwnerProfile);
-      toast.success("Space Owner Profile Created Successfully");
+      toast.success('Space Owner Profile Created Successfully');
     } catch (error) {
-      toast.warn("Something Went Wrong!");
+      toast.warn('Something Went Wrong!');
       console.log(error);
     }
   };
@@ -167,14 +153,14 @@ const SpaceOwnerDashboard = ({
   const updateSpaceOwnerProfileHandler = async (data) => {
     try {
       const response = await updateSpaceOwnerProfile({
-        variables: data,
+        variables: data
       });
       updateSpaceOwnerProfileLocal(response.data.updateSpaceOwnerProfile);
       setSpaceOwnerProfileEdit(false);
       console.log(response.data.updateSpaceOwnerProfile);
-      toast.success("Space Owner Profile Updated Successfully");
+      toast.success('Space Owner Profile Updated Successfully');
     } catch (error) {
-      toast.warn("Something Went Wrong!");
+      toast.warn('Something Went Wrong!');
       console.log(error);
     }
   };
@@ -182,19 +168,19 @@ const SpaceOwnerDashboard = ({
   const deleteSpaceOwnerProfileHandler = async (id) => {
     try {
       const response = await deleteSpaceOwnerProfile({
-        variables: { id: id },
+        variables: { id: id }
       });
       deleteSpaceOwnerProfileLocal(id);
       console.log(response.data.deleteSpaceOwnerProfile);
-      toast.success("Space Owner Profile Deleted Successfully");
+      toast.success('Space Owner Profile Deleted Successfully');
     } catch (error) {
-      toast.warn("Something Went Wrong!");
+      toast.warn('Something Went Wrong!');
       console.log(error);
     }
   };
 
   const spaceOwnerProfileEditButtonHandler = async () => {
-    console.log("in edit handler");
+    console.log('in edit handler');
     setSpaceOwnerProfileEdit(true);
     setShowSpaceOwnerProfileModal(true);
   };
@@ -221,8 +207,7 @@ const SpaceOwnerDashboard = ({
             eventKey="business"
             onClick={() => {
               setShowProfileForm(!showProfileForm);
-            }}
-          >
+            }}>
             <div className="setup-profile">
               <div>
                 <p className="lead">Space Owner Profile</p>
@@ -262,13 +247,13 @@ const SpaceOwnerDashboard = ({
                         <td>
                           {spaceOwnerProfile.data.businessName
                             ? spaceOwnerProfile.data.businessName
-                            : "No business name added"}
+                            : 'No business name added'}
                         </td>
                       </tr>
                     </tbody>
                   </Table>
                   <br />
-                  <p class="lead">Social Accounts</p>
+                  <p className="lead">Social Accounts</p>
                   <Table striped bordered hover>
                     <tbody>
                       <tr>
@@ -276,7 +261,7 @@ const SpaceOwnerDashboard = ({
                         <td>
                           {spaceOwnerProfile.data.facebook
                             ? spaceOwnerProfile.data.facebook
-                            : "No Facebook account added"}
+                            : 'No Facebook account added'}
                         </td>
                       </tr>
                       <tr>
@@ -284,7 +269,7 @@ const SpaceOwnerDashboard = ({
                         <td>
                           {spaceOwnerProfile.data.twitter
                             ? spaceOwnerProfile.data.twitter
-                            : "No Twitter account added"}
+                            : 'No Twitter account added'}
                         </td>
                       </tr>
                       <tr>
@@ -292,7 +277,7 @@ const SpaceOwnerDashboard = ({
                         <td>
                           {spaceOwnerProfile.data.instagram
                             ? spaceOwnerProfile.data.instagram
-                            : "No Instagram account added"}
+                            : 'No Instagram account added'}
                         </td>
                       </tr>
                     </tbody>
@@ -301,19 +286,15 @@ const SpaceOwnerDashboard = ({
                     variant="outline-primary"
                     onClick={() => {
                       spaceOwnerProfileEditButtonHandler();
-                    }}
-                  >
+                    }}>
                     Edit
                   </Button>
                   <Button
                     variant="outline-danger"
-                    style={{ marginLeft: "10px" }}
+                    style={{ marginLeft: '10px' }}
                     onClick={() => {
-                      deleteSpaceOwnerProfileHandler(
-                        spaceOwnerProfile.data._id
-                      );
-                    }}
-                  >
+                      deleteSpaceOwnerProfileHandler(spaceOwnerProfile.data._id);
+                    }}>
                     Delete
                   </Button>
                 </>
@@ -323,8 +304,7 @@ const SpaceOwnerDashboard = ({
                   onClick={() => {
                     setSpaceOwnerProfileEdit(false);
                     setShowSpaceOwnerProfileModal(true);
-                  }}
-                >
+                  }}>
                   Create Space Owner Profile
                 </Button>
               )}
@@ -420,7 +400,7 @@ const SpaceOwnerDashboard = ({
 const mapStateToProps = ({ user, auth, spaceOwnerProfile }) => ({
   profileType: user.profileType,
   userData: auth.data.attributes,
-  spaceOwnerProfile,
+  spaceOwnerProfile
 });
 
 export default connect(mapStateToProps, {
@@ -428,5 +408,5 @@ export default connect(mapStateToProps, {
   createSpaceOwnerProfileLocal,
   loadUserSpaceOwnerProfile,
   updateSpaceOwnerProfileLocal,
-  deleteSpaceOwnerProfileLocal,
+  deleteSpaceOwnerProfileLocal
 })(SpaceOwnerDashboard);

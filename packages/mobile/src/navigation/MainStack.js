@@ -1,6 +1,6 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {createStackNavigator} from '@react-navigation/stack';
+import { connect } from 'react-redux';
+import { createStackNavigator } from '@react-navigation/stack';
 import SignInStack from './SignInStack';
 import SignUpStack from './SignUpStack';
 import Tabs from './Tabs';
@@ -18,34 +18,26 @@ function MainStack(props) {
       screenOptions={{
         headerStyle: {
           elevation: 0,
-          shadowOpacity: 0,
-        },
+          shadowOpacity: 0
+        }
       }}>
       {props.authenticated ? (
         props.adminMode ? (
-          <Stack.Screen
-            name="AdminStack"
-            component={AdminStack}
-            options={{headerShown: false}}
-          />
+          <Stack.Screen name="AdminStack" component={AdminStack} options={{ headerShown: false }} />
         ) : (
-          <Stack.Screen
-            name="Tabs"
-            component={Tabs}
-            options={{headerShown: false}}
-          />
+          <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
         )
       ) : (
         <>
           <Stack.Screen
             name="SignInStack"
             component={SignInStack}
-            options={{headerShown: false}}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name="SignUpStack"
             component={SignUpStack}
-            options={{headerShown: false}}
+            options={{ headerShown: false }}
           />
         </>
       )}
@@ -53,11 +45,11 @@ function MainStack(props) {
   );
 }
 
-const mapStateToProps = ({auth, user}) => {
+const mapStateToProps = ({ auth, user }) => {
   return {
     authenticated: auth.authenticated,
     initial: auth.initial,
-    adminMode: user.adminMode,
+    adminMode: user.adminMode
   };
 };
 
