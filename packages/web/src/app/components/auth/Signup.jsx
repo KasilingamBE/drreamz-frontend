@@ -1,21 +1,21 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { showLoading, hideLoading } from "react-redux-loading";
-import { Auth } from "aws-amplify";
-import { Form, Button } from "react-bootstrap";
-import { initializeUser } from "../../redux/actions/user";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { showLoading, hideLoading } from 'react-redux-loading';
+import { Auth } from 'aws-amplify';
+import { Form, Button, Spinner } from 'react-bootstrap';
+import { initializeUser } from '../../redux/actions/user';
 
 class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
-      password: "",
-      name: "",
+      email: '',
+      password: '',
+      name: '',
       verify: false,
-      code: "",
+      code: '',
       disabled: false,
-      auth: false,
+      auth: false
     };
   }
 
@@ -28,16 +28,15 @@ class Signup extends Component {
       attributes: {
         email: email,
         name: name,
-        picture:
-          "https://parkyourselfbucket154227-dev.s3.amazonaws.com/public/default/default.jpg",
-      },
+        picture: 'https://parkyourselfbucket154227-dev.s3.amazonaws.com/public/default/default.jpg'
+      }
     })
       .then((res) => {
         this.setState({
-          password: "",
-          name: "",
+          password: '',
+          name: '',
           verify: true,
-          disabled: false,
+          disabled: false
         });
         this.props.dispatch(hideLoading());
       })
@@ -53,14 +52,14 @@ class Signup extends Component {
     Auth.confirmSignUp(email, code)
       .then((res) => {
         this.setState({
-          code: "",
-          email: "",
+          code: '',
+          email: '',
           disabled: false,
           auth: true,
-          verify: false,
+          verify: false
         });
         this.props.dispatch(hideLoading());
-        alert("Account successfully created!");
+        alert('Account successfully created!');
       })
       .catch((err) => {
         this.setState({ ...this.state, disabled: false });
@@ -85,7 +84,7 @@ class Signup extends Component {
   handleChange = (e) => {
     this.setState({
       ...this.state,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
 
@@ -121,12 +120,23 @@ class Signup extends Component {
                 placeholder="Enter Verification Code"
                 required
               />
-              <Form.Control.Feedback type="invalid">
-                This field is required
-              </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
             </Form.Group>
-            <Button disabled={disabled} type="submit" className="account__btn">
-              Verify
+            <p
+              onClick={() => this.setState({ ...this.state, verify: false })}
+              className="forget__pass"
+              style={{ cursor: 'pointer' }}>
+              Signup Again?
+            </p>
+            <Button
+              style={{ pointerEvents: disabled ? 'none' : 'auto' }}
+              type="submit"
+              className="account__btn">
+              {disabled ? (
+                <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+              ) : (
+                'Verify'
+              )}
             </Button>
           </div>
         </form>
@@ -182,9 +192,7 @@ class Signup extends Component {
                 placeholder="Name"
                 required
               />
-              <Form.Control.Feedback type="invalid">
-                This field is required
-              </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
             </Form.Group>
             <Form.Group>
               <Form.Label>Email</Form.Label>
@@ -196,9 +204,7 @@ class Signup extends Component {
                 placeholder="Email"
                 required
               />
-              <Form.Control.Feedback type="invalid">
-                This field is required
-              </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
             </Form.Group>
             <Form.Group>
               <Form.Label>Password</Form.Label>
@@ -210,12 +216,17 @@ class Signup extends Component {
                 placeholder="Password"
                 required
               />
-              <Form.Control.Feedback type="invalid">
-                This field is required
-              </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
             </Form.Group>
-            <Button disabled={disabled} type="submit" className="account__btn">
-              Register
+            <Button
+              style={{ pointerEvents: disabled ? 'none' : 'auto' }}
+              type="submit"
+              className="account__btn">
+              {disabled ? (
+                <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+              ) : (
+                'Register'
+              )}
             </Button>
           </div>
         </form>

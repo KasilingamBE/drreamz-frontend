@@ -42,8 +42,16 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 // import { persistStore, persistReducer } from "redux-persist5";
 // import storage from "redux-persist5/lib/storage";
 // import { PersistGate } from "redux-persist5/integration/react";
-
-Amplify.configure({ ...aws_exports, ssr: true });
+// http://localhost:3000/?error_description=Unrecognizable+lambda+output+&state=6Xr6UPb8nqgpKlkRida8CUAbsjAjzhjp&error=invalid_request
+Amplify.configure({
+  ...aws_exports,
+  ssr: true,
+  oauth: {
+    ...aws_exports.oauth,
+    redirectSignIn: !true ? 'https://d36x3gddhpmslp.cloudfront.net/' : 'http://localhost:3000/',
+    redirectSignOut: !true ? 'https://d36x3gddhpmslp.cloudfront.net/' : 'http://localhost:3000/'
+  }
+});
 
 const stripePromise = loadStripe(
   'pk_test_517LnJnDPrb5EfwdRchW3z9AVO6xddwRZtSHqD311B4HW5j9Ouh9dmzU6UDiwH5Hwgh7jWSaqiQn7phQGitMPS0C500jhmK4yHw'
@@ -84,8 +92,10 @@ const GetData = connect()((props) => {
         const data = {
           attributes: user.attributes,
           signInUserSession: user.signInUserSession,
-          admin:
-            user.signInUserSession.accessToken.payload['cognito:groups'].indexOf('superadmin') > -1
+          admin: user.signInUserSession.accessToken.payload['cognito:groups']
+            ? user.signInUserSession.accessToken.payload['cognito:groups'].indexOf('superadmin') >
+              -1
+            : false
         };
         props.dispatch(setAuthUser(data));
         if (localStorage.getItem('isSpaceOwner')) {

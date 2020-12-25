@@ -1,17 +1,17 @@
-import React, { Component } from "react";
-import { Auth } from "aws-amplify";
-import { Form, Button } from "react-bootstrap";
+import React, { Component } from 'react';
+import { Auth } from 'aws-amplify';
+import { Form, Button, Spinner } from 'react-bootstrap';
 
 export default class ForgetPassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
-      code: "",
-      password: "",
-      confirmPassword: "",
+      email: '',
+      code: '',
+      password: '',
+      confirmPassword: '',
       verify: false,
-      disabled: false,
+      disabled: false
     };
   }
 
@@ -22,10 +22,11 @@ export default class ForgetPassword extends Component {
       .then((res) => {
         this.setState({
           disabled: false,
-          verify: true,
+          verify: true
         });
       })
       .catch(({ message }) => {
+        // console.log('err', message);
         this.setState({ ...this.state, disabled: false });
         alert(message);
       });
@@ -38,11 +39,11 @@ export default class ForgetPassword extends Component {
       Auth.forgotPasswordSubmit(email, code, password)
         .then((res) => {
           this.setState({
-            code: "",
-            email: "",
-            password: "",
-            confirmPassword: "",
-            disabled: false,
+            code: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+            disabled: false
           });
           this.props.changeLogin(true);
         })
@@ -70,19 +71,12 @@ export default class ForgetPassword extends Component {
   handleChange = (e) => {
     this.setState({
       ...this.state,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
 
   render() {
-    const {
-      email,
-      code,
-      password,
-      confirmPassword,
-      disabled,
-      verify,
-    } = this.state;
+    const { email, code, password, confirmPassword, disabled, verify } = this.state;
     if (verify) {
       return (
         <form onSubmit={this.handleSubmit}>
@@ -110,9 +104,7 @@ export default class ForgetPassword extends Component {
                 placeholder="Verification Code"
                 required
               />
-              <Form.Control.Feedback type="invalid">
-                This field is required
-              </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
             </Form.Group>
             {/* <div className="input__box">
               <span>Password</span>
@@ -149,9 +141,7 @@ export default class ForgetPassword extends Component {
                 placeholder="Password"
                 required
               />
-              <Form.Control.Feedback type="invalid">
-                This field is required
-              </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="formBasicEmail">
               <Form.Label>Confirm Password</Form.Label>
@@ -164,19 +154,23 @@ export default class ForgetPassword extends Component {
                 placeholder="Confirm Password"
                 required
               />
-              <Form.Control.Feedback type="invalid">
-                This field is required
-              </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
             </Form.Group>
             <p
-              style={{ cursor: "pointer" }}
+              style={{ cursor: 'pointer' }}
               onClick={() => this.props.changeLogin(true)}
-              className="forget__pass"
-            >
+              className="forget__pass">
               Already have account login?
             </p>
-            <Button disabled={disabled} type="submit" className="account__btn">
-              Forget Password
+            <Button
+              style={{ pointerEvents: disabled ? 'none' : 'auto' }}
+              type="submit"
+              className="account__btn">
+              {disabled ? (
+                <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+              ) : (
+                'Forget Password'
+              )}
             </Button>
           </div>
         </form>
@@ -207,19 +201,23 @@ export default class ForgetPassword extends Component {
                 placeholder="Email"
                 required
               />
-              <Form.Control.Feedback type="invalid">
-                This field is required
-              </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
             </Form.Group>
             <p
-              style={{ cursor: "pointer" }}
+              style={{ cursor: 'pointer' }}
               onClick={() => this.props.changeLogin(true)}
-              className="forget__pass"
-            >
+              className="forget__pass">
               Already have account login?
             </p>
-            <Button disabled={disabled} type="submit" className="account__btn">
-              Forget Password
+            <Button
+              style={{ pointerEvents: disabled ? 'none' : 'auto' }}
+              type="submit"
+              className="account__btn">
+              {disabled ? (
+                <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+              ) : (
+                'Reset Password'
+              )}
             </Button>
           </div>
         </form>

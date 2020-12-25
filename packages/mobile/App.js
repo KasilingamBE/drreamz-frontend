@@ -1,33 +1,30 @@
 import 'react-native-gesture-handler';
-import React, {useEffect} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import React, { useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
 import MainStack from './src/navigation/MainStack';
-import Amplify, {Auth, Hub} from 'aws-amplify';
+import Amplify, { Auth, Hub } from 'aws-amplify';
 import config from './aws-exports';
 import reducer from '@parkyourself-frontend/shared/redux/reducers';
 import middleware from '@parkyourself-frontend/shared/redux/middleware';
-import {connect, Provider} from 'react-redux';
-import {createStore} from 'redux';
-import {persistStore, persistReducer} from 'redux-persist5';
-import {PersistGate} from 'redux-persist5/integration/react';
-import {ApolloProvider} from '@apollo/client';
-import {client} from '@parkyourself-frontend/shared/graphql';
+import { connect, Provider } from 'react-redux';
+import { createStore } from 'redux';
+import { persistStore, persistReducer } from 'redux-persist5';
+import { PersistGate } from 'redux-persist5/integration/react';
+import { ApolloProvider } from '@apollo/client';
+import { client } from '@parkyourself-frontend/shared/graphql';
 
 import AsyncStorage from '@react-native-community/async-storage';
-import {
-  setAuthUser,
-  initialAuthUser,
-} from '@parkyourself-frontend/shared/redux/actions/auth';
+import { setAuthUser, initialAuthUser } from '@parkyourself-frontend/shared/redux/actions/auth';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
-import {Alert, Linking} from 'react-native';
+import { Alert, Linking } from 'react-native';
 
 async function urlOpener(url, redirectUrl) {
   await InAppBrowser.isAvailable();
-  const {type, url: newUrl} = await InAppBrowser.openAuth(url, redirectUrl, {
+  const { type, url: newUrl } = await InAppBrowser.openAuth(url, redirectUrl, {
     showTitle: false,
     enableUrlBarHiding: true,
     enableDefaultShare: false,
-    ephemeralWebSession: false,
+    ephemeralWebSession: false
   });
 
   if (type === 'success') {
@@ -38,7 +35,7 @@ async function urlOpener(url, redirectUrl) {
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  blacklist: ['tempListing', 'redirect'],
+  blacklist: ['tempListing', 'redirect']
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer);
@@ -53,8 +50,8 @@ Amplify.configure({
     ...config.oauth,
     redirectSignIn: 'parkyourself://',
     redirectSignOut: 'parkyourself://',
-    urlOpener,
-  },
+    urlOpener
+  }
 });
 
 const App = (props) => {
@@ -82,7 +79,7 @@ const GetData = connect()((props) => {
       if (user) {
         const data = {
           attributes: user.attributes,
-          signInUserSession: user.signInUserSession,
+          signInUserSession: user.signInUserSession
         };
         props.dispatch(setAuthUser(data));
       }
@@ -94,7 +91,7 @@ const GetData = connect()((props) => {
   };
 
   useEffect(() => {
-    Hub.listen('auth', ({payload: {event, data}}) => {
+    Hub.listen('auth', ({ payload: { event, data } }) => {
       switch (event) {
         case 'signIn':
         case 'cognitoHostedUI':
