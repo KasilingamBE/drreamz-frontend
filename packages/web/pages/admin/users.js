@@ -1,12 +1,12 @@
-import React from "react";
-import AdminLayout from "../../src/app/components/other/AdminLayout";
-import UsersList from "../../src/app/components/admin/users/UsersList";
+import React from 'react';
+import AdminLayout from '../../src/app/components/other/AdminLayout';
+import UsersTabs from '../../src/app/components/admin/users/UsersTabs';
 
 const AdminPage = (props) => {
   return (
     <div>
       <AdminLayout>
-        <UsersList />
+        <UsersTabs />
       </AdminLayout>
     </div>
   );

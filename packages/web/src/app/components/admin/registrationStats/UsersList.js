@@ -42,6 +42,7 @@ const GET_ALL = gql`
         username
         bookings
         listings
+        createdAt
       }
     }
   }
@@ -65,16 +66,15 @@ function UsersList(props) {
   });
 
   const [filter, setFilter] = useState({
-    active: false,
-    block: false,
+    active: true,
     limit: 10,
     page: 1,
     search: '',
     sortBy: '-createdAt',
     createdAt: null,
     createdAtMax: new Date(),
-    bookings: props.driver ? 1 : 0,
-    listings: props.spaceOwner ? 1 : 0
+    bookings: 0,
+    listings: 0
   });
 
   const getAllData = async () => {
@@ -83,9 +83,14 @@ function UsersList(props) {
       props.dispatch(showLoading());
       let { data } = await client.query({
         query: GET_ALL,
-        variables: { ...filter, search: props.search, active: props.active }
+        variables: {
+          ...filter,
+          search: props.search,
+          createdAt: props.createdAt,
+          createdAtMax: props.createdAtMax
+        }
       });
-      // console.log(data.getAllUsersSearch);
+      props.setUserCount(data.getAllUsersSearch.count);
       if (filter.page > 1) {
         setAllData({ ...allData, users: [...allData.users, ...data.getAllUsersSearch] });
       } else {
@@ -106,9 +111,15 @@ function UsersList(props) {
     client
       .query({
         query: GET_ALL,
-        variables: { ...filter, search: props.search, active: props.active }
+        variables: {
+          ...filter,
+          search: props.search,
+          createdAt: props.createdAt,
+          createdAtMax: props.createdAtMax
+        }
       })
       .then(({ data }) => {
+        props.setUserCount(data.getAllUsersSearch.count);
         setAllData(data.getAllUsersSearch);
         props.dispatch(hideLoading());
         setLoading(false);
@@ -146,7 +157,13 @@ function UsersList(props) {
 
   useEffect(() => {
     getAllData();
-  }, [props.active, filter.page]);
+  }, [filter.page]);
+
+  useEffect(() => {
+    if (props.custom) {
+      searchAllData();
+    }
+  }, [props.createdAtMax]);
 
   useEffect(() => {
     searchAllData();
