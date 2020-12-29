@@ -13,8 +13,6 @@ const GET_ALL = gql`
     $page: Int!
     $search: String
     $sortBy: String
-    $createdAt: String
-    $createdAtMax: String
     $bookings: Int
     $listings: Int
     $active: Boolean
@@ -24,8 +22,6 @@ const GET_ALL = gql`
       page: $page
       search: $search
       sortBy: $sortBy
-      createdAt: $createdAt
-      createdAtMax: $createdAtMax
       bookings: $bookings
       listings: $listings
       active: $active

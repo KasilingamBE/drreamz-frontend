@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { Form, Button } from "react-bootstrap";
-import { connect } from "react-redux";
-import { gql } from "@apollo/client";
+import React, { useEffect, useState } from 'react';
+import { Form, Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { gql } from '@apollo/client';
 // import { client } from "../../../graphql";
-import { client } from '@parkyourself-frontend/shared/graphql'
-import MyListingItem from "../../MyListingItem";
-import { hideLoading, showLoading } from "react-redux-loading";
-import { Menu } from "react-feather";
-import Loading from "../../other/Loading";
+import { client } from '@parkyourself-frontend/shared/graphql';
+import MyListingItem from '../../MyListingItem';
+import { hideLoading, showLoading } from 'react-redux-loading';
+import { Menu } from 'react-feather';
+import Loading from '../../other/Loading';
 
 const GET_ALL = gql`
-  query GetOwnerListingsSearch($search: String, $limit: Int, $page: Int) {
-    getAllListingsSearch(search: $search, limit: $limit, page: $page) {
+  query GetOwnerListingsSearch($search: String, $limit: Int, $page: Int, $username: String) {
+    getAllListingsSearch(search: $search, limit: $limit, page: $page, username: $username) {
       count
       listings {
         _id
@@ -149,16 +149,16 @@ const GET_ALL = gql`
   }
 `;
 
-const MyListings = ({ hideLoading, showLoading }) => {
+const MyListings = ({ hideLoading, showLoading, hideTitle, username }) => {
   const [allData, setAllData] = useState({
     listings: [],
     count: 0,
     limit: 10,
-    page: 1,
+    page: 1
   });
 
   const [loading, setLoading] = useState(false);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
 
   const getListings = () => {
     showLoading();
@@ -170,7 +170,8 @@ const MyListings = ({ hideLoading, showLoading }) => {
           search: search,
           page: allData.page,
           limit: allData.limit,
-        },
+          username: username ? username : null
+        }
       })
       .then(({ data }) => {
         // console.log(data.getAllListingsSearch);
@@ -195,13 +196,14 @@ const MyListings = ({ hideLoading, showLoading }) => {
           search: search,
           page: allData.page + 1,
           limit: allData.limit,
-        },
+          username: username ? username : null
+        }
       });
       setAllData({
         ...allData,
         count: data.getAllListingsSearch.count,
         listings: [...allData.listings, ...data.getAllListingsSearch.listings],
-        page: allData.page + 1,
+        page: allData.page + 1
       });
       setLoading(false);
       hideLoading();
@@ -216,15 +218,17 @@ const MyListings = ({ hideLoading, showLoading }) => {
     getListings();
   }, [search]);
 
-  const [listBy, setListBy] = useState("address");
+  const [listBy, setListBy] = useState('address');
 
   return (
     <>
       <div className="dg__account">
-        <div className="d-flex justify-content-between">
-          <h1 className="heading">Parkings</h1>
-          <Menu size={25} className="cursor-pointer mt-2" />
-        </div>
+        {!hideTitle && (
+          <div className="d-flex justify-content-between">
+            <h1 className="heading">Parkings</h1>
+            <Menu size={25} className="cursor-pointer mt-2" />
+          </div>
+        )}
         <div className="mb-2 mt-2">
           <Form.Control
             type="text"
@@ -237,24 +241,22 @@ const MyListings = ({ hideLoading, showLoading }) => {
           />
         </div>
         {allData.listings.length > 0 ? (
-          allData.listings.map((item, i) => (
-            <MyListingItem key={i} {...item} listBy={listBy} />
-          ))
+          allData.listings.map((item, i) => <MyListingItem key={i} {...item} listBy={listBy} />)
         ) : loading ? (
           <Loading />
         ) : (
-              <div className="loading">No Listings Found</div>
-            )}
+          <div className="loading">No Listings Found</div>
+        )}
         {allData.limit * allData.page < allData.count &&
           (loading ? (
             <Loading />
           ) : (
-              <div className="text-center mt-2">
-                <Button variant="primary" size="sm" onClick={loadMore}>
-                  Load More
+            <div className="text-center mt-2">
+              <Button variant="primary" size="sm" onClick={loadMore}>
+                Load More
               </Button>
-              </div>
-            ))}
+            </div>
+          ))}
       </div>
     </>
   );

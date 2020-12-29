@@ -1,5 +1,7 @@
+import Link from 'next/link';
 import React, { useState } from 'react';
 import { Card, Button, Spinner } from 'react-bootstrap';
+import { Star } from 'react-feather';
 import { connect } from 'react-redux';
 
 const UserCard = ({ user, handleToggle }) => {
@@ -26,45 +28,58 @@ const UserCard = ({ user, handleToggle }) => {
               />
             </div>
             <div>
-              <b>{user.name}</b>
+              <Link href={`/admin/users/${user.username}`}>
+                <a className="text">
+                  <b>{user.name}</b>
+                </a>
+              </Link>
               <br />
               <span>Bookings - {user.bookings}</span> <br />
               <span>Spaces - {user.listings}</span> <br />
             </div>
           </div>
           <div className="d-flex justify-content-center justify-content-justify-content-md-end">
-            {user.active ? (
-              <Button size="sm" variant="dark" onClick={() => handleToggle2(user.username, false)}>
-                {disabled ? (
-                  <Spinner
-                    as="span"
-                    animation="border"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                  />
-                ) : (
-                  'Block'
-                )}
-              </Button>
-            ) : (
-              <Button
-                size="sm"
-                variant="warning"
-                onClick={() => handleToggle2(user.username, true)}>
-                {disabled ? (
-                  <Spinner
-                    as="span"
-                    animation="border"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                  />
-                ) : (
-                  'Unblock'
-                )}
-              </Button>
-            )}
+            <div className="text-right">
+              <p className="m-0 mb-1">
+                <Star size={18} className="mt-n1 mr-1 text-warning" />
+                4.7 (17)
+              </p>
+              {user.active ? (
+                <Button
+                  size="sm"
+                  variant="dark"
+                  onClick={() => handleToggle2(user.username, false)}>
+                  {disabled ? (
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    'Block'
+                  )}
+                </Button>
+              ) : (
+                <Button
+                  size="sm"
+                  variant="warning"
+                  onClick={() => handleToggle2(user.username, true)}>
+                  {disabled ? (
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    'Unblock'
+                  )}
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </Card.Body>

@@ -13,8 +13,8 @@ const GET_ALL = gql`
     $page: Int!
     $search: String
     $sortBy: String
-    $createdAt: String
-    $createdAtMax: String
+    $lowerRange: String
+    $higherRange: String
     $bookings: Int
     $listings: Int
     $active: Boolean
@@ -24,8 +24,8 @@ const GET_ALL = gql`
       page: $page
       search: $search
       sortBy: $sortBy
-      createdAt: $createdAt
-      createdAtMax: $createdAtMax
+      lowerRange: $lowerRange
+      higherRange: $higherRange
       bookings: $bookings
       listings: $listings
       active: $active
@@ -114,8 +114,8 @@ function UsersList(props) {
         variables: {
           ...filter,
           search: props.search,
-          createdAt: props.createdAt,
-          createdAtMax: props.createdAtMax
+          lowerRange: props.createdAt,
+          higherRange: props.createdAtMax
         }
       })
       .then(({ data }) => {

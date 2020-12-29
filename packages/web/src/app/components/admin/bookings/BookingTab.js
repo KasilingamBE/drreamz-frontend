@@ -1,27 +1,27 @@
-import { gql, useMutation } from "@apollo/client";
-import React, { useEffect, useState } from "react";
-import { Form, Button } from "react-bootstrap";
-// import { client } from "../../../graphql";
-import { client } from '@parkyourself-frontend/shared/graphql'
-import MyBookingItem from "../../MyBookingItem";
-import Loading from "../../other/Loading";
+import { gql, useMutation } from '@apollo/client';
+import React, { useEffect, useState } from 'react';
+import { Form, Button } from 'react-bootstrap';
+import { client } from '@parkyourself-frontend/shared/graphql';
+import MyBookingItem from '../../MyBookingItem';
+import Loading from '../../other/Loading';
 
 let oneYearFromNow = new Date();
 oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
 let yearsBackFromNow = new Date();
 yearsBackFromNow.setFullYear(yearsBackFromNow.getFullYear() - 20);
 const defaultStartDate = yearsBackFromNow;
-const defaultEndDate = oneYearFromNow
+const defaultEndDate = oneYearFromNow;
 
 const GET_ALL = gql`
   query GetAllBookings(
     $status: String!
     $search: String
     $page: Int
-    $limit: Int 
-    $startDate: String 
+    $limit: Int
+    $startDate: String
     $endDate: String
     $sortBy: String
+    $username: String
   ) {
     getAllBookingsSearch(
       status: $status
@@ -31,6 +31,7 @@ const GET_ALL = gql`
       startDate: $startDate
       endDate: $endDate
       sortBy: $sortBy
+      username: $username
     ) {
       bookings {
         _id
@@ -83,11 +84,11 @@ const BookingTab = (props) => {
     bookings: [],
     count: 0,
     limit: 10,
-    page: 1,
+    page: 1
   });
 
   const [loading, setLoading] = useState(false);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
 
   const getAllBookings2 = (search) => {
     setLoading(true);
@@ -95,30 +96,41 @@ const BookingTab = (props) => {
       .query({
         query: GET_ALL,
         variables: {
+          username: props.username ? props.username : null,
           status: props.status,
           search: search,
           page: allData.page,
           limit: allData.limit,
           startDate: props.dateFilter ? props.filterStartDate : defaultStartDate,
           endDate: props.dateFilter ? props.filterEndDate : defaultEndDate,
-          sortBy: (props.status === "completed" || props.status === "cancelled") ? "-startDate" : "startDate"
-        },
+          sortBy:
+            props.status === 'completed' || props.status === 'cancelled'
+              ? '-startDate'
+              : 'startDate'
+        }
       })
       .then(({ data }) => {
-        if (props.status === "upcoming") {
-          const tempCB = data.getAllBookingsSearch.bookings.filter(b => Date.parse(b.start) < Date.parse(new Date()))
+        if (props.status === 'upcoming') {
+          const tempCB = data.getAllBookingsSearch.bookings.filter(
+            (b) => Date.parse(b.start) < Date.parse(new Date())
+          );
           if (tempCB.length > 0) {
             tempCB.map((b) => {
               updateBookingStatus({
                 variables: {
                   id: b._id,
-                  status: "completed",
+                  status: 'completed',
                   driverEmail: b.driverEmail,
-                  ownerEmail: b.ownerEmail,
-                },
-              }).catch(e => alert("Something went wrong"))
-            })
-            setAllData({ ...allData, ...data.getAllBookingsSearch.bookings.filter(b => Date.parse(b.start) > Date.parse(new Date())) });
+                  ownerEmail: b.ownerEmail
+                }
+              }).catch((e) => alert('Something went wrong'));
+            });
+            setAllData({
+              ...allData,
+              ...data.getAllBookingsSearch.bookings.filter(
+                (b) => Date.parse(b.start) > Date.parse(new Date())
+              )
+            });
           } else {
             setAllData({ ...allData, ...data.getAllBookingsSearch });
           }
@@ -139,17 +151,18 @@ const BookingTab = (props) => {
       const { data } = await client.query({
         query: GET_ALL,
         variables: {
+          username: props.username ? props.username : null,
           status: props.status,
           search: search,
           page: allData.page + 1,
-          limit: allData.limit,
-        },
+          limit: allData.limit
+        }
       });
       setAllData({
         ...allData,
         count: data.getAllBookingsSearch.count,
         bookings: [...allData.bookings, ...data.getAllBookingsSearch.bookings],
-        page: allData.page + 1,
+        page: allData.page + 1
       });
       setLoading(false);
     } catch (error) {
@@ -163,8 +176,8 @@ const BookingTab = (props) => {
   }, [search]);
 
   useEffect(() => {
-    setAllData({ ...allData, bookings: [] })
-    getAllBookings2("");
+    setAllData({ ...allData, bookings: [] });
+    getAllBookings2('');
   }, [props.dateFilter]);
 
   return (
@@ -187,20 +200,20 @@ const BookingTab = (props) => {
       ) : loading ? (
         <Loading />
       ) : (
-            <div className="loading">
-              No <span className="text-capitalize">{props.status}</span> Bookings
-            </div>
-          )}
+        <div className="loading">
+          No <span className="text-capitalize">{props.status}</span> Bookings
+        </div>
+      )}
       {allData.limit * allData.page < allData.count &&
         (loading ? (
           <Loading />
         ) : (
-            <div className="text-center mt-2">
-              <Button variant="primary" size="sm" onClick={loadMore}>
-                Load More
+          <div className="text-center mt-2">
+            <Button variant="primary" size="sm" onClick={loadMore}>
+              Load More
             </Button>
-            </div>
-          ))}
+          </div>
+        ))}
     </div>
   );
 };

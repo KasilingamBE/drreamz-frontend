@@ -1,10 +1,6 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import UsersTab from '../../components/admin/users/UsersTab';
 
 export default function AdminUsers() {
-  return (
-    <View>
-      <Text>AdminUsers</Text>
-    </View>
-  );
+  return <UsersTab />;
 }
