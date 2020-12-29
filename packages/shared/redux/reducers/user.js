@@ -16,7 +16,7 @@ const {
 } = require('../actions/types');
 
 const initialState = {
-  adminMode: true,
+  adminMode: false,
   isSpaceOwner: false,
   profileType: 'personal', // or business
   listings: [],
