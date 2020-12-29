@@ -1,17 +1,11 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Button, Form, Tabs, Tab, Dropdown, Modal } from 'react-bootstrap';
+import dateFilterConfig from '@parkyourself-frontend/shared/config/dateFilter';
 import { Menu, X } from 'react-feather';
 import { DateRange } from 'react-date-range';
 import UsersList from './UsersList';
 import moment from 'moment';
-
-let oneDayBack = new Date();
-oneDayBack = oneDayBack.setDate(oneDayBack.getDate() - 1);
-let oneWeekBack = new Date();
-oneWeekBack = oneWeekBack.setDate(oneWeekBack.getDate() - 7);
-let oneMonthBack = new Date();
-oneMonthBack = oneMonthBack.setMonth(oneMonthBack.getMonth() - 1);
 
 function UsersTabs(props) {
   const [key, setKey] = useState('today');
@@ -29,7 +23,7 @@ function UsersTabs(props) {
 
   const [state, setState] = useState([
     {
-      startDate: new Date(oneDayBack),
+      startDate: new Date(dateFilterConfig.oneWeekBack),
       endDate: new Date(),
       key: 'selection'
     }
@@ -81,18 +75,6 @@ function UsersTabs(props) {
           onChange={(e) => setFilter({ ...filter, search: e.target.value })}
         />
       </div>
-      {/* {dateFilter && (
-        <p>
-          <span className="cursor-pointer" onClick={() => setShowModal(true)}>
-            <b>
-              {moment(filterStartDate).format('LL')} - {moment(filterEndDate).format('LL')}
-            </b>
-          </span>{' '}
-          <span className="cursor-pointer" onClick={() => setDateFilter(false)}>
-            <X size={25} className="mt-n1" />
-          </span>
-        </p>
-      )} */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Select Date Range</Modal.Title>
@@ -160,7 +142,7 @@ function UsersTabs(props) {
             <UsersList
               search={filter.search}
               createdAtMax={new Date()}
-              createdAt={oneDayBack}
+              createdAt={dateFilterConfig.oneDayBack}
               setUserCount={(count) => setTodayCount(count)}
               // setUserCount={(count) => setUserCount({ ...userCount, today: count })}
             />
@@ -169,7 +151,7 @@ function UsersTabs(props) {
             <UsersList
               search={filter.search}
               createdAtMax={new Date()}
-              createdAt={oneWeekBack}
+              createdAt={dateFilterConfig.oneWeekBack}
               setUserCount={(count) => setLastWeekCount(count)}
               // setUserCount={(count) => setUserCount({ ...userCount, lastWeek: count })}
             />
@@ -178,7 +160,7 @@ function UsersTabs(props) {
             <UsersList
               search={filter.search}
               createdAtMax={new Date()}
-              createdAt={oneMonthBack}
+              createdAt={dateFilterConfig.oneMonthBack}
               setUserCount={(count) => setLastMonthCount(count)}
               // setUserCount={(count) => setUserCount({ ...userCount, lastMonth: count })}
             />

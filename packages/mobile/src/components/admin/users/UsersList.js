@@ -1,50 +1,37 @@
 import colors from '@parkyourself-frontend/shared/config/colors';
+import { useGetAllUser } from '@parkyourself-frontend/shared/hooks/users';
 import React from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput } from 'react-native';
+import { Text, View, StyleSheet, FlatList, TextInput, Button } from 'react-native';
 import UserCard from './UserCard';
+import LoadingSpinner from '../../common/LoadingSpinner';
 
-const DATA = [
-  {
-    _id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    name: 'Vivek Thakur',
-    active: true,
-    bookings: 4,
-    listings: 2,
-    picture: 'https://parkyourselfbucket154227-dev.s3.amazonaws.com/public/default/default.jpg'
-  },
-  {
-    _id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    name: 'Sumi J',
-    active: false,
-    bookings: 4,
-    listings: 2,
-    picture: 'https://parkyourselfbucket154227-dev.s3.amazonaws.com/public/default/default.jpg'
-  },
-  {
-    _id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    name: 'Mark',
-    active: true,
-    bookings: 4,
-    listings: 2,
-    picture: 'https://parkyourselfbucket154227-dev.s3.amazonaws.com/public/default/default.jpg'
-  }
-];
+export default function UsersList({ driver, spaceOwner, showTime, lowerRange, higherRange }) {
+  const { filter, setFilter, allData, loading, toggleUser } = useGetAllUser({
+    driver: driver ? true : false,
+    spaceOwner: spaceOwner ? true : false,
+    lowerRange: lowerRange ? lowerRange : null,
+    higherRange: higherRange ? higherRange : null
+  });
 
-export default function UsersList() {
   return (
     <View style={styles.outerView}>
       <View style={styles.searchRow}>
-        <TextInput placeholder="Type user name" style={styles.searchInput} />
+        <TextInput
+          placeholder="Search..."
+          style={styles.searchInput}
+          value={filter.search}
+          onChangeText={(value) => setFilter({ ...filter, search: value })}
+        />
+        {/* <Button title="Load More" onPress={() => setFilter({ ...filter })} /> */}
       </View>
-
+      {loading && <LoadingSpinner />}
       <FlatList
-        data={DATA}
-        renderItem={({ item, index }) => <UserCard user={item} index={index} />}
+        data={allData.users}
+        renderItem={({ item, index }) => (
+          <UserCard user={item} index={index} toggleUser={toggleUser} showTime={showTime} />
+        )}
         keyExtractor={(item) => item._id}
       />
-      {/* <TouchableOpacity style={styles.button} onPress={() => Alert.alert('Simple Button pressed')}>
-        <Text style={styles.buttonText}>Load More</Text>
-      </TouchableOpacity> */}
     </View>
   );
 }

@@ -1,9 +1,34 @@
 import colors from '@parkyourself-frontend/shared/config/colors';
-import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, Alert, Button } from 'react-native';
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator
+} from 'react-native';
 import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Moment from 'moment';
+import { extendMoment } from 'moment-range';
+const moment = extendMoment(Moment);
 
-export default function UserCard({ user, index }) {
+export default function UserCard({ user, index, toggleUser, showTime }) {
+  const [disabled, setDisabled] = useState(false);
+  const toggle = async () => {
+    setDisabled(true);
+    await toggleUser(user.username, !user.active);
+    setDisabled(false);
+  };
+
+  const start = new Date(user.createdAt);
+  const end = new Date();
+  const range = moment.range(start, end);
+  const monthDiff = range.diff('months');
+  const dayDiff = range.diff('days');
+  const hourDiff = range.diff('hours');
+
   return (
     <View style={[styles.container, { borderTopWidth: index === 0 ? 0.5 : 0 }]}>
       <View style={styles.imageRow}>
@@ -19,19 +44,37 @@ export default function UserCard({ user, index }) {
           <Text style={styles.subTitle}>spaces {user.listings}</Text>
         </View>
       </View>
-      <View>
-        <View style={styles.iconRow}>
-          <MaterialCommunityIconsIcon name="star" style={styles.materialCIcon} />
-          <Text>4.8(17)</Text>
+      {!showTime ? (
+        <View>
+          <View style={styles.iconRow}>
+            <MaterialCommunityIconsIcon name="star" style={styles.icon} />
+            <Text>4.8(17)</Text>
+          </View>
+          <TouchableOpacity
+            disabled={disabled}
+            style={[styles.button, { backgroundColor: user.active ? 'black' : '#FFD700' }]}
+            onPress={toggle}>
+            {disabled ? (
+              <ActivityIndicator style={{ color: user.active ? 'white' : 'black' }} />
+            ) : (
+              <Text style={[styles.buttonText, { color: user.active ? 'white' : 'black' }]}>
+                {user.active ? 'Block' : 'Unblock'}
+              </Text>
+            )}
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: user.active ? 'black' : '#FFD700' }]}
-          onPress={() => Alert.alert('Simple Button pressed')}>
-          <Text style={[styles.buttonText, { color: user.active ? 'white' : 'black' }]}>
-            {user.active ? 'Block' : 'Unblock'}
+      ) : (
+        <View style={styles.iconRow}>
+          <MaterialCommunityIconsIcon
+            name="clock-outline"
+            style={[styles.icon, { marginRight: 2, color: 'grey' }]}
+          />
+          <Text>
+            {monthDiff <= 0 ? (dayDiff <= 0 ? hourDiff : dayDiff) : monthDiff}
+            {monthDiff <= 0 ? (dayDiff <= 0 ? ' hours ago' : ' day ago') : ' month ago'}
           </Text>
-        </TouchableOpacity>
-      </View>
+        </View>
+      )}
     </View>
   );
 }
@@ -54,9 +97,10 @@ const styles = StyleSheet.create({
   },
   iconRow: {
     alignItems: 'center',
-    flex: 1,
+    // flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginBottom: 5
   },
   button: {
     backgroundColor: 'black',
@@ -64,8 +108,8 @@ const styles = StyleSheet.create({
     borderRadius: 2
   },
   buttonText: { color: colors.white, fontSize: 13, textAlign: 'center' },
-  materialCIcon: {
+  icon: {
     color: '#FFD700',
-    fontSize: 15
+    fontSize: 16
   }
 });

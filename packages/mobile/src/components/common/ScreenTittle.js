@@ -9,6 +9,8 @@ export default function ScreenTittle({ title }) {
 const styles = StyleSheet.create({
   title: {
     color: colors.secondary,
-    fontSize: 25
+    fontSize: 25,
+    fontWeight: '600',
+    textTransform: 'uppercase'
   }
 });

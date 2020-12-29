@@ -1,6 +1,7 @@
 import React from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import colors from '@parkyourself-frontend/shared/config/colors';
+import dateFilter from '@parkyourself-frontend/shared/config/dateFilter';
 import { View, Text, StyleSheet, Alert } from 'react-native';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -13,7 +14,7 @@ export default function MyTabs() {
   return (
     <>
       <View style={styles.headerView}>
-        <ScreenTittle title="USERS" />
+        <ScreenTittle title="REGISTRATION STATS" />
         <TouchableOpacity style={styles.filterRow} onPress={() => Alert.alert('Filter')}>
           <Text style={styles.filterText}>FILTER</Text>
           <AntDesignIcon name="downcircleo" style={styles.icon} />
@@ -27,16 +28,23 @@ export default function MyTabs() {
           },
           labelStyle: { fontWeight: 'bold' }
         }}>
-        <Tab.Screen name="All" component={UsersList} />
-        <Tab.Screen name="Drivers" component={DriverTab} />
-        <Tab.Screen name="Space Owners" component={SpaceOwnerTab} />
+        <Tab.Screen name="Today" component={TodayTab} />
+        <Tab.Screen name="Last Week" component={LastWeekTab} />
+        <Tab.Screen name="Last Month" component={LastMonthTab} />
       </Tab.Navigator>
     </>
   );
 }
 
-const DriverTab = () => <UsersList driver={true} />;
-const SpaceOwnerTab = () => <UsersList spaceOwner={true} />;
+const TodayTab = () => (
+  <UsersList showTime={true} lowerRange={dateFilter.oneDayBack} higherRange={new Date()} />
+);
+const LastWeekTab = () => (
+  <UsersList showTime={true} lowerRange={dateFilter.oneWeekBack} higherRange={new Date()} />
+);
+const LastMonthTab = () => (
+  <UsersList showTime={true} lowerRange={dateFilter.oneMonthBack} higherRange={new Date()} />
+);
 
 const styles = StyleSheet.create({
   headerView: {

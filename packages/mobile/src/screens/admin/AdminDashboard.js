@@ -40,7 +40,10 @@ function SpaceOwnerDashboard({ navigation }) {
           onPress={() => navigation.navigate('AdminParking')}>
           <FontAwesomeIcon name="car" style={styles.fontAIcon} />
         </MenuItem>
-        <MenuItem style={styles.menuItem} label="Registration Stats">
+        <MenuItem
+          style={styles.menuItem}
+          label="Registration Stats"
+          onPress={() => navigation.navigate('AdminRegStats')}>
           <MaterialCommunityIconsIcon name="clipboard-text-outline" style={styles.materialCIcon} />
         </MenuItem>
         <MenuItem style={styles.menuItem} label="Messages">
