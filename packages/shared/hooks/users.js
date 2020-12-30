@@ -73,7 +73,7 @@ const UPDATE_ONE = gql`
   }
 `;
 
-export function useGetAllUser({ driver, spaceOwner, lowerRange, higherRange }) {
+export function useGetAllUser({ driver, spaceOwner, lowerRange, higherRange, active }) {
   const [toggleOneUserStatus] = useMutation(UPDATE_ONE);
   const [filter, setFilter] = useState({
     active: null,
@@ -88,7 +88,7 @@ export function useGetAllUser({ driver, spaceOwner, lowerRange, higherRange }) {
     listings: spaceOwner ? 1 : 0
   });
   const [getAllUsers, { loading, data, error }] = useLazyQuery(GET_ALL, {
-    variables: { ...filter, lowerRange, higherRange },
+    variables: { ...filter, lowerRange, higherRange, active },
     fetchPolicy: 'network-only' // 'cache-and-network' //'network-only'
   });
 

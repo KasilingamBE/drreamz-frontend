@@ -1,161 +1,43 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { gql, useMutation } from '@apollo/client';
-import { showLoading, hideLoading } from 'react-redux-loading';
-import { client } from '@parkyourself-frontend/shared/graphql';
+import React, { useEffect } from 'react';
+import { useGetAllUser } from '@parkyourself-frontend/shared/hooks/users';
 import UserCard from './UserCard';
 import Loading from '../../other/Loading';
-import { Button } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 
-const GET_ALL = gql`
-  query GetAllUsers(
-    $limit: Int!
-    $page: Int!
-    $search: String
-    $sortBy: String
-    $bookings: Int
-    $listings: Int
-    $active: Boolean
-  ) {
-    getAllUsersSearch(
-      limit: $limit
-      page: $page
-      search: $search
-      sortBy: $sortBy
-      bookings: $bookings
-      listings: $listings
-      active: $active
-    ) {
-      count
-      users {
-        _id
-        active
-        confirmed
-        email
-        name
-        picture
-        status
-        username
-        bookings
-        listings
-      }
-    }
-  }
-`;
-
-const UPDATE_ONE = gql`
-  mutation ToggleOneUserStatus($username: String!, $updatedBy: String!, $status: Boolean!) {
-    toggleOneUserStatus(username: $username, updatedBy: $updatedBy, status: $status) {
-      _id
-    }
-  }
-`;
-
-function UsersList(props) {
-  const [toggleOneUserStatus] = useMutation(UPDATE_ONE);
-  const [loading, setLoading] = useState(false);
-  const [disabled, setDisabled] = useState(false);
-  const [allData, setAllData] = useState({
-    count: 0,
-    users: []
+function UsersList({
+  setUserCount,
+  driver,
+  spaceOwner,
+  showTime,
+  lowerRange,
+  higherRange,
+  active
+}) {
+  const { filter, setFilter, allData, loading, toggleUser } = useGetAllUser({
+    driver: driver ? true : false,
+    spaceOwner: spaceOwner ? true : false,
+    lowerRange: lowerRange ? lowerRange : null,
+    higherRange: higherRange ? higherRange : null,
+    active: active == true || active == false ? active : null
   });
 
-  const [filter, setFilter] = useState({
-    active: false,
-    block: false,
-    limit: 10,
-    page: 1,
-    search: '',
-    sortBy: '-createdAt',
-    createdAt: null,
-    createdAtMax: new Date(),
-    bookings: props.driver ? 1 : 0,
-    listings: props.spaceOwner ? 1 : 0
-  });
-
-  const getAllData = async () => {
-    try {
-      setLoading(true);
-      props.dispatch(showLoading());
-      let { data } = await client.query({
-        query: GET_ALL,
-        variables: { ...filter, search: props.search, active: props.active }
-      });
-      // console.log(data.getAllUsersSearch);
-      if (filter.page > 1) {
-        setAllData({ ...allData, users: [...allData.users, ...data.getAllUsersSearch] });
-      } else {
-        setAllData(data.getAllUsersSearch);
-      }
-      props.dispatch(hideLoading());
-      setLoading(false);
-    } catch (error) {
-      // console.log(error);
-      props.dispatch(hideLoading());
-      setLoading(false);
+  useEffect(() => {
+    if (setUserCount) {
+      setUserCount(allData.count);
     }
-  };
-
-  const searchAllData = async () => {
-    setLoading(true);
-    props.dispatch(showLoading());
-    client
-      .query({
-        query: GET_ALL,
-        variables: { ...filter, search: props.search, active: props.active }
-      })
-      .then(({ data }) => {
-        setAllData(data.getAllUsersSearch);
-        props.dispatch(hideLoading());
-        setLoading(false);
-      })
-      .catch((error) => {
-        // console.log(error);
-        props.dispatch(hideLoading());
-        setLoading(false);
-      });
-  };
-  const handleToggle = async (username, status) => {
-    setDisabled(true);
-    props.dispatch(showLoading());
-    try {
-      await toggleOneUserStatus({
-        variables: {
-          username: username,
-          status: status,
-          updatedBy: props.userId
-        }
-      });
-      setAllData({
-        ...allData,
-        users: allData.users.map((u) => (u.username === username ? { ...u, active: status } : u))
-      });
-      props.dispatch(hideLoading());
-      setDisabled(false);
-    } catch (error) {
-      // console.log(error);
-      setDisabled(false);
-      props.dispatch(hideLoading());
-      alert('Something went wrong please try again');
-    }
-  };
-
-  useEffect(() => {
-    getAllData();
-  }, [props.active, filter.page]);
-
-  useEffect(() => {
-    searchAllData();
-  }, [props.search]);
-
-  useEffect(() => {
-    getAllData();
-  }, []);
+  }, [allData.count]);
 
   return (
     <div className="mt-2">
+      <div className="mb-2">
+        <Form.Control
+          type="email"
+          placeholder="Search"
+          onChange={(e) => setFilter({ ...filter, search: e.target.value })}
+        />
+      </div>
       {allData.users.map((u) => (
-        <UserCard user={u} handleToggle={handleToggle} disabled={disabled} />
+        <UserCard user={u} handleToggle={toggleUser} showTime={showTime} />
       ))}
       {loading ? (
         <Loading />
@@ -171,10 +53,5 @@ function UsersList(props) {
     </div>
   );
 }
-const mapStateToProps = ({ auth }) => {
-  return {
-    userId: auth.authenticated ? auth.data.attributes.sub : null
-  };
-};
 
-export default connect(mapStateToProps)(UsersList);
+export default UsersList;

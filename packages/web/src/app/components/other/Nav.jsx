@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
-import { IoIosArrowDown, IoIosMenu } from "react-icons/io";
-import { FaUserCircle } from "react-icons/fa";
-import Link from "next/link";
-import { Auth } from "aws-amplify";
-import { Button, Navbar, Nav } from "react-bootstrap";
-import { unsetAuthUser } from "../../redux/actions/auth";
-import { setRedirectPath } from "../../redux/actions/redirect";
-import { toggleUserType, toggleLoading } from "../../redux/actions/user";
-import logo from "../../../assets1/images/logo2.png";
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { IoIosArrowDown, IoIosMenu } from 'react-icons/io';
+import { FaUserCircle } from 'react-icons/fa';
+import Link from 'next/link';
+import { Auth } from 'aws-amplify';
+import { Button, Navbar, Nav } from 'react-bootstrap';
+import { unsetAuthUser } from '../../redux/actions/auth';
+import { setRedirectPath } from '../../redux/actions/redirect';
+import { toggleUserType, toggleLoading } from '../../redux/actions/user';
+import logo from '../../assets/images/logo2.png';
 
 const NavC = (props) => {
   const handleLogout = () => {
@@ -100,19 +100,12 @@ const NavC = (props) => {
                       <li
                         className="d-block nav-li"
                         onClick={() => {
-                          localStorage.setItem('isSpaceOwner',!props.isSpaceOwner)
+                          localStorage.setItem('isSpaceOwner', !props.isSpaceOwner);
                           props.dispatch(toggleUserType());
-                        }}
-                      >
-                        <small>
-                          Switch to{" "}
-                          {props.isSpaceOwner ? "Driver" : "SpaceOwner"}
-                        </small>
+                        }}>
+                        <small>Switch to {props.isSpaceOwner ? 'Driver' : 'SpaceOwner'}</small>
                       </li>
-                      <li
-                        className="d-block nav-li"
-                        onClick={() => handleLogout()}
-                      >
+                      <li className="d-block nav-li" onClick={() => handleLogout()}>
                         <small>Logout</small>
                       </li>
                     </ul>
@@ -141,7 +134,7 @@ const mapStateToProps = ({ auth, user }) => {
     isSpaceOwner: user.isSpaceOwner,
     // userId: auth.data.attributes.sub,
     admin: auth.authenticated ? auth.data.admin : false,
-    initial: auth.initial,
+    initial: auth.initial
   };
 };
 

@@ -1,7 +1,7 @@
-import React from "react";
-import successImg from "../../assets1/images/good-job.png";
-import { Modal, Button } from "react-bootstrap";
-import Link from "next/link";
+import React from 'react';
+import successImg from '../assets/images/good-job.png';
+import { Modal, Button } from 'react-bootstrap';
+import Link from 'next/link';
 
 const BookingSuccessModal = ({ show, handleClose, viewCodeHandler }) => {
   return (
@@ -13,9 +13,7 @@ const BookingSuccessModal = ({ show, handleClose, viewCodeHandler }) => {
         <div className="booking-success">
           <img src={successImg} alt="success" />
           <h1 className="title">Good Job</h1>
-          <p className="description">
-            Your parking area has been successfully booked
-          </p>
+          <p className="description">Your parking area has been successfully booked</p>
           <Button variant="primary" onClick={() => {}}>
             Send Gift
           </Button>
@@ -29,8 +27,7 @@ const BookingSuccessModal = ({ show, handleClose, viewCodeHandler }) => {
           href="/parkings"
           onClick={() => {
             handleClose();
-          }}
-        >
+          }}>
           <Button variant="primary">Go To Home</Button>
         </Link>
       </Modal.Footer>

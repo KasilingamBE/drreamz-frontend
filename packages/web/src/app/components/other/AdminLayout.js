@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import Head from "next/head";
-import logo from "../../../assets1/images/logo2.png";
-import { useRouter } from "next/router";
-import AuthRequired from "./AuthRequired";
-import { Menu, X } from "react-feather";
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import Head from 'next/head';
+import logo from '../../assets/images/logo2.png';
+import { useRouter } from 'next/router';
+import AuthRequired from './AuthRequired';
+import { Menu, X } from 'react-feather';
 
 const AdminLayout = (props) => {
   const router = useRouter();
   const [activeMenu, setActiveMenu] = useState({ settings: false });
-  const [menuWidth, setMenuWidth] = useState("0px");
+  const [menuWidth, setMenuWidth] = useState('0px');
   const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
-    if (router.pathname.includes("/admin/settings")) {
+    if (router.pathname.includes('/admin/settings')) {
       setActiveMenu({ settings: true });
     }
   }, []);
@@ -25,78 +25,45 @@ const AdminLayout = (props) => {
           <title>Parkyourself Admin</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <ul className={showMenu ? "admin-menu-ul" : " "}>
+        <ul className={showMenu ? 'admin-menu-ul' : ' '}>
           <li>
             <Link href="/dashboard">
-              <img
-                src={logo}
-                alt="logo image"
-                className="img-fluid cursor-pointer"
-              />
+              <img src={logo} alt="logo image" className="img-fluid cursor-pointer" />
             </Link>
           </li>
           <li>
             <Link href="/admin/users">
-              <a
-                className={router.pathname === "/admin/users" ? "active" : " "}
-              >
-                Users
-              </a>
+              <a className={router.pathname === '/admin/users' ? 'active' : ' '}>Users</a>
             </Link>
           </li>
           <li>
             <Link href="/admin/bookings">
-              <a
-                className={
-                  router.pathname === "/admin/bookings" ? "active" : " "
-                }
-              >
-                Bookings
-              </a>
+              <a className={router.pathname === '/admin/bookings' ? 'active' : ' '}>Bookings</a>
             </Link>
           </li>
           <li>
             <Link href="/admin/parkings">
-              <a
-                className={
-                  router.pathname === "/admin/parkings" ? "active" : " "
-                }
-              >
+              <a className={router.pathname === '/admin/parkings' ? 'active' : ' '}>
                 Parking Inventory
               </a>
             </Link>
           </li>
           <li>
             <Link href="/admin/registration-stats">
-              <a
-                className={
-                  router.pathname === "/admin/registration-stats"
-                    ? "active"
-                    : " "
-                }
-              >
+              <a className={router.pathname === '/admin/registration-stats' ? 'active' : ' '}>
                 Registration Stats
               </a>
             </Link>
           </li>
           <li>
             <Link href="/admin/cashouts">
-              <a
-                className={
-                  router.pathname === "/admin/cashouts" ? "active" : " "
-                }
-              >
-                Cashouts
-              </a>
+              <a className={router.pathname === '/admin/cashouts' ? 'active' : ' '}>Cashouts</a>
             </Link>
           </li>
           <li>
             <a
-              className={
-                router.pathname.includes("/admin/settings") ? "active" : " "
-              }
-              onClick={() => setActiveMenu({ settings: !activeMenu.settings })}
-            >
+              className={router.pathname.includes('/admin/settings') ? 'active' : ' '}
+              onClick={() => setActiveMenu({ settings: !activeMenu.settings })}>
               Settings
             </a>
             {activeMenu.settings && (
@@ -105,11 +72,8 @@ const AdminLayout = (props) => {
                   <Link href="/admin/settings/listing-type">
                     <a
                       className={
-                        router.pathname === "/admin/settings/listing-type"
-                          ? "active2"
-                          : " "
-                      }
-                    >
+                        router.pathname === '/admin/settings/listing-type' ? 'active2' : ' '
+                      }>
                       Listing Type
                     </a>
                   </Link>
@@ -118,11 +82,8 @@ const AdminLayout = (props) => {
                   <Link href="/admin/settings/property-type">
                     <a
                       className={
-                        router.pathname === "/admin/settings/property-type"
-                          ? "active2"
-                          : " "
-                      }
-                    >
+                        router.pathname === '/admin/settings/property-type' ? 'active2' : ' '
+                      }>
                       Property Type
                     </a>
                   </Link>
@@ -131,11 +92,8 @@ const AdminLayout = (props) => {
                   <Link href="/admin/settings/application-fee">
                     <a
                       className={
-                        router.pathname === "/admin/settings/application-fee"
-                          ? "active2"
-                          : " "
-                      }
-                    >
+                        router.pathname === '/admin/settings/application-fee' ? 'active2' : ' '
+                      }>
                       Application Fee
                     </a>
                   </Link>
@@ -148,24 +106,12 @@ const AdminLayout = (props) => {
           <div className="admin-menu-toggle">
             <div className="d-flex justify-content-between align-items-center">
               <Link href="/dashboard">
-                <img
-                  src={logo}
-                  alt="logo image"
-                  className="img-fluid cursor-pointer"
-                />
+                <img src={logo} alt="logo image" className="img-fluid cursor-pointer" />
               </Link>
               {showMenu ? (
-                <X
-                  onClick={() => setShowMenu(false)}
-                  size={30}
-                  className="cursor-pointer"
-                />
+                <X onClick={() => setShowMenu(false)} size={30} className="cursor-pointer" />
               ) : (
-                <Menu
-                  onClick={() => setShowMenu(true)}
-                  size={30}
-                  className="cursor-pointer"
-                />
+                <Menu onClick={() => setShowMenu(true)} size={30} className="cursor-pointer" />
               )}
             </div>
           </div>

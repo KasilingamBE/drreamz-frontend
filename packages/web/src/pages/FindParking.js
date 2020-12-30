@@ -176,7 +176,7 @@ const FindParking = ({ findParking, setSearchData, dispatch }) => {
 
   const [findParkingData, setFindParkingData] = useState({
     search: '',
-    coordinates: [],
+    coordinates: [-118.4055426, 33.8612058],
     parkings: [],
     start: moment(`${moment(new Date()).format('ll')} ${st}`)._d,
     end: moment(`${moment(new Date()).format('ll')} ${st}`).add(2, 'hours')._d,

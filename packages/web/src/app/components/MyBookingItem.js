@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Spinner } from 'react-bootstrap';
 import { IoIosCard, IoIosStar, IoIosStarHalf } from 'react-icons/io';
 import Link from 'next/link';
-import placeholderImg from '../../assets1/images/placeholder-img.jpg';
+import placeholderImg from '../assets/images/placeholder-img.jpg';
 import { MdKeyboardArrowRight } from 'react-icons/md';
 import moment from 'moment';
 import AddListingReviewModal from './AddListingReviewModal';

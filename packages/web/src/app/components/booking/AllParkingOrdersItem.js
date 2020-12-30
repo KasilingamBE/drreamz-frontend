@@ -1,8 +1,8 @@
-import React from "react";
-import { Button, Spinner } from "react-bootstrap";
-import placeholderImg from "../../../assets1/images/placeholder-img.jpg";
-import moment from "moment";
-import Link from "next/link";
+import React from 'react';
+import { Button, Spinner } from 'react-bootstrap';
+import placeholderImg from '../../assets/images/placeholder-img.jpg';
+import moment from 'moment';
+import Link from 'next/link';
 
 const AllParkingOrdersItem = ({
   cancelled,
@@ -28,7 +28,7 @@ const AllParkingOrdersItem = ({
   spaceLabel,
   profileCategory,
   userData,
-  updateListingLocal,
+  updateListingLocal
 }) => {
   return (
     <div className="listing-item row">
@@ -42,14 +42,13 @@ const AllParkingOrdersItem = ({
             {moment
               .duration(moment(end).diff(moment(start)))
               .asHours()
-              .toFixed(1)}{" "}
+              .toFixed(1)}{' '}
             Hours
           </div>
         </div>
 
         <div className="booking-count">
-          {moment(new Date(start)).format("lll")} to{" "}
-          {moment(new Date(end)).format("lll")}
+          {moment(new Date(start)).format('lll')} to {moment(new Date(end)).format('lll')}
         </div>
         <p>Booked by {driverName}</p>
         <div className="listing-btn-row">

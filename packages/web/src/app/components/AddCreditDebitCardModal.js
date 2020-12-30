@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import cardImg from '../../assets1/images/card.png';
+import cardImg from '../assets/images/card.png';
 import CheckBoxItem from './CheckBoxItem';
 import Cleave from 'cleave.js/react';
 

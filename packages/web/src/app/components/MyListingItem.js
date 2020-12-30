@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useMutation, gql } from '@apollo/client';
 import { deleteListingLocal, updateListingLocal } from '../redux/actions/user';
 import { connect } from 'react-redux';
-import placeholderImg from '../../assets1/images/placeholder-img.jpg';
+import placeholderImg from '../assets/images/placeholder-img.jpg';
 import { loadUserListings } from '../redux/actions/user';
 import { client } from '../graphql';
 import { useRouter } from 'next/router';

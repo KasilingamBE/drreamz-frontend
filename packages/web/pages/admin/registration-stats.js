@@ -1,12 +1,12 @@
 import React from 'react';
 import AdminLayout from '../../src/app/components/other/AdminLayout';
-import UsersTabs from '../../src/app/components/admin/registrationStats/UsersTabs';
+import UsersRegStatsTab from '../../src/app/components/admin/users/UsersRegStatsTab';
 
 const AdminPage = (props) => {
   return (
     <div>
       <AdminLayout>
-        <UsersTabs />
+        <UsersRegStatsTab />
       </AdminLayout>
     </div>
   );

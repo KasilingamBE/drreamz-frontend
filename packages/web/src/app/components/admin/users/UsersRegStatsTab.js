@@ -16,6 +16,7 @@ function UsersTabs(props) {
     lastWeek: 0,
     lastMonth: 0
   });
+
   const [customCount, setCustomCount] = useState(0);
   const [todayCount, setTodayCount] = useState(0);
   const [lastWeekCount, setLastWeekCount] = useState(0);
@@ -123,9 +124,9 @@ function UsersTabs(props) {
               'LL'
             )} (${customCount})`}>
             <UsersList
-              search={filter.search}
-              createdAtMax={filterEndDate}
-              createdAt={filterStartDate}
+              showTime={true}
+              higherRange={filterEndDate}
+              lowerRange={filterStartDate}
               setUserCount={(count) => setCustomCount(count)}
               custom={true}
               // setUserCount={(count) => setUserCount({ ...userCount, lastWeek: count })}
@@ -140,27 +141,27 @@ function UsersTabs(props) {
           onSelect={(k) => setKey(k)}>
           <Tab eventKey="today" title={`Today (${todayCount})`}>
             <UsersList
-              search={filter.search}
-              createdAtMax={new Date()}
-              createdAt={dateFilterConfig.oneDayBack}
+              showTime={true}
+              higherRange={new Date()}
+              lowerRange={dateFilterConfig.oneDayBack}
               setUserCount={(count) => setTodayCount(count)}
               // setUserCount={(count) => setUserCount({ ...userCount, today: count })}
             />
           </Tab>
           <Tab eventKey="lastWeek" title={`Last Week (${lastWeekCount})`}>
             <UsersList
-              search={filter.search}
-              createdAtMax={new Date()}
-              createdAt={dateFilterConfig.oneWeekBack}
+              showTime={true}
+              higherRange={new Date()}
+              lowerRange={dateFilterConfig.oneWeekBack}
               setUserCount={(count) => setLastWeekCount(count)}
               // setUserCount={(count) => setUserCount({ ...userCount, lastWeek: count })}
             />
           </Tab>
           <Tab eventKey="lastMonth" title={`Last Month (${lastMonthCount})`}>
             <UsersList
-              search={filter.search}
-              createdAtMax={new Date()}
-              createdAt={dateFilterConfig.oneMonthBack}
+              showTime={true}
+              higherRange={new Date()}
+              lowerRange={dateFilterConfig.oneMonthBack}
               setUserCount={(count) => setLastMonthCount(count)}
               // setUserCount={(count) => setUserCount({ ...userCount, lastMonth: count })}
             />

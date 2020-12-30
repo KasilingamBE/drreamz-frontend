@@ -1,44 +1,8 @@
-import React, { Fragment } from "react";
-import { connect } from "react-redux";
-// import LayoutTwo from "../layouts/LayoutTwo";
-import { Tab, Nav } from "react-bootstrap";
-// import Breadcrumb from "../components/breadcrumbs/Breadcrumb";
-import Signup from "../app/components/auth/Signup";
-import Login from "../app/components/auth/Login";
-// import logo from "../assets1/images/logo.JPG";
-
-// const LoginRegister = (props) => {
-//   if (props.auth.authenticated) {
-//     if (!props.user.isSpaceOwner) {
-//       return <Redirect href="/find-parking" />;
-//     } else {
-//       return <Redirect href="/my-listings" />;
-//     }
-//   }
-//   return (
-//     <Fragment>
-//       <MetaTags>
-//         {/* <title>ParkYourSelf | Login</title> */}
-//         <meta name="description" content="Login page of ParkYourSelf." />
-//       </MetaTags>
-//       {/* <LayoutTwo theme='white'> */}
-//       {/* breadcrumb */}
-//       {/* <Breadcrumb title="LOGIN - REGISTER" /> */}
-//       {/* login register content */}
-//       <div className="dg__account section-padding--xl">
-//         {/* <div
-//           style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
-//         >
-//           <img src={logo} style={{ width: '300px', height: '200px' }} />
-//         </div> */}
-//         <div>
-
-//         </div>
-//       </div>
-//       {/* </LayoutTwo> */}
-//     </Fragment>
-//   );
-// };
+import React from 'react';
+import { connect } from 'react-redux';
+import { Tab, Nav } from 'react-bootstrap';
+import Signup from '../app/components/auth/Signup';
+import Login from '../app/components/auth/Login';
 
 const LoginRegister = (props) => {
   return (
@@ -74,7 +38,7 @@ const LoginRegister = (props) => {
 const mapStateToProps = ({ auth, user }) => {
   return {
     auth,
-    user,
+    user
   };
 };
 

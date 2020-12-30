@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import LogRocket from 'logrocket';
+// import LogRocket from 'logrocket';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import ReduxLoadingBar from 'react-redux-loading';
@@ -21,35 +21,26 @@ import { loadUserType } from '@parkyourself-frontend/shared/redux/actions/user';
 // CSS Imports
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// import "../src/assets/scss/style.scss";
-// import "../src/assets1/scss/style.scss";
-import '../src/assets1/css/App.css';
+import '../src/app/assets/css/App.css';
 import '../styles/styles.scss';
 import '../src/app/assets/css/stripestyles.css';
 
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
-// import "@wojtekmaj/react-datetimerange-picker/dist/DateTimeRangePicker.css";
 import 'react-time-picker/dist/TimePicker.css';
 import 'react-day-picker/lib/style.css';
 
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 
-// import "react-clock/dist/Clock.css";
-
-// import { persistStore, persistReducer } from "redux-persist5";
-// import storage from "redux-persist5/lib/storage";
-// import { PersistGate } from "redux-persist5/integration/react";
-// http://localhost:3000/?error_description=Unrecognizable+lambda+output+&state=6Xr6UPb8nqgpKlkRida8CUAbsjAjzhjp&error=invalid_request
 Amplify.configure({
   ...aws_exports,
   ssr: true,
   oauth: {
     ...aws_exports.oauth,
-    redirectSignIn: true ? 'https://d36x3gddhpmslp.cloudfront.net/' : 'http://localhost:3000/',
-    redirectSignOut: true ? 'https://d36x3gddhpmslp.cloudfront.net/' : 'http://localhost:3000/'
+    redirectSignIn: !true ? 'https://d36x3gddhpmslp.cloudfront.net/' : 'http://localhost:3000/',
+    redirectSignOut: !true ? 'https://d36x3gddhpmslp.cloudfront.net/' : 'http://localhost:3000/'
   }
 });
 
@@ -57,12 +48,12 @@ const stripePromise = loadStripe(
   'pk_test_517LnJnDPrb5EfwdRchW3z9AVO6xddwRZtSHqD311B4HW5j9Ouh9dmzU6UDiwH5Hwgh7jWSaqiQn7phQGitMPS0C500jhmK4yHw'
 );
 
-LogRocket.init('pnextz/parkyourself');
-LogRocket.identify('THE_USER_ID_IN_YOUR_APP', {
-  name: 'Vivek Thakur',
-  email: 'contactvivekvt@gmail.com',
-  subscriptionType: 'pro'
-});
+// LogRocket.init('pnextz/parkyourself');
+// LogRocket.identify('THE_USER_ID_IN_YOUR_APP', {
+//   name: 'Vivek Thakur',
+//   email: 'contactvivekvt@gmail.com',
+//   subscriptionType: 'pro'
+// });
 
 const store = createStore(reducer, middleware);
 
@@ -83,11 +74,9 @@ function MyApp({ Component, pageProps }) {
 export default MyApp;
 
 const GetData = connect()((props) => {
-  // const {loadUserType} = props;
   const getAuthData = async () => {
     try {
       let user = await Auth.currentAuthenticatedUser();
-      // console.log("User", user);
       if (user) {
         const data = {
           attributes: user.attributes,

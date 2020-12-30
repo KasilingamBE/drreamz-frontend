@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Button, Form, Tabs, Tab, Dropdown } from 'react-bootstrap';
+import { Form, Tabs, Tab, Dropdown } from 'react-bootstrap';
 import { Menu } from 'react-feather';
 import UsersList from './UsersList';
 
 function UsersTabs(props) {
-  const [loading, setLoading] = useState(false);
-  const [allData, setAllData] = useState({
-    count: 0,
-    users: []
-  });
   const [filter, setFilter] = useState({
     active: false,
     block: false,
@@ -63,22 +58,16 @@ function UsersTabs(props) {
           </Dropdown.Menu>
         </Dropdown>
       </div>
-      <div className="mb-2">
-        <Form.Control
-          type="email"
-          placeholder="Search"
-          onChange={(e) => setFilter({ ...filter, search: e.target.value })}
-        />
-      </div>
+
       <Tabs defaultActiveKey="all" id="uncontrolled-tab-example">
         <Tab eventKey="all" title="All">
-          <UsersList active={activeStatus} search={filter.search} />
+          <UsersList active={activeStatus} />
         </Tab>
         <Tab eventKey="drivers" title="Drivers">
-          <UsersList active={activeStatus} search={filter.search} driver={true} />
+          <UsersList active={activeStatus} driver={true} />
         </Tab>
         <Tab eventKey="spaceOwners" title="Space Owners">
-          <UsersList active={activeStatus} search={filter.search} spaceOwner={true} />
+          <UsersList active={activeStatus} spaceOwner={true} />
         </Tab>
       </Tabs>
     </div>
