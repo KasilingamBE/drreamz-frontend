@@ -1,14 +1,6 @@
 import colors from '@parkyourself-frontend/shared/config/colors';
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-  ActivityIndicator
-} from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';

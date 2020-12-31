@@ -1,0 +1,36 @@
+import colors from '@parkyourself-frontend/shared/config/colors';
+import React from 'react';
+import { View, StyleSheet, FlatList } from 'react-native';
+import BookingCard from './BookingCard';
+import NoFound from '../../common/NoFound';
+import { useGetAllBookings } from '@parkyourself-frontend/shared/hooks/bookings';
+import SearchInput from '../../common/SearchInput';
+
+export default function UsersList({ status }) {
+  const { allData, loading, filter, setFilter } = useGetAllBookings({ status: status });
+
+  return (
+    <View style={styles.outerView}>
+      <View style={styles.searchRow}>
+        <SearchInput
+          onChangeText={(value) => setFilter({ ...filter, search: value })}
+          value={filter.search}
+          placeholder="Search..."
+        />
+      </View>
+      <NoFound loading={loading} count={allData.count} label="Bookings" />
+      <FlatList
+        data={allData.bookings}
+        renderItem={({ item, index }) => <BookingCard booking={item} index={index} />}
+        keyExtractor={(item) => item._id}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  outerView: { flex: 1, backgroundColor: colors.white, paddingHorizontal: 10 },
+  searchRow: {
+    marginVertical: 10
+  }
+});

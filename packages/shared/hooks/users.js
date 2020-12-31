@@ -87,6 +87,7 @@ export function useGetAllUser({ driver, spaceOwner, lowerRange, higherRange, act
     bookings: driver ? 1 : 0,
     listings: spaceOwner ? 1 : 0
   });
+
   const [getAllUsers, { loading, data, error }] = useLazyQuery(GET_ALL, {
     variables: { ...filter, lowerRange, higherRange, active },
     fetchPolicy: 'network-only' // 'cache-and-network' //'network-only'

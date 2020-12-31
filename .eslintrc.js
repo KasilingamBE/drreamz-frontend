@@ -23,7 +23,7 @@ module.exports = {
   plugins: ['react'],
   rules: {
     'react/destructuring-assignment': 'never',
-    'no-console': 'warn',
+    // 'no-console': 'error',
     'no-underscore-dangle': 'off',
     '"no-use-before-define"': 'off',
     'react/react-in-jsx-scope': 'off',

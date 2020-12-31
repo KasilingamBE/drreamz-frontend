@@ -1,9 +1,10 @@
 import colors from '@parkyourself-frontend/shared/config/colors';
 import { useGetAllUser } from '@parkyourself-frontend/shared/hooks/users';
 import React from 'react';
-import { Text, View, StyleSheet, FlatList, TextInput, Button } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 import UserCard from './UserCard';
-import LoadingSpinner from '../../common/LoadingSpinner';
+import NoFound from '../../common/NoFound';
+import SearchInput from '../../common/SearchInput';
 
 export default function UsersList({ driver, spaceOwner, showTime, lowerRange, higherRange }) {
   const { filter, setFilter, allData, loading, toggleUser } = useGetAllUser({
@@ -16,15 +17,14 @@ export default function UsersList({ driver, spaceOwner, showTime, lowerRange, hi
   return (
     <View style={styles.outerView}>
       <View style={styles.searchRow}>
-        <TextInput
-          placeholder="Search..."
-          style={styles.searchInput}
-          value={filter.search}
+        <SearchInput
           onChangeText={(value) => setFilter({ ...filter, search: value })}
+          value={filter.search}
+          placeholder="Search..."
         />
         {/* <Button title="Load More" onPress={() => setFilter({ ...filter })} /> */}
       </View>
-      {loading && <LoadingSpinner />}
+      <NoFound loading={loading} count={allData.count} label="Bookings" />
       <FlatList
         data={allData.users}
         renderItem={({ item, index }) => (

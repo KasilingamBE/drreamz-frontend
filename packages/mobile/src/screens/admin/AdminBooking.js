@@ -1,10 +1,6 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import BookingTabs from '../../components/admin/bookings/BookingTabs';
 
 export default function AdminBooking() {
-  return (
-    <View>
-      <Text>AdminBooking</Text>
-    </View>
-  );
+  return <BookingTabs />;
 }
