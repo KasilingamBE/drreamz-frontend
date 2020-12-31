@@ -38,8 +38,8 @@ Amplify.configure({
   ssr: true,
   oauth: {
     ...aws_exports.oauth,
-    redirectSignIn: !true ? 'https://d36x3gddhpmslp.cloudfront.net/' : 'http://localhost:3000/',
-    redirectSignOut: !true ? 'https://d36x3gddhpmslp.cloudfront.net/' : 'http://localhost:3000/'
+    redirectSignIn: true ? 'https://d36x3gddhpmslp.cloudfront.net/' : 'http://localhost:3000/',
+    redirectSignOut: true ? 'https://d36x3gddhpmslp.cloudfront.net/' : 'http://localhost:3000/'
   }
 });
 
