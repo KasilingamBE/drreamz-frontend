@@ -90,7 +90,6 @@ export function useGetAllBookings({ status }) {
 
   const loadMore = () => {
     if (allData.count > filter.page * filter.limit) {
-      console.log('Loadmore ran');
       setFilter({ ...filter, page: filter.page + 1 });
     }
   };

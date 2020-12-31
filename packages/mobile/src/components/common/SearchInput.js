@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput, StyleSheet } from 'react-native';
+import { TextInput, StyleSheet, Platform } from 'react-native';
 
 export default function SearchInput({ placeholder = 'Search...', value = '', onChangeText }) {
   return (
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderWidth: 1,
     borderRadius: 2,
-    padding: 15,
+    padding: Platform.OS === 'ios' ? 12 : 7,
     borderWidth: 1,
     borderRadius: 2,
     borderColor: '#ddd',

@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "xcode": "open packages/mobile/ios/mobile.xcworkspace",
+    "android:cd": "cd ./packages/mobile/android",
     "mobile": "yarn workspace @parkyourself-frontend/mobile run start",
     "android": "yarn workspace @parkyourself-frontend/mobile run android",
     "ios": "yarn workspace @parkyourself-frontend/mobile run ios",

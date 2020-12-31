@@ -3,10 +3,9 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import colors from '@parkyourself-frontend/shared/config/colors';
 import dateFilter from '@parkyourself-frontend/shared/config/dateFilter';
 import { View, Text, StyleSheet, Alert } from 'react-native';
-import AntDesignIcon from 'react-native-vector-icons/AntDesign';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import ScreenTittle from '../../common/ScreenTittle';
 import UsersList from './UsersList';
+import FilterButton from '../../common/FilterButton';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -15,10 +14,7 @@ export default function MyTabs() {
     <>
       <View style={styles.headerView}>
         <ScreenTittle title="REGISTRATION STATS" />
-        <TouchableOpacity style={styles.filterRow} onPress={() => Alert.alert('Filter')}>
-          <Text style={styles.filterText}>FILTER</Text>
-          <AntDesignIcon name="downcircleo" style={styles.icon} />
-        </TouchableOpacity>
+        <FilterButton />
       </View>
       <Tab.Navigator
         tabBarOptions={{
@@ -54,16 +50,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between'
-  },
-  filterRow: {
-    flexDirection: 'row'
-  },
-  icon: {
-    color: 'black',
-    fontSize: 15,
-    marginLeft: 3
-  },
-  filterText: {
-    fontWeight: '500'
   }
 });

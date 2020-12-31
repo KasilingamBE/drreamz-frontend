@@ -6,56 +6,49 @@ const placeholderImage = require('../../../assets/images/cars.jpg');
 import { extendMoment } from 'moment-range';
 const moment2 = extendMoment(moment);
 
-export default function BookingCard({ booking, index }) {
-  const [disabled, setDisabled] = useState(false);
-  const start = new Date(booking.start);
-  const end = new Date(booking.end);
-  const range = moment2.range(start, end);
-  const monthDiff = range.diff('months');
-  const dayDiff = range.diff('days');
-  const hourDiff = range.diff('hours');
-
+export default function ListingCard({ listing, index }) {
   return (
     <View style={styles.container}>
       <View style={styles.topRow}>
         <View style={styles.imageRow}>
           <Image
-            source={booking.images.length > 0 ? { uri: booking.images[0] } : placeholderImage}
+            source={
+              listing.locationDetails.streetViewImages.length > 0 &&
+              listing.locationDetails.streetViewImages[0].includes('http')
+                ? { uri: listing.locationDetails.streetViewImages[0] }
+                : placeholderImage
+            }
             style={styles.image}
           />
         </View>
         <View style={{ flex: 1 }}>
           <View style={styles.topRow}>
             <View style={styles.nameRow}>
-              <Text style={styles.title}>{booking.address}</Text>
+              <Text style={styles.title}>{listing.locationDetails.address}</Text>
             </View>
             <View>
               <View style={styles.durationView}>
-                <Text style={styles.durationText}>
-                  {monthDiff <= 0 ? (dayDiff <= 0 ? hourDiff : dayDiff) : monthDiff}
-                  {monthDiff <= 0 ? (dayDiff <= 0 ? ' hours' : ' day') : ' month'}
-                </Text>
+                <Text style={styles.durationText}>Manager</Text>
               </View>
             </View>
           </View>
           <View style={styles.nameRow}>
-            <Text style={styles.textDate}>
-              {moment(new Date(booking.start)).format('lll')} to{' '}
-              {moment(new Date(booking.end)).format('lll')}
-            </Text>
             <Text style={styles.subTitle}>
-              Booked by: <Text style={styles.ownerName}>{booking.driverName}</Text>
+              Owner: <Text style={styles.ownerName}>{listing.ownerName}</Text>
             </Text>
           </View>
         </View>
       </View>
       <View style={styles.buttonRow}>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>$90 RECIVED</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button2}>
-          <Text style={styles.buttonText2}>MORE DETAILS</Text>
-        </TouchableOpacity>
+        {listing.published ? (
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>INACTIVE</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.button2}>
+            <Text style={styles.buttonText2}>ACTIVE</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -83,6 +76,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: 'bold'
+  },
+  subTitle: {
+    marginVertical: 5
   },
   ownerName: {
     textDecorationLine: 'underline'
@@ -122,14 +118,14 @@ const styles = StyleSheet.create({
     borderTopWidth: 0.3
   },
   button: {
-    backgroundColor: colors.primary,
+    backgroundColor: '#C0C0C0',
     padding: 10,
     borderRadius: 2,
     flex: 0.4,
     alignItems: 'center'
   },
   button2: {
-    backgroundColor: colors.white,
+    backgroundColor: '#4cbb17',
     padding: 10,
     borderRadius: 2,
     flex: 0.4,
@@ -138,5 +134,5 @@ const styles = StyleSheet.create({
     borderColor: colors.primary
   },
   buttonText: { color: colors.white, fontSize: 13, textAlign: 'center' },
-  buttonText2: { color: colors.primary, fontSize: 13, textAlign: 'center' }
+  buttonText2: { color: colors.white, fontSize: 13, textAlign: 'center' }
 });

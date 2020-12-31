@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { gql } from '@apollo/client';
-// import { client } from "../../../graphql";
 import { client } from '@parkyourself-frontend/shared/graphql';
 import MyListingItem from '../../MyListingItem';
 import { hideLoading, showLoading } from 'react-redux-loading';

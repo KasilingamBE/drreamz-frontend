@@ -47,7 +47,7 @@ export default function UserCard({ user, index, toggleUser, showTime }) {
             style={[styles.button, { backgroundColor: user.active ? 'black' : '#FFD700' }]}
             onPress={toggle}>
             {disabled ? (
-              <ActivityIndicator style={{ color: user.active ? 'white' : 'black' }} />
+              <ActivityIndicator color={user.active ? 'white' : 'black'} size="small" />
             ) : (
               <Text style={[styles.buttonText, { color: user.active ? 'white' : 'black' }]}>
                 {user.active ? 'Block' : 'Unblock'}

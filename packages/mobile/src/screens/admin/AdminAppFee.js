@@ -1,6 +1,6 @@
 import colors from '@parkyourself-frontend/shared/config/colors';
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TextInput, Text, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, TextInput, Text, ActivityIndicator, Platform } from 'react-native';
 import ScreenTittle from '../../components/common/ScreenTittle';
 import { useAppFee } from '@parkyourself-frontend/shared/hooks/adminSettings';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
@@ -38,7 +38,7 @@ function AdminAppFee(props) {
           updatedBy: props.userId
         }
       });
-      setOneData(data.updateOneFee.fee);
+      // setOneData(data.updateOneFee.fee);
       setDisabled(false);
     } catch (error) {
       // console.log(error);
@@ -73,16 +73,10 @@ function AdminAppFee(props) {
             keyboardType="numeric"
             numericvalue
             onChangeText={(value) => onChangeFee(value)}
-            style={{
-              width: 75,
-              fontSize: 30,
-              fontWeight: 'bold',
-              textAlign: 'right',
-              paddingRight: 10
-            }}
+            style={styles.input}
           />
-          <Text style={{ fontWeight: 'bold', fontSize: 30 }}>%</Text>
-          {disabled && <ActivityIndicator style={{ marginLeft: 20 }} />}
+          <Text style={styles.text}>%</Text>
+          {disabled && <ActivityIndicator style={{ marginLeft: 20 }} color={colors.secondary} />}
         </View>
       )}
     </View>
@@ -94,7 +88,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
     padding: 20
-  }
+  },
+  input: {
+    width: 75,
+    fontSize: 30,
+    fontWeight: 'bold',
+    textAlign: 'right',
+    paddingRight: 10
+  },
+  text: { fontWeight: 'bold', fontSize: 30, marginTop: Platform.OS === 'ios' ? 0 : 9 }
 });
 
 const mapStateToProps = ({ auth }) => {

@@ -1,10 +1,6 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import ListingTabs from '../../components/admin/listings/ListingTabs';
 
 export default function AdminParking() {
-  return (
-    <View>
-      <Text>AdminParking</Text>
-    </View>
-  );
+  return <ListingTabs />;
 }
