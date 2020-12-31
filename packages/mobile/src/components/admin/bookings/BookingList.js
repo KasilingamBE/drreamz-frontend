@@ -5,9 +5,10 @@ import BookingCard from './BookingCard';
 import NoFound from '../../common/NoFound';
 import { useGetAllBookings } from '@parkyourself-frontend/shared/hooks/bookings';
 import SearchInput from '../../common/SearchInput';
+import LoadingSpinner from '../../common/LoadingSpinner';
 
 export default function UsersList({ status }) {
-  const { allData, loading, filter, setFilter } = useGetAllBookings({ status: status });
+  const { allData, loading, filter, setFilter, loadMore } = useGetAllBookings({ status: status });
 
   return (
     <View style={styles.outerView}>
@@ -18,11 +19,16 @@ export default function UsersList({ status }) {
           placeholder="Search..."
         />
       </View>
-      <NoFound loading={loading} count={allData.count} label="Bookings" />
       <FlatList
         data={allData.bookings}
         renderItem={({ item, index }) => <BookingCard booking={item} index={index} />}
         keyExtractor={(item) => item._id}
+        onEndReached={loadMore}
+        onEndThreshold={0.1}
+        ListHeaderComponent={() => (
+          <NoFound loading={loading} count={allData.count} label="Bookings" />
+        )}
+        ListFooterComponent={() => (loading && allData.count > 0 ? <LoadingSpinner /> : null)}
       />
     </View>
   );

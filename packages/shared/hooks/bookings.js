@@ -68,7 +68,7 @@ export function useGetAllBookings({ status }) {
   });
   const { loading, error, data } = useQuery(GET_ALL, {
     variables: { ...filter, status },
-    fetchPolicy: 'network-only'
+    fetchPolicy: 'network-only' //'cache-and-network' // 'network-only'
   });
   const [allData, setAllData] = useState({
     count: 0,
@@ -88,5 +88,12 @@ export function useGetAllBookings({ status }) {
     }
   }, [data]);
 
-  return { allData, loading, filter, setFilter };
+  const loadMore = () => {
+    if (allData.count > filter.page * filter.limit) {
+      console.log('Loadmore ran');
+      setFilter({ ...filter, page: filter.page + 1 });
+    }
+  };
+
+  return { allData, loading, filter, setFilter, loadMore };
 }
