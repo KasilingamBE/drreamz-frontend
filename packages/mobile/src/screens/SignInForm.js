@@ -7,18 +7,15 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
-  ActivityIndicator,
+  ActivityIndicator
 } from 'react-native';
-import Svg, { Ellipse } from 'react-native-svg';
-import EntypoIcon from 'react-native-vector-icons/Entypo';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import AppLogo from '../components/AppLogo';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import { Auth } from 'aws-amplify';
-import { setAuthUser } from '../app/redux/actions/auth';
+import { setAuthUser } from '@parkyourself-frontend/shared/redux/actions/auth';
 import { connect } from 'react-redux';
-// import authServices from '@parkyourself-frontend/shared/graphql';
 
 class SignInForm extends Component {
   constructor(props) {
@@ -29,31 +26,30 @@ class SignInForm extends Component {
       code: '',
       disabled: false,
       auth: false,
-      forgetPassword: false,
+      forgetPassword: false
     };
   }
 
   signIn = async (payload) => {
     const { password, email } = payload;
     try {
-      const res = await Auth.signIn(email, password);
+      const user = await Auth.signIn(email, password);
       this.setState({
         ...this.state,
         verify: false,
-        disabled: false,
+        disabled: false
       });
-
-      // console.log(res);
       const data = {
-        attributes: res.attributes,
-        signInUserSession: res.signInUserSession,
+        attributes: user.attributes,
+        signInUserSession: user.signInUserSession,
+        admin: user.signInUserSession.accessToken.payload['cognito:groups']
+          ? user.signInUserSession.accessToken.payload['cognito:groups'].indexOf('superadmin') > -1
+          : false
       };
       this.props.dispatch(setAuthUser(data));
-      // Alert.alert('Sign In Successfully', 'Enjoy our app');
-      // this.props.navigation.navigate('Tabs');
     } catch (error) {
       this.setState({ ...this.state, disabled: false });
-      console.log('SignIn Error', error);
+      // console.log('SignIn Error', error);
       if (error.code === 'UserNotConfirmedException') {
         this.sendVerificationCode(email);
       } else {
@@ -72,12 +68,9 @@ class SignInForm extends Component {
         email: '',
         disabled: false,
         auth: true,
-        verify: false,
+        verify: false
       });
-      Alert.alert(
-        'Email Verified Successfully',
-        'Please Sign In now with your email and password',
-      );
+      Alert.alert('Email Verified Successfully', 'Please Sign In now with your email and password');
       // this.props.navigation.navigate('ForgotPassword');
     } catch (error) {
       this.setState({ ...this.state, disabled: false });
@@ -102,12 +95,12 @@ class SignInForm extends Component {
         ...this.state,
         email: email,
         disabled: false,
-        verify: true,
+        verify: true
       });
     } catch (error) {
       this.setState({
         ...this.state,
-        disabled: false,
+        disabled: false
       });
       Alert.alert('Error', error.message);
     }
@@ -124,15 +117,12 @@ class SignInForm extends Component {
               <Formik
                 initialValues={{
                   email: '',
-                  password: '',
+                  password: ''
                 }}
                 onSubmit={this.handleSubmit}
                 validationSchema={yup.object().shape({
                   email: yup.string().email().required('Email is required'),
-                  password: yup
-                    .string()
-                    .min(8)
-                    .required('Password is required'),
+                  password: yup.string().min(8).required('Password is required')
                 })}>
                 {({
                   values,
@@ -141,17 +131,12 @@ class SignInForm extends Component {
                   setFieldTouched,
                   touched,
                   isValid,
-                  handleSubmit,
+                  handleSubmit
                 }) => (
                   <Fragment>
                     <View style={styles.inputList}>
                       <Input
-                        icon={() => (
-                          <IoniconsIcon
-                            name="md-mail-open"
-                            style={styles.icon}
-                          />
-                        )}
+                        icon={() => <IoniconsIcon name="md-mail-open" style={styles.icon} />}
                         placeholder="Email"
                         value={values.email}
                         onChangeText={handleChange('email')}
@@ -163,12 +148,7 @@ class SignInForm extends Component {
                         <Text style={styles.error}>{errors.email}</Text>
                       )}
                       <Input
-                        icon={() => (
-                          <IoniconsIcon
-                            name="ios-lock-closed"
-                            style={styles.icon}
-                          />
-                        )}
+                        icon={() => <IoniconsIcon name="ios-lock-closed" style={styles.icon} />}
                         placeholder="Password"
                         value={values.password}
                         onChangeText={handleChange('password')}
@@ -183,93 +163,75 @@ class SignInForm extends Component {
                       )}
                     </View>
                     <TouchableOpacity
-                      onPress={() =>
-                        this.props.navigation.navigate('ForgotPassword')
-                      }>
-                      <Text style={styles.forgotPassword}>
-                        Forgot Password?
-                      </Text>
+                      onPress={() => this.props.navigation.navigate('ForgotPassword')}>
+                      <Text style={styles.forgotPassword}>Forgot Password?</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={handleSubmit}>
+                    <TouchableOpacity style={styles.button} onPress={handleSubmit}>
                       {this.state.disabled ? (
                         <ActivityIndicator color="#27aae1" size="large" />
                       ) : (
-                          <Text style={styles.createAccount}>Sign In</Text>
-                        )}
+                        <Text style={styles.createAccount}>Sign In</Text>
+                      )}
                     </TouchableOpacity>
                   </Fragment>
                 )}
               </Formik>
             </Fragment>
           ) : (
-              <Fragment>
-                <Text style={styles.signUp}>Verify OTP</Text>
-                <Text style={styles.codeMessage}>
-                  Verification code has been sent to {'\n'}
-                  {this.state.email}
-                </Text>
-                <Formik
-                  initialValues={{
-                    code: '199',
-                  }}
-                  onSubmit={this.handleSubmit}
-                  validationSchema={yup.object().shape({
-                    code: yup.string().required('Verification code is required'),
-                  })}>
-                  {({
-                    values,
-                    handleChange,
-                    errors,
-                    setFieldTouched,
-                    touched,
-                    isValid,
-                    handleSubmit,
-                  }) => (
-                    <Fragment>
-                      <View style={styles.inputList}>
-                        <Input
-                          icon={() => (
-                            <IoniconsIcon
-                              name="ios-lock-closed"
-                              style={styles.icon}
-                            />
-                          )}
-                          placeholder="Code"
-                          value={values.code}
-                          onChangeText={handleChange('code')}
-                          onBlur={() => setFieldTouched('code')}
-                          keyboardType="numeric"
-                        />
-                        {touched.code && errors.code && (
-                          <Text style={styles.error}>{errors.code}</Text>
-                        )}
-                      </View>
-                      <TouchableOpacity
-                        style={styles.button}
-                        onPress={handleSubmit}>
-                        {this.state.disabled ? (
-                          <ActivityIndicator color="blue" size="large" />
-                        ) : (
-                            <Text style={styles.createAccount}>Verify OTP</Text>
-                          )}
-                      </TouchableOpacity>
-                    </Fragment>
-                  )}
-                </Formik>
-              </Fragment>
-            )}
+            <Fragment>
+              <Text style={styles.signUp}>Verify OTP</Text>
+              <Text style={styles.codeMessage}>
+                Verification code has been sent to {'\n'}
+                {this.state.email}
+              </Text>
+              <Formik
+                initialValues={{
+                  code: '199'
+                }}
+                onSubmit={this.handleSubmit}
+                validationSchema={yup.object().shape({
+                  code: yup.string().required('Verification code is required')
+                })}>
+                {({
+                  values,
+                  handleChange,
+                  errors,
+                  setFieldTouched,
+                  touched,
+                  isValid,
+                  handleSubmit
+                }) => (
+                  <Fragment>
+                    <View style={styles.inputList}>
+                      <Input
+                        icon={() => <IoniconsIcon name="ios-lock-closed" style={styles.icon} />}
+                        placeholder="Code"
+                        value={values.code}
+                        onChangeText={handleChange('code')}
+                        onBlur={() => setFieldTouched('code')}
+                        keyboardType="numeric"
+                      />
+                      {touched.code && errors.code && (
+                        <Text style={styles.error}>{errors.code}</Text>
+                      )}
+                    </View>
+                    <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+                      {this.state.disabled ? (
+                        <ActivityIndicator color="blue" size="large" />
+                      ) : (
+                        <Text style={styles.createAccount}>Verify OTP</Text>
+                      )}
+                    </TouchableOpacity>
+                  </Fragment>
+                )}
+              </Formik>
+            </Fragment>
+          )}
 
           <Text style={styles.loremIpsum2}>
             By creating or using an Account you agree to the {'\n'}ParkYourself{' '}
-            <Text style={{ textDecorationLine: 'underline' }}>
-              Terms &amp; Conditions
-            </Text>{' '}
-            and{' '}
-            <Text style={{ textDecorationLine: 'underline' }}>
-              Privacy Policy
-            </Text>
+            <Text style={{ textDecorationLine: 'underline' }}>Terms &amp; Conditions</Text> and{' '}
+            <Text style={{ textDecorationLine: 'underline' }}>Privacy Policy</Text>
           </Text>
         </View>
       </ScrollView>
@@ -296,18 +258,18 @@ const Input = ({ icon: Icon, placeholder, ...rest }) => {
 const styles = StyleSheet.create({
   codeMessage: {
     color: '#fff',
-    textAlign: 'center',
+    textAlign: 'center'
   },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#fff'
   },
   forgotPassword: {
     //fontFamily: 'roboto-regular',
     color: 'rgba(227,221,221,1)',
     fontSize: 14,
     marginTop: 13,
-    marginLeft: 200,
+    marginLeft: 200
   },
   scrollArea: {
     width: '100%',
@@ -315,20 +277,20 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(39,170,225,1)',
     marginTop: 17,
     // display: 'flex',
-    alignItems: 'center',
+    alignItems: 'center'
     // flexDirection: 'column',
   },
   signUp: {
     color: 'rgba(252,250,250,1)',
     fontSize: 26,
     marginTop: 20,
-    marginBottom: 5,
+    marginBottom: 5
   },
   inputList: {
     display: 'flex',
     // flexDirection: 'row',
     // alignItems: 'center',
-    width: '80%',
+    width: '80%'
   },
   inputContainer: {
     display: 'flex',
@@ -338,7 +300,7 @@ const styles = StyleSheet.create({
     borderBottomColor: 'rgba(217,217,217,1)',
     borderBottomWidth: 1,
     paddingVertical: 10,
-    width: '100%',
+    width: '100%'
   },
   iconContainer: {
     alignItems: 'center',
@@ -347,17 +309,17 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginRight: 15,
     width: 36,
-    height: 36,
+    height: 36
   },
   icon: {
     fontSize: 25,
-    color: '#fff',
+    color: '#fff'
   },
   textInput: {
     paddingVertical: 5,
     paddingHorizontal: 10,
     fontSize: 20,
-    color: '#fff',
+    color: '#fff'
   },
   error: { fontSize: 12, color: 'red', textAlign: 'right' },
   button: {
@@ -368,7 +330,7 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0,0,0,1)',
     shadowOffset: {
       width: 10,
-      height: 10,
+      height: 10
     },
     elevation: 150,
     shadowOpacity: 0.33,
@@ -377,12 +339,12 @@ const styles = StyleSheet.create({
     display: 'flex',
     // flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   createAccount: {
     //fontFamily: 'roboto-500',
     color: 'rgba(39,170,225,1)',
-    fontSize: 20,
+    fontSize: 20
   },
   loremIpsum2: {
     //fontFamily: 'roboto-regular',
@@ -390,9 +352,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 14,
     lineHeight: 23,
-    marginTop: 22,
+    marginTop: 22
     // marginLeft: 14,
-  },
+  }
 });
 
 export default connect()(SignInForm);

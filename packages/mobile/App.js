@@ -75,18 +75,22 @@ const GetData = connect()((props) => {
   const getAuthData = async () => {
     try {
       let user = await Auth.currentAuthenticatedUser();
-      console.log('User', user);
+      // console.log('User', user);
       if (user) {
         const data = {
           attributes: user.attributes,
-          signInUserSession: user.signInUserSession
+          signInUserSession: user.signInUserSession,
+          admin: user.signInUserSession.accessToken.payload['cognito:groups']
+            ? user.signInUserSession.accessToken.payload['cognito:groups'].indexOf('superadmin') >
+              -1
+            : false
         };
         props.dispatch(setAuthUser(data));
       }
       props.dispatch(initialAuthUser());
     } catch (error) {
       props.dispatch(initialAuthUser());
-      console.log('Error', error);
+      // console.log('Error', error);
     }
   };
 
@@ -102,7 +106,7 @@ const GetData = connect()((props) => {
         // break;
         case 'signIn_failure':
         case 'cognitoHostedUI_failure':
-          console.log('Sign in failure', data);
+          // console.log('Sign in failure', data);
           Alert.alert('SignIn Failed');
           break;
       }

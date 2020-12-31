@@ -22,7 +22,7 @@ function MainStack(props) {
         }
       }}>
       {props.authenticated ? (
-        props.adminMode ? (
+        props.admin && props.adminMode ? (
           <Stack.Screen name="AdminStack" component={AdminStack} options={{ headerShown: false }} />
         ) : (
           <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
@@ -48,6 +48,7 @@ function MainStack(props) {
 const mapStateToProps = ({ auth, user }) => {
   return {
     authenticated: auth.authenticated,
+    admin: auth.data.admin,
     initial: auth.initial,
     adminMode: user.adminMode
   };

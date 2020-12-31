@@ -29,7 +29,8 @@ function AppDrawer({
   userName,
   unsetAuthUser,
   toggleAdminMode,
-  adminMode
+  adminMode,
+  admin
 }) {
   const handleLogout = () => {
     Auth.signOut().then(() => {
@@ -75,11 +76,13 @@ function AppDrawer({
           </MenuItem>
         </>
       )}
-      <ToggleButton
-        value={adminMode}
-        onChange={toggleAdminMode}
-        label={adminMode ? 'Switch to User' : 'Switch to Admin'}
-      />
+      {admin && (
+        <ToggleButton
+          value={adminMode}
+          onChange={toggleAdminMode}
+          label={adminMode ? 'Switch to User' : 'Switch to Admin'}
+        />
+      )}
       {!adminMode && (
         <ToggleButton
           value={isSpaceOwner}
@@ -153,6 +156,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ user, auth }) => ({
+  admin: auth.data.admin,
   isSpaceOwner: user.isSpaceOwner,
   userName: auth.authenticated ? auth.data.attributes.name : null,
   adminMode: user.adminMode

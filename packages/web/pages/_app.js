@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-// import LogRocket from 'logrocket';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import ReduxLoadingBar from 'react-redux-loading';
@@ -47,13 +46,6 @@ Amplify.configure({
 const stripePromise = loadStripe(
   'pk_test_517LnJnDPrb5EfwdRchW3z9AVO6xddwRZtSHqD311B4HW5j9Ouh9dmzU6UDiwH5Hwgh7jWSaqiQn7phQGitMPS0C500jhmK4yHw'
 );
-
-// LogRocket.init('pnextz/parkyourself');
-// LogRocket.identify('THE_USER_ID_IN_YOUR_APP', {
-//   name: 'Vivek Thakur',
-//   email: 'contactvivekvt@gmail.com',
-//   subscriptionType: 'pro'
-// });
 
 const store = createStore(reducer, middleware);
 

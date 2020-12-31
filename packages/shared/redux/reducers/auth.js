@@ -1,21 +1,19 @@
-import {
-  SET_AUTHED_USER,
-  UNSET_AUTHED_USER,
-  INITIAL_AUTHED_USER,
-} from "../actions/auth";
+import { SET_AUTHED_USER, UNSET_AUTHED_USER, INITIAL_AUTHED_USER } from '../actions/auth';
 
-const authUser = (state = { authenticated: false, initial: false }, action) => {
+const initialState = { authenticated: false, initial: false, data: { admin: false } };
+
+const authUser = (state = initialState, action) => {
   switch (action.type) {
     case SET_AUTHED_USER: {
       return {
         ...state,
         authenticated: true,
         data: action.user,
-        initial: true,
+        initial: true
       };
     }
     case UNSET_AUTHED_USER: {
-      return { ...state, authenticated: false, initial: true, data: {} };
+      return { ...initialState, initial: true };
     }
     case INITIAL_AUTHED_USER: {
       return { ...state, initial: true };

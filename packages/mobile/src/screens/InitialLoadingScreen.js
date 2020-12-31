@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, ActivityIndicator, Text} from 'react-native';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
 
 const InitialLoadingScreen = (props) => (
   <View style={styles.container}>
@@ -8,6 +8,6 @@ const InitialLoadingScreen = (props) => (
 );
 
 const styles = StyleSheet.create({
-  container: {paddingTop: 50, textAlign: 'center'},
+  container: { paddingTop: 50, textAlign: 'center' }
 });
 export default InitialLoadingScreen;
