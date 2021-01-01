@@ -18,10 +18,10 @@ const awsmobile = {
   aws_user_files_s3_bucket: 'parkyourselfbucket154227-dev',
   aws_user_files_s3_bucket_region: 'us-east-1',
   aws_appsync_graphqlEndpoint:
-    'https://atqy3oqdinawlesduntr4ey6sm.appsync-api.us-east-1.amazonaws.com/graphql',
+    'https://fz5qdley65glnm2bmr662qwyhy.appsync-api.us-east-1.amazonaws.com/graphql',
   aws_appsync_region: 'us-east-1',
   aws_appsync_authenticationType: 'API_KEY',
-  aws_appsync_apiKey: 'da2-ad6zt6l5rne2zhlee5irrq643u'
+  aws_appsync_apiKey: 'da2-ivr6nthaungkdgrbdeouuq4iya'
 };
 
 export default awsmobile;
