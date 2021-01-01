@@ -1,14 +1,17 @@
 import colors from '@parkyourself-frontend/shared/config/colors';
 import React from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
+import { useGetAllBookings } from '@parkyourself-frontend/shared/hooks/bookings';
 import BookingCard from './BookingCard';
 import NoFound from '../../common/NoFound';
-import { useGetAllBookings } from '@parkyourself-frontend/shared/hooks/bookings';
 import SearchInput from '../../common/SearchInput';
 import LoadingSpinner from '../../common/LoadingSpinner';
 
-export default function UsersList({ status }) {
-  const { allData, loading, filter, setFilter, loadMore } = useGetAllBookings({ status: status });
+export default function UsersList({ status, username }) {
+  const { allData, loading, filter, setFilter, loadMore } = useGetAllBookings({
+    status,
+    username
+  });
 
   return (
     <View style={styles.outerView}>

@@ -1,9 +1,22 @@
+/* eslint-disable import/prefer-default-export */
 import { useState, useEffect } from 'react';
 import { useQuery, gql } from '@apollo/client';
 
 const GET_ALL = gql`
-  query GetOwnerListingsSearch($search: String, $limit: Int, $page: Int, $username: String) {
-    getAllListingsSearch(search: $search, limit: $limit, page: $page, username: $username) {
+  query GetOwnerListingsSearch(
+    $search: String
+    $limit: Int
+    $page: Int
+    $username: String
+    $active: Boolean
+  ) {
+    getAllListingsSearch(
+      search: $search
+      limit: $limit
+      page: $page
+      username: $username
+      active: $active
+    ) {
       count
       listings {
         _id
@@ -141,16 +154,17 @@ const GET_ALL = gql`
   }
 `;
 
-export function useGetAllListings() {
+export function useGetAllListings({ username, active }) {
   const [filter, setFilter] = useState({
     limit: 20,
     page: 1,
     search: '',
-    username: null
+    username: null,
+    active: null
   });
   const { loading, error, data } = useQuery(GET_ALL, {
-    variables: { ...filter },
-    fetchPolicy: 'network-only' //'cache-and-network' // 'network-only'
+    variables: { ...filter, username, active },
+    fetchPolicy: 'network-only' // 'cache-and-network' // 'network-only'
   });
   const [allData, setAllData] = useState({
     count: 0,

@@ -1,12 +1,16 @@
+/* eslint-disable react/prop-types */
 import colors from '@parkyourself-frontend/shared/config/colors';
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Moment from 'moment';
+import { useNavigation } from '@react-navigation/native';
 import { extendMoment } from 'moment-range';
+
 const moment = extendMoment(Moment);
 
 export default function UserCard({ user, index, toggleUser, showTime }) {
+  const navigation = useNavigation();
   const [disabled, setDisabled] = useState(false);
   const toggle = async () => {
     setDisabled(true);
@@ -31,7 +35,10 @@ export default function UserCard({ user, index, toggleUser, showTime }) {
           style={styles.image}
         />
         <View style={styles.nameRow}>
-          <Text style={styles.title}>{user.name}</Text>
+          <TouchableOpacity
+            onPress={() => (!showTime ? navigation.navigate('AdminUserProfile', { user }) : null)}>
+            <Text style={styles.title}>{user.name}</Text>
+          </TouchableOpacity>
           <Text style={styles.subTitle}>bookings {user.bookings}</Text>
           <Text style={styles.subTitle}>spaces {user.listings}</Text>
         </View>
@@ -87,6 +94,13 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: 'bold'
   },
+
+  button: {
+    backgroundColor: 'black',
+    padding: 5,
+    borderRadius: 2
+  },
+  buttonText: { color: colors.white, fontSize: 13, textAlign: 'center' },
   iconRow: {
     alignItems: 'center',
     // flex: 1,
@@ -94,12 +108,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 5
   },
-  button: {
-    backgroundColor: 'black',
-    padding: 5,
-    borderRadius: 2
-  },
-  buttonText: { color: colors.white, fontSize: 13, textAlign: 'center' },
   icon: {
     color: '#FFD700',
     fontSize: 16

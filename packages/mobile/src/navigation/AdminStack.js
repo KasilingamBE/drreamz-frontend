@@ -8,6 +8,7 @@ import AdminPropertyType from '../screens/admin/AdminPropertyType';
 import AdminListingType from '../screens/admin/AdminListingType';
 import AdminAppFee from '../screens/admin/AdminAppFee';
 import AdminUsers from '../screens/admin/AdminUsers';
+import AdminUserProfile from '../screens/admin/AdminUserProfile';
 import AdminRegStats from '../screens/admin/AdminRegStats';
 import AppDrawer from '../components/common/AppDrawer';
 import HeaderLogo from '../components/HeaderLogo';
@@ -57,6 +58,14 @@ const AdminStack = () => {
       <Stack.Screen
         name="AdminUsers"
         component={AdminUsers}
+        options={({ navigation }) => ({
+          headerTitle: () => <HeaderLogo />,
+          headerTitleAlign: 'center'
+        })}
+      />
+      <Stack.Screen
+        name="AdminUserProfile"
+        component={AdminUserProfile}
         options={({ navigation }) => ({
           headerTitle: () => <HeaderLogo />,
           headerTitleAlign: 'center'

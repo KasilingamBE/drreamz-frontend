@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useMutation, gql } from '@apollo/client';
 import colors from '@parkyourself-frontend/shared/config/colors';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, TextInput } from 'react-native';
-import ScreenTittle from '../common/ScreenTittle';
 import { usePropertyType } from '@parkyourself-frontend/shared/hooks/adminSettings';
-import LoadingSpinner from '../common/LoadingSpinner';
 import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FeatherIcon from 'react-native-vector-icons/Feather';
+import ScreenTittle from '../common/ScreenTittle';
+import LoadingSpinner from '../common/LoadingSpinner';
 import MaterialButtonPrimary from '../MaterialButtonPrimary';
 
 const UPDATE_ONE = gql`

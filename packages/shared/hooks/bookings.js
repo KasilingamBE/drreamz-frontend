@@ -1,5 +1,6 @@
+/* eslint-disable import/prefer-default-export */
 import { useState, useEffect } from 'react';
-import { useQuery, useLazyQuery, useMutation, gql } from '@apollo/client';
+import { useQuery, gql } from '@apollo/client';
 
 const GET_ALL = gql`
   query GetAllBookings(
@@ -55,7 +56,7 @@ yearsBackFromNow.setFullYear(yearsBackFromNow.getFullYear() - 20);
 const defaultStartDate = yearsBackFromNow;
 const defaultEndDate = oneYearFromNow;
 
-export function useGetAllBookings({ status }) {
+export function useGetAllBookings({ status, username }) {
   const [filter, setFilter] = useState({
     limit: 20,
     page: 1,
@@ -67,8 +68,8 @@ export function useGetAllBookings({ status }) {
     username: null
   });
   const { loading, error, data } = useQuery(GET_ALL, {
-    variables: { ...filter, status },
-    fetchPolicy: 'network-only' //'cache-and-network' // 'network-only'
+    variables: { ...filter, status, username },
+    fetchPolicy: 'network-only' // 'cache-and-network' // 'network-only'
   });
   const [allData, setAllData] = useState({
     count: 0,

@@ -1,14 +1,14 @@
 import colors from '@parkyourself-frontend/shared/config/colors';
 import React from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
+import { useGetAllListings } from '@parkyourself-frontend/shared/hooks/listings';
 import ListingCard from './ListingCard';
 import NoFound from '../../common/NoFound';
-import { useGetAllListings } from '@parkyourself-frontend/shared/hooks/listings';
 import SearchInput from '../../common/SearchInput';
 import LoadingSpinner from '../../common/LoadingSpinner';
 
-export default function UsersList() {
-  const { allData, loading, filter, setFilter, loadMore } = useGetAllListings();
+export default function ListingList({ username, active = null }) {
+  const { allData, loading, filter, setFilter, loadMore } = useGetAllListings({ username, active });
 
   return (
     <View style={styles.outerView}>

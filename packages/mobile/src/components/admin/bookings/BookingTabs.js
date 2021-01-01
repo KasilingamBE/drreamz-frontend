@@ -8,13 +8,15 @@ import FilterButton from '../../common/FilterButton';
 
 const Tab = createMaterialTopTabNavigator();
 
-export default function MyTabs() {
+export default function MyTabs({ username = null, showHeader = true }) {
   return (
     <>
-      <View style={styles.headerView}>
-        <ScreenTittle title="BOOKINGS" />
-        <FilterButton />
-      </View>
+      {showHeader && (
+        <View style={styles.headerView}>
+          <ScreenTittle title="BOOKINGS" />
+          <FilterButton />
+        </View>
+      )}
       <Tab.Navigator
         tabBarOptions={{
           scrollEnabled: true,
@@ -24,21 +26,25 @@ export default function MyTabs() {
           },
           labelStyle: { fontWeight: 'bold' }
         }}>
-        <Tab.Screen name="PENDING" component={PendingBookingsTab} />
-        <Tab.Screen name="UPCOMING" component={UpcomingBookingsTab} />
-        <Tab.Screen name="CURRENT" component={CurrentBookingsTab} />
-        <Tab.Screen name="COMPLETED" component={CompletedBookingsTab} />
-        <Tab.Screen name="CANCELLED" component={CancelledBookingsTab} />
+        <Tab.Screen name="PENDING">
+          {(props) => <BookingList {...props} status="pending" username={username} />}
+        </Tab.Screen>
+        <Tab.Screen name="UPCOMING">
+          {(props) => <BookingList {...props} status="upcoming" username={username} />}
+        </Tab.Screen>
+        <Tab.Screen name="CURRENT">
+          {(props) => <BookingList {...props} status="current" username={username} />}
+        </Tab.Screen>
+        <Tab.Screen name="COMPLETED">
+          {(props) => <BookingList {...props} status="completed" username={username} />}
+        </Tab.Screen>
+        <Tab.Screen name="CANCELLED">
+          {(props) => <BookingList {...props} status="cancelled" username={username} />}
+        </Tab.Screen>
       </Tab.Navigator>
     </>
   );
 }
-
-const PendingBookingsTab = () => <BookingList status="pending" />;
-const UpcomingBookingsTab = () => <BookingList status="upcoming" />;
-const CurrentBookingsTab = () => <BookingList status="current" />;
-const CompletedBookingsTab = () => <BookingList status="completed" />;
-const CancelledBookingsTab = () => <BookingList status="cancelled" />;
 
 const styles = StyleSheet.create({
   headerView: {
