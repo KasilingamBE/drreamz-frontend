@@ -5,6 +5,7 @@ import { View, StyleSheet } from 'react-native';
 import ScreenTittle from '../../common/ScreenTittle';
 import BookingList from './BookingList';
 import FilterButton from '../../common/FilterButton';
+import BookingFilter from './BookingFilter';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -14,7 +15,9 @@ export default function MyTabs({ username = null, showHeader = true }) {
       {showHeader && (
         <View style={styles.headerView}>
           <ScreenTittle title="BOOKINGS" />
-          <FilterButton />
+          <FilterButton>
+            <BookingFilter />
+          </FilterButton>
         </View>
       )}
       <Tab.Navigator

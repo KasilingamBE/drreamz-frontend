@@ -6,7 +6,7 @@ let oneMonthBack = new Date();
 oneMonthBack = oneMonthBack.setMonth(oneMonthBack.getMonth() - 1);
 
 export default {
-  oneDayBack: oneDayBack,
-  oneWeekBack: oneWeekBack,
-  oneMonthBack: oneMonthBack
+  oneDayBack,
+  oneWeekBack,
+  oneMonthBack
 };

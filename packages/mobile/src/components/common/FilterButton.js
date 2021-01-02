@@ -1,13 +1,53 @@
-import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, Platform, Alert } from 'react-native';
+import colors from '@parkyourself-frontend/shared/config/colors';
+import React, { Children, useState } from 'react';
+import {
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  Platform,
+  TouchableWithoutFeedback,
+  Modal,
+  View
+} from 'react-native';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
-export default function FilterButton() {
+export const FilterContext = React.createContext({});
+
+const FilterProvider = FilterContext.Provider;
+
+export default function FilterButton({ children }) {
+  const [modal, setModal] = useState(false);
   return (
-    <TouchableOpacity style={styles.filterRow} onPress={() => Alert.alert('Filter', 'Filter')}>
-      <Text style={styles.filterText}>FILTER</Text>
-      <AntDesignIcon name="downcircleo" style={styles.icon} />
-    </TouchableOpacity>
+    <>
+      <TouchableOpacity style={styles.filterRow} onPress={() => children ? setModal(true) : null}>
+        <Text style={styles.filterText}>FILTER</Text>
+        <AntDesignIcon name="downcircleo" style={styles.icon} />
+      </TouchableOpacity>
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={modal}
+        // onRequestClose={() => {
+        //   Alert.alert('Modal has been closed.');
+        // }}
+      >
+        <TouchableOpacity
+          activeOpacity={1}
+          style={{
+            flex: 1,
+            // justifyContent: 'center',
+            alignItems: 'flex-end',
+            backgroundColor: 'rgba(52, 52, 52, 0.3)',
+            paddingTop: 120,
+            paddingRight: 20
+          }}
+          onPress={() => setModal(false)}>
+          <TouchableWithoutFeedback>
+            <FilterProvider value={{ setModal, modal }}>{children}</FilterProvider>
+          </TouchableWithoutFeedback>
+        </TouchableOpacity>
+      </Modal>
+    </>
   );
 }
 

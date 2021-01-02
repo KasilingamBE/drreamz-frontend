@@ -6,12 +6,20 @@ import UserCard from './UserCard';
 import NoFound from '../../common/NoFound';
 import SearchInput from '../../common/SearchInput';
 
-export default function UsersList({ driver, spaceOwner, showTime, lowerRange, higherRange }) {
+export default function UsersList({
+  driver,
+  spaceOwner,
+  showTime,
+  lowerRange = null,
+  higherRange = null,
+  activeFilter = null
+}) {
   const { filter, setFilter, allData, loading, toggleUser } = useGetAllUser({
     driver: driver ? true : false,
     spaceOwner: spaceOwner ? true : false,
-    lowerRange: lowerRange ? lowerRange : null,
-    higherRange: higherRange ? higherRange : null
+    lowerRange,
+    higherRange,
+    active: activeFilter
   });
 
   return (
@@ -22,7 +30,6 @@ export default function UsersList({ driver, spaceOwner, showTime, lowerRange, hi
           value={filter.search}
           placeholder="Search..."
         />
-        {/* <Button title="Load More" onPress={() => setFilter({ ...filter })} /> */}
       </View>
       <NoFound loading={loading} count={allData.count} label="Bookings" />
       <FlatList

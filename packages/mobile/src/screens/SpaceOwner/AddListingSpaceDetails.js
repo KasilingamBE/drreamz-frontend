@@ -1,4 +1,4 @@
-import React, {Component, useState, useRef} from 'react';
+import React, { Component, useState, useRef } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,7 +8,7 @@ import {
   ScrollView,
   Modal,
   Alert,
-  Dimensions,
+  Dimensions
 } from 'react-native';
 import PropTypes from 'prop-types';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
@@ -17,14 +17,14 @@ import RadioButton from '../../components/RadioButton';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialButtonPrimary from '../../components/MaterialButtonPrimary';
 import VehicleSizesModal from '../../components/SpaceOwner/VehicleSizesModal';
-import {addListingSpaceDetails} from '../../actions/listing';
-import {connect} from 'react-redux';
-import {Picker} from '@react-native-community/picker';
+import { addListingSpaceDetails } from '../../actions/listing';
+import { connect } from 'react-redux';
+import { Picker } from '@react-native-community/picker';
 import NextButton from '../../components/SpaceOwner/NextButton';
 import AddListingHeader from '../../components/SpaceOwner/AddListingHeader';
 import Input from '../../components/Input';
 import RadioListItem from '../../components/RadioListItem';
-import {tempListingSpaceD} from '../../app/redux/actions/tempListing';
+import { tempListingSpaceD } from '../../app/redux/actions/tempListing';
 
 function AddListingSpaceDetails({
   onBackButtonPress,
@@ -32,7 +32,7 @@ function AddListingSpaceDetails({
   spaceDetails,
   addListingSpaceDetails,
   tempListingSpaceD,
-  navigation,
+  navigation
 }) {
   const scrollRef = useRef();
 
@@ -43,83 +43,59 @@ function AddListingSpaceDetails({
   const [validate, setValidate] = useState(false);
 
   const [parkingSpaceType, setParkingSpaceType] = useState(
-    spaceDetails && spaceDetails.spaceType ? spaceDetails.spaceType : 'Tandem',
+    spaceDetails && spaceDetails.spaceType ? spaceDetails.spaceType : 'Tandem'
   );
   const [qtyOfSpaces, setQtyOfSpaces] = useState(
-    spaceDetails && spaceDetails.qtyOfSpaces ? spaceDetails.qtyOfSpaces : '',
+    spaceDetails && spaceDetails.qtyOfSpaces ? spaceDetails.qtyOfSpaces : ''
   );
   const [vehicleHeightLimit, setVehicleHeightLimit] = useState(
-    spaceDetails && spaceDetails.vehicleHeightLimit
-      ? spaceDetails.vehicleHeightLimit
-      : '',
+    spaceDetails && spaceDetails.vehicleHeightLimit ? spaceDetails.vehicleHeightLimit : ''
   );
   const [sameSizeSpaces, setSameSizeSpaces] = useState(
-    spaceDetails && spaceDetails.sameSizeSpaces
-      ? spaceDetails.sameSizeSpaces
-      : false,
+    spaceDetails && spaceDetails.sameSizeSpaces ? spaceDetails.sameSizeSpaces : false
   );
   const [motorcycle, setMotorcycle] = useState(
-    spaceDetails && spaceDetails.vehicleSizes
-      ? spaceDetails.vehicleSizes.motorcycle
-      : false,
+    spaceDetails && spaceDetails.vehicleSizes ? spaceDetails.vehicleSizes.motorcycle : false
   );
   const [compact, setCompact] = useState(
-    spaceDetails && spaceDetails.vehicleSizes
-      ? spaceDetails.vehicleSizes.compact
-      : false,
+    spaceDetails && spaceDetails.vehicleSizes ? spaceDetails.vehicleSizes.compact : false
   );
   const [midsized, setMidSized] = useState(
-    spaceDetails && spaceDetails.vehicleSizes
-      ? spaceDetails.vehicleSizes.midsized
-      : false,
+    spaceDetails && spaceDetails.vehicleSizes ? spaceDetails.vehicleSizes.midsized : false
   );
   const [large, setLarge] = useState(
-    spaceDetails && spaceDetails.vehicleSizes
-      ? spaceDetails.vehicleSizes.large
-      : false,
+    spaceDetails && spaceDetails.vehicleSizes ? spaceDetails.vehicleSizes.large : false
   );
   const [oversized, setOversized] = useState(
-    spaceDetails && spaceDetails.vehicleSizes
-      ? spaceDetails.vehicleSizes.oversized
-      : false,
+    spaceDetails && spaceDetails.vehicleSizes ? spaceDetails.vehicleSizes.oversized : false
   );
   const [visible, setVisible] = useState(false);
   const [motorcycleSpaces, setMotorcycleSpaces] = useState(
-    spaceDetails && spaceDetails.motorcycleSpaces
-      ? spaceDetails.motorcycleSpaces
-      : '',
+    spaceDetails && spaceDetails.motorcycleSpaces ? spaceDetails.motorcycleSpaces : ''
   );
   const [compactSpaces, setCompactSpaces] = useState(
-    spaceDetails && spaceDetails.compactSpaces
-      ? spaceDetails.compactSpaces
-      : '',
+    spaceDetails && spaceDetails.compactSpaces ? spaceDetails.compactSpaces : ''
   );
   const [midsizedSpaces, setMidsizedSpaces] = useState(
-    spaceDetails && spaceDetails.midsizedSpaces
-      ? spaceDetails.midsizedSpaces
-      : '',
+    spaceDetails && spaceDetails.midsizedSpaces ? spaceDetails.midsizedSpaces : ''
   );
   const [largeSpaces, setLargeSpaces] = useState(
-    spaceDetails && spaceDetails.largeSpaces ? spaceDetails.largeSpaces : '',
+    spaceDetails && spaceDetails.largeSpaces ? spaceDetails.largeSpaces : ''
   );
   const [oversizedSpaces, setOversizedSpaces] = useState(
-    spaceDetails && spaceDetails.oversizedSpaces
-      ? spaceDetails.oversizedSpaces
-      : '',
+    spaceDetails && spaceDetails.oversizedSpaces ? spaceDetails.oversizedSpaces : ''
   );
   const [isLabelled, setIsLabelled] = useState(
-    spaceDetails && spaceDetails.isLabelled ? spaceDetails.isLabelled : true,
+    spaceDetails && spaceDetails.isLabelled ? spaceDetails.isLabelled : true
   );
   const [spaceLabels, setSpaceLabels] = useState(
-    spaceDetails && spaceDetails.spaceLabels ? spaceDetails.spaceLabels : [],
+    spaceDetails && spaceDetails.spaceLabels ? spaceDetails.spaceLabels : []
   );
   const [aboutSpace, setAboutSpace] = useState(
-    spaceDetails && spaceDetails.aboutSpace ? spaceDetails.aboutSpace : '',
+    spaceDetails && spaceDetails.aboutSpace ? spaceDetails.aboutSpace : ''
   );
   const [accessInstructions, setAccessInstructions] = useState(
-    spaceDetails && spaceDetails.accessInstructions
-      ? spaceDetails.accessInstructions
-      : '',
+    spaceDetails && spaceDetails.accessInstructions ? spaceDetails.accessInstructions : ''
   );
 
   const setParkingSpaceInputs = (qty) => {
@@ -137,7 +113,7 @@ function AddListingSpaceDetails({
           ? 'Mid Sized'
           : compact
           ? 'Compact'
-          : 'Motorcycle',
+          : 'Motorcycle'
       });
     }
     setSpaceLabels(arr);
@@ -145,17 +121,15 @@ function AddListingSpaceDetails({
 
   const setLabelById = (idx, label) => {
     setSpaceLabels(
-      spaceLabels.map((item, index) =>
-        index == idx ? {...item, label: label} : {...item},
-      ),
+      spaceLabels.map((item, index) => (index == idx ? { ...item, label: label } : { ...item }))
     );
   };
 
   const setLabel = (label, idx) => {
     tempListingSpaceD({
       spaceLabels: spaceDetails.spaceLabels.map((item, index) =>
-        index == idx ? {...item, label: label} : item,
-      ),
+        index == idx ? { ...item, label: label } : item
+      )
     });
     console.log('spaceDetails.spaceLabels', spaceDetails.spaceLabels);
   };
@@ -163,8 +137,8 @@ function AddListingSpaceDetails({
   const setLargestSizeById = (idx, size) => {
     setSpaceLabels(
       spaceLabels.map((item, index) =>
-        index == idx ? {...item, largestSize: size} : {...item},
-      ),
+        index == idx ? { ...item, largestSize: size } : { ...item }
+      )
     );
   };
 
@@ -209,7 +183,7 @@ function AddListingSpaceDetails({
       setActiveIndex(activeIndex - 1);
       scrollRef.current.scrollTo({
         y: 0,
-        animated: true,
+        animated: true
       });
       setWidth(width - 20);
     } else {
@@ -230,15 +204,14 @@ function AddListingSpaceDetails({
               spaceDetails.large ||
               spaceDetails.oversized) &&
             (sameSizeSpaces || spacesSum === qtyOfSpaces)) ||
-          (activeIndex == 4 &&
-            (!spaceDetails.isLabelled || checkAllSpaceLabels())) ||
+          (activeIndex == 4 && (!spaceDetails.isLabelled || checkAllSpaceLabels())) ||
           (activeIndex == 5 && spaceDetails.aboutSpace)
         ) {
           setValidate(false);
           setActiveIndex(activeIndex + 1);
           scrollRef.current.scrollTo({
             y: 0,
-            animated: true,
+            animated: true
           });
           setWidth(width + 20);
         } else {
@@ -287,11 +260,7 @@ function AddListingSpaceDetails({
     parseInt(spaceDetails.oversizedSpaces);
   return (
     <>
-      <AddListingHeader
-        onPress={backButtonHandler}
-        width={`${width}%`}
-        navigation={navigation}
-      />
+      <AddListingHeader onPress={backButtonHandler} width={`${width}%`} navigation={navigation} />
       <ScrollView ref={scrollRef} contentContainerStyle={styles.container}>
         {/* <Text style={styles.addAListing1}>Add a Listing</Text> */}
         {/* <Text style={styles.spaceDetails}>Space Details</Text> */}
@@ -304,7 +273,7 @@ function AddListingSpaceDetails({
                 selectedValue={spaceDetails.parkingSpaceType}
                 style={styles.picker}
                 onValueChange={(itemValue, itemIndex) =>
-                  tempListingSpaceD({parkingSpaceType: itemValue})
+                  tempListingSpaceD({ parkingSpaceType: itemValue })
                 }>
                 <Picker.Item label="Tandem" value="Tandem" />
                 <Picker.Item label="Side by Side" value="Side by Side" />
@@ -319,10 +288,7 @@ function AddListingSpaceDetails({
               keyboardType="number-pad"
               onChangeText={(input) => {
                 if (input == '0') {
-                  Alert.alert(
-                    "Total quantity of spaces can't be zero",
-                    'Please input again',
-                  );
+                  Alert.alert("Total quantity of spaces can't be zero", 'Please input again');
                 } else {
                   tempListingSpaceD({
                     qtyOfSpaces: input,
@@ -332,7 +298,7 @@ function AddListingSpaceDetails({
                     compactSpaces: 0,
                     midsizedSpaces: 0,
                     largeSpaces: 0,
-                    oversizedSpaces: 0,
+                    oversizedSpaces: 0
                   });
                 }
               }}
@@ -342,15 +308,13 @@ function AddListingSpaceDetails({
         )}
         {activeIndex == 2 && (
           <>
-            <Text style={styles.heading}>
-              Are all parking spaces of same size?
-            </Text>
+            <Text style={styles.heading}>Are all parking spaces of same size?</Text>
             <RadioListItem
               label="Yes"
               checked={spaceDetails.sameSizeSpaces}
               onPress={() =>
                 tempListingSpaceD({
-                  sameSizeSpaces: !spaceDetails.sameSizeSpaces,
+                  sameSizeSpaces: !spaceDetails.sameSizeSpaces
                 })
               }
             />
@@ -359,7 +323,7 @@ function AddListingSpaceDetails({
               checked={!spaceDetails.sameSizeSpaces}
               onPress={() =>
                 tempListingSpaceD({
-                  sameSizeSpaces: !spaceDetails.sameSizeSpaces,
+                  sameSizeSpaces: !spaceDetails.sameSizeSpaces
                 })
               }
             />
@@ -368,7 +332,7 @@ function AddListingSpaceDetails({
               checked={!spaceDetails.heightRestriction}
               onPress={() =>
                 tempListingSpaceD({
-                  heightRestriction: !spaceDetails.heightRestriction,
+                  heightRestriction: !spaceDetails.heightRestriction
                 })
               }
             />
@@ -384,19 +348,19 @@ function AddListingSpaceDetails({
                     validate={validate}
                     onChangeText={(input) =>
                       tempListingSpaceD({
-                        height1: {...spaceDetails.height1.value, value: input},
+                        height1: { ...spaceDetails.height1.value, value: input }
                       })
                     }
                   />
                   <Picker
                     selectedValue={spaceDetails.height1.unit}
-                    style={{width: 120, marginTop: 0}}
+                    style={{ width: 120, marginTop: 0 }}
                     onValueChange={(itemValue) =>
                       tempListingSpaceD({
                         height1: {
                           ...spaceDetails.height1.value,
-                          unit: itemValue,
-                        },
+                          unit: itemValue
+                        }
                       })
                     }>
                     <Picker.Item label="feet" value="feet" />
@@ -413,19 +377,19 @@ function AddListingSpaceDetails({
                     validate={validate}
                     onChangeText={(input) =>
                       tempListingSpaceD({
-                        height2: {...spaceDetails.height2.value, value: input},
+                        height2: { ...spaceDetails.height2.value, value: input }
                       })
                     }
                   />
                   <Picker
                     selectedValue={spaceDetails.height2.unit}
-                    style={{width: 120, marginTop: 0}}
+                    style={{ width: 120, marginTop: 0 }}
                     onValueChange={(itemValue) =>
                       tempListingSpaceD({
                         height2: {
                           ...spaceDetails.height2.value,
-                          unit: itemValue,
-                        },
+                          unit: itemValue
+                        }
                       })
                     }>
                     <Picker.Item label="inches" value="inches" />
@@ -466,14 +430,12 @@ function AddListingSpaceDetails({
                     midsized: false,
                     large: false,
                     oversized: false,
-                    largestSize: 'Motorcycle',
+                    largestSize: 'Motorcycle'
                   });
                 } else {
                   tempListingSpaceD({
                     motorcycle: !spaceDetails.motorcycle,
-                    motorcycleSpaces: spaceDetails.motorcycle
-                      ? 0
-                      : spaceDetails.motorcycleSpaces,
+                    motorcycleSpaces: spaceDetails.motorcycle ? 0 : spaceDetails.motorcycleSpaces
                   });
                 }
               }}
@@ -483,15 +445,13 @@ function AddListingSpaceDetails({
                 placeholder="Motorcycle Spaces"
                 placeholderTextColor="rgba(182,182,182,1)"
                 value={
-                  spaceDetails.motorcycleSpaces == 0
-                    ? ''
-                    : spaceDetails.motorcycleSpaces.toString()
+                  spaceDetails.motorcycleSpaces == 0 ? '' : spaceDetails.motorcycleSpaces.toString()
                 }
                 validate={validate}
                 keyboardType="number-pad"
                 onChangeText={(input) => {
                   tempListingSpaceD({
-                    motorcycleSpaces: input == '' ? 0 : input,
+                    motorcycleSpaces: input == '' ? 0 : input
                   });
                 }}
                 style={styles.textInput}
@@ -508,14 +468,12 @@ function AddListingSpaceDetails({
                     midsized: false,
                     large: false,
                     oversized: false,
-                    largestSize: 'Compact',
+                    largestSize: 'Compact'
                   });
                 } else {
                   tempListingSpaceD({
                     compact: !spaceDetails.compact,
-                    compactSpaces: spaceDetails.compact
-                      ? 0
-                      : spaceDetails.compactSpaces,
+                    compactSpaces: spaceDetails.compact ? 0 : spaceDetails.compactSpaces
                   });
                 }
               }}
@@ -524,16 +482,12 @@ function AddListingSpaceDetails({
               <Input
                 placeholder="No of Compact Spaces"
                 placeholderTextColor="rgba(182,182,182,1)"
-                value={
-                  spaceDetails.compactSpaces == 0
-                    ? ''
-                    : spaceDetails.compactSpaces.toString()
-                }
+                value={spaceDetails.compactSpaces == 0 ? '' : spaceDetails.compactSpaces.toString()}
                 validate={validate}
                 keyboardType="number-pad"
                 onChangeText={(input) => {
                   tempListingSpaceD({
-                    compactSpaces: input == '' ? 0 : input,
+                    compactSpaces: input == '' ? 0 : input
                   });
                 }}
                 style={styles.textInput}
@@ -550,14 +504,12 @@ function AddListingSpaceDetails({
                     midsized: true,
                     large: false,
                     oversized: false,
-                    largestSize: 'Midsized',
+                    largestSize: 'Midsized'
                   });
                 } else {
                   tempListingSpaceD({
                     midsized: !spaceDetails.midsized,
-                    midsizedSpaces: spaceDetails.midsized
-                      ? 0
-                      : spaceDetails.midsizedSpaces,
+                    midsizedSpaces: spaceDetails.midsized ? 0 : spaceDetails.midsizedSpaces
                   });
                 }
               }}
@@ -567,15 +519,13 @@ function AddListingSpaceDetails({
                 placeholder="No of Mid Sized Spaces"
                 placeholderTextColor="rgba(182,182,182,1)"
                 value={
-                  spaceDetails.midsizedSpaces == 0
-                    ? ''
-                    : spaceDetails.midsizedSpaces.toString()
+                  spaceDetails.midsizedSpaces == 0 ? '' : spaceDetails.midsizedSpaces.toString()
                 }
                 validate={validate}
                 keyboardType="number-pad"
                 onChangeText={(input) => {
                   tempListingSpaceD({
-                    midsizedSpaces: input == '' ? 0 : input,
+                    midsizedSpaces: input == '' ? 0 : input
                   });
                 }}
                 style={styles.textInput}
@@ -592,14 +542,12 @@ function AddListingSpaceDetails({
                     midsized: false,
                     large: true,
                     oversized: false,
-                    largestSize: 'Large',
+                    largestSize: 'Large'
                   });
                 } else {
                   tempListingSpaceD({
                     large: !spaceDetails.large,
-                    largeSpaces: spaceDetails.large
-                      ? 0
-                      : spaceDetails.largeSpaces,
+                    largeSpaces: spaceDetails.large ? 0 : spaceDetails.largeSpaces
                   });
                 }
               }}
@@ -608,16 +556,12 @@ function AddListingSpaceDetails({
               <Input
                 placeholder="No of Large Spaces"
                 placeholderTextColor="rgba(182,182,182,1)"
-                value={
-                  spaceDetails.largeSpaces == 0
-                    ? ''
-                    : spaceDetails.largeSpaces.toString()
-                }
+                value={spaceDetails.largeSpaces == 0 ? '' : spaceDetails.largeSpaces.toString()}
                 validate={validate}
                 keyboardType="number-pad"
                 onChangeText={(input) => {
                   tempListingSpaceD({
-                    largeSpaces: input == '' ? 0 : input,
+                    largeSpaces: input == '' ? 0 : input
                   });
                 }}
                 style={styles.textInput}
@@ -634,14 +578,12 @@ function AddListingSpaceDetails({
                     midsized: false,
                     large: false,
                     oversized: true,
-                    largestSize: 'Large',
+                    largestSize: 'Large'
                   });
                 } else {
                   tempListingSpaceD({
                     oversized: !spaceDetails.oversized,
-                    oversizedSpaces: spaceDetails.oversized
-                      ? 0
-                      : spaceDetails.oversizedSpaces,
+                    oversizedSpaces: spaceDetails.oversized ? 0 : spaceDetails.oversizedSpaces
                   });
                 }
               }}
@@ -651,15 +593,13 @@ function AddListingSpaceDetails({
                 placeholder="No of Over Sized Spaces"
                 placeholderTextColor="rgba(182,182,182,1)"
                 value={
-                  spaceDetails.oversizedSpaces == 0
-                    ? ''
-                    : spaceDetails.oversizedSpaces.toString()
+                  spaceDetails.oversizedSpaces == 0 ? '' : spaceDetails.oversizedSpaces.toString()
                 }
                 validate={validate}
                 keyboardType="number-pad"
                 onChangeText={(input) => {
                   tempListingSpaceD({
-                    oversizedSpaces: input == '' ? 0 : input,
+                    oversizedSpaces: input == '' ? 0 : input
                   });
                 }}
                 style={styles.textInput}
@@ -673,16 +613,10 @@ function AddListingSpaceDetails({
                 spaceDetails.midsized ||
                 spaceDetails.large ||
                 spaceDetails.oversized
-              ) && (
-                <Text style={styles.requiredText}>
-                  Please select at least one vehicle size
-                </Text>
-              )}
+              ) && <Text style={styles.requiredText}>Please select at least one vehicle size</Text>}
 
             <TouchableOpacity onPress={() => setVisible(true)}>
-              <Text style={styles.loremIpsum4}>
-                How do I determine my space size?
-              </Text>
+              <Text style={styles.loremIpsum4}>How do I determine my space size?</Text>
             </TouchableOpacity>
             <Modal visible={visible}>
               <VehicleSizesModal onPress={() => setVisible(false)} />
@@ -691,9 +625,7 @@ function AddListingSpaceDetails({
         )}
         {activeIndex == 4 && (
           <>
-            <Text style={styles.heading}>
-              Are the spaces numbered or labelled ?
-            </Text>
+            <Text style={styles.heading}>Are the spaces numbered or labelled ?</Text>
             <RadioListItem
               label="Yes"
               checked={spaceDetails.isLabelled}
@@ -702,13 +634,13 @@ function AddListingSpaceDetails({
                 for (let i = 0; i < spaceDetails.qtyOfSpaces; i++) {
                   tSpaceLabels.push({
                     label: '',
-                    largestSize: spaceDetails.largestSize,
+                    largestSize: spaceDetails.largestSize
                   });
                 }
 
                 tempListingSpaceD({
                   isLabelled: !spaceDetails.isLabelled,
-                  spaceLabels: tSpaceLabels,
+                  spaceLabels: tSpaceLabels
                 });
               }}
             />
@@ -718,7 +650,7 @@ function AddListingSpaceDetails({
               onPress={() =>
                 tempListingSpaceD({
                   isLabelled: !spaceDetails.isLabelled,
-                  spaceLabels: [],
+                  spaceLabels: []
                 })
               }
             />
@@ -794,16 +726,14 @@ function AddListingSpaceDetails({
               validate={validate}
               onChangeText={(input) =>
                 tempListingSpaceD({
-                  aboutSpace: input,
+                  aboutSpace: input
                 })
               }></Input>
           </>
         )}
         {activeIndex == 6 && (
           <>
-            <Text style={styles.heading}>
-              Tell Guests what to do when they arrive?
-            </Text>
+            <Text style={styles.heading}>Tell Guests what to do when they arrive?</Text>
             <Input
               placeholder="Tell Guests what to do when they arrive? Provide special instructions (if any)"
               placeholderTextColor="rgba(182,182,182,1)"
@@ -818,7 +748,7 @@ function AddListingSpaceDetails({
               validate={validate}
               onChangeText={(input) =>
                 tempListingSpaceD({
-                  accessInstructions: input,
+                  accessInstructions: input
                 })
               }></Input>
           </>
@@ -833,7 +763,7 @@ const styles = StyleSheet.create({
   phone: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '100%',
+    width: '100%'
     // borderBottomColor: '#d6d6d6',
     // borderBottomWidth: 1,
   },
@@ -843,51 +773,51 @@ const styles = StyleSheet.create({
     padding: 20,
     minHeight: Dimensions.get('window').height,
     paddingTop: 50,
-    paddingBottom: 80,
+    paddingBottom: 80
   },
   heading: {
     color: 'rgba(11,64,148,1)',
     fontSize: 30,
     fontWeight: '700',
     marginTop: 30,
-    marginVertical: 20,
+    marginVertical: 20
   },
   subHeading: {
     color: 'rgba(11,64,148,1)',
     fontSize: 20,
     fontWeight: '700',
-    marginTop: 40,
+    marginTop: 40
   },
   addAListing1: {
     // fontFamily: 'roboto-500',
     color: 'rgba(11,64,148,1)',
-    fontSize: 24,
+    fontSize: 24
     // marginLeft: 24,
   },
   spaceDetails: {
     // fontFamily: 'roboto-500',
     color: 'rgba(11,64,148,1)',
     fontSize: 18,
-    marginTop: 17,
+    marginTop: 17
     // marginLeft: 23,
   },
   parkingSpaceType: {
     // fontFamily: 'roboto-500',
     color: '#121212',
     fontSize: 16,
-    marginTop: 22,
+    marginTop: 22
     // marginLeft: 23,
   },
   pickerContainer: {
     borderBottomColor: '#d6d6d6',
     borderBottomWidth: 1,
-    marginBottom: 10,
+    marginBottom: 10
   },
   rect5: {
     width: 250,
     height: 112,
     flexDirection: 'row',
-    marginTop: 23,
+    marginTop: 23
     // marginLeft: 23,
   },
   inactiveBtn: {
@@ -896,23 +826,23 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(39,170,225,0.2)',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 10,
+    marginRight: 10
   },
   inactiveText: {
     // fontFamily: 'roboto-regular',
     color: '#121212',
-    fontSize: 11,
+    fontSize: 11
   },
   inactiveIcon: {
     color: 'rgba(39,170,225,1)',
-    fontSize: 60,
+    fontSize: 60
     // height: 65,
     // width: 49,
   },
   rect4Row: {
     height: 112,
     flexDirection: 'row',
-    flex: 1,
+    flex: 1
   },
   textInput: {
     // fontFamily: 'roboto-regular',
@@ -922,45 +852,45 @@ const styles = StyleSheet.create({
     // marginTop: 22,
     borderBottomColor: '#d6d6d6',
     borderBottomWidth: 1,
-    marginBottom: 20,
+    marginBottom: 20
   },
   loremIpsum: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(11,64,148,1)',
-    marginTop: 17,
+    marginTop: 17
   },
   option: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: 20,
+    marginRight: 20
   },
   materialRadio: {
     height: 30,
-    width: 30,
+    width: 30
   },
   yes: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(182,182,182,1)',
-    marginLeft: 3,
+    marginLeft: 3
     // marginTop: 8,
   },
   required: {
-    borderBottomColor: 'red',
+    borderBottomColor: 'red'
   },
   requiredText: {
     color: 'red',
     marginTop: 10,
-    fontSize: 13,
+    fontSize: 13
   },
   materialRadio1: {
     height: 30,
     width: 30,
-    marginLeft: 21,
+    marginLeft: 21
   },
   loremIpsum2: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(11,64,148,1)',
-    marginLeft: 3,
+    marginLeft: 3
     // marginTop: 6,
   },
   materialRadioRow: {
@@ -969,7 +899,7 @@ const styles = StyleSheet.create({
     marginTop: 11,
     // marginLeft: 27,
     marginRight: 100,
-    alignItems: 'center',
+    alignItems: 'center'
   },
   textInput1: {
     // fontFamily: 'roboto-regular',
@@ -978,7 +908,7 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 14,
     borderBottomColor: '#d6d6d6',
-    borderBottomWidth: 1,
+    borderBottomWidth: 1
     // marginBottom: 20,
     // marginLeft: 24,
   },
@@ -986,19 +916,19 @@ const styles = StyleSheet.create({
     // fontFamily: 'roboto-500',
     color: '#121212',
     fontSize: 16,
-    marginTop: 17,
+    marginTop: 17
     // marginLeft: 27,
   },
   description: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(11,64,148,1)',
     fontSize: 16,
-    lineHeight: 22,
+    lineHeight: 22
     // marginLeft: 27,
   },
   rect6: {
     width: '100%',
-    height: 201,
+    height: 201
     // position: 'absolute',
   },
   motorcycle1: {
@@ -1007,7 +937,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     // fontFamily: 'roboto-regular',
     color: '#121212',
-    fontSize: 13,
+    fontSize: 13
   },
   button5: {
     top: 0,
@@ -1015,14 +945,14 @@ const styles = StyleSheet.create({
     width: 103,
     height: 96,
     position: 'absolute',
-    backgroundColor: 'rgba(39,170,225,0.3)',
+    backgroundColor: 'rgba(39,170,225,0.3)'
   },
   motorcycle1Stack: {
     top: 0,
     left: 0,
     width: 103,
     height: 96,
-    position: 'absolute',
+    position: 'absolute'
   },
   icon9: {
     top: 17,
@@ -1031,11 +961,11 @@ const styles = StyleSheet.create({
     color: 'rgba(39,170,225,1)',
     fontSize: 40,
     height: 40,
-    width: 51,
+    width: 51
   },
   motorcycle1StackStack: {
     width: 103,
-    height: 96,
+    height: 96
   },
   activeBtn: {
     width: 120,
@@ -1044,33 +974,33 @@ const styles = StyleSheet.create({
     // marginLeft: 9,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 10,
+    marginRight: 10
   },
   activeText: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(255,255,255,1)',
-    fontSize: 13,
+    fontSize: 13
   },
   activeIcon: {
     color: 'rgba(255,255,255,1)',
-    fontSize: 58,
+    fontSize: 58
     // height: 63,
     // width: 58,
   },
   motorcycle1StackStackRow: {
     height: 96,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   oversized1StackStack: {
     width: 103,
     height: 96,
     marginTop: 25,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   rect6Stack: {
     width: '100%',
     height: 201,
-    marginTop: 28,
+    marginTop: 28
     // marginLeft: 25,
   },
   loremIpsum4: {
@@ -1079,13 +1009,13 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     marginTop: 50,
     alignSelf: 'center',
-    fontSize: 16,
+    fontSize: 16
   },
   compactCarSpaces: {
     // fontFamily: 'roboto-500',
     color: '#121212',
     fontSize: 16,
-    marginTop: 49,
+    marginTop: 49
     // marginLeft: 25,
   },
   numerOfSpaces: {
@@ -1096,14 +1026,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 4,
     borderBottomWidth: 1,
-    borderBottomColor: '#d6d6d6',
+    borderBottomColor: '#d6d6d6'
     // marginLeft: 27,
   },
   largeCarSpaces: {
     // fontFamily: 'roboto-500',
     color: '#121212',
     fontSize: 16,
-    marginTop: 18,
+    marginTop: 18
     // marginLeft: 28,
   },
   numerOfSpaces1: {
@@ -1114,55 +1044,55 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 3,
     borderBottomWidth: 1,
-    borderBottomColor: '#d6d6d6',
+    borderBottomColor: '#d6d6d6'
     // marginLeft: 27,
   },
   loremIpsum5: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(11,64,148,1)',
-    marginTop: 20,
+    marginTop: 20
     // marginLeft: 26,
   },
   materialRadio3: {
     height: 30,
-    width: 30,
+    width: 30
   },
   yes1: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(182,182,182,1)',
-    marginLeft: 3,
+    marginLeft: 3
   },
   materialRadio2: {
     height: 30,
     width: 30,
-    marginLeft: 51,
+    marginLeft: 51
   },
   no: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(182,182,182,1)',
-    marginLeft: 5,
+    marginLeft: 5
   },
   materialRadio3Row: {
     height: 30,
     flexDirection: 'row',
     marginTop: 8,
     // marginLeft: 20,
-    marginRight: 195,
+    marginRight: 195
   },
   option: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: 20,
+    marginRight: 20
   },
   enterSpaceLabels: {
     // fontFamily: 'roboto-500',
     color: '#121212',
     fontSize: 16,
-    marginTop: 39,
+    marginTop: 39
     // marginLeft: 30,
   },
   picker: {
-    width: '100%',
+    width: '100%'
     // marginVertical: 10,
   },
   rect7: {
@@ -1171,7 +1101,7 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0,0,0,1)',
     shadowOffset: {
       width: 10,
-      height: 10,
+      height: 10
     },
     elevation: 10,
     shadowOpacity: 0.1,
@@ -1181,7 +1111,7 @@ const styles = StyleSheet.create({
     marginTop: 24,
     // marginLeft: 21,
     backgroundColor: '#fff',
-    padding: 10,
+    padding: 10
   },
   spaceLabelNumber: {
     // fontFamily: 'roboto-regular',
@@ -1192,7 +1122,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
     // marginLeft: 18,
     borderBottomColor: '#d6d6d6',
-    borderBottomWidth: 1,
+    borderBottomWidth: 1
   },
   spaceLabelNumber1: {
     // fontFamily: 'roboto-regular',
@@ -1202,7 +1132,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     // marginLeft: 19,
     borderBottomColor: '#d6d6d6',
-    borderBottomWidth: 1,
+    borderBottomWidth: 1
   },
   spaceLabelNumber2: {
     top: 54,
@@ -1212,7 +1142,7 @@ const styles = StyleSheet.create({
     color: '#121212',
     height: 50,
     width: 296,
-    fontSize: 16,
+    fontSize: 16
   },
   rect8: {
     top: 0,
@@ -1223,20 +1153,20 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0,0,0,1)',
     shadowOffset: {
       width: 10,
-      height: 10,
+      height: 10
     },
     elevation: 120,
     shadowOpacity: 0.1,
     shadowRadius: 40,
     borderWidth: 1,
-    borderColor: 'rgba(214,214,214,1)',
+    borderColor: 'rgba(214,214,214,1)'
   },
   spaceLabelNumber2Stack: {
     top: 0,
     left: 0,
     width: 335,
     height: 110,
-    position: 'absolute',
+    position: 'absolute'
   },
   spaceLabelNumber3: {
     top: 4,
@@ -1246,13 +1176,13 @@ const styles = StyleSheet.create({
     color: '#121212',
     height: 50,
     width: 296,
-    fontSize: 16,
+    fontSize: 16
   },
   spaceLabelNumber2StackStack: {
     width: 335,
     height: 110,
     marginTop: 19,
-    marginLeft: 21,
+    marginLeft: 21
   },
   spaceLabelNumber4: {
     top: 54,
@@ -1262,7 +1192,7 @@ const styles = StyleSheet.create({
     color: '#121212',
     height: 50,
     width: 296,
-    fontSize: 16,
+    fontSize: 16
   },
   rect9: {
     top: 0,
@@ -1273,20 +1203,20 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0,0,0,1)',
     shadowOffset: {
       width: 10,
-      height: 10,
+      height: 10
     },
     elevation: 120,
     shadowOpacity: 0.1,
     shadowRadius: 40,
     borderWidth: 1,
-    borderColor: 'rgba(214,214,214,1)',
+    borderColor: 'rgba(214,214,214,1)'
   },
   spaceLabelNumber4Stack: {
     top: 0,
     left: 0,
     width: 335,
     height: 110,
-    position: 'absolute',
+    position: 'absolute'
   },
   spaceLabelNumber5: {
     top: 4,
@@ -1296,13 +1226,13 @@ const styles = StyleSheet.create({
     color: '#121212',
     height: 50,
     width: 296,
-    fontSize: 16,
+    fontSize: 16
   },
   spaceLabelNumber4StackStack: {
     width: 335,
     height: 110,
     marginTop: 19,
-    marginLeft: 21,
+    marginLeft: 21
   },
   spaceLabelNumber6: {
     top: 54,
@@ -1312,7 +1242,7 @@ const styles = StyleSheet.create({
     color: '#121212',
     height: 50,
     width: 296,
-    fontSize: 16,
+    fontSize: 16
   },
   rect10: {
     top: 0,
@@ -1323,20 +1253,20 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0,0,0,1)',
     shadowOffset: {
       width: 10,
-      height: 10,
+      height: 10
     },
     elevation: 120,
     shadowOpacity: 0.1,
     shadowRadius: 40,
     borderWidth: 1,
-    borderColor: 'rgba(214,214,214,1)',
+    borderColor: 'rgba(214,214,214,1)'
   },
   spaceLabelNumber6Stack: {
     top: 0,
     left: 0,
     width: 335,
     height: 110,
-    position: 'absolute',
+    position: 'absolute'
   },
   spaceLabelNumber7: {
     top: 4,
@@ -1346,13 +1276,13 @@ const styles = StyleSheet.create({
     color: '#121212',
     height: 50,
     width: 296,
-    fontSize: 16,
+    fontSize: 16
   },
   spaceLabelNumber6StackStack: {
     width: 335,
     height: 110,
     marginTop: 19,
-    marginLeft: 21,
+    marginLeft: 21
   },
   spaceLabelNumber8: {
     top: 54,
@@ -1362,7 +1292,7 @@ const styles = StyleSheet.create({
     color: '#121212',
     height: 50,
     width: 296,
-    fontSize: 16,
+    fontSize: 16
   },
   rect11: {
     top: 0,
@@ -1373,20 +1303,20 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0,0,0,1)',
     shadowOffset: {
       width: 10,
-      height: 10,
+      height: 10
     },
     elevation: 120,
     shadowOpacity: 0.1,
     shadowRadius: 40,
     borderWidth: 1,
-    borderColor: 'rgba(214,214,214,1)',
+    borderColor: 'rgba(214,214,214,1)'
   },
   spaceLabelNumber8Stack: {
     top: 0,
     left: 0,
     width: 335,
     height: 110,
-    position: 'absolute',
+    position: 'absolute'
   },
   spaceLabelNumber9: {
     top: 4,
@@ -1396,19 +1326,19 @@ const styles = StyleSheet.create({
     color: '#121212',
     height: 50,
     width: 296,
-    fontSize: 16,
+    fontSize: 16
   },
   spaceLabelNumber8StackStack: {
     width: 335,
     height: 110,
     marginTop: 19,
-    marginLeft: 21,
+    marginLeft: 21
   },
   loremIpsum6: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(11,64,148,1)',
     fontSize: 16,
-    marginTop: 20,
+    marginTop: 20
     // marginLeft: 23,
   },
   placeholder: {
@@ -1420,14 +1350,14 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(214,214,214,1)',
     marginTop: 21,
     padding: 10,
-    fontSize: 18,
+    fontSize: 18
     // marginLeft: 23,
   },
   accessInstructions: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(11,64,148,1)',
     fontSize: 16,
-    marginTop: 20,
+    marginTop: 20
     // marginLeft: 26,
   },
   placeholder1: {
@@ -1438,31 +1368,29 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(214,214,214,1)',
     marginTop: 19,
-    padding: 10,
+    padding: 10
     // marginLeft: 23,
   },
   btnRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   backBtnText: {
     fontSize: 16,
-    textDecorationLine: 'underline',
+    textDecorationLine: 'underline'
   },
   materialButtonPrimary1: {
     width: 100,
     height: 36,
     marginTop: 69,
     alignSelf: 'center',
-    marginBottom: 50,
-  },
+    marginBottom: 50
+  }
 });
 
-const mapStateToProps = ({tempListing}) => ({
-  spaceDetails: tempListing.spaceDetails,
+const mapStateToProps = ({ tempListing }) => ({
+  spaceDetails: tempListing.spaceDetails
 });
 
-export default connect(mapStateToProps, {tempListingSpaceD})(
-  AddListingSpaceDetails,
-);
+export default connect(mapStateToProps, { tempListingSpaceD })(AddListingSpaceDetails);

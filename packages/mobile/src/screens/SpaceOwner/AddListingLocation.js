@@ -1,4 +1,4 @@
-import React, {Component, useState, useRef, useEffect} from 'react';
+import React, { Component, useState, useRef, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -9,125 +9,122 @@ import {
   Alert,
   Dimensions,
   Image,
-  Modal,
+  Modal
 } from 'react-native';
 import PropTypes from 'prop-types';
-import MapView, {Marker} from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialButtonPrimary from '../../components/MaterialButtonPrimary';
-import {addListingLocation} from '../../actions/listing';
-import {connect} from 'react-redux';
-import {Picker} from '@react-native-community/picker';
+import { addListingLocation } from '../../actions/listing';
+import { connect } from 'react-redux';
+import { Picker } from '@react-native-community/picker';
 import ImagePicker from 'react-native-image-picker';
 import RadioButton from '../../components/RadioButton';
 import NextButton from '../../components/SpaceOwner/NextButton';
 import AddListingHeader from '../../components/SpaceOwner/AddListingHeader';
 import Input from '../../components/Input';
 import RadioListItem from '../../components/RadioListItem';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import {
-  updateTempListing,
-  tempListingLocationD,
-} from '../../app/redux/actions/tempListing';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { updateTempListing, tempListingLocationD } from '../../app/redux/actions/tempListing';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 
 const countryCodes = [
-  {code: '+1', country: 'United States'},
-  {code: '+93', country: 'Afghanistan'},
-  {code: '+358', country: 'Aland Islands'},
-  {code: '+355', country: 'Albania'},
-  {code: '+213', country: 'Algeria'},
-  {code: '+54', country: 'Argentina'},
-  {code: '+61', country: 'Australia'},
-  {code: '+43', country: 'Austria'},
-  {code: '+1', country: 'Bahamas'},
-  {code: '+973', country: 'Bahrain'},
-  {code: '+880', country: 'Bangladesh'},
-  {code: '+1', country: 'Barbados'},
-  {code: '+375', country: 'Belarus'},
-  {code: '+32', country: 'Belgium'},
-  {code: '+975', country: 'Bhutan'},
-  {code: '+55', country: 'Brazil'},
-  {code: '+359', country: 'Bulgaria'},
-  {code: '+855', country: 'Cambodia'},
-  {code: '+1', country: 'Canada'},
-  {code: '+236', country: 'Central African Republic'},
-  {code: '+56', country: 'Chile'},
-  {code: '+86', country: 'China'},
-  {code: '+57', country: 'Colombia'},
-  {code: '+506', country: 'Costa Rica'},
-  {code: '+53', country: 'Cuba'},
-  {code: '+420', country: 'Czech Republic'},
-  {code: '+45', country: 'Denmark'},
-  {code: '+1', country: 'Dominica'},
-  {code: '+1', country: 'Dominican Republic'},
-  {code: '+593', country: 'Ecuador'},
-  {code: '+20', country: 'Egypt'},
-  {code: '+251', country: 'Ethiopia'},
-  {code: '+679', country: 'Fiji'},
-  {code: '+358', country: 'Finland'},
-  {code: '+33', country: 'France'},
-  {code: '+995', country: 'Georgia'},
-  {code: '+49', country: 'Germany'},
-  {code: '+30', country: 'Greece'},
-  {code: '+299', country: 'Greenland'},
-  {code: '+224', country: 'Guinea'},
-  {code: '+852', country: 'Hong Kong'},
-  {code: '+36', country: 'Hungary'},
-  {code: '+91', country: 'India'},
-  {code: '+98', country: 'Iran'},
-  {code: '+964', country: 'Iraq'},
-  {code: '+39', country: 'Italy'},
-  {code: '+1', country: 'Jamaica'},
-  {code: '+81', country: 'Japan'},
-  {code: '+254', country: 'Kenya'},
-  {code: '+965', country: 'Kuwait'},
-  {code: '+961', country: 'Lebanon'},
-  {code: '+218', country: 'Libya'},
-  {code: '+352', country: 'Luxembourg'},
-  {code: '+853', country: 'Macau'},
-  {code: '+389', country: 'Macedonia'},
-  {code: '+60', country: 'Malaysia'},
-  {code: '+230', country: 'Mauritius'},
-  {code: '+52', country: 'Mexico'},
-  {code: '+95', country: 'Myanmar'},
-  {code: '+264', country: 'Namibia'},
-  {code: '+31', country: 'Netherlands'},
-  {code: '+64', country: 'New Zealand'},
-  {code: '+234', country: 'Nigeria'},
-  {code: '+850', country: 'North Korea'},
-  {code: '+47', country: 'Norway'},
-  {code: '+968', country: 'Oman'},
-  {code: '+92', country: 'Pakistan'},
-  {code: '+507', country: 'Panama'},
-  {code: '+63', country: 'Philippines'},
-  {code: '+351', country: 'Portugal'},
-  {code: '+974', country: 'Qatar'},
-  {code: '+242', country: 'Republic of the Congo'},
-  {code: '+7', country: 'Russia'},
-  {code: '+378', country: 'San Marino'},
-  {code: '+966', country: 'Saudi Arabia'},
-  {code: '+65', country: 'Singapore'},
-  {code: '+252', country: 'Somalia'},
-  {code: '+27', country: 'South Africa'},
-  {code: '+34', country: 'Spain'},
-  {code: '+94', country: 'Sri Lanka'},
-  {code: '+41', country: 'Switzerland'},
-  {code: '+886', country: 'Taiwan'},
-  {code: '+66', country: 'Thailand'},
-  {code: '+90', country: 'Turkey'},
-  {code: '+256', country: 'Uganda'},
-  {code: '+380', country: 'Ukraine'},
-  {code: '+971', country: 'United Arab Emirates'},
-  {code: '+44', country: 'United Kingdom'},
+  { code: '+1', country: 'United States' },
+  { code: '+93', country: 'Afghanistan' },
+  { code: '+358', country: 'Aland Islands' },
+  { code: '+355', country: 'Albania' },
+  { code: '+213', country: 'Algeria' },
+  { code: '+54', country: 'Argentina' },
+  { code: '+61', country: 'Australia' },
+  { code: '+43', country: 'Austria' },
+  { code: '+1', country: 'Bahamas' },
+  { code: '+973', country: 'Bahrain' },
+  { code: '+880', country: 'Bangladesh' },
+  { code: '+1', country: 'Barbados' },
+  { code: '+375', country: 'Belarus' },
+  { code: '+32', country: 'Belgium' },
+  { code: '+975', country: 'Bhutan' },
+  { code: '+55', country: 'Brazil' },
+  { code: '+359', country: 'Bulgaria' },
+  { code: '+855', country: 'Cambodia' },
+  { code: '+1', country: 'Canada' },
+  { code: '+236', country: 'Central African Republic' },
+  { code: '+56', country: 'Chile' },
+  { code: '+86', country: 'China' },
+  { code: '+57', country: 'Colombia' },
+  { code: '+506', country: 'Costa Rica' },
+  { code: '+53', country: 'Cuba' },
+  { code: '+420', country: 'Czech Republic' },
+  { code: '+45', country: 'Denmark' },
+  { code: '+1', country: 'Dominica' },
+  { code: '+1', country: 'Dominican Republic' },
+  { code: '+593', country: 'Ecuador' },
+  { code: '+20', country: 'Egypt' },
+  { code: '+251', country: 'Ethiopia' },
+  { code: '+679', country: 'Fiji' },
+  { code: '+358', country: 'Finland' },
+  { code: '+33', country: 'France' },
+  { code: '+995', country: 'Georgia' },
+  { code: '+49', country: 'Germany' },
+  { code: '+30', country: 'Greece' },
+  { code: '+299', country: 'Greenland' },
+  { code: '+224', country: 'Guinea' },
+  { code: '+852', country: 'Hong Kong' },
+  { code: '+36', country: 'Hungary' },
+  { code: '+91', country: 'India' },
+  { code: '+98', country: 'Iran' },
+  { code: '+964', country: 'Iraq' },
+  { code: '+39', country: 'Italy' },
+  { code: '+1', country: 'Jamaica' },
+  { code: '+81', country: 'Japan' },
+  { code: '+254', country: 'Kenya' },
+  { code: '+965', country: 'Kuwait' },
+  { code: '+961', country: 'Lebanon' },
+  { code: '+218', country: 'Libya' },
+  { code: '+352', country: 'Luxembourg' },
+  { code: '+853', country: 'Macau' },
+  { code: '+389', country: 'Macedonia' },
+  { code: '+60', country: 'Malaysia' },
+  { code: '+230', country: 'Mauritius' },
+  { code: '+52', country: 'Mexico' },
+  { code: '+95', country: 'Myanmar' },
+  { code: '+264', country: 'Namibia' },
+  { code: '+31', country: 'Netherlands' },
+  { code: '+64', country: 'New Zealand' },
+  { code: '+234', country: 'Nigeria' },
+  { code: '+850', country: 'North Korea' },
+  { code: '+47', country: 'Norway' },
+  { code: '+968', country: 'Oman' },
+  { code: '+92', country: 'Pakistan' },
+  { code: '+507', country: 'Panama' },
+  { code: '+63', country: 'Philippines' },
+  { code: '+351', country: 'Portugal' },
+  { code: '+974', country: 'Qatar' },
+  { code: '+242', country: 'Republic of the Congo' },
+  { code: '+7', country: 'Russia' },
+  { code: '+378', country: 'San Marino' },
+  { code: '+966', country: 'Saudi Arabia' },
+  { code: '+65', country: 'Singapore' },
+  { code: '+252', country: 'Somalia' },
+  { code: '+27', country: 'South Africa' },
+  { code: '+34', country: 'Spain' },
+  { code: '+94', country: 'Sri Lanka' },
+  { code: '+41', country: 'Switzerland' },
+  { code: '+886', country: 'Taiwan' },
+  { code: '+66', country: 'Thailand' },
+  { code: '+90', country: 'Turkey' },
+  { code: '+256', country: 'Uganda' },
+  { code: '+380', country: 'Ukraine' },
+  { code: '+971', country: 'United Arab Emirates' },
+  { code: '+44', country: 'United Kingdom' },
 
-  {code: '+39', country: 'Vatican'},
-  {code: '+58', country: 'Venezuela'},
-  {code: '+84', country: 'Vietnam'},
-  {code: '+967', country: 'Yemen'},
-  {code: '+260', country: 'Zambia'},
-  {code: '+263', country: 'Zimbabwe'},
+  { code: '+39', country: 'Vatican' },
+  { code: '+58', country: 'Venezuela' },
+  { code: '+84', country: 'Vietnam' },
+  { code: '+967', country: 'Yemen' },
+  { code: '+260', country: 'Zambia' },
+  { code: '+263', country: 'Zimbabwe' }
 ];
 
 const featureList = [
@@ -142,7 +139,7 @@ const featureList = [
   'Staff onsite',
   'Tandem',
   'Unpaved',
-  'Valet',
+  'Valet'
 ];
 
 function AddListingLocation({
@@ -151,7 +148,7 @@ function AddListingLocation({
   addListingLocation,
   locationDetails,
   tempListingLocationD,
-  navigation,
+  navigation
 }) {
   const scrollRef = useRef();
 
@@ -164,48 +161,36 @@ function AddListingLocation({
   const [visible, setVisible] = useState(false);
 
   const [listingType, setListingType] = useState(
-    locationDetails && locationDetails.listingType
-      ? locationDetails.listingType
-      : 'Business',
+    locationDetails && locationDetails.listingType ? locationDetails.listingType : 'Business'
   );
   const [propertyType, setPropertyType] = useState(
-    locationDetails && locationDetails.propertyType
-      ? locationDetails.propertyType
-      : 'Driveway',
+    locationDetails && locationDetails.propertyType ? locationDetails.propertyType : 'Driveway'
   );
   const [propertyName, setPropertyName] = useState(
-    locationDetails && locationDetails.propertyName
-      ? locationDetails.propertyName
-      : '',
+    locationDetails && locationDetails.propertyName ? locationDetails.propertyName : ''
   );
   const [country, setCountry] = useState(
-    locationDetails && locationDetails.country
-      ? locationDetails.country
-      : countryCodes[0].country,
+    locationDetails && locationDetails.country ? locationDetails.country : countryCodes[0].country
   );
   const [address, setAddress] = useState(
-    locationDetails && locationDetails.address ? locationDetails.address : '',
+    locationDetails && locationDetails.address ? locationDetails.address : ''
   );
   const [unitNum, setUnitNum] = useState(
-    locationDetails && locationDetails.unitNum ? locationDetails.unitNum : '',
+    locationDetails && locationDetails.unitNum ? locationDetails.unitNum : ''
   );
   const [city, setCity] = useState(locationDetails ? locationDetails.city : '');
   const [state, setState] = useState(
-    locationDetails && locationDetails.state ? locationDetails.state : '',
+    locationDetails && locationDetails.state ? locationDetails.state : ''
   );
   const [postalCode, setPostalCode] = useState(
-    locationDetails && locationDetails.postalCode
-      ? locationDetails.postalCode
-      : '',
+    locationDetails && locationDetails.postalCode ? locationDetails.postalCode : ''
   );
 
   const [code, setCode] = useState(
-    locationDetails && locationDetails.code
-      ? locationDetails.code
-      : countryCodes[0].code,
+    locationDetails && locationDetails.code ? locationDetails.code : countryCodes[0].code
   );
   const [phone, setPhone] = useState(
-    locationDetails && locationDetails.phone ? locationDetails.phone : '',
+    locationDetails && locationDetails.phone ? locationDetails.phone : ''
   );
 
   const [marker, setMarker] = useState(
@@ -213,25 +198,25 @@ function AddListingLocation({
       ? locationDetails.latlng
       : {
           latitude: 37.78825,
-          longitude: -122.4324,
-        },
+          longitude: -122.4324
+        }
   );
 
   const [images, setImages] = useState(
-    locationDetails && locationDetails.images ? locationDetails.images : [],
+    locationDetails && locationDetails.images ? locationDetails.images : []
   );
 
   const [features, setFeatures] = useState(
-    locationDetails && locationDetails.features ? locationDetails.features : [],
+    locationDetails && locationDetails.features ? locationDetails.features : []
   );
 
   const toggleFeatures = (feature) => {
     if (locationDetails.features.includes(feature)) {
       tempListingLocationD({
-        features: locationDetails.features.filter((item) => item != feature),
+        features: locationDetails.features.filter((item) => item != feature)
       });
     } else {
-      tempListingLocationD({features: [...locationDetails.features, feature]});
+      tempListingLocationD({ features: [...locationDetails.features, feature] });
     }
   };
 
@@ -239,26 +224,26 @@ function AddListingLocation({
     title: 'Select Photo',
     storageOptions: {
       skipBackup: true,
-      path: 'images',
-    },
+      path: 'images'
+    }
   };
 
   const removeImage = (type) => {
     if (type === 'streetViewImages') {
       tempListingLocationD({
-        streetViewImages: [],
+        streetViewImages: []
       });
-      updateTempListing({tStreetViewImages: []});
+      updateTempListing({ tStreetViewImages: [] });
     } else if (type === 'parkingEntranceImages') {
       tempListingLocationD({
-        parkingEntranceImages: [],
+        parkingEntranceImages: []
       });
-      updateTempListing({tParkingEntranceImages: []});
+      updateTempListing({ tParkingEntranceImages: [] });
     } else {
       tempListingLocationD({
-        parkingSpaceImages: [],
+        parkingSpaceImages: []
       });
-      updateTempListing({tParkingSpaceImages: []});
+      updateTempListing({ tParkingSpaceImages: [] });
     }
   };
 
@@ -272,12 +257,12 @@ function AddListingLocation({
       } else if (response.customButton) {
         // console.log('User tapped custom button: ', response.customButton);
       } else {
-        const source = {uri: response.uri};
+        const source = { uri: response.uri };
         setImages([...images, source]);
         tempListingLocationD({
-          streetViewImages: [response.uri],
+          streetViewImages: [response.uri]
         });
-        updateTempListing({tStreetViewImages: [response.uri]});
+        updateTempListing({ tStreetViewImages: [response.uri] });
       }
     });
   };
@@ -292,9 +277,9 @@ function AddListingLocation({
         // console.log('User tapped custom button: ', response.customButton);
       } else {
         tempListingLocationD({
-          parkingEntranceImages: [response.uri],
+          parkingEntranceImages: [response.uri]
         });
-        updateTempListing({tParkingEntranceImages: [response.uri]});
+        updateTempListing({ tParkingEntranceImages: [response.uri] });
       }
     });
   };
@@ -309,9 +294,9 @@ function AddListingLocation({
         // console.log('User tapped custom button: ', response.customButton);
       } else {
         tempListingLocationD({
-          parkingSpaceImages: [response.uri],
+          parkingSpaceImages: [response.uri]
         });
-        updateTempListing({tParkingSpaceImages: [response.uri]});
+        updateTempListing({ tParkingSpaceImages: [response.uri] });
       }
     });
   };
@@ -321,7 +306,7 @@ function AddListingLocation({
       setActiveIndex(activeIndex - 1);
       scrollRef.current.scrollTo({
         y: 0,
-        animated: true,
+        animated: true
       });
       setWidth(width - 20);
     } else {
@@ -359,7 +344,7 @@ function AddListingLocation({
           setActiveIndex(activeIndex + 1);
           scrollRef.current.scrollTo({
             y: 0,
-            animated: true,
+            animated: true
           });
           setWidth(width + 20);
         } else {
@@ -413,7 +398,7 @@ function AddListingLocation({
                 selectedValue={locationDetails.listingType}
                 style={styles.picker}
                 onValueChange={(itemValue, itemIndex) =>
-                  tempListingLocationD({listingType: itemValue})
+                  tempListingLocationD({ listingType: itemValue })
                 }>
                 <Picker.Item label="Business" value="Business" />
                 <Picker.Item label="Residential" value="Residential" />
@@ -426,9 +411,7 @@ function AddListingLocation({
               style={styles.textInput}
               value={locationDetails.propertyName}
               validate={validate}
-              onChangeText={(input) =>
-                tempListingLocationD({propertyName: input})
-              }></Input>
+              onChangeText={(input) => tempListingLocationD({ propertyName: input })}></Input>
           </>
         )}
         {activeIndex == 2 && (
@@ -443,11 +426,8 @@ function AddListingLocation({
                 let tempLoc = {
                   marker: {
                     type: 'Point',
-                    coordinates: [
-                      details.geometry.location.lng,
-                      details.geometry.location.lat,
-                    ],
-                  },
+                    coordinates: [details.geometry.location.lng, details.geometry.location.lat]
+                  }
                 };
 
                 let add = '';
@@ -455,7 +435,7 @@ function AddListingLocation({
 
                 setMarker({
                   latitude: details.geometry.location.lat,
-                  longitude: details.geometry.location.lng,
+                  longitude: details.geometry.location.lng
                 });
 
                 details.address_components.forEach((item) => {
@@ -469,16 +449,11 @@ function AddListingLocation({
                   if (item.types.includes('country')) {
                     console.log('country :', item.long_name);
                     setCountry(item.long_name);
-                    setCode(
-                      countryCodes.filter((i) => i.country == item.long_name)[0]
-                        .code,
-                    );
+                    setCode(countryCodes.filter((i) => i.country == item.long_name)[0].code);
                     tempLoc = {
                       ...tempLoc,
                       country: item.long_name,
-                      code: countryCodes.filter(
-                        (i) => i.country == item.long_name,
-                      )[0].code,
+                      code: countryCodes.filter((i) => i.country == item.long_name)[0].code
                     };
                   }
                   if (item.types.includes('administrative_area_level_1')) {
@@ -486,7 +461,7 @@ function AddListingLocation({
                     setState(item.long_name);
                     tempLoc = {
                       ...tempLoc,
-                      state: item.long_name,
+                      state: item.long_name
                     };
                   }
                   if (item.types.includes('administrative_area_level_2')) {
@@ -494,7 +469,7 @@ function AddListingLocation({
                     setCity(item.long_name);
                     tempLoc = {
                       ...tempLoc,
-                      city: item.long_name,
+                      city: item.long_name
                     };
                   }
                   if (item.types.includes('postal_code')) {
@@ -502,11 +477,11 @@ function AddListingLocation({
                     setPostalCode(item.long_name);
                     tempLoc = {
                       ...tempLoc,
-                      postalCode: item.long_name,
+                      postalCode: item.long_name
                     };
                   }
                 });
-                tempListingLocationD({...tempLoc, address: add});
+                tempListingLocationD({ ...tempLoc, address: add });
                 // setAddress(add);
               }}
               poweredContainer={false}
@@ -517,22 +492,19 @@ function AddListingLocation({
               nearbyPlacesAPI="GooglePlacesSearch"
               GooglePlacesSearchQuery={{
                 rankby: 'distance',
-                type: ['cities'],
+                type: ['cities']
               }}
               GooglePlacesDetailsQuery={{
-                fields: ['formatted_address', 'geometry'],
+                fields: ['formatted_address', 'geometry']
               }}
               debounce={200}
-              filterReverseGeocodingByTypes={[
-                'locality',
-                'administrative_area_level_3',
-              ]}
+              filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}
               enablePoweredByContainer={false}
               query={{
                 key: 'AIzaSyDF0pzALjYYanPshuclFzq_2F24xZWZjOg',
                 language: 'en',
                 location: '30.36214,78.26541',
-                radius: 100,
+                radius: 100
               }}
               styles={{
                 textInputContainer: {
@@ -544,16 +516,16 @@ function AddListingLocation({
                   borderColor: '#d6d6d6',
                   marginTop: 20,
                   marginBottom: 30,
-                  elevation: 10,
+                  elevation: 10
                 },
                 listView: {
                   position: 'absolute',
                   backgroundColor: 'rgb(255,255,255)',
                   top: 70,
-                  zIndex: 99999,
+                  zIndex: 99999
                 },
                 row: {
-                  backgroundColor: 'rgb(255,255,255)',
+                  backgroundColor: 'rgb(255,255,255)'
                 },
                 textInput: {
                   height: '100%',
@@ -562,8 +534,8 @@ function AddListingLocation({
                   marginLeft: 0,
                   marginRight: 0,
                   fontSize: 18,
-                  paddingVertical: 10,
-                },
+                  paddingVertical: 10
+                }
               }}
             />
 
@@ -573,11 +545,7 @@ function AddListingLocation({
                 style={styles.picker}
                 onValueChange={(itemValue, itemIndex) => setCountry(itemValue)}>
                 {countryCodes.map((item) => (
-                  <Picker.Item
-                    key={item}
-                    label={item.country}
-                    value={item.country}
-                  />
+                  <Picker.Item key={item} label={item.country} value={item.country} />
                 ))}
               </Picker>
             </View>
@@ -587,50 +555,40 @@ function AddListingLocation({
               style={styles.placeholder}
               value={locationDetails.address}
               validate={validate}
-              onChangeText={(input) =>
-                tempListingLocationD({locationDetails: input})
-              }></Input>
+              onChangeText={(input) => tempListingLocationD({ locationDetails: input })}></Input>
             <Input
               placeholder="Unit #"
               placeholderTextColor="rgba(182,182,182,1)"
               style={styles.placeholder}
               value={locationDetails.unitNum}
               // validate={validate}
-              onChangeText={(input) =>
-                tempListingLocationD({unitNum: input})
-              }></Input>
+              onChangeText={(input) => tempListingLocationD({ unitNum: input })}></Input>
             <Input
               placeholder="City/Town"
               placeholderTextColor="rgba(182,182,182,1)"
               style={styles.placeholder}
               value={locationDetails.city}
               validate={validate}
-              onChangeText={(input) =>
-                tempListingLocationD({city: input})
-              }></Input>
+              onChangeText={(input) => tempListingLocationD({ city: input })}></Input>
             <Input
               placeholder="State/Province"
               placeholderTextColor="rgba(182,182,182,1)"
               style={styles.placeholder}
               value={locationDetails.state}
               validate={validate}
-              onChangeText={(input) =>
-                tempListingLocationD({state: input})
-              }></Input>
+              onChangeText={(input) => tempListingLocationD({ state: input })}></Input>
             <Input
               placeholder="Postal Code"
               placeholderTextColor="rgba(182,182,182,1)"
               style={styles.placeholder}
               value={locationDetails.postalCode}
               validate={validate}
-              onChangeText={(input) =>
-                tempListingLocationD({postalCode: input})
-              }></Input>
+              onChangeText={(input) => tempListingLocationD({ postalCode: input })}></Input>
             <View style={styles.phone}>
               {/* <View style={styles.pickerContainer}> */}
               <Picker
                 selectedValue={locationDetails.code}
-                style={{width: 120, marginTop: 10}}
+                style={{ width: 120, marginTop: 10 }}
                 onValueChange={(itemValue, itemIndex) => setCode(itemValue)}>
                 {countryCodes.map((item) => (
                   <Picker.Item
@@ -649,9 +607,7 @@ function AddListingLocation({
                 value={locationDetails.phone}
                 keyboardType="number-pad"
                 validate={validate}
-                onChangeText={(input) =>
-                  tempListingLocationD({phone: input})
-                }></Input>
+                onChangeText={(input) => tempListingLocationD({ phone: input })}></Input>
             </View>
           </>
         )}
@@ -664,7 +620,7 @@ function AddListingLocation({
                 latitude: locationDetails.marker.coordinates[1],
                 longitude: locationDetails.marker.coordinates[0],
                 latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
+                longitudeDelta: 0.0421
               }}
               onPress={(event) => {
                 tempListingLocationD({
@@ -672,9 +628,9 @@ function AddListingLocation({
                     type: 'Point',
                     coordinates: [
                       event.nativeEvent.coordinate.longitude,
-                      event.nativeEvent.coordinate.latitude,
-                    ],
-                  },
+                      event.nativeEvent.coordinate.latitude
+                    ]
+                  }
                 });
               }}
               customMapStyle={[
@@ -682,166 +638,166 @@ function AddListingLocation({
                   elementType: 'geometry',
                   stylers: [
                     {
-                      color: '#f5f5f5',
-                    },
-                  ],
+                      color: '#f5f5f5'
+                    }
+                  ]
                 },
                 {
                   elementType: 'labels.icon',
                   stylers: [
                     {
-                      visibility: 'off',
-                    },
-                  ],
+                      visibility: 'off'
+                    }
+                  ]
                 },
                 {
                   elementType: 'labels.text.fill',
                   stylers: [
                     {
-                      color: '#616161',
-                    },
-                  ],
+                      color: '#616161'
+                    }
+                  ]
                 },
                 {
                   elementType: 'labels.text.stroke',
                   stylers: [
                     {
-                      color: '#f5f5f5',
-                    },
-                  ],
+                      color: '#f5f5f5'
+                    }
+                  ]
                 },
                 {
                   featureType: 'administrative.land_parcel',
                   elementType: 'labels.text.fill',
                   stylers: [
                     {
-                      color: '#bdbdbd',
-                    },
-                  ],
+                      color: '#bdbdbd'
+                    }
+                  ]
                 },
                 {
                   featureType: 'poi',
                   elementType: 'geometry',
                   stylers: [
                     {
-                      color: '#eeeeee',
-                    },
-                  ],
+                      color: '#eeeeee'
+                    }
+                  ]
                 },
                 {
                   featureType: 'poi',
                   elementType: 'labels.text.fill',
                   stylers: [
                     {
-                      color: '#757575',
-                    },
-                  ],
+                      color: '#757575'
+                    }
+                  ]
                 },
                 {
                   featureType: 'poi.park',
                   elementType: 'geometry',
                   stylers: [
                     {
-                      color: '#e5e5e5',
-                    },
-                  ],
+                      color: '#e5e5e5'
+                    }
+                  ]
                 },
                 {
                   featureType: 'poi.park',
                   elementType: 'labels.text.fill',
                   stylers: [
                     {
-                      color: '#9e9e9e',
-                    },
-                  ],
+                      color: '#9e9e9e'
+                    }
+                  ]
                 },
                 {
                   featureType: 'road',
                   elementType: 'geometry',
                   stylers: [
                     {
-                      color: '#ffffff',
-                    },
-                  ],
+                      color: '#ffffff'
+                    }
+                  ]
                 },
                 {
                   featureType: 'road.arterial',
                   elementType: 'labels.text.fill',
                   stylers: [
                     {
-                      color: '#757575',
-                    },
-                  ],
+                      color: '#757575'
+                    }
+                  ]
                 },
                 {
                   featureType: 'road.highway',
                   elementType: 'geometry',
                   stylers: [
                     {
-                      color: '#dadada',
-                    },
-                  ],
+                      color: '#dadada'
+                    }
+                  ]
                 },
                 {
                   featureType: 'road.highway',
                   elementType: 'labels.text.fill',
                   stylers: [
                     {
-                      color: '#616161',
-                    },
-                  ],
+                      color: '#616161'
+                    }
+                  ]
                 },
                 {
                   featureType: 'road.local',
                   elementType: 'labels.text.fill',
                   stylers: [
                     {
-                      color: '#9e9e9e',
-                    },
-                  ],
+                      color: '#9e9e9e'
+                    }
+                  ]
                 },
                 {
                   featureType: 'transit.line',
                   elementType: 'geometry',
                   stylers: [
                     {
-                      color: '#e5e5e5',
-                    },
-                  ],
+                      color: '#e5e5e5'
+                    }
+                  ]
                 },
                 {
                   featureType: 'transit.station',
                   elementType: 'geometry',
                   stylers: [
                     {
-                      color: '#eeeeee',
-                    },
-                  ],
+                      color: '#eeeeee'
+                    }
+                  ]
                 },
                 {
                   featureType: 'water',
                   elementType: 'geometry',
                   stylers: [
                     {
-                      color: '#c9c9c9',
-                    },
-                  ],
+                      color: '#c9c9c9'
+                    }
+                  ]
                 },
                 {
                   featureType: 'water',
                   elementType: 'labels.text.fill',
                   stylers: [
                     {
-                      color: '#9e9e9e',
-                    },
-                  ],
-                },
+                      color: '#9e9e9e'
+                    }
+                  ]
+                }
               ]}
               style={styles.mapView}>
               <Marker
                 coordinate={{
                   latitude: locationDetails.marker.coordinates[1],
-                  longitude: locationDetails.marker.coordinates[0],
+                  longitude: locationDetails.marker.coordinates[0]
                 }}></Marker>
             </MapView>
           </>
@@ -854,14 +810,9 @@ function AddListingLocation({
               <Picker
                 selectedValue={locationDetails.propertyType}
                 style={styles.picker}
-                onValueChange={(itemValue) =>
-                  tempListingLocationD({propertyType: itemValue})
-                }>
+                onValueChange={(itemValue) => tempListingLocationD({ propertyType: itemValue })}>
                 <Picker.Item label="Driveway" value="Driveway" />
-                <Picker.Item
-                  label="Residential Garage"
-                  value="Residential Garage"
-                />
+                <Picker.Item label="Residential Garage" value="Residential Garage" />
                 <Picker.Item label="Open Air Lot" value="Open Air Lot" />
                 <Picker.Item
                   label="Commercial Parking Structure"
@@ -880,27 +831,17 @@ function AddListingLocation({
               {locationDetails.streetViewImages.length > 0 ? (
                 <View style={styles.imageList}>
                   <View style={styles.iconContainer}>
-                    <TouchableOpacity
-                      onPress={() => removeImage('streetViewImages')}>
-                      <EntypoIcon
-                        name="circle-with-cross"
-                        style={styles.deleteIcon}
-                      />
+                    <TouchableOpacity onPress={() => removeImage('streetViewImages')}>
+                      <EntypoIcon name="circle-with-cross" style={styles.deleteIcon} />
                     </TouchableOpacity>
                   </View>
 
                   {locationDetails.streetViewImages.map((item, key) => (
-                    <Image
-                      key={key}
-                      source={{uri: item}}
-                      style={styles.image}
-                    />
+                    <Image key={key} source={{ uri: item }} style={styles.image} />
                   ))}
                 </View>
               ) : (
-                <TouchableOpacity
-                  style={styles.addPhotoBtn}
-                  onPress={streetViewImagePickerHandler}>
+                <TouchableOpacity style={styles.addPhotoBtn} onPress={streetViewImagePickerHandler}>
                   <Text style={styles.addPhotoBtnText}>+ Add Photos</Text>
                 </TouchableOpacity>
               )}
@@ -910,21 +851,13 @@ function AddListingLocation({
               {locationDetails.parkingEntranceImages.length > 0 ? (
                 <View style={styles.imageList}>
                   <View style={styles.iconContainer}>
-                    <TouchableOpacity
-                      onPress={() => removeImage('parkingEntranceImages')}>
-                      <EntypoIcon
-                        name="circle-with-cross"
-                        style={styles.deleteIcon}
-                      />
+                    <TouchableOpacity onPress={() => removeImage('parkingEntranceImages')}>
+                      <EntypoIcon name="circle-with-cross" style={styles.deleteIcon} />
                     </TouchableOpacity>
                   </View>
 
                   {locationDetails.parkingEntranceImages.map((item, key) => (
-                    <Image
-                      key={key}
-                      source={{uri: item}}
-                      style={styles.image}
-                    />
+                    <Image key={key} source={{ uri: item }} style={styles.image} />
                   ))}
                 </View>
               ) : (
@@ -940,21 +873,13 @@ function AddListingLocation({
               {locationDetails.parkingSpaceImages.length > 0 ? (
                 <View style={styles.imageList}>
                   <View style={styles.iconContainer}>
-                    <TouchableOpacity
-                      onPress={() => removeImage('parkingSpaceImages')}>
-                      <EntypoIcon
-                        name="circle-with-cross"
-                        style={styles.deleteIcon}
-                      />
+                    <TouchableOpacity onPress={() => removeImage('parkingSpaceImages')}>
+                      <EntypoIcon name="circle-with-cross" style={styles.deleteIcon} />
                     </TouchableOpacity>
                   </View>
 
                   {locationDetails.parkingSpaceImages.map((item, key) => (
-                    <Image
-                      key={key}
-                      source={{uri: item}}
-                      style={styles.image}
-                    />
+                    <Image key={key} source={{ uri: item }} style={styles.image} />
                   ))}
                 </View>
               ) : (
@@ -977,9 +902,7 @@ function AddListingLocation({
                   key={item}
                   label={item}
                   checked={
-                    locationDetails.features
-                      ? locationDetails.features.includes(item)
-                      : false
+                    locationDetails.features ? locationDetails.features.includes(item) : false
                   }
                   onPress={() => {
                     toggleFeatures(item);
@@ -999,13 +922,13 @@ const styles = StyleSheet.create({
   deleteIcon: {
     fontSize: 40,
     // color: '#fff',
-    color: 'red',
+    color: 'red'
   },
   iconContainer: {
     position: 'absolute',
     zIndex: 3,
     top: 15,
-    left: 5,
+    left: 5
   },
   container: {
     // flex: 1,
@@ -1013,31 +936,31 @@ const styles = StyleSheet.create({
     padding: 20,
     minHeight: Dimensions.get('window').height,
     zIndex: 0,
-    paddingVertical: 80,
+    paddingVertical: 80
   },
   heading: {
     // fontFamily: 'roboto-500',
     color: 'rgba(11,64,148,1)',
     fontSize: 30,
     fontWeight: '700',
-    marginBottom: 10,
+    marginBottom: 10
   },
   location: {
     // fontFamily: 'roboto-500',
     color: 'rgba(11,64,148,1)',
     fontSize: 24,
     marginTop: 17,
-    fontWeight: '500',
+    fontWeight: '500'
 
     // marginLeft: 23,
   },
   pickerContainer: {
     borderBottomColor: '#d6d6d6',
     borderBottomWidth: 1,
-    marginBottom: 10,
+    marginBottom: 10
   },
   picker: {
-    width: '100%',
+    width: '100%'
     // marginVertical: 10,
     // fontSize: 18,
   },
@@ -1047,14 +970,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 20,
     marginBottom: 10,
-    fontWeight: '700',
+    fontWeight: '700'
     // marginLeft: 24,
   },
   rect: {
     width: 330,
     height: 43,
     flexDirection: 'row',
-    marginTop: 18,
+    marginTop: 18
     // marginLeft: 23,
   },
   inactiveTab: {
@@ -1065,7 +988,7 @@ const styles = StyleSheet.create({
     borderRadius: 21,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 10,
+    marginRight: 10
   },
   activeTab: {
     width: 110,
@@ -1074,7 +997,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(39,170,225,1)',
     marginRight: 10,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   activeBtn: {
     width: 120,
@@ -1083,17 +1006,17 @@ const styles = StyleSheet.create({
     // marginLeft: 9,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 10,
+    marginRight: 10
   },
   activeText: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(255,255,255,1)',
     fontSize: 13,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   activeIcon: {
     color: 'rgba(255,255,255,1)',
-    fontSize: 58,
+    fontSize: 58
     // height: 63,
     // width: 58,
   },
@@ -1103,17 +1026,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(39,170,225,0.2)',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 10,
+    marginRight: 10
   },
   inactiveText: {
     // fontFamily: 'roboto-regular',
     color: '#121212',
     fontSize: 11,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   inactiveIcon: {
     color: 'rgba(39,170,225,1)',
-    fontSize: 60,
+    fontSize: 60
     // height: 65,
     // width: 49,
   },
@@ -1124,22 +1047,22 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(182,182,182,1)',
     borderRadius: 21,
     marginLeft: 5,
-    marginTop: 8,
+    marginTop: 8
   },
   rect2Row: {
     height: 31,
     flexDirection: 'row',
     flex: 1,
     marginRight: 32,
-    marginTop: 5,
+    marginTop: 5
   },
   required: {
-    borderBottomColor: 'red',
+    borderBottomColor: 'red'
   },
   requiredText: {
     color: 'red',
     fontSize: 12,
-    marginTop: 10,
+    marginTop: 10
   },
   textInput: {
     // fontFamily: 'roboto-regular',
@@ -1148,14 +1071,14 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#d6d6d6',
+    borderBottomColor: '#d6d6d6'
     // marginLeft: 24,
   },
   listingAddress: {
     // fontFamily: 'roboto-500',
     color: '#121212',
     fontSize: 16,
-    marginTop: 16,
+    marginTop: 16
     // marginLeft: 24,
   },
   placeholder: {
@@ -1166,47 +1089,47 @@ const styles = StyleSheet.create({
     // marginTop: 26,
     // borderBottomColor: '#d6d6d6',
     // borderBottomWidth: 1,
-    fontSize: 18,
+    fontSize: 18
     // marginLeft: 23,
   },
   modalView: {
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#fff'
   },
   closeIcon: {
     position: 'absolute',
     top: 10,
-    right: 10,
+    right: 10
   },
   phone: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '100%',
+    width: '100%'
     // borderBottomColor: '#d6d6d6',
     // borderBottomWidth: 1,
   },
   mapView: {
     height: 400,
     width: '100%',
-    marginTop: 21,
+    marginTop: 21
   },
   propertyType: {
     // fontFamily: 'roboto-500',
     color: '#121212',
     fontSize: 16,
-    marginTop: 29,
+    marginTop: 29
     // marginLeft: 21,
   },
   rect5: {
     width: 250,
     height: 235,
-    marginTop: 19,
+    marginTop: 19
     // marginLeft: 23,
   },
   rect6: {
     width: 119,
     height: 112,
-    backgroundColor: 'rgba(39,170,225,0.2)',
+    backgroundColor: 'rgba(39,170,225,0.2)'
   },
   icon: {
     top: 0,
@@ -1215,7 +1138,7 @@ const styles = StyleSheet.create({
     color: 'rgba(39,170,225,1)',
     fontSize: 60,
     height: 65,
-    width: 49,
+    width: 49
   },
   driveway: {
     top: 62,
@@ -1223,13 +1146,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     // fontFamily: 'roboto-regular',
     color: '#121212',
-    fontSize: 11,
+    fontSize: 11
   },
   iconStack: {
     width: 49,
     height: 75,
     marginTop: 13,
-    marginLeft: 35,
+    marginLeft: 35
   },
   icon1: {
     top: 11,
@@ -1238,7 +1161,7 @@ const styles = StyleSheet.create({
     color: 'rgba(39,170,225,1)',
     fontSize: 60,
     height: 65,
-    width: 60,
+    width: 60
   },
   rect7: {
     top: 0,
@@ -1246,7 +1169,7 @@ const styles = StyleSheet.create({
     width: 119,
     height: 112,
     position: 'absolute',
-    backgroundColor: 'rgba(39,170,225,0.2)',
+    backgroundColor: 'rgba(39,170,225,0.2)'
   },
   residentialGarage: {
     // fontFamily: 'roboto-regular',
@@ -1254,16 +1177,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 11,
     marginTop: 74,
-    marginLeft: 21,
+    marginLeft: 21
   },
   icon1Stack: {
     width: 119,
     height: 112,
-    marginLeft: 12,
+    marginLeft: 12
   },
   rect6Row: {
     height: 112,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   icon2: {
     top: 13,
@@ -1272,7 +1195,7 @@ const styles = StyleSheet.create({
     color: 'rgba(39,170,225,1)',
     fontSize: 60,
     height: 65,
-    width: 53,
+    width: 53
   },
   rect8: {
     top: 0,
@@ -1280,24 +1203,24 @@ const styles = StyleSheet.create({
     width: 119,
     height: 112,
     position: 'absolute',
-    backgroundColor: 'rgba(39,170,225,0.2)',
+    backgroundColor: 'rgba(39,170,225,0.2)'
   },
   openAirLot: {
     // fontFamily: 'roboto-regular',
     color: '#121212',
     fontSize: 11,
     marginTop: 74,
-    marginLeft: 28,
+    marginLeft: 28
   },
   icon2Stack: {
     width: 119,
-    height: 112,
+    height: 112
   },
   rect9: {
     width: 119,
     height: 112,
     backgroundColor: 'rgba(39,170,225,0.2)',
-    marginLeft: 12,
+    marginLeft: 12
   },
   icon3: {
     top: 0,
@@ -1306,7 +1229,7 @@ const styles = StyleSheet.create({
     color: 'rgba(39,170,225,1)',
     fontSize: 60,
     height: 65,
-    width: 60,
+    width: 60
   },
   loremIpsum: {
     top: 62,
@@ -1315,24 +1238,24 @@ const styles = StyleSheet.create({
     // fontFamily: 'roboto-regular',
     color: '#121212',
     fontSize: 11,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   icon3Stack: {
     width: 112,
     height: 89,
     marginTop: 10,
-    marginLeft: 4,
+    marginLeft: 4
   },
   icon2StackRow: {
     height: 112,
     flexDirection: 'row',
-    marginTop: 11,
+    marginTop: 11
   },
   loremIpsum2: {
     // fontFamily: 'roboto-500',
     color: '#121212',
     fontSize: 16,
-    marginTop: 31,
+    marginTop: 31
     // marginLeft: 19,
   },
   addPhotoBtn: {
@@ -1347,12 +1270,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 25,
-    marginTop: 10,
+    marginTop: 10
   },
   addPhotoBtnText: {
     color: '#0b4094',
     fontWeight: '700',
-    fontSize: 16,
+    fontSize: 16
   },
   imageList: {},
   image: {
@@ -1360,7 +1283,7 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 10,
     marginBottom: 25,
-    marginTop: 10,
+    marginTop: 10
   },
   rect10: {
     top: 0,
@@ -1368,7 +1291,7 @@ const styles = StyleSheet.create({
     width: 261,
     height: 73,
     position: 'absolute',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   rect11: {
     width: 84,
@@ -1377,21 +1300,21 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(214,214,214,1)',
     padding: 10,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   icon4: {
     color: 'rgba(214,214,214,1)',
     fontSize: 30,
     height: 33,
     width: 30,
-    marginTop: 9,
+    marginTop: 9
     // marginLeft: 25,
   },
   streetView: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(182,182,182,1)',
     fontSize: 10,
-    marginTop: 3,
+    marginTop: 3
     // marginLeft: 16,
   },
   rect12: {
@@ -1402,14 +1325,14 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     padding: 10,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   icon5: {
     color: 'rgba(214,214,214,1)',
     fontSize: 30,
     height: 33,
     width: 30,
-    marginTop: 9,
+    marginTop: 9
     // marginLeft: 27,
   },
   loremIpsum3: {
@@ -1417,14 +1340,14 @@ const styles = StyleSheet.create({
     color: 'rgba(182,182,182,1)',
     fontSize: 10,
     textAlign: 'center',
-    marginTop: 1,
+    marginTop: 1
     // marginLeft: 13,
   },
   rect11Row: {
     height: 73,
     flexDirection: 'row',
     flex: 1,
-    marginRight: 83,
+    marginRight: 83
   },
   rect13: {
     top: 0,
@@ -1436,34 +1359,34 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(214,214,214,1)',
     padding: 10,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   icon6: {
     color: 'rgba(214,214,214,1)',
     fontSize: 30,
     height: 33,
     width: 30,
-    marginTop: 9,
+    marginTop: 9
     // marginLeft: 27,
   },
   parkingSpaceStal: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(182,182,182,1)',
     fontSize: 10,
-    textAlign: 'center',
+    textAlign: 'center'
     // marginLeft: 8,
   },
   rect10Stack: {
     width: 271,
     height: 73,
-    marginTop: 16,
+    marginTop: 16
     // marginLeft: 19,
   },
   listingFeatures: {
     // fontFamily: 'roboto-500',
     color: '#121212',
     fontSize: 16,
-    marginVertical: 20,
+    marginVertical: 20
     // marginLeft: 20,
   },
   features: {},
@@ -1474,15 +1397,15 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#d6d6d6',
-    paddingVertical: 5,
+    paddingVertical: 5
   },
   featureText: {
-    fontSize: 18,
+    fontSize: 18
   },
   rect14: {
     width: 340,
     height: 180,
-    marginTop: 12,
+    marginTop: 12
     // marginLeft: 20,
   },
   rect15: {
@@ -1491,12 +1414,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: 'rgba(39,170,225,1)',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   loremIpsum4: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(255,255,255,1)',
-    fontSize: 11,
+    fontSize: 11
   },
   rect16: {
     width: 110,
@@ -1505,12 +1428,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(39,170,225,1)',
     marginLeft: 4,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   carWash: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(255,255,255,1)',
-    fontSize: 11,
+    fontSize: 11
   },
   rect17: {
     width: 110,
@@ -1520,19 +1443,19 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(182,182,182,1)',
     marginLeft: 4,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   covered: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(182,182,182,1)',
-    fontSize: 11,
+    fontSize: 11
   },
   rect15Row: {
     height: 32,
     flexDirection: 'row',
     marginTop: 11,
     marginLeft: 1,
-    marginRight: 1,
+    marginRight: 1
   },
   loremIpsum5: {
     top: 10,
@@ -1540,7 +1463,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     // fontFamily: 'roboto-regular',
     color: 'rgba(255,255,255,1)',
-    fontSize: 11,
+    fontSize: 11
   },
   rect20: {
     top: 0,
@@ -1552,16 +1475,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(182,182,182,1)',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   eyCharging: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(182,182,182,1)',
-    fontSize: 11,
+    fontSize: 11
   },
   loremIpsum5Stack: {
     width: 110,
-    height: 32,
+    height: 32
   },
   rect19: {
     width: 110,
@@ -1571,12 +1494,12 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(182,182,182,1)',
     marginLeft: 4,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   fenced: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(182,182,182,1)',
-    fontSize: 11,
+    fontSize: 11
     // marginTop: 10,
     // marginLeft: 36,
   },
@@ -1588,12 +1511,12 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(182,182,182,1)',
     marginLeft: 4,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   mobilePass: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(182,182,182,1)',
-    fontSize: 11,
+    fontSize: 11
     // marginTop: 10,
     // marginLeft: 26,
   },
@@ -1602,7 +1525,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 10,
     marginLeft: 1,
-    marginRight: 1,
+    marginRight: 1
   },
   loremIpsum6: {
     top: 10,
@@ -1610,7 +1533,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     // fontFamily: 'roboto-regular',
     color: 'rgba(255,255,255,1)',
-    fontSize: 11,
+    fontSize: 11
   },
   rect23: {
     top: 0,
@@ -1621,16 +1544,16 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: 'rgba(39,170,225,1)',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   paved: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(255,255,255,1)',
-    fontSize: 11,
+    fontSize: 11
   },
   loremIpsum6Stack: {
     width: 110,
-    height: 32,
+    height: 32
   },
   rect22: {
     width: 110,
@@ -1640,12 +1563,12 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(182,182,182,1)',
     marginLeft: 4,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   security: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(182,182,182,1)',
-    fontSize: 11,
+    fontSize: 11
   },
   rect21: {
     width: 110,
@@ -1655,12 +1578,12 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(182,182,182,1)',
     marginLeft: 4,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   staffOnsite: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(182,182,182,1)',
-    fontSize: 11,
+    fontSize: 11
     // marginTop: 10,
     // marginLeft: 28,
   },
@@ -1669,7 +1592,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 12,
     marginLeft: 1,
-    marginRight: 1,
+    marginRight: 1
   },
   loremIpsum7: {
     top: 10,
@@ -1677,7 +1600,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     // fontFamily: 'roboto-regular',
     color: 'rgba(255,255,255,1)',
-    fontSize: 11,
+    fontSize: 11
   },
   rect26: {
     top: 0,
@@ -1689,16 +1612,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(182,182,182,1)',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   tandem: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(182,182,182,1)',
-    fontSize: 11,
+    fontSize: 11
   },
   loremIpsum7Stack: {
     width: 110,
-    height: 32,
+    height: 32
   },
   rect25: {
     width: 110,
@@ -1707,12 +1630,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(39,170,225,1)',
     marginLeft: 4,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   unpaved: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(255,255,255,1)',
-    fontSize: 11,
+    fontSize: 11
   },
   rect24: {
     width: 110,
@@ -1722,35 +1645,35 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(182,182,182,1)',
     marginLeft: 4,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   valet: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(182,182,182,1)',
-    fontSize: 11,
+    fontSize: 11
   },
   loremIpsum7StackRow: {
     height: 32,
     flexDirection: 'row',
     marginTop: 11,
     marginLeft: 1,
-    marginRight: 1,
+    marginRight: 1
   },
   btnRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   backBtnText: {
     fontSize: 16,
-    textDecorationLine: 'underline',
+    textDecorationLine: 'underline'
   },
   materialButtonPrimary: {
     width: 100,
     height: 36,
     marginVertical: 67,
-    alignSelf: 'center',
-  },
+    alignSelf: 'center'
+  }
 });
 
 // AddListingLocation.propTypes = {
@@ -1758,10 +1681,8 @@ const styles = StyleSheet.create({
 //   tempListingLocationD: PropTypes.func.isRequired,
 // };
 
-const mapStateToProps = ({tempListing}) => ({
-  locationDetails: tempListing.locationDetails,
+const mapStateToProps = ({ tempListing }) => ({
+  locationDetails: tempListing.locationDetails
 });
 
-export default connect(mapStateToProps, {tempListingLocationD})(
-  AddListingLocation,
-);
+export default connect(mapStateToProps, { tempListingLocationD })(AddListingLocation);

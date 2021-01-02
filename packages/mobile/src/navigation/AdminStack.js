@@ -10,6 +10,7 @@ import AdminAppFee from '../screens/admin/AdminAppFee';
 import AdminUsers from '../screens/admin/AdminUsers';
 import AdminUserProfile from '../screens/admin/AdminUserProfile';
 import AdminRegStats from '../screens/admin/AdminRegStats';
+import DatePicker from '../screens/admin/DatePicker';
 import AppDrawer from '../components/common/AppDrawer';
 import HeaderLogo from '../components/HeaderLogo';
 import MenuButton from '../components/MenuButton';
@@ -42,6 +43,14 @@ const AdminStack = () => {
       <Stack.Screen
         name="AdminBooking"
         component={AdminBooking}
+        options={({ navigation }) => ({
+          headerTitle: () => <HeaderLogo />,
+          headerTitleAlign: 'center'
+        })}
+      />
+      <Stack.Screen
+        name="DatePicker"
+        component={DatePicker}
         options={({ navigation }) => ({
           headerTitle: () => <HeaderLogo />,
           headerTitleAlign: 'center'

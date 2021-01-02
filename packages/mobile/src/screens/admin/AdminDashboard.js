@@ -46,7 +46,10 @@ function SpaceOwnerDashboard({ navigation }) {
           onPress={() => navigation.navigate('AdminRegStats')}>
           <MaterialCommunityIconsIcon name="clipboard-text-outline" style={styles.materialCIcon} />
         </MenuItem>
-        <MenuItem style={styles.menuItem} label="Messages">
+        <MenuItem
+          style={styles.menuItem}
+          label="Messages"
+          onPress={() => navigation.navigate('DatePicker')}>
           <FeatherIcon name="mail" style={styles.featherIcon} />
         </MenuItem>
         <MenuItem style={styles.menuItem} label="Cashouts">
