@@ -1,20 +1,14 @@
-import React from "react";
-import { Button } from "react-bootstrap";
+import React from 'react';
+import { Button } from 'react-bootstrap';
 
-const AddListingButtonRow = ({
-  onBackButtonPress,
-  onNextButtonPress,
-  activeIndex,
-}) => {
+const AddListingButtonRow = ({ onBackButtonPress, onNextButtonPress, activeIndex }) => {
   return (
     <div className="back-next-btn-row">
       {activeIndex > 1 ? (
         <Button variant="primary" onClick={onBackButtonPress}>
           Back
         </Button>
-      ) : (
-        <span></span>
-      )}
+      ) : null}
       {activeIndex < 18 && (
         <Button variant="success" onClick={onNextButtonPress}>
           Next

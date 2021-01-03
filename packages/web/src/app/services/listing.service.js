@@ -1,12 +1,9 @@
-import { Storage } from "aws-amplify";
-import { gql } from "@apollo/client";
-import config from "../../aws-exports";
-import { client } from "../graphql";
-
-const {
-  aws_user_files_s3_bucket_region: region,
-  aws_user_files_s3_bucket: bucket,
-} = config;
+import { Storage } from 'aws-amplify';
+import { gql } from '@apollo/client';
+import config from '../../aws-exports';
+import { client } from '../graphql';
+import { v4 as uuid } from 'uuid';
+const { aws_user_files_s3_bucket_region: region, aws_user_files_s3_bucket: bucket } = config;
 
 const CREATE_LISTING = gql`
   mutation CreateListing(
@@ -459,7 +456,7 @@ const GET_OWNER_LISTINGS = gql`
 const getMyListingService = async (userId, loadUserListings) => {
   const { data } = await client.query({
     query: GET_OWNER_LISTINGS,
-    variables: { ownerId: userId },
+    variables: { ownerId: userId }
   });
   if (data.getOwnerListings) {
     return loadUserListings(data.getOwnerListings);
@@ -475,20 +472,16 @@ const addListingService = async (
   updateListingLocal
 ) => {
   let streetViewImageArray = [...tempListing.locationDetails.streetViewImages];
-  let parkingEntranceImageArray = [
-    ...tempListing.locationDetails.parkingEntranceImages,
-  ];
-  let parkingSpaceImageArray = [
-    ...tempListing.locationDetails.parkingSpaceImages,
-  ];
+  let parkingEntranceImageArray = [...tempListing.locationDetails.parkingEntranceImages];
+  let parkingSpaceImageArray = [...tempListing.locationDetails.parkingSpaceImages];
 
   const {
     tStreetViewImages: streetViewImageFiles,
     tParkingEntranceImages: parkingEntranceImageFiles,
-    tParkingSpaceImages: parkingSpaceImageFiles,
+    tParkingSpaceImages: parkingSpaceImageFiles
   } = tempListing;
 
-  let thumbnailURL = "none";
+  let thumbnailURL = 'none';
 
   // if (streetViewImageFiles.length > 0) {
   //   const options = {
@@ -514,12 +507,12 @@ const addListingService = async (
       let file = streetViewImageFiles[i];
       const response = await fetch(file);
       const blob = await response.blob();
-      let extension = "jpeg";
+      let extension = 'jpeg';
       let key = `images-mobile/${uuid()}-${uuid()}.${extension}`;
       let url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`;
       streetViewImageArray.push(url);
       await Storage.put(key, blob, {
-        contentType: "image/jpeg",
+        contentType: 'image/jpeg'
       });
     }
 
@@ -527,12 +520,12 @@ const addListingService = async (
       let file = parkingEntranceImageFiles[i];
       const response = await fetch(file);
       const blob = await response.blob();
-      let extension = "jpeg";
+      let extension = 'jpeg';
       let key = `images-mobile/${uuid()}${uuid()}.${extension}`;
       let url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`;
       parkingEntranceImageArray.push(url);
       await Storage.put(key, blob, {
-        contentType: "image/jpeg",
+        contentType: 'image/jpeg'
       });
     }
 
@@ -540,12 +533,12 @@ const addListingService = async (
       let file = parkingSpaceImageFiles[i];
       const response = await fetch(file);
       const blob = await response.blob();
-      let extension = "jpeg";
+      let extension = 'jpeg';
       let key = `images-mobile/${uuid()}${uuid()}.${extension}`;
       let url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`;
       parkingSpaceImageArray.push(url);
       await Storage.put(key, blob, {
-        contentType: "image/jpeg",
+        contentType: 'image/jpeg'
       });
     }
   } else {
@@ -553,12 +546,12 @@ const addListingService = async (
       let file = streetViewImageFiles[i];
       const response = await fetch(file);
       const blob = await response.blob();
-      let extension = "jpeg";
+      let extension = 'jpeg';
       let key = `images-mobile/${uuid()}-${uuid()}.${extension}`;
       let url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`;
       streetViewImageArray.push(url);
       await Storage.put(key, blob, {
-        contentType: "image/jpeg",
+        contentType: 'image/jpeg'
       });
     }
 
@@ -566,12 +559,12 @@ const addListingService = async (
       let file = parkingEntranceImageFiles[i];
       const response = await fetch(file);
       const blob = await response.blob();
-      let extension = "jpeg";
+      let extension = 'jpeg';
       let key = `images-mobile/${uuid()}${uuid()}.${extension}`;
       let url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`;
       parkingEntranceImageArray.push(url);
       await Storage.put(key, blob, {
-        contentType: "image/jpeg",
+        contentType: 'image/jpeg'
       });
     }
 
@@ -579,19 +572,18 @@ const addListingService = async (
       let file = parkingSpaceImageFiles[i];
       const response = await fetch(file);
       const blob = await response.blob();
-      let extension = "jpeg";
+      let extension = 'jpeg';
       let key = `images-mobile/${uuid()}${uuid()}.${extension}`;
       let url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`;
       parkingSpaceImageArray.push(url);
       await Storage.put(key, blob, {
-        contentType: "image/jpeg",
+        contentType: 'image/jpeg'
       });
     }
   }
 
   let variables = {
-    thumbnail:
-      streetViewImageArray.length > 0 ? streetViewImageArray[0] : thumbnailURL,
+    thumbnail: streetViewImageArray.length > 0 ? streetViewImageArray[0] : thumbnailURL,
     ownerId: userData.sub,
     ownerName: userData.name,
     ownerEmail: userData.email,
@@ -599,26 +591,26 @@ const addListingService = async (
       ...tempListing.locationDetails,
       streetViewImages: streetViewImageArray,
       parkingEntranceImages: parkingEntranceImageArray,
-      parkingSpaceImages: parkingSpaceImageArray,
+      parkingSpaceImages: parkingSpaceImageArray
     },
     spaceDetails: tempListing.spaceDetails,
     spaceAvailable: tempListing.spaceAvailable,
     pricingDetails: tempListing.pricingDetails,
-    location: tempListing.locationDetails.marker,
+    location: tempListing.locationDetails.marker
   };
   if (tempListing.edit) {
     const { data } = await updateListing({
       variables: {
         id: tempListing._id,
         published: false,
-        ...variables,
-      },
+        ...variables
+      }
     });
     updateListingLocal(data.updateListing);
     return data;
   } else {
     const { data: data1 } = await createListing({
-      variables,
+      variables
     });
     addListingLocal(data1.createListing);
     return data1;
@@ -629,5 +621,5 @@ export default {
   addListingService,
   getMyListingService,
   CREATE_LISTING,
-  UPDATE_LISTING,
+  UPDATE_LISTING
 };

@@ -7,8 +7,10 @@
     "aws-amplify": "*",
     "aws-appsync": "*",
     "redux": "*",
+    "react-redux": "*",
     "redux-thunk": "*",
-    "react-redux-loading": "*"
+    "react-redux-loading": "*",
+    "uuid": "*"
   },
   "license": "MIT"
 }

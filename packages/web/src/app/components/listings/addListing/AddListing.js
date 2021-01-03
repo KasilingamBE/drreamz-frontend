@@ -1,27 +1,21 @@
-import React, { useState } from "react";
-import { Row, Col } from "react-bootstrap";
-import AddListingMenu from "./AddListingMenu";
-import AddListingForm from "./AddListingForm";
+import React, { useState } from 'react';
+import { Row, Col } from 'react-bootstrap';
+import AddListingMenu from './AddListingMenu';
+import AddListingForm from './AddListingForm';
 
-const AddListing = (props) => {
+const AddListing = ({ edit = false }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
     <div className="add-listing-div">
-      <h1>Add Listing</h1>
+      <h1>{edit ? 'Update' : 'Add'} Listing</h1>
       <Row>
         <Col sm={3}>
-          <AddListingMenu
-            setActiveIndex={setActiveIndex}
-            activeIndex={activeIndex}
-          />
+          <AddListingMenu setActiveIndex={setActiveIndex} activeIndex={activeIndex} />
         </Col>
         <Col sm={8}>
           {activeIndex > 0 && (
-            <AddListingForm
-              activeIndex={activeIndex}
-              setActiveIndex={setActiveIndex}
-            />
+            <AddListingForm activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
           )}
         </Col>
       </Row>

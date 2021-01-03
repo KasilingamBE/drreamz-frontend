@@ -1,13 +1,17 @@
-import React, { useState } from "react";
-import { Button, ProgressBar } from "react-bootstrap";
-import { useMutation } from "@apollo/client";
-import { connect } from "react-redux";
-import { deleteTempListing } from "../../../redux/actions/tempListing";
+import React, { useState } from 'react';
+import { Button, ProgressBar, Spinner } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import {
+  useAddOneListing,
+  CREATE_LISTING,
+  UPDATE_LISTING
+} from '@parkyourself-frontend/shared/hooks/listings';
+import { deleteTempListing } from '@parkyourself-frontend/shared/redux/actions/tempListing';
 import {
   addListingLocal,
-  updateListingLocal,
-} from "../../../redux/actions/user";
-import ListingService from "../../../services/listing.service";
+  updateListingLocal
+} from '@parkyourself-frontend/shared/redux/actions/user';
+import { useRouter } from 'next/router';
 
 const AddListingHeader = ({
   saveAndExitHandler,
@@ -15,35 +19,22 @@ const AddListingHeader = ({
   onNextButtonPress,
   activeIndex,
   tempListing,
-  userData,
+  userData
 }) => {
-  const [createListing] = useMutation(ListingService.CREATE_LISTING);
-  const [updateListing] = useMutation(ListingService.UPDATE_LISTING);
+  const router = useRouter();
+  const { handleSubmit } = useAddOneListing();
   const [disabled, setDisabled] = useState(false);
 
   const onSubmitHandler = async () => {
     try {
       setDisabled(true);
-      await ListingService.addListingService(
-        tempListing,
-        createListing,
-        updateListing,
-        userData,
-        addListingLocal,
-        updateListingLocal
-      );
-      deleteTempListing();
+      await handleSubmit();
       setDisabled(false);
-      // if (tempListing.edit) {
-      //   navigation.navigate('MyListingsScreen');
-      // } else {
-      //   navigation.navigate('SpaceOwnerDashboard');
-      // }
-      // navigation.navigate("MyListingsScreen");
+      router.push('/listings/my');
     } catch (error) {
-      console.log(error);
+      // console.log('error', error);
       setDisabled(false);
-      alert("Something Went wrong!", error.message);
+      alert('Something Went wrong!', error.message);
     }
   };
 
@@ -59,7 +50,7 @@ const AddListingHeader = ({
             className="mr-2"
             variant="primary"
             onClick={onBackButtonPress}
-          >
+            style={{ pointerEvents: disabled ? 'none' : 'auto' }}>
             Back
           </Button>
           {activeIndex < 18 && (
@@ -67,12 +58,19 @@ const AddListingHeader = ({
               className="mr-2"
               variant="success"
               onClick={onNextButtonPress}
-            >
+              style={{ pointerEvents: disabled ? 'none' : 'auto' }}>
               Next
             </Button>
           )}
-          <Button variant="dark" onClick={saveAndExitHandler}>
-            Save & Exit
+          <Button
+            variant="dark"
+            onClick={onSubmitHandler}
+            style={{ pointerEvents: disabled ? 'none' : 'auto' }}>
+            {disabled ? (
+              <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+            ) : (
+              'Save & Exit'
+            )}
           </Button>
         </div>
       </div>
@@ -82,10 +80,10 @@ const AddListingHeader = ({
 
 const mapStateToProps = ({ tempListing, auth }) => ({
   tempListing,
-  userData: auth.authenticated ? auth.data.attributes : null,
+  userData: auth.authenticated ? auth.data.attributes : null
 });
 export default connect(mapStateToProps, {
   deleteTempListing,
   addListingLocal,
-  updateListingLocal,
+  updateListingLocal
 })(AddListingHeader);

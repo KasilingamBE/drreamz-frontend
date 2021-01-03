@@ -49,6 +49,7 @@ const GET_ALL = gql`
     }
   }
 `;
+
 let oneYearFromNow = new Date();
 oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
 let yearsBackFromNow = new Date();

@@ -437,12 +437,9 @@ const MyListingItem = ({
           <h4 className="col-10">{listBy === 'address' ? address : propertyName}</h4>
           <div className="tag col-2">Manager</div>
         </div>
-
         <div className="booking-count">
-          {bookings.length > 0 ? bookings.length : 'No'} Upcoming{' '}
-          {bookings.length > 1 ? 'Bookings' : 'Booking'}
+          {bookings < 1 ? 'No Upcoming Bookings' : `${bookings} Upcoming Bookings`}
         </div>
-
         <div className="listing-btn-row">
           <Button variant="outline-primary" disabled={disabled}>
             Login
@@ -467,7 +464,7 @@ const MyListingItem = ({
               Manage Staff
             </Button>
           </Link>
-          <Link href={`/listings/add?edit=true&id=${_id}`}>
+          <Link href={`/listings/edit/${_id}`}>
             <Button variant="outline-primary" disabled={disabled}>
               Modify
             </Button>

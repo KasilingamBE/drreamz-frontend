@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,17 +6,15 @@ import {
   Image,
   TouchableOpacity,
   Alert,
-  ActivityIndicator,
+  ActivityIndicator
 } from 'react-native';
+import { useMutation, gql } from '@apollo/client';
+import omitTypename from '@parkyourself-frontend/shared/utils/omitTypename';
+import { connect } from 'react-redux';
+import { deleteListingLocal, publishListingLocal } from '../../app/redux/actions/user';
 import MaterialButtonPrimary from '../MaterialButtonPrimary';
-import {useMutation, gql} from '@apollo/client';
-import {
-  deleteListingLocal,
-  publishListingLocal,
-} from '../../app/redux/actions/user';
-import {addTempListing} from '../../app/redux/actions/tempListing';
-import {connect} from 'react-redux';
-import {client} from '../../app/graphql';
+import { addTempListing } from '../../app/redux/actions/tempListing';
+import { client } from '../../app/graphql';
 
 const DELETE_LISTING = gql`
   mutation DeleteListing($id: ID!) {
@@ -44,7 +42,7 @@ function MyListingListItem({
   navigation,
   deleteListingLocal,
   publishListingLocal,
-  addTempListing,
+  addTempListing
 }) {
   const [publishListing] = useMutation(PUBLISH_LISTING);
   const [deleteListing] = useMutation(DELETE_LISTING);
@@ -68,7 +66,7 @@ function MyListingListItem({
     streetViewImages,
     parkingEntranceImages,
     parkingSpaceImages,
-    features,
+    features
   } = item.locationDetails;
 
   const {
@@ -92,7 +90,7 @@ function MyListingListItem({
     isLabelled,
     spaceLabels,
     aboutSpace,
-    accessInstructions,
+    accessInstructions
   } = item.spaceDetails;
 
   const {
@@ -109,36 +107,26 @@ function MyListingListItem({
     advanceBookingTime,
     minTime,
     maxTime,
-    instantBooking,
+    instantBooking
   } = item.spaceAvailable;
 
-  const {pricingRates} = item.pricingDetails;
+  const { pricingRates } = item.pricingDetails;
 
   const viewDetailsHandler = () => {
-    navigation.navigate('DetailsScreen', {id: item._id});
+    navigation.navigate('DetailsScreen', { id: item._id });
   };
 
-  const omitTypename = (key, value) =>
-    key === '__typename' ? undefined : value;
+  // const omitTypename = (key, value) => (key === '__typename' ? undefined : value);
 
   const modifyListingHandler = () => {
     addTempListing({
       ...item,
       edit: true,
-      locationDetails: JSON.parse(
-        JSON.stringify(item.locationDetails),
-        omitTypename,
-      ),
+      locationDetails: JSON.parse(JSON.stringify(item.locationDetails), omitTypename),
       spaceDetails: JSON.parse(JSON.stringify(item.spaceDetails), omitTypename),
-      spaceAvailable: JSON.parse(
-        JSON.stringify(item.spaceAvailable),
-        omitTypename,
-      ),
-      pricingDetails: JSON.parse(
-        JSON.stringify(item.pricingDetails),
-        omitTypename,
-      ),
-      location: JSON.parse(JSON.stringify(item.location), omitTypename),
+      spaceAvailable: JSON.parse(JSON.stringify(item.spaceAvailable), omitTypename),
+      pricingDetails: JSON.parse(JSON.stringify(item.pricingDetails), omitTypename),
+      location: JSON.parse(JSON.stringify(item.location), omitTypename)
     });
     navigation.navigate('AddListing');
   };
@@ -148,8 +136,8 @@ function MyListingListItem({
       setloadingD(true);
       await deleteListing({
         variables: {
-          id: item._id,
-        },
+          id: item._id
+        }
       });
       setloadingD(false);
       Alert.alert('Listing Deleted Successfully');
@@ -161,7 +149,7 @@ function MyListingListItem({
   };
 
   const checkAllSpaceLabels = () => {
-    var flag = true;
+    let flag = true;
     spaceLabels.forEach((item) => {
       if (!item.label || !item.largestSize) {
         // console.log('found invalid space label');
@@ -172,9 +160,9 @@ function MyListingListItem({
   };
 
   const checkWithdrawalSettings = async () => {
-    let {data} = await client.query({
+    let { data } = await client.query({
       query: stripe_Retrieve_Account,
-      variables: {userId: userId},
+      variables: { userId: userId }
     });
     // console.log('data :', data);
     if (data.stripeRetrieveAccount) {
@@ -195,9 +183,7 @@ function MyListingListItem({
         }
       }
     } else {
-      Alert.alert(
-        'Withdrawal Settings not Set Up. Please Set it and Try again',
-      );
+      Alert.alert('Withdrawal Settings not Set Up. Please Set it and Try again');
       // router.push("/withdrawal-settings");
       return false;
     }
@@ -253,9 +239,7 @@ function MyListingListItem({
         (scheduleType == 'fixed' &&
           (monday.isActive ? monday.startTime && monday.endTime : true) &&
           (tuesday.isActive ? tuesday.startTime && tuesday.endTime : true) &&
-          (wednesday.isActive
-            ? wednesday.startTime && wednesday.endTime
-            : true) &&
+          (wednesday.isActive ? wednesday.startTime && wednesday.endTime : true) &&
           (thursday.isActive ? thursday.startTime && thursday.endTime : true) &&
           (friday.isActive ? friday.startTime && friday.endTime : true) &&
           (saturday.isActive ? saturday.startTime && saturday.endTime : true) &&
@@ -291,8 +275,8 @@ function MyListingListItem({
         await publishListing({
           variables: {
             id: item._id,
-            published: !item.published,
-          },
+            published: !item.published
+          }
         });
 
         if (item.published) {
@@ -300,7 +284,7 @@ function MyListingListItem({
         } else {
           Alert.alert('Listing Activated Successfully');
         }
-        publishListingLocal({_id: item._id, published: !item.published});
+        publishListingLocal({ _id: item._id, published: !item.published });
       }
       updateDisabled(false);
       setloadingP(false);
@@ -319,14 +303,15 @@ function MyListingListItem({
           <Image
             source={
               streetViewImages.length > 0
-                ? {uri: streetViewImages[0]}
+                ? { uri: streetViewImages[0] }
                 : require('../../assets/images/cars.jpg')
             }
             // source={
             //   require('../../assets/images/cars.jpg')
             // }
             resizeMode="stretch"
-            style={styles.image}/>
+            style={styles.image}
+          />
         </View>
         <View style={styles.title}>
           <Text style={styles.location}>
@@ -353,18 +338,14 @@ function MyListingListItem({
         </TouchableOpacity>
       </View>
       <View style={styles.buttons}>
-        <TouchableOpacity
-          style={styles.modifyButton}
-          onPress={modifyListingHandler}>
+        <TouchableOpacity style={styles.modifyButton} onPress={modifyListingHandler}>
           <Text style={styles.modify}>MODIFY</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.modifyButton} onPress={handlePublish}>
           {loadingP ? (
             <ActivityIndicator color="#27aae1" />
           ) : (
-            <Text style={styles.modify}>
-              {item.published ? 'INACTIVE' : 'ACTIVE'}
-            </Text>
+            <Text style={styles.modify}>{item.published ? 'INACTIVE' : 'ACTIVE'}</Text>
           )}
         </TouchableOpacity>
         <TouchableOpacity style={styles.modifyButton} onPress={handleDelete}>
@@ -389,49 +370,49 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0,0,0,1)',
     shadowOffset: {
       height: 10,
-      width: 10,
+      width: 10
     },
     elevation: 20,
     shadowOpacity: 0.17,
     shadowRadius: 20,
     backgroundColor: '#fff',
     padding: 10,
-    marginVertical: 10,
+    marginVertical: 10
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   imageContainer: {
-    width: '20%',
+    width: '20%'
   },
   image: {
     width: 60,
     height: 60,
-    borderRadius: 10,
+    borderRadius: 10
   },
   title: {
-    width: '65%',
+    width: '65%'
   },
   location: {
     // fontFamily: 'roboto-700',
     color: '#121212',
     fontSize: 15,
-    fontWeight: '700',
+    fontWeight: '700'
   },
   bookings: {
     // fontFamily: 'roboto-500',
     color: 'rgba(39,170,225,1)',
     fontSize: 12,
     fontWeight: '500',
-    marginTop: 10,
+    marginTop: 10
   },
   tag: {
     width: '15%',
     height: 20,
     // backgroundColor: 'rgba(39,170,225,0.2)',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   tagText: {
     // fontFamily: 'roboto-regular',
@@ -439,13 +420,13 @@ const styles = StyleSheet.create({
     fontSize: 9,
     backgroundColor: 'rgba(39,170,225,0.2)',
     paddingHorizontal: 5,
-    paddingVertical: 3,
+    paddingVertical: 3
   },
   buttons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 20
   },
   loginButton: {
     width: '32%',
@@ -453,16 +434,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(39,170,225,1)',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   login: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(39,170,225,1)',
-    fontSize: 12,
+    fontSize: 12
   },
   viewDetails: {
     width: '32%',
-    height: 36,
+    height: 36
     // fontSize: 8,
   },
   modifyButton: {
@@ -471,21 +452,21 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(39,170,225,1)',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   modify: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(39,170,225,1)',
-    fontSize: 12,
-  },
+    fontSize: 12
+  }
 });
 
-const mapStateToProps = ({auth}) => ({
-  userId: auth.data.attributes.sub,
+const mapStateToProps = ({ auth }) => ({
+  userId: auth.data.attributes.sub
 });
 
 export default connect(mapStateToProps, {
   deleteListingLocal,
   publishListingLocal,
-  addTempListing,
+  addTempListing
 })(MyListingListItem);

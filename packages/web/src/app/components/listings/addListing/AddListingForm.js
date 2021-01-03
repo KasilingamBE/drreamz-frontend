@@ -1,150 +1,35 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
+/* eslint-disable react/prop-types */
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { Form, InputGroup, FormControl, Spinner, Button, Card } from 'react-bootstrap';
+import moment from 'moment';
+import { XCircle } from 'react-feather';
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import Geocode from 'react-geocode';
+import featureList from '@parkyourself-frontend/shared/config/features';
+import countryCodes from '@parkyourself-frontend/shared/config/countries';
 import {
-  Form,
-  InputGroup,
-  FormControl,
-  Spinner,
-  Button,
-  Card,
-} from "react-bootstrap";
-import moment from "moment";
-import { XCircle } from "react-feather";
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from "react-places-autocomplete";
-import Geocode from "react-geocode";
-import AddListingHeader from "./AddListingHeader";
-import AddListingButtonRow from "./AddListingButtonRow";
+  convertToUnit,
+  convertToMilliseconds
+} from '@parkyourself-frontend/shared/utils/milliseconds';
+import API from '@parkyourself-frontend/shared/config/apiKeys';
+import AddListingHeader from './AddListingHeader';
+import AddListingButtonRow from './AddListingButtonRow';
 import {
   updateTempListing,
   tempListingLocationD,
   tempListingSpaceD,
   tempListingSpaceA,
-  tempListingPricingD,
-} from "../../../redux/actions/tempListing";
-import MapContainer from "../../MapContainer";
-import CheckBoxItem from "../../CheckBoxItem";
-import RadioItem from "../../RadioItem";
-import CustomScheduleModal from "../../CustomScheduleModal";
-import StartEndDateTimePicker from "../../StartEndDateTimePicker";
-import UseFormOption from "../../formOptions/UseFormOption";
+  tempListingPricingD
+} from '../../../redux/actions/tempListing';
+import MapContainer from '../../MapContainer';
+import CheckBoxItem from '../../CheckBoxItem';
+import RadioItem from '../../RadioItem';
+import CustomScheduleModal from '../../CustomScheduleModal';
+import StartEndDateTimePicker from '../../StartEndDateTimePicker';
+import UseFormOption from '../../formOptions/UseFormOption';
 
-Geocode.setApiKey("AIzaSyDF0pzALjYYanPshuclFzq_2F24xZWZjOg");
-
-const countryCodes = [
-  { code: "+1", country: "United States" },
-  { code: "+93", country: "Afghanistan" },
-  { code: "+358", country: "Aland Islands" },
-  { code: "+355", country: "Albania" },
-  { code: "+213", country: "Algeria" },
-  { code: "+54", country: "Argentina" },
-  { code: "+61", country: "Australia" },
-  { code: "+43", country: "Austria" },
-  { code: "+1", country: "Bahamas" },
-  { code: "+973", country: "Bahrain" },
-  { code: "+880", country: "Bangladesh" },
-  { code: "+1", country: "Barbados" },
-  { code: "+375", country: "Belarus" },
-  { code: "+32", country: "Belgium" },
-  { code: "+975", country: "Bhutan" },
-  { code: "+55", country: "Brazil" },
-  { code: "+359", country: "Bulgaria" },
-  { code: "+855", country: "Cambodia" },
-  { code: "+1", country: "Canada" },
-  { code: "+236", country: "Central African Republic" },
-  { code: "+56", country: "Chile" },
-  { code: "+86", country: "China" },
-  { code: "+57", country: "Colombia" },
-  { code: "+506", country: "Costa Rica" },
-  { code: "+53", country: "Cuba" },
-  { code: "+420", country: "Czech Republic" },
-  { code: "+45", country: "Denmark" },
-  { code: "+1", country: "Dominica" },
-  { code: "+1", country: "Dominican Republic" },
-  { code: "+593", country: "Ecuador" },
-  { code: "+20", country: "Egypt" },
-  { code: "+251", country: "Ethiopia" },
-  { code: "+679", country: "Fiji" },
-  { code: "+358", country: "Finland" },
-  { code: "+33", country: "France" },
-  { code: "+995", country: "Georgia" },
-  { code: "+49", country: "Germany" },
-  { code: "+30", country: "Greece" },
-  { code: "+299", country: "Greenland" },
-  { code: "+224", country: "Guinea" },
-  { code: "+852", country: "Hong Kong" },
-  { code: "+36", country: "Hungary" },
-  { code: "+91", country: "India" },
-  { code: "+98", country: "Iran" },
-  { code: "+964", country: "Iraq" },
-  { code: "+39", country: "Italy" },
-  { code: "+1", country: "Jamaica" },
-  { code: "+81", country: "Japan" },
-  { code: "+254", country: "Kenya" },
-  { code: "+965", country: "Kuwait" },
-  { code: "+961", country: "Lebanon" },
-  { code: "+218", country: "Libya" },
-  { code: "+352", country: "Luxembourg" },
-  { code: "+853", country: "Macau" },
-  { code: "+389", country: "Macedonia" },
-  { code: "+60", country: "Malaysia" },
-  { code: "+230", country: "Mauritius" },
-  { code: "+52", country: "Mexico" },
-  { code: "+95", country: "Myanmar" },
-  { code: "+264", country: "Namibia" },
-  { code: "+31", country: "Netherlands" },
-  { code: "+64", country: "New Zealand" },
-  { code: "+234", country: "Nigeria" },
-  { code: "+850", country: "North Korea" },
-  { code: "+47", country: "Norway" },
-  { code: "+968", country: "Oman" },
-  { code: "+92", country: "Pakistan" },
-  { code: "+507", country: "Panama" },
-  { code: "+63", country: "Philippines" },
-  { code: "+351", country: "Portugal" },
-  { code: "+974", country: "Qatar" },
-  { code: "+242", country: "Republic of the Congo" },
-  { code: "+7", country: "Russia" },
-  { code: "+378", country: "San Marino" },
-  { code: "+966", country: "Saudi Arabia" },
-  { code: "+65", country: "Singapore" },
-  { code: "+252", country: "Somalia" },
-  { code: "+27", country: "South Africa" },
-  { code: "+34", country: "Spain" },
-  { code: "+94", country: "Sri Lanka" },
-  { code: "+41", country: "Switzerland" },
-  { code: "+886", country: "Taiwan" },
-  { code: "+66", country: "Thailand" },
-  { code: "+90", country: "Turkey" },
-  { code: "+256", country: "Uganda" },
-  { code: "+380", country: "Ukraine" },
-  { code: "+971", country: "United Arab Emirates" },
-  { code: "+44", country: "United Kingdom" },
-
-  { code: "+39", country: "Vatican" },
-  { code: "+58", country: "Venezuela" },
-  { code: "+84", country: "Vietnam" },
-  { code: "+967", country: "Yemen" },
-  { code: "+260", country: "Zambia" },
-  { code: "+263", country: "Zimbabwe" },
-];
-
-const featureList = [
-  "24/7 access",
-  "Car Wash",
-  "Covered",
-  "EV Charging",
-  "Fenced",
-  "Mobile Pass",
-  "Paved",
-  "Security",
-  "Staff onsite",
-  "Tandem",
-  "Unpaved",
-  "Valet",
-];
+Geocode.setApiKey(API.GOGGLE);
 
 const AddListingForm = ({
   activeIndex,
@@ -154,21 +39,16 @@ const AddListingForm = ({
   tempListingLocationD,
   tempListingSpaceD,
   tempListingSpaceA,
-  tempListingPricingD,
+  tempListingPricingD
 }) => {
   const [validated, setValidated] = useState(false);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [showCustomScheduleModal, setShowCustomScheduleModal] = useState(false);
 
   const onChangeSearch = (value) => {
     setSearch(value);
   };
-  const {
-    locationDetails,
-    spaceDetails,
-    spaceAvailable,
-    pricingDetails,
-  } = tempListing;
+  const { locationDetails, spaceDetails, spaceAvailable, pricingDetails } = tempListing;
 
   const {
     listingType,
@@ -186,7 +66,7 @@ const AddListingForm = ({
     streetViewImages,
     parkingEntranceImages,
     parkingSpaceImages,
-    features,
+    features
   } = locationDetails;
 
   const {
@@ -210,7 +90,7 @@ const AddListingForm = ({
     isLabelled,
     spaceLabels,
     aboutSpace,
-    accessInstructions,
+    accessInstructions
   } = spaceDetails;
 
   const {
@@ -228,7 +108,7 @@ const AddListingForm = ({
     advanceBookingTime,
     minTime,
     maxTime,
-    instantBooking,
+    instantBooking
   } = spaceAvailable;
 
   const { pricingType, pricingRates } = pricingDetails;
@@ -237,14 +117,7 @@ const AddListingForm = ({
     try {
       if (
         (activeIndex == 1 && propertyName) ||
-        (activeIndex == 2 &&
-          country &&
-          address &&
-          city &&
-          state &&
-          postalCode &&
-          code &&
-          phone) ||
+        (activeIndex == 2 && country && address && city && state && postalCode && code && phone) ||
         activeIndex == 3 ||
         activeIndex == 4 ||
         activeIndex == 5 ||
@@ -259,44 +132,32 @@ const AddListingForm = ({
         (activeIndex == 10 && aboutSpace) ||
         (activeIndex == 11 && accessInstructions) ||
         (activeIndex == 12 &&
-          (scheduleType == "24hours" ||
-            (scheduleType == "fixed" &&
+          (scheduleType == '24hours' ||
+            (scheduleType == 'fixed' &&
               (monday.isActive ? monday.startTime && monday.endTime : true) &&
-              (tuesday.isActive
-                ? tuesday.startTime && tuesday.endTime
-                : true) &&
-              (wednesday.isActive
-                ? wednesday.startTime && wednesday.endTime
-                : true) &&
-              (thursday.isActive
-                ? thursday.startTime && thursday.endTime
-                : true) &&
+              (tuesday.isActive ? tuesday.startTime && tuesday.endTime : true) &&
+              (wednesday.isActive ? wednesday.startTime && wednesday.endTime : true) &&
+              (thursday.isActive ? thursday.startTime && thursday.endTime : true) &&
               (friday.isActive ? friday.startTime && friday.endTime : true) &&
-              (saturday.isActive
-                ? saturday.startTime && saturday.endTime
-                : true) &&
+              (saturday.isActive ? saturday.startTime && saturday.endTime : true) &&
               (sunday.isActive ? sunday.startTime && sunday.endTime : true)) ||
-            (scheduleType == "custom" && customTimeRange.length > 0))) ||
+            (scheduleType == 'custom' && customTimeRange.length > 0))) ||
         (activeIndex == 13 &&
           (!hasNoticeTime ||
-            (hasNoticeTime &&
-              noticeTime.value !== "" &&
-              noticeTime.value >= 0))) ||
-        (activeIndex == 14 &&
-          advanceBookingTime.value !== "" &&
-          advanceBookingTime.value >= 0) ||
+            (hasNoticeTime && noticeTime.value !== '' && noticeTime.value >= 0))) ||
+        (activeIndex == 14 && advanceBookingTime.value !== '' && advanceBookingTime.value >= 0) ||
         (activeIndex == 15 &&
-          minTime.value !== "" &&
+          minTime.value !== '' &&
           minTime.value >= 0 &&
-          maxTime.value !== "" &&
+          maxTime.value !== '' &&
           maxTime.value >= 0) ||
-        (activeIndex == 16 && !(instantBooking === "")) ||
+        (activeIndex == 16 && !(instantBooking === '')) ||
         (activeIndex == 17 && pricingType) ||
         (activeIndex == 18 &&
-          pricingRates.perHourRate !== "" &&
-          pricingRates.perDayRate !== "" &&
-          pricingRates.perWeekRate !== "" &&
-          pricingRates.perMonthRate !== "" &&
+          pricingRates.perHourRate !== '' &&
+          pricingRates.perDayRate !== '' &&
+          pricingRates.perWeekRate !== '' &&
+          pricingRates.perMonthRate !== '' &&
           pricingRates.perHourRate >= 0 &&
           pricingRates.perDayRate >= 0 &&
           pricingRates.perWeekRate >= 0 &&
@@ -306,12 +167,11 @@ const AddListingForm = ({
         return false;
 
         // setActiveIndex(activeIndex + 1);
-      } else {
-        // setValidated(true);
-        return true;
       }
+      // setValidated(true);
+      return true;
     } catch (error) {
-      alert("Error while Validatings");
+      alert('Error while Validatings');
     }
   };
 
@@ -330,11 +190,11 @@ const AddListingForm = ({
     const lng = clickEvent.latLng.lng();
     Geocode.fromLatLng(lat, lng).then(
       (response) => {
-        console.log(response);
+        // console.log(response);
         handleSelect(response.results[0].formatted_address);
       },
       (error) => {
-        Alert("Something went wrong");
+        Alert('Something went wrong');
       }
     );
   };
@@ -344,61 +204,54 @@ const AddListingForm = ({
     geocodeByAddress(value)
       .then((details) => {
         let tempLoc = {
-          country: "United States",
+          country: 'United States',
           address: details[0].formatted_address,
           marker: {
-            type: "Point",
-            coordinates: [
-              details[0].geometry.location.lng(),
-              details[0].geometry.location.lat(),
-            ],
-          },
+            type: 'Point',
+            coordinates: [details[0].geometry.location.lng(), details[0].geometry.location.lat()]
+          }
         };
 
         details[0].address_components.forEach((item) => {
-          if (item.types.includes("country")) {
+          if (item.types.includes('country')) {
             tempLoc = {
               ...tempLoc,
-              country: item.long_name,
+              country: item.long_name
             };
           }
-          if (item.types.includes("administrative_area_level_1")) {
+          if (item.types.includes('administrative_area_level_1')) {
             tempLoc = {
               ...tempLoc,
-              state: item.long_name,
+              state: item.long_name
             };
           }
-          if (item.types.includes("administrative_area_level_2")) {
+          if (item.types.includes('administrative_area_level_2')) {
             tempLoc = {
               ...tempLoc,
-              city: item.long_name,
+              city: item.long_name
             };
           }
-          if (item.types.includes("postal_code")) {
+          if (item.types.includes('postal_code')) {
             tempLoc = {
               ...tempLoc,
-              postalCode: item.long_name,
+              postalCode: item.long_name
             };
           }
         });
 
         tempListingLocationD({
           ...tempLoc,
-          code: countryCodes.find(
-            (i) => i.country.toLowerCase() == tempLoc.country.toLowerCase()
-          ).code,
+          code: countryCodes.find((i) => i.country.toLowerCase() == tempLoc.country.toLowerCase())
+            .code
         });
       })
-      .catch((error) => console.error("Error", error));
+      .catch((error) => console.error('Error', error));
   };
 
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
-        Geocode.fromLatLng(
-          position.coords.latitude,
-          position.coords.longitude
-        ).then(
+        Geocode.fromLatLng(position.coords.latitude, position.coords.longitude).then(
           (response) => {
             handleSelect(response.results[0].formatted_address);
           },
@@ -408,24 +261,24 @@ const AddListingForm = ({
         );
       });
     } else {
-      alert("Geolocation is not supported by your browser.");
+      alert('Geolocation is not supported by your browser.');
     }
   };
 
   const removeImage = (type) => {
-    if (type === "streetViewImages") {
+    if (type === 'streetViewImages') {
       tempListingLocationD({
-        streetViewImages: [],
+        streetViewImages: []
       });
       updateTempListing({ tStreetViewImages: [] });
-    } else if (type === "parkingEntranceImages") {
+    } else if (type === 'parkingEntranceImages') {
       tempListingLocationD({
-        parkingEntranceImages: [],
+        parkingEntranceImages: []
       });
       updateTempListing({ tParkingEntranceImages: [] });
     } else {
       tempListingLocationD({
-        parkingSpaceImages: [],
+        parkingSpaceImages: []
       });
       updateTempListing({ tParkingSpaceImages: [] });
     }
@@ -433,19 +286,19 @@ const AddListingForm = ({
 
   const handleFileChange = (e) => {
     if (e.target.files[0]) {
-      if (e.target.name == "streetView") {
+      if (e.target.name === 'streetView') {
         tempListingLocationD({
-          streetViewImages: [URL.createObjectURL(e.target.files[0])],
+          streetViewImages: [URL.createObjectURL(e.target.files[0])]
         });
         updateTempListing({ tStreetViewImages: e.target.files });
-      } else if (e.target.name == "parkingEntrance") {
+      } else if (e.target.name === 'parkingEntrance') {
         tempListingLocationD({
-          parkingEntranceImages: [URL.createObjectURL(e.target.files[0])],
+          parkingEntranceImages: [URL.createObjectURL(e.target.files[0])]
         });
         updateTempListing({ tParkingEntranceImages: e.target.files });
-      } else if (e.target.name == "parkingSpace") {
+      } else if (e.target.name === 'parkingSpace') {
         tempListingLocationD({
-          parkingSpaceImages: [URL.createObjectURL(e.target.files[0])],
+          parkingSpaceImages: [URL.createObjectURL(e.target.files[0])]
         });
         updateTempListing({ tParkingSpaceImages: e.target.files });
       }
@@ -455,11 +308,11 @@ const AddListingForm = ({
   const toggleFeatures = (feature) => {
     if (features.includes(feature)) {
       tempListingLocationD({
-        features: features.filter((item) => item != feature),
+        features: features.filter((item) => item != feature)
       });
     } else {
       tempListingLocationD({
-        features: [...features, feature],
+        features: [...features, feature]
       });
     }
   };
@@ -475,18 +328,33 @@ const AddListingForm = ({
     tempListingSpaceD({
       spaceLabels: spaceLabels.map((item, index) =>
         index == idx ? { ...item, label: label } : item
-      ),
+      )
     });
   };
 
   const checkAllSpaceLabels = () => {
     var flag = true;
     spaceDetails.spaceLabels.forEach((item) => {
-      if (item.label === "") {
+      if (item.label === '') {
         flag = false;
       }
     });
     return flag;
+  };
+
+  const resetVehicleSize = () => {
+    tempListingSpaceD({
+      motorcycle: false,
+      compact: false,
+      midsized: false,
+      large: true,
+      oversized: false,
+      motorcycleSpaces: 0,
+      compactSpaces: 0,
+      midsizedSpaces: 0,
+      largeSpaces: 0,
+      oversizedSpaces: 0
+    });
   };
 
   return (
@@ -510,9 +378,7 @@ const AddListingForm = ({
               <UseFormOption
                 id="5fccdb80d9db4a00080a0bda"
                 value={listingType}
-                onChange={(e) =>
-                  tempListingLocationD({ listingType: e.target.value })
-                }
+                onChange={(e) => tempListingLocationD({ listingType: e.target.value })}
               />
               {/* <Form.Control
                 as="select"
@@ -529,20 +395,16 @@ const AddListingForm = ({
               </Form.Control> */}
             </Form.Group>
             <Form.Group controlId="formBasicEmail">
-              <Form.Label>Property Name</Form.Label>
+              <Form.Label>Property Name*</Form.Label>
               <Form.Control
                 name="propertyName"
                 value={propertyName}
-                onChange={(e) =>
-                  tempListingLocationD({ propertyName: e.target.value })
-                }
+                onChange={(e) => tempListingLocationD({ propertyName: e.target.value })}
                 type="text"
                 placeholder="Enter property name"
                 required
               />
-              <Form.Control.Feedback type="invalid">
-                This field is required
-              </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
             </Form.Group>
           </Form>
         </div>
@@ -555,51 +417,41 @@ const AddListingForm = ({
               Use Current Location
             </Button>
           </div>
-          <PlacesAutocomplete
-            value={search}
-            onChange={onChangeSearch}
-            onSelect={handleSelect}
-          >
-            {({
-              getInputProps,
-              suggestions,
-              getSuggestionItemProps,
-              loading,
-            }) => (
+          <PlacesAutocomplete value={search} onChange={onChangeSearch} onSelect={handleSelect}>
+            {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
               <div>
                 <input
                   {...getInputProps({
-                    placeholder: "Search your location",
-                    className: "location-search-input",
+                    placeholder: 'Search your location',
+                    className: 'location-search-input'
                   })}
                 />
                 <div className="autocomplete-dropdown-container">
                   {loading && <div>Loading...</div>}
                   {suggestions.map((suggestion) => {
                     const className = suggestion.active
-                      ? "suggestion-item--active"
-                      : "suggestion-item";
+                      ? 'suggestion-item--active'
+                      : 'suggestion-item';
                     // inline style for demonstration purpose
                     const style = suggestion.active
                       ? {
-                          backgroundColor: "#27aae1",
-                          cursor: "pointer",
-                          padding: "10px",
-                          border: "1px solid #999",
+                          backgroundColor: '#27aae1',
+                          cursor: 'pointer',
+                          padding: '10px',
+                          border: '1px solid #999'
                         }
                       : {
-                          backgroundColor: "#ffffff",
-                          cursor: "pointer",
-                          padding: "10px",
-                          border: "1px solid #999",
+                          backgroundColor: '#ffffff',
+                          cursor: 'pointer',
+                          padding: '10px',
+                          border: '1px solid #999'
                         };
                     return (
                       <div
                         {...getSuggestionItemProps(suggestion, {
                           className,
-                          style,
-                        })}
-                      >
+                          style
+                        })}>
                         <span>{suggestion.description}</span>
                       </div>
                     );
@@ -616,10 +468,7 @@ const AddListingForm = ({
                 custom
                 name="country"
                 value={country}
-                onChange={(e) =>
-                  tempListingLocationD({ country: e.target.value })
-                }
-              >
+                onChange={(e) => tempListingLocationD({ country: e.target.value })}>
                 {countryCodes.map((item) => (
                   <option key={item.country}>{item.country}</option>
                 ))}
@@ -631,14 +480,10 @@ const AddListingForm = ({
                 name="address"
                 placeholder="Address"
                 value={address}
-                onChange={(e) =>
-                  tempListingLocationD({ address: e.target.value })
-                }
+                onChange={(e) => tempListingLocationD({ address: e.target.value })}
                 required
               />
-              <Form.Control.Feedback type="invalid">
-                This field is required
-              </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="formBasicEmail">
               <Form.Control
@@ -646,9 +491,7 @@ const AddListingForm = ({
                 name="unitNum"
                 placeholder="Unit #"
                 value={unitNum}
-                onChange={(e) =>
-                  tempListingLocationD({ unitNum: e.target.value })
-                }
+                onChange={(e) => tempListingLocationD({ unitNum: e.target.value })}
               />
             </Form.Group>
             <Form.Group controlId="formBasicEmail">
@@ -660,9 +503,7 @@ const AddListingForm = ({
                 onChange={(e) => tempListingLocationD({ city: e.target.value })}
                 required
               />
-              <Form.Control.Feedback type="invalid">
-                This field is required
-              </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="formBasicEmail">
               <Form.Control
@@ -670,14 +511,10 @@ const AddListingForm = ({
                 placeholder="State/Province"
                 value={state}
                 name="state"
-                onChange={(e) =>
-                  tempListingLocationD({ state: e.target.value })
-                }
+                onChange={(e) => tempListingLocationD({ state: e.target.value })}
                 required
               />
-              <Form.Control.Feedback type="invalid">
-                This field is required
-              </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="formBasicEmail">
               <Form.Control
@@ -685,14 +522,10 @@ const AddListingForm = ({
                 name="postalCode"
                 placeholder="Postal Code"
                 value={postalCode}
-                onChange={(e) =>
-                  tempListingLocationD({ postalCode: e.target.value })
-                }
+                onChange={(e) => tempListingLocationD({ postalCode: e.target.value })}
                 required
               />
-              <Form.Control.Feedback type="invalid">
-                This field is required
-              </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
             </Form.Group>
             <InputGroup className="mb-3">
               <InputGroup.Prepend>
@@ -702,10 +535,7 @@ const AddListingForm = ({
                     name="code"
                     custom
                     value={code}
-                    onChange={(e) =>
-                      tempListingLocationD({ code: e.target.value })
-                    }
-                  >
+                    onChange={(e) => tempListingLocationD({ code: e.target.value })}>
                     {countryCodes.map((item) => (
                       <option key={item.country}>{item.code}</option>
                     ))}
@@ -720,28 +550,18 @@ const AddListingForm = ({
                 min="0"
                 placeholder="Phone Number"
                 value={phone}
-                onChange={(e) =>
-                  tempListingLocationD({ phone: e.target.value })
-                }
+                onChange={(e) => tempListingLocationD({ phone: e.target.value })}
                 required
               />
-              <Form.Control.Feedback type="invalid">
-                This field is required
-              </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
             </InputGroup>
           </Form>
           <div className="question-item">
-            <p
-              className="lead"
-              style={{ margin: "10px auto", textAlign: "center" }}
-            >
+            <p className="lead" style={{ margin: '10px auto', textAlign: 'center' }}>
               OR
             </p>
             <h1 className="heading">Mark your location on the Map</h1>
-            <MapContainer
-              onMapClick={onMapClick}
-              coordinates={marker.coordinates}
-            />
+            <MapContainer onMapClick={onMapClick} coordinates={marker.coordinates} />
           </div>
         </div>
       )}
@@ -753,9 +573,7 @@ const AddListingForm = ({
               <UseFormOption
                 id="5fcd2fb3ad371d00086e767d"
                 value={propertyType}
-                onChange={(e) =>
-                  tempListingLocationD({ propertyType: e.target.value })
-                }
+                onChange={(e) => tempListingLocationD({ propertyType: e.target.value })}
               />
               {/* <Form.Control
                 as="select"
@@ -781,14 +599,15 @@ const AddListingForm = ({
         <div className="question-item">
           <h1 className="heading">Add Photos of your listing</h1>
           <Form>
+            <Form.Label>Street View Image</Form.Label>
             <Form.File
               name="streetView"
               onChange={handleFileChange}
               id="custom-file"
-              label="Add Street View Images"
+              label="Add Street View Image"
               custom
               accept="image/png, image/jpeg, image/jpg, image/gif"
-              style={{ marginBottom: "20px" }}
+              style={{ marginBottom: '20px' }}
             />
           </Form>
           <div className="images-wrapper">
@@ -799,32 +618,32 @@ const AddListingForm = ({
                     <button
                       // disabled={disabled}
                       type="button"
-                      onClick={() => removeImage("streetViewImages")}
+                      onClick={() => removeImage('streetViewImages')}
                       className="btn btn-primary btn-sm p-0 rounded-pill shadow position-absolute right-0"
                       style={{
-                        zIndex: "3",
-                        borderRadius: "50%",
-                        backgroundColor: "red",
-                        border: "none",
-                      }}
-                    >
+                        zIndex: '3',
+                        borderRadius: '50%',
+                        backgroundColor: 'red',
+                        border: 'none'
+                      }}>
                       <XCircle size={20} />
                     </button>
-                    <img style={{ width: "100%" }} src={url} />
+                    <img style={{ width: '100%' }} alt="streetViewImage" src={url} />
                   </div>
                 );
               })}
           </div>
 
           <Form>
+            <Form.Label>Parking Entrance Image</Form.Label>
             <Form.File
               name="parkingEntrance"
               onChange={handleFileChange}
               id="custom-file"
-              label="Add Parking Entrance Images"
+              label="Add Parking Entrance Image"
               custom
               accept="image/png, image/jpeg, image/jpg, image/gif"
-              style={{ marginBottom: "20px" }}
+              style={{ marginBottom: '20px' }}
             />
           </Form>
 
@@ -836,24 +655,24 @@ const AddListingForm = ({
                     <button
                       // disabled={disabled}
                       type="button"
-                      onClick={() => removeImage("parkingEntranceImages")}
+                      onClick={() => removeImage('parkingEntranceImages')}
                       className="btn btn-primary btn-sm p-0 rounded-pill shadow position-absolute right-0"
                       style={{
-                        zIndex: "3",
-                        borderRadius: "50%",
-                        backgroundColor: "red",
-                        border: "none",
-                      }}
-                    >
+                        zIndex: '3',
+                        borderRadius: '50%',
+                        backgroundColor: 'red',
+                        border: 'none'
+                      }}>
                       <XCircle size={20} />
                     </button>
-                    <img style={{ width: "100%" }} src={url} />
+                    <img style={{ width: '100%' }} src={url} />
                   </div>
                 );
               })}
           </div>
 
           <Form>
+            <Form.Label>Parking Space Image</Form.Label>
             <Form.File
               name="parkingSpace"
               onChange={handleFileChange}
@@ -861,7 +680,7 @@ const AddListingForm = ({
               label="Add Parking Space Images"
               custom
               accept="image/png, image/jpeg, image/jpg, image/gif"
-              style={{ marginBottom: "20px" }}
+              style={{ marginBottom: '20px' }}
             />
           </Form>
 
@@ -873,18 +692,17 @@ const AddListingForm = ({
                     <button
                       // disabled={disabled}
                       type="button"
-                      onClick={() => removeImage("parkingSpaceImages")}
+                      onClick={() => removeImage('parkingSpaceImages')}
                       className="btn btn-primary btn-sm p-0 rounded-pill shadow position-absolute right-0"
                       style={{
-                        zIndex: "3",
-                        borderRadius: "50%",
-                        backgroundColor: "red",
-                        border: "none",
-                      }}
-                    >
+                        zIndex: '3',
+                        borderRadius: '50%',
+                        backgroundColor: 'red',
+                        border: 'none'
+                      }}>
                       <XCircle size={20} />
                     </button>
-                    <img style={{ width: "100%" }} src={url} />
+                    <img style={{ width: '100%' }} src={url} />
                   </div>
                 );
               })}
@@ -914,10 +732,7 @@ const AddListingForm = ({
                 custom
                 name="parkingSpaceType"
                 value={parkingSpaceType}
-                onChange={(e) =>
-                  tempListingSpaceD({ parkingSpaceType: e.target.value })
-                }
-              >
+                onChange={(e) => tempListingSpaceD({ parkingSpaceType: e.target.value })}>
                 <option value="Tandem">Tandem</option>
                 <option value="Side by Side">Side By Side</option>
               </Form.Control>
@@ -932,9 +747,7 @@ const AddListingForm = ({
                 min="1"
                 required
                 value={qtyOfSpaces}
-                onChange={(e) =>
-                  tempListingSpaceD({ qtyOfSpaces: e.target.value })
-                }
+                onChange={(e) => tempListingSpaceD({ qtyOfSpaces: e.target.value })}
               />
               <Form.Control.Feedback type="invalid">
                 Minimum 1 parking space is required.
@@ -943,7 +756,7 @@ const AddListingForm = ({
           </Form>
         </div>
       )}
-      {activeIndex == 7 && (
+      {activeIndex === 7 && (
         <div className="question-item">
           <h1 className="heading">Are all parking spaces the same size?</h1>
           <Form validated={validated}>
@@ -953,7 +766,10 @@ const AddListingForm = ({
             <RadioItem
               label="Yes"
               name="sameSizeSpaces"
-              onClick={(event) => tempListingSpaceD({ sameSizeSpaces: true })}
+              onClick={(event) => {
+                tempListingSpaceD({ sameSizeSpaces: true });
+                resetVehicleSize();
+              }}
               value={true}
               checked={sameSizeSpaces == true}
             />
@@ -961,7 +777,10 @@ const AddListingForm = ({
               label="No, some are different"
               name="sameSizeSpaces"
               value={false}
-              onClick={(event) => tempListingSpaceD({ sameSizeSpaces: false })}
+              onClick={(event) => {
+                tempListingSpaceD({ sameSizeSpaces: false });
+                resetVehicleSize();
+              }}
               checked={!sameSizeSpaces}
             />
             <br />
@@ -969,9 +788,7 @@ const AddListingForm = ({
             <CheckBoxItem
               label="No Height Restriction"
               name="heightRestriction"
-              onClick={(event) =>
-                tempListingSpaceD({ heightRestriction: !heightRestriction })
-              }
+              onClick={(event) => tempListingSpaceD({ heightRestriction: !heightRestriction })}
               checked={!heightRestriction}
             />
             <br />
@@ -984,10 +801,10 @@ const AddListingForm = ({
                     min="1"
                     name="height1"
                     required
-                    value={height1.value == 0 ? "" : height1.value}
+                    value={height1.value == 0 ? '' : height1.value}
                     onChange={(event) =>
                       tempListingSpaceD({
-                        height1: { ...height1, value: event.target.value },
+                        height1: { ...height1, value: event.target.value }
                       })
                     }
                   />
@@ -1002,10 +819,9 @@ const AddListingForm = ({
                         value={height1.unit}
                         onChange={(event) =>
                           tempListingSpaceD({
-                            height1: { ...height1, unit: event.target.value },
+                            height1: { ...height1, unit: event.target.value }
                           })
-                        }
-                      >
+                        }>
                         <option>feet</option>
                         <option>meters</option>
                       </Form.Control>
@@ -1020,14 +836,13 @@ const AddListingForm = ({
                     min="0"
                     name="height1"
                     required
-                    value={height2.value == 0 ? "" : height2.value}
+                    value={height2.value == 0 ? '' : height2.value}
                     onChange={(event) =>
                       tempListingSpaceD({
                         height2: {
                           value: event.target.value,
-                          unit:
-                            height1.unit == "feet" ? "inches" : "centimeters",
-                        },
+                          unit: height1.unit == 'feet' ? 'inches' : 'centimeters'
+                        }
                       })
                     }
                   />
@@ -1037,7 +852,7 @@ const AddListingForm = ({
 
                   <InputGroup.Append>
                     <InputGroup.Text id="basic-addon2">
-                      {height1.unit == "feet" ? "inches" : "centimeters"}
+                      {height1.unit == 'feet' ? 'inches' : 'centimeters'}
                     </InputGroup.Text>
                   </InputGroup.Append>
                 </InputGroup>
@@ -1046,17 +861,14 @@ const AddListingForm = ({
           </Form>
         </div>
       )}
-      {activeIndex == 8 && (
+      {activeIndex === 8 && (
         <div className="question-item">
           <h1 className="heading">Select your Vehicle Size?</h1>
-          <p className="description">
-            Select the largest vehicle size for your parking spaces
-          </p>
+          <p className="description">Select the largest vehicle size for your parking spaces</p>
           {!sameSizeSpaces && (
             <>
               <p className=" ">
-                Sum of Entered Spaces / Total Qty. of Spaces : {spacesSum} /{" "}
-                {qtyOfSpaces}
+                Sum of Entered Spaces / Total Qty. of Spaces : {spacesSum} / {qtyOfSpaces}
               </p>
               {validated && parseInt(spacesSum) !== parseInt(qtyOfSpaces) && (
                 <p className="invalid-feedback-text">
@@ -1075,12 +887,12 @@ const AddListingForm = ({
                   midsized: false,
                   large: false,
                   oversized: false,
-                  largestSize: "Motorcycle",
+                  largestSize: 'Motorcycle'
                 });
               } else {
                 tempListingSpaceD({
                   motorcycle: !motorcycle,
-                  motorcycleSpaces: motorcycle ? 0 : motorcycleSpaces,
+                  motorcycleSpaces: motorcycle ? 0 : motorcycleSpaces
                 });
               }
             }}
@@ -1100,15 +912,12 @@ const AddListingForm = ({
                   required
                   onChange={(e) => {
                     tempListingSpaceD({
-                      motorcycleSpaces:
-                        e.target.value == "" ? 0 : e.target.value,
+                      motorcycleSpaces: e.target.value == '' ? 0 : e.target.value
                     });
                   }}
-                  value={motorcycleSpaces == 0 ? "" : motorcycleSpaces}
+                  value={motorcycleSpaces == 0 ? '' : motorcycleSpaces}
                 />
-                <Form.Control.Feedback type="invalid">
-                  This field is required
-                </Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
               </Form.Group>
             </Form>
           )}
@@ -1122,12 +931,12 @@ const AddListingForm = ({
                   midsized: false,
                   large: false,
                   oversized: false,
-                  largestSize: "Compact",
+                  largestSize: 'Compact'
                 });
               } else {
                 tempListingSpaceD({
                   compact: !compact,
-                  compactSpaces: compact ? 0 : compactSpaces,
+                  compactSpaces: compact ? 0 : compactSpaces
                 });
               }
             }}
@@ -1147,14 +956,12 @@ const AddListingForm = ({
                   required
                   onChange={(e) => {
                     tempListingSpaceD({
-                      compactSpaces: e.target.value == "" ? 0 : e.target.value,
+                      compactSpaces: e.target.value == '' ? 0 : e.target.value
                     });
                   }}
-                  value={compactSpaces == 0 ? "" : compactSpaces}
+                  value={compactSpaces == 0 ? '' : compactSpaces}
                 />
-                <Form.Control.Feedback type="invalid">
-                  This field is required
-                </Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
               </Form.Group>
             </Form>
           )}
@@ -1168,12 +975,12 @@ const AddListingForm = ({
                   midsized: true,
                   large: false,
                   oversized: false,
-                  largestSize: "Midsized",
+                  largestSize: 'Midsized'
                 });
               } else {
                 tempListingSpaceD({
                   midsized: !midsized,
-                  midsizedSpaces: midsized ? 0 : midsizedSpaces,
+                  midsizedSpaces: midsized ? 0 : midsizedSpaces
                 });
               }
             }}
@@ -1193,14 +1000,12 @@ const AddListingForm = ({
                   required
                   onChange={(e) => {
                     tempListingSpaceD({
-                      midsizedSpaces: e.target.value == "" ? 0 : e.target.value,
+                      midsizedSpaces: e.target.value == '' ? 0 : e.target.value
                     });
                   }}
-                  value={midsizedSpaces == 0 ? "" : midsizedSpaces}
+                  value={midsizedSpaces == 0 ? '' : midsizedSpaces}
                 />
-                <Form.Control.Feedback type="invalid">
-                  This field is required
-                </Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
               </Form.Group>
             </Form>
           )}
@@ -1214,12 +1019,12 @@ const AddListingForm = ({
                   midsized: false,
                   large: true,
                   oversized: false,
-                  largestSize: "Large",
+                  largestSize: 'Large'
                 });
               } else {
                 tempListingSpaceD({
                   large: !large,
-                  largeSpaces: large ? 0 : largeSpaces,
+                  largeSpaces: large ? 0 : largeSpaces
                 });
               }
             }}
@@ -1239,14 +1044,12 @@ const AddListingForm = ({
                   required
                   onChange={(e) => {
                     tempListingSpaceD({
-                      largeSpaces: e.target.value == "" ? 0 : e.target.value,
+                      largeSpaces: e.target.value == '' ? 0 : e.target.value
                     });
                   }}
-                  value={largeSpaces == 0 ? "" : largeSpaces}
+                  value={largeSpaces == 0 ? '' : largeSpaces}
                 />
-                <Form.Control.Feedback type="invalid">
-                  This field is required
-                </Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
               </Form.Group>
             </Form>
           )}
@@ -1260,12 +1063,12 @@ const AddListingForm = ({
                   midsized: false,
                   large: false,
                   oversized: true,
-                  largestSize: "Oversized",
+                  largestSize: 'Oversized'
                 });
               } else {
                 tempListingSpaceD({
                   oversized: !oversized,
-                  oversizedSpaces: oversized ? 0 : oversizedSpaces,
+                  oversizedSpaces: oversized ? 0 : oversizedSpaces
                 });
               }
             }}
@@ -1285,29 +1088,23 @@ const AddListingForm = ({
                   required
                   onChange={(e) => {
                     tempListingSpaceD({
-                      oversizedSpaces:
-                        e.target.value == "" ? 0 : e.target.value,
+                      oversizedSpaces: e.target.value == '' ? 0 : e.target.value
                     });
                   }}
-                  value={oversizedSpaces == 0 ? "" : oversizedSpaces}
+                  value={oversizedSpaces == 0 ? '' : oversizedSpaces}
                 />
-                <Form.Control.Feedback type="invalid">
-                  This field is required
-                </Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
               </Form.Group>
             </Form>
           )}
           <br />
-          {validated &&
-            !(motorcycle || compact || midsized || large || oversized) && (
-              <p className="invalid-feedback-text">
-                Please select at least one vehicle size
-              </p>
-            )}
+          {validated && !(motorcycle || compact || midsized || large || oversized) && (
+            <p className="invalid-feedback-text">Please select at least one vehicle size</p>
+          )}
           <p className="modal-link">How do I determine my space size?</p>
         </div>
       )}
-      {activeIndex == 9 && (
+      {activeIndex === 9 && (
         <div className="question-item">
           <h1 className="heading">Are the spaces numbered or labelled?</h1>
           <RadioItem
@@ -1317,13 +1114,13 @@ const AddListingForm = ({
               let tSpaceLabels = [];
               for (let i = 0; i < qtyOfSpaces; i++) {
                 tSpaceLabels.push({
-                  label: "",
-                  largestSize: largestSize,
+                  label: '',
+                  largestSize: largestSize
                 });
               }
               tempListingSpaceD({
                 isLabelled: true,
-                spaceLabels: tSpaceLabels,
+                spaceLabels: tSpaceLabels
               });
             }}
             value={true}
@@ -1352,9 +1149,7 @@ const AddListingForm = ({
                     onChange={({ target: { value } }) => setLabel(value, index)}
                   />
                   <InputGroup.Append>
-                    <InputGroup.Text id="basic-addon2">
-                      {item.largestSize}
-                    </InputGroup.Text>
+                    <InputGroup.Text id="basic-addon2">{item.largestSize}</InputGroup.Text>
                   </InputGroup.Append>
                   <Form.Control.Feedback type="invalid">
                     This field is required
@@ -1377,13 +1172,9 @@ const AddListingForm = ({
                 required
                 placeholder="What makes your space great? Is it nearby notable landmarks or destinations"
                 value={aboutSpace}
-                onChange={(e) =>
-                  tempListingSpaceD({ aboutSpace: e.target.value })
-                }
+                onChange={(e) => tempListingSpaceD({ aboutSpace: e.target.value })}
               />
-              <Form.Control.Feedback type="invalid">
-                This field is required
-              </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
             </Form.Group>
           </Form>
         </div>
@@ -1400,13 +1191,9 @@ const AddListingForm = ({
                 required
                 placeholder="Tell guests what to do when they arrive. Provide special instructions (if any)"
                 value={accessInstructions}
-                onChange={(e) =>
-                  tempListingSpaceD({ accessInstructions: e.target.value })
-                }
+                onChange={(e) => tempListingSpaceD({ accessInstructions: e.target.value })}
               />
-              <Form.Control.Feedback type="invalid">
-                This field is required
-              </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
             </Form.Group>
           </Form>
         </div>
@@ -1415,36 +1202,32 @@ const AddListingForm = ({
         <div className="question-item">
           <h1 className="heading">What are the timings?</h1>
           {validated && !scheduleType && (
-            <p className="invalid-feedback-text">
-              Please select a schedule type
-            </p>
+            <p className="invalid-feedback-text">Please select a schedule type</p>
           )}
           <RadioItem
             label="Set to 24 hours a day"
             name="scheduleType"
-            onClick={(event) => tempListingSpaceA({ scheduleType: "24hours" })}
-            checked={scheduleType === "24hours"}
+            onClick={(event) => tempListingSpaceA({ scheduleType: '24hours' })}
+            checked={scheduleType === '24hours'}
           />
 
           <RadioItem
             label="Set to a Fixed schedule"
             name="scheduleType"
-            onClick={(event) => tempListingSpaceA({ scheduleType: "fixed" })}
-            checked={scheduleType == "fixed"}
+            onClick={(event) => tempListingSpaceA({ scheduleType: 'fixed' })}
+            checked={scheduleType == 'fixed'}
           />
           <RadioItem
             label="Set a Custom Schedule"
             name="scheduleType"
-            onClick={(event) => tempListingSpaceA({ scheduleType: "custom" })}
-            checked={scheduleType == "custom"}
+            onClick={(event) => tempListingSpaceA({ scheduleType: 'custom' })}
+            checked={scheduleType == 'custom'}
           />
-          {scheduleType == "fixed" && (
+          {scheduleType == 'fixed' && (
             <div className="question-item">
-              <h1 className="heading">
-                At what days can drivers park at your listing?
-              </h1>
+              <h1 className="heading">At what days can drivers park at your listing?</h1>
               {validated &&
-                scheduleType == "fixed" &&
+                scheduleType == 'fixed' &&
                 !(
                   monday.isActive ||
                   tuesday.isActive ||
@@ -1453,18 +1236,14 @@ const AddListingForm = ({
                   friday.isActive ||
                   saturday.isActive ||
                   sunday.isActive
-                ) && (
-                  <p className="invalid-feedback-text">
-                    Please select at least one day
-                  </p>
-                )}
+                ) && <p className="invalid-feedback-text">Please select at least one day</p>}
 
               <CheckBoxItem
                 label="Monday"
                 name="monday"
                 onClick={(event) =>
                   tempListingSpaceA({
-                    monday: { ...monday, isActive: !monday.isActive },
+                    monday: { ...monday, isActive: !monday.isActive }
                   })
                 }
                 checked={monday.isActive}
@@ -1475,7 +1254,7 @@ const AddListingForm = ({
                   end={monday.endTime}
                   onChange={(start, end) => {
                     tempListingSpaceA({
-                      monday: { ...monday, startTime: start, endTime: end },
+                      monday: { ...monday, startTime: start, endTime: end }
                     });
                   }}
                 />
@@ -1485,7 +1264,7 @@ const AddListingForm = ({
                 name="tuesday"
                 onClick={(event) =>
                   tempListingSpaceA({
-                    tuesday: { ...tuesday, isActive: !tuesday.isActive },
+                    tuesday: { ...tuesday, isActive: !tuesday.isActive }
                   })
                 }
                 checked={tuesday.isActive}
@@ -1497,7 +1276,7 @@ const AddListingForm = ({
                   end={tuesday.endTime}
                   onChange={(start, end) => {
                     tempListingSpaceA({
-                      tuesday: { ...tuesday, startTime: start, endTime: end },
+                      tuesday: { ...tuesday, startTime: start, endTime: end }
                     });
                   }}
                 />
@@ -1507,7 +1286,7 @@ const AddListingForm = ({
                 name="wednesday"
                 onClick={(event) =>
                   tempListingSpaceA({
-                    wednesday: { ...wednesday, isActive: !wednesday.isActive },
+                    wednesday: { ...wednesday, isActive: !wednesday.isActive }
                   })
                 }
                 checked={wednesday.isActive}
@@ -1522,8 +1301,8 @@ const AddListingForm = ({
                       wednesday: {
                         ...wednesday,
                         startTime: start,
-                        endTime: end,
-                      },
+                        endTime: end
+                      }
                     });
                   }}
                 />
@@ -1533,7 +1312,7 @@ const AddListingForm = ({
                 name="thursday"
                 onClick={(event) =>
                   tempListingSpaceA({
-                    thursday: { ...thursday, isActive: !thursday.isActive },
+                    thursday: { ...thursday, isActive: !thursday.isActive }
                   })
                 }
                 checked={thursday.isActive}
@@ -1548,8 +1327,8 @@ const AddListingForm = ({
                       thursday: {
                         ...thursday,
                         startTime: start,
-                        endTime: end,
-                      },
+                        endTime: end
+                      }
                     });
                   }}
                 />
@@ -1559,7 +1338,7 @@ const AddListingForm = ({
                 name="friday"
                 onClick={(event) =>
                   tempListingSpaceA({
-                    friday: { ...friday, isActive: !friday.isActive },
+                    friday: { ...friday, isActive: !friday.isActive }
                   })
                 }
                 checked={friday.isActive}
@@ -1573,8 +1352,8 @@ const AddListingForm = ({
                       friday: {
                         ...friday,
                         startTime: start,
-                        endTime: end,
-                      },
+                        endTime: end
+                      }
                     });
                   }}
                 />
@@ -1584,7 +1363,7 @@ const AddListingForm = ({
                 name="saturday"
                 onClick={(event) =>
                   tempListingSpaceA({
-                    saturday: { ...saturday, isActive: !saturday.isActive },
+                    saturday: { ...saturday, isActive: !saturday.isActive }
                   })
                 }
                 checked={saturday.isActive}
@@ -1599,8 +1378,8 @@ const AddListingForm = ({
                       saturday: {
                         ...saturday,
                         startTime: start,
-                        endTime: end,
-                      },
+                        endTime: end
+                      }
                     });
                   }}
                 />
@@ -1610,7 +1389,7 @@ const AddListingForm = ({
                 name="sunday"
                 onClick={(event) =>
                   tempListingSpaceA({
-                    sunday: { ...sunday, isActive: !sunday.isActive },
+                    sunday: { ...sunday, isActive: !sunday.isActive }
                   })
                 }
                 checked={sunday.isActive}
@@ -1625,8 +1404,8 @@ const AddListingForm = ({
                       sunday: {
                         ...sunday,
                         startTime: start,
-                        endTime: end,
-                      },
+                        endTime: end
+                      }
                     });
                   }}
                 />
@@ -1635,15 +1414,14 @@ const AddListingForm = ({
           )}
 
           <br />
-          {scheduleType == "custom" && (
+          {scheduleType == 'custom' && (
             <>
               <h1 className="heading">Select a time range</h1>
               <Button
                 variant="outline-secondary"
                 onClick={() => {
                   setShowCustomScheduleModal(true);
-                }}
-              >
+                }}>
                 Add a Time Range
               </Button>
               <br />
@@ -1654,7 +1432,7 @@ const AddListingForm = ({
                 }}
                 handleSave={(dates) => {
                   tempListingSpaceA({
-                    customTimeRange: [...customTimeRange, ...dates],
+                    customTimeRange: [...customTimeRange, ...dates]
                   });
                 }}
               />
@@ -1664,24 +1442,18 @@ const AddListingForm = ({
                 <Card>
                   <Card.Body
                     style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    {`${moment(item[0]).format("lll")} to ${moment(
-                      item[1]
-                    ).format("lll")}`}{" "}
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center'
+                    }}>
+                    {`${moment(item[0]).format('lll')} to ${moment(item[1]).format('lll')}`}{' '}
                     <Button
                       variant="danger"
                       onClick={() => {
                         tempListingSpaceA({
-                          customTimeRange: customTimeRange.filter(
-                            (item, index) => index !== idx
-                          ),
+                          customTimeRange: customTimeRange.filter((item, index) => index !== idx)
                         });
-                      }}
-                    >
+                      }}>
                       Delete
                     </Button>
                   </Card.Body>
@@ -1693,15 +1465,13 @@ const AddListingForm = ({
       )}
       {activeIndex === 13 && (
         <div className="question-item">
-          <h1 className="heading">
-            How much notice time do you need before guests arrives?
-          </h1>
+          <h1 className="heading">How much notice time do you need before guests arrives?</h1>
           <CheckBoxItem
             label="Set it to None"
             name="hasNoticeTime"
             onClick={(event) =>
               tempListingSpaceA({
-                hasNoticeTime: !hasNoticeTime,
+                hasNoticeTime: !hasNoticeTime
               })
             }
             checked={!hasNoticeTime}
@@ -1716,13 +1486,13 @@ const AddListingForm = ({
                   min="0"
                   name="noticeTime"
                   required
-                  value={noticeTime.value ? noticeTime.value : ""}
+                  value={convertToUnit(noticeTime.value, noticeTime.unit)}
                   onChange={(event) => {
                     tempListingSpaceA({
                       noticeTime: {
                         ...noticeTime,
-                        value: event.target.value,
-                      },
+                        value: convertToMilliseconds(event.target.value, noticeTime.unit)
+                      }
                     });
                   }}
                 />
@@ -1736,27 +1506,24 @@ const AddListingForm = ({
                         tempListingSpaceA({
                           noticeTime: {
                             ...noticeTime,
-                            unit: event.target.value,
-                          },
+                            unit: event.target.value
+                          }
                         });
-                      }}
-                    >
+                      }}>
                       <option>Minutes</option>
                       <option>Hours</option>
                       <option>Days</option>
                     </Form.Control>
                   </Form.Group>
                 </InputGroup.Append>
-                <Form.Control.Feedback type="invalid">
-                  This field is required
-                </Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
               </InputGroup>
             </Form>
           )}
 
           <p className="description">
-            Tip : At least 2 days' notice can help you plan for a guest's
-            arrival, but you might miss out last minute trips.
+            Tip : At least 2 days' notice can help you plan for a guest's arrival, but you might
+            miss out last minute trips.
           </p>
         </div>
       )}
@@ -1771,13 +1538,13 @@ const AddListingForm = ({
                 min="0"
                 required
                 name="advanceBookingTime"
-                value={advanceBookingTime.value ? advanceBookingTime.value : ""}
+                value={convertToUnit(advanceBookingTime.value, advanceBookingTime.unit)}
                 onChange={(event) => {
                   tempListingSpaceA({
                     advanceBookingTime: {
                       ...advanceBookingTime,
-                      value: event.target.value,
-                    },
+                      value: convertToMilliseconds(event.target.value, advanceBookingTime.unit)
+                    }
                   });
                 }}
               />
@@ -1791,26 +1558,22 @@ const AddListingForm = ({
                       tempListingSpaceA({
                         advanceBookingTime: {
                           ...advanceBookingTime,
-                          unit: event.target.value,
-                        },
+                          unit: event.target.value
+                        }
                       });
-                    }}
-                  >
+                    }}>
                     <option>Minutes</option>
                     <option>Hours</option>
                     <option>Days</option>
                   </Form.Control>
                 </Form.Group>
-              </InputGroup.Append>{" "}
-              <Form.Control.Feedback type="invalid">
-                This field is required
-              </Form.Control.Feedback>
+              </InputGroup.Append>{' '}
+              <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
             </InputGroup>
           </Form>
 
           <p className="description">
-            Tip : Avoid cancelling or declining guests by only unblocking dates
-            you can host.
+            Tip : Avoid cancelling or declining guests by only unblocking dates you can host.
           </p>
         </div>
       )}
@@ -1820,21 +1583,22 @@ const AddListingForm = ({
           <Form validated={validated}>
             <Form.Group>
               <Form.Label>Minimum Time</Form.Label>
-
               <InputGroup className="mb-3">
                 <FormControl
                   placeholder="Minimum Time"
                   type="number"
                   min="0"
                   name="minTime"
-                  value={minTime.value ? minTime.value : ""}
+                  value={convertToUnit(minTime.value, minTime.unit)}
                   required
-                  onChange={(event) => {
-                    console.log(event.target.value);
+                  onChange={(event) =>
                     tempListingSpaceA({
-                      minTime: { ...minTime, value: event.target.value },
-                    });
-                  }}
+                      minTime: {
+                        ...minTime,
+                        value: convertToMilliseconds(event.target.value, minTime.unit)
+                      }
+                    })
+                  }
                 />
                 <InputGroup.Append>
                   <Form.Group controlId="exampleForm.SelectCustom">
@@ -1844,24 +1608,19 @@ const AddListingForm = ({
                       value={minTime.unit}
                       onChange={(event) => {
                         tempListingSpaceA({
-                          minTime: { ...minTime, unit: event.target.value },
+                          minTime: { ...minTime, unit: event.target.value }
                         });
-                      }}
-                    >
+                      }}>
                       <option>Hours</option>
                       <option>Days</option>
                     </Form.Control>
                   </Form.Group>
                 </InputGroup.Append>
-                <Form.Control.Feedback type="invalid">
-                  This field is required
-                </Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
               </InputGroup>
             </Form.Group>
-
             <Form.Group>
               <Form.Label>Maximum Time</Form.Label>
-
               <InputGroup className="mb-3">
                 <FormControl
                   placeholder="Maximum Time"
@@ -1869,12 +1628,15 @@ const AddListingForm = ({
                   min="0"
                   required
                   name="maxTime"
-                  value={maxTime.value ? maxTime.value : ""}
-                  onChange={(event) => {
+                  value={convertToUnit(maxTime.value, maxTime.unit)}
+                  onChange={(event) =>
                     tempListingSpaceA({
-                      maxTime: { ...maxTime, value: event.target.value },
-                    });
-                  }}
+                      maxTime: {
+                        ...maxTime,
+                        value: convertToMilliseconds(event.target.value, maxTime.unit)
+                      }
+                    })
+                  }
                 />
 
                 <InputGroup.Append>
@@ -1885,35 +1647,30 @@ const AddListingForm = ({
                       value={maxTime.unit}
                       onChange={(event) => {
                         tempListingSpaceA({
-                          maxTime: { ...maxTime, unit: event.target.value },
+                          maxTime: { ...maxTime, unit: event.target.value }
                         });
-                      }}
-                    >
+                      }}>
                       <option>Hours</option>
                       <option>Days</option>
                     </Form.Control>
                   </Form.Group>
                 </InputGroup.Append>
-                <Form.Control.Feedback type="invalid">
-                  This field is required
-                </Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
               </InputGroup>
             </Form.Group>
           </Form>
 
           <p className="description">
-            Tip : Shorter trips can mean more reservations but you might have to
-            turn over your space more often.
+            Tip : Shorter trips can mean more reservations but you might have to turn over your
+            space more often.
           </p>
         </div>
       )}
       {activeIndex === 16 && (
         <div className="question-item">
           <h1 className="heading">Which booking process do you prefer?</h1>
-          {validated && instantBooking === "" && (
-            <p className="invalid-feedback-text">
-              Please select a booking process type
-            </p>
+          {validated && instantBooking === '' && (
+            <p className="invalid-feedback-text">Please select a booking process type</p>
           )}
           <RadioItem
             label="Instant Booking"
@@ -1931,18 +1688,16 @@ const AddListingForm = ({
       )}
       {activeIndex == 17 && (
         <div className="question-item">
-          <h1 className="heading">
-            Choose how you want to charge for the bookings?
-          </h1>
+          <h1 className="heading">Choose how you want to charge for the bookings?</h1>
           <RadioItem
             label="Variable Rate"
             name="pricingType"
             onClick={(event) =>
               tempListingPricingD({
-                pricingType: "variable",
+                pricingType: 'variable'
               })
             }
-            checked={pricingType === "variable"}
+            checked={pricingType === 'variable'}
           />
           <p className="small-muted">Charge by length of reservation</p>
           <RadioItem
@@ -1950,17 +1705,15 @@ const AddListingForm = ({
             name="pricingType"
             onClick={(event) =>
               tempListingPricingD({
-                pricingType: "flat",
+                pricingType: 'flat'
               })
             }
-            checked={pricingType === "flat"}
+            checked={pricingType === 'flat'}
           />
           <p className="small-muted">Charge a flat rate per day</p>
 
           {validated && !pricingType && (
-            <p className="invalid-feedback-text">
-              Please select a billing type
-            </p>
+            <p className="invalid-feedback-text">Please select a billing type</p>
           )}
         </div>
       )}
@@ -1970,6 +1723,7 @@ const AddListingForm = ({
           <h4>Flat Billing Type</h4>
           <br />
           <Form validated={validated}>
+            <Form.Label>Per Hour*</Form.Label>
             <InputGroup className="mb-3">
               <InputGroup.Prepend>
                 <InputGroup.Text>$</InputGroup.Text>
@@ -1980,21 +1734,20 @@ const AddListingForm = ({
                 type="number"
                 required
                 min="0"
-                value={pricingRates.perHourRate ? pricingRates.perHourRate : ""}
+                value={pricingRates.perHourRate ? pricingRates.perHourRate : ''}
                 name="perHourRate"
                 onChange={({ target: { value } }) =>
                   tempListingPricingD({
-                    pricingRates: { ...pricingRates, perHourRate: value },
+                    pricingRates: { ...pricingRates, perHourRate: value }
                   })
                 }
               />
-              <Form.Control.Feedback type="invalid">
-                This field is required
-              </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
               <InputGroup.Append>
                 <InputGroup.Text>.00</InputGroup.Text>
               </InputGroup.Append>
             </InputGroup>
+            <Form.Label>Per Day</Form.Label>
             <InputGroup className="mb-3">
               <InputGroup.Prepend>
                 <InputGroup.Text>$</InputGroup.Text>
@@ -2005,21 +1758,20 @@ const AddListingForm = ({
                 type="number"
                 min="0"
                 required
-                value={pricingRates.perDayRate ? pricingRates.perDayRate : ""}
+                value={pricingRates.perDayRate ? pricingRates.perDayRate : ''}
                 name="perDayRate"
                 onChange={({ target: { value } }) =>
                   tempListingPricingD({
-                    pricingRates: { ...pricingRates, perDayRate: value },
+                    pricingRates: { ...pricingRates, perDayRate: value }
                   })
                 }
               />
-              <Form.Control.Feedback type="invalid">
-                This field is required
-              </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
               <InputGroup.Append>
                 <InputGroup.Text>.00</InputGroup.Text>
               </InputGroup.Append>
             </InputGroup>
+            <Form.Label>Per Week</Form.Label>
             <InputGroup className="mb-3">
               <InputGroup.Prepend>
                 <InputGroup.Text>$</InputGroup.Text>
@@ -2030,21 +1782,20 @@ const AddListingForm = ({
                 type="number"
                 min="0"
                 required
-                value={pricingRates.perWeekRate ? pricingRates.perWeekRate : ""}
+                value={pricingRates.perWeekRate ? pricingRates.perWeekRate : ''}
                 name="perWeekRate"
                 onChange={({ target: { value } }) =>
                   tempListingPricingD({
-                    pricingRates: { ...pricingRates, perWeekRate: value },
+                    pricingRates: { ...pricingRates, perWeekRate: value }
                   })
                 }
               />
-              <Form.Control.Feedback type="invalid">
-                This field is required
-              </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
               <InputGroup.Append>
                 <InputGroup.Text>.00</InputGroup.Text>
               </InputGroup.Append>
             </InputGroup>
+            <Form.Label>Per Month</Form.Label>
             <InputGroup className="mb-3">
               <InputGroup.Prepend>
                 <InputGroup.Text>$</InputGroup.Text>
@@ -2055,19 +1806,15 @@ const AddListingForm = ({
                 type="number"
                 min="0"
                 required
-                value={
-                  pricingRates.perMonthRate ? pricingRates.perMonthRate : ""
-                }
+                value={pricingRates.perMonthRate ? pricingRates.perMonthRate : ''}
                 name="perMonthRate"
                 onChange={({ target: { value } }) =>
                   tempListingPricingD({
-                    pricingRates: { ...pricingRates, perMonthRate: value },
+                    pricingRates: { ...pricingRates, perMonthRate: value }
                   })
                 }
               />
-              <Form.Control.Feedback type="invalid">
-                This field is required
-              </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
               <InputGroup.Append>
                 <InputGroup.Text>.00</InputGroup.Text>
               </InputGroup.Append>
@@ -2081,7 +1828,7 @@ const AddListingForm = ({
 };
 
 const mapStateToProps = ({ tempListing }) => ({
-  tempListing,
+  tempListing
 });
 
 export default connect(mapStateToProps, {
@@ -2089,5 +1836,5 @@ export default connect(mapStateToProps, {
   tempListingLocationD,
   tempListingSpaceD,
   tempListingSpaceA,
-  tempListingPricingD,
+  tempListingPricingD
 })(AddListingForm);
