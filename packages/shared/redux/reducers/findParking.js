@@ -1,12 +1,12 @@
-const { SET_SEARCH_DATA, CLEAR_SEARCH_DATA } = require("../actions/types");
+const { SET_SEARCH_DATA, CLEAR_SEARCH_DATA } = require('../actions/types');
 
 const initialState = {
-  search: "",
+  search: '',
   coordinates: [],
   parkings: [],
-  start: new Date(),
-  end: new Date(new Date(new Date()).setHours(new Date().getHours() + 2)),
-  duration: "hourly",
+  start: new Date(new Date(new Date()).setHours(new Date().getHours() + 1)),
+  end: new Date(new Date(new Date()).setHours(new Date().getHours() + 3)),
+  duration: 'hourly'
 };
 
 export default function (state = initialState, action) {
@@ -15,12 +15,12 @@ export default function (state = initialState, action) {
   switch (type) {
     case SET_SEARCH_DATA: {
       return {
-        ...payload,
+        ...payload
       };
     }
     case CLEAR_SEARCH_DATA: {
       return {
-        ...initialState,
+        ...initialState
       };
     }
     default:

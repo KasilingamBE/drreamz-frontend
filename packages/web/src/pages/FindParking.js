@@ -178,8 +178,10 @@ const FindParking = ({ findParking, setSearchData, dispatch }) => {
     search: '',
     coordinates: [-118.4055426, 33.8612058],
     parkings: [],
-    start: moment(`${moment(new Date()).format('ll')} ${st}`)._d,
-    end: moment(`${moment(new Date()).format('ll')} ${st}`).add(2, 'hours')._d,
+    start: new Date(new Date(new Date()).setHours(new Date().getHours() + 1)),
+    end: new Date(new Date(new Date()).setHours(new Date().getHours() + 3)),
+    // start: moment(`${moment(new Date()).format('ll')} ${st}`)._d,
+    // end: moment(`${moment(new Date()).format('ll')} ${st}`).add(2, 'hours')._d,
     duration: 'hourly'
   });
 
@@ -289,15 +291,15 @@ const FindParking = ({ findParking, setSearchData, dispatch }) => {
         // loadUserListings(data.getUserListings);
         hideLoading();
         setDisabled(false);
-        console.log(data.getListingsWithBookings);
+        // console.log(data.getListingsWithBookings);
         if (data.getListingsWithBookings.length > 0) {
           let item = data.getListingsWithBookings[0];
           let qty = item.spaceDetails.qtyOfSpaces;
           let res = item.bookingCount;
           let status = res.length > 0 ? qty - res[0].total > 0 : true;
-          console.log('bookingCount', res);
-          console.log('qtyOfSpaces', qty);
-          console.log('qty res', status);
+          // console.log('bookingCount', res);
+          // console.log('qtyOfSpaces', qty);
+          // console.log('qty res', status);
         }
       } catch (error) {
         console.log(error);
@@ -373,8 +375,8 @@ const FindParking = ({ findParking, setSearchData, dispatch }) => {
 
               setSearchData({
                 ...findParkingData,
-                start: moment(`${moment(new Date()).format('ll')} ${st}`)._d,
-                end: moment(`${moment(new Date()).format('ll')} ${st}`).add(2, 'hour')._d,
+                // start: moment(`${moment(new Date()).format('ll')} ${st}`)._d,
+                // end: moment(`${moment(new Date()).format('ll')} ${st}`).add(2, 'hour')._d,
                 coordinates: [position.coords.longitude, position.coords.latitude],
                 parkings: data.getListingsWithBookings ? data.getListingsWithBookings : []
               });
