@@ -6,6 +6,7 @@ import { View, Text, StyleSheet, Alert } from 'react-native';
 import ScreenTittle from '../../common/ScreenTittle';
 import UsersList from './UsersList';
 import FilterButton from '../../common/FilterButton';
+import BookingFilter from '../bookings/BookingFilter';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -14,7 +15,9 @@ export default function MyTabs() {
     <>
       <View style={styles.headerView}>
         <ScreenTittle title="REGISTRATION STATS" />
-        <FilterButton />
+        <FilterButton>
+          <BookingFilter />
+        </FilterButton>
       </View>
       <Tab.Navigator
         tabBarOptions={{
@@ -24,23 +27,40 @@ export default function MyTabs() {
           },
           labelStyle: { fontWeight: 'bold' }
         }}>
-        <Tab.Screen name="Today" component={TodayTab} />
-        <Tab.Screen name="Last Week" component={LastWeekTab} />
-        <Tab.Screen name="Last Month" component={LastMonthTab} />
+        <Tab.Screen name="Today">
+          {(props) => (
+            <UsersList
+              {...props}
+              showTime={true}
+              lowerRange={dateFilter.oneDayBack}
+              higherRange={new Date()}
+            />
+          )}
+        </Tab.Screen>
+        <Tab.Screen name="Last Week">
+          {(props) => (
+            <UsersList
+              {...props}
+              showTime={true}
+              lowerRange={dateFilter.oneWeekBack}
+              higherRange={new Date()}
+            />
+          )}
+        </Tab.Screen>
+        <Tab.Screen name="Last Month">
+          {(props) => (
+            <UsersList
+              {...props}
+              showTime={true}
+              lowerRange={dateFilter.oneMonthBack}
+              higherRange={new Date()}
+            />
+          )}
+        </Tab.Screen>
       </Tab.Navigator>
     </>
   );
 }
-
-const TodayTab = () => (
-  <UsersList showTime={true} lowerRange={dateFilter.oneDayBack} higherRange={new Date()} />
-);
-const LastWeekTab = () => (
-  <UsersList showTime={true} lowerRange={dateFilter.oneWeekBack} higherRange={new Date()} />
-);
-const LastMonthTab = () => (
-  <UsersList showTime={true} lowerRange={dateFilter.oneMonthBack} higherRange={new Date()} />
-);
 
 const styles = StyleSheet.create({
   headerView: {

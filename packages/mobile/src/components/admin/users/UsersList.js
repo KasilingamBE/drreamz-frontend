@@ -31,7 +31,7 @@ export default function UsersList({
           placeholder="Search..."
         />
       </View>
-      <NoFound loading={loading} count={allData.count} label="Bookings" />
+      <NoFound loading={loading} count={allData.count} label="Users" />
       <FlatList
         data={allData.users}
         renderItem={({ item, index }) => (

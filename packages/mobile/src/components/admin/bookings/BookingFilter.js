@@ -20,7 +20,7 @@ export default function BookingFilter({ activeFilter, setActiveFilter }) {
   return (
     <View
       style={{
-        height: 180,
+        height: 100,
         width: 170,
         backgroundColor: 'white',
         borderRadius: 1,
@@ -55,12 +55,15 @@ export default function BookingFilter({ activeFilter, setActiveFilter }) {
           alignContent: 'flex-start'
         }}>
         <DateRangePicker
-          onChange={(dates) => setRange({ ...range,...dates })}
+          onChange={(dates) => setRange({ ...range, ...dates })}
           endDate={range.endDate}
           startDate={range.startDate}
           displayedDate={range.displayedDate}
           range>
-          <Text>Date Range</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <MaterialCommunityIcon name="calendar-clock" size={25} />
+            <Text style={{ marginLeft: 5 }}>Date Range</Text>
+          </View>
         </DateRangePicker>
       </View>
     </View>

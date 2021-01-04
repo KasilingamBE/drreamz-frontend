@@ -61,7 +61,7 @@ const EditFee = (props) => {
           updatedBy: props.userId
         }
       });
-      setOneData(data.updateOneFee.fee);
+      // setOneData(data.updateOneFee.fee);
       props.dispatch(hideLoading());
       setDisabled(false);
       setPayload({ ...payload, edit: false });

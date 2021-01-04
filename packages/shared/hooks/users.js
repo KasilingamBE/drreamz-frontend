@@ -88,8 +88,16 @@ export function useGetAllUser({ driver, spaceOwner, lowerRange, higherRange, act
     listings: spaceOwner ? 1 : 0
   });
 
+  // const lowerRange = new Date(new Date(new Date()).setHours(new Date().getHours() - 24));
+  // const higherRange = new Date();
+
   const [getAllUsers, { loading, data, error }] = useLazyQuery(GET_ALL, {
-    variables: { ...filter, lowerRange, higherRange, active },
+    variables: {
+      ...filter,
+      lowerRange,
+      higherRange,
+      active
+    },
     fetchPolicy: 'network-only' // 'cache-and-network' //'network-only'
   });
 

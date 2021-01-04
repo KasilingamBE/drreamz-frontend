@@ -1,13 +1,12 @@
 import colors from '@parkyourself-frontend/shared/config/colors';
-import React, { Children, useState } from 'react';
+import React, { useState } from 'react';
 import {
   TouchableOpacity,
   Text,
   StyleSheet,
   Platform,
   TouchableWithoutFeedback,
-  Modal,
-  View
+  Modal
 } from 'react-native';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
@@ -19,7 +18,7 @@ export default function FilterButton({ children }) {
   const [modal, setModal] = useState(false);
   return (
     <>
-      <TouchableOpacity style={styles.filterRow} onPress={() => children ? setModal(true) : null}>
+      <TouchableOpacity style={styles.filterRow} onPress={() => (children ? setModal(true) : null)}>
         <Text style={styles.filterText}>FILTER</Text>
         <AntDesignIcon name="downcircleo" style={styles.icon} />
       </TouchableOpacity>
@@ -38,7 +37,7 @@ export default function FilterButton({ children }) {
             // justifyContent: 'center',
             alignItems: 'flex-end',
             backgroundColor: 'rgba(52, 52, 52, 0.3)',
-            paddingTop: 120,
+            paddingTop: Platform.OS === 'ios' ? 125 : 90,
             paddingRight: 20
           }}
           onPress={() => setModal(false)}>
