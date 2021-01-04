@@ -1,33 +1,31 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Form, InputGroup, FormControl, Spinner, Button, Card } from 'react-bootstrap';
+import { Form, InputGroup, FormControl, Spinner, Button, Card, Modal } from 'react-bootstrap';
 import moment from 'moment';
 import { XCircle } from 'react-feather';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import Geocode from 'react-geocode';
 import featureList from '@parkyourself-frontend/shared/config/features';
 import countryCodes from '@parkyourself-frontend/shared/config/countries';
-import {
-  convertToUnit,
-  convertToMilliseconds
-} from '@parkyourself-frontend/shared/utils/milliseconds';
-import API from '@parkyourself-frontend/shared/config/apiKeys';
-import AddListingHeader from './AddListingHeader';
-import AddListingButtonRow from './AddListingButtonRow';
+import TimeKeeper from 'react-timekeeper';
+import { convertToUnit, convertToMilliseconds } from '@parkyourself-frontend/shared/utils/time';
 import {
   updateTempListing,
   tempListingLocationD,
   tempListingSpaceD,
   tempListingSpaceA,
   tempListingPricingD
-} from '../../../redux/actions/tempListing';
+} from '@parkyourself-frontend/shared/redux/actions/tempListing';
+import API from '@parkyourself-frontend/shared/config/apiKeys';
+import AddListingHeader from './AddListingHeader';
 import MapContainer from '../../MapContainer';
 import CheckBoxItem from '../../CheckBoxItem';
 import RadioItem from '../../RadioItem';
 import CustomScheduleModal from '../../CustomScheduleModal';
 import StartEndDateTimePicker from '../../StartEndDateTimePicker';
 import UseFormOption from '../../formOptions/UseFormOption';
+import StartEndTimePicker from './StartEndTimePicker';
 
 Geocode.setApiKey(API.GOGGLE);
 
@@ -44,6 +42,12 @@ const AddListingForm = ({
   const [validated, setValidated] = useState(false);
   const [search, setSearch] = useState('');
   const [showCustomScheduleModal, setShowCustomScheduleModal] = useState(false);
+  const [time, setTime] = useState({
+    hour: 4,
+    minute: 55
+  });
+  const [showTime, setShowTime] = useState(false);
+  const [activeDay, setActiveDay] = useState({ day: 'monday', start: true });
 
   const onChangeSearch = (value) => {
     setSearch(value);
@@ -132,15 +136,16 @@ const AddListingForm = ({
         (activeIndex == 10 && aboutSpace) ||
         (activeIndex == 11 && accessInstructions) ||
         (activeIndex == 12 &&
-          (scheduleType == '24hours' ||
-            (scheduleType == 'fixed' &&
-              (monday.isActive ? monday.startTime && monday.endTime : true) &&
-              (tuesday.isActive ? tuesday.startTime && tuesday.endTime : true) &&
-              (wednesday.isActive ? wednesday.startTime && wednesday.endTime : true) &&
-              (thursday.isActive ? thursday.startTime && thursday.endTime : true) &&
-              (friday.isActive ? friday.startTime && friday.endTime : true) &&
-              (saturday.isActive ? saturday.startTime && saturday.endTime : true) &&
-              (sunday.isActive ? sunday.startTime && sunday.endTime : true)) ||
+          (scheduleType === '24hours' ||
+            scheduleType === 'fixed' ||
+            // (scheduleType === 'fixed' &&
+            //   (monday.isActive ? monday.startTime && monday.endTime : true) &&
+            //   (tuesday.isActive ? tuesday.startTime && tuesday.endTime : true) &&
+            //   (wednesday.isActive ? wednesday.startTime && wednesday.endTime : true) &&
+            //   (thursday.isActive ? thursday.startTime && thursday.endTime : true) &&
+            //   (friday.isActive ? friday.startTime && friday.endTime : true) &&
+            //   (saturday.isActive ? saturday.startTime && saturday.endTime : true) &&
+            //   (sunday.isActive ? sunday.startTime && sunday.endTime : true))
             (scheduleType == 'custom' && customTimeRange.length > 0))) ||
         (activeIndex == 13 &&
           (!hasNoticeTime ||
@@ -355,6 +360,91 @@ const AddListingForm = ({
       largeSpaces: 0,
       oversizedSpaces: 0
     });
+  };
+
+  const showTimeModal = (day, start, hour, minute) => {
+    setActiveDay({ day, start });
+    setTime({
+      hour,
+      minute
+    });
+    setShowTime(true);
+  };
+
+  const saveTime = () => {
+    if (activeDay.day === 'monday') {
+      if (activeDay.start) {
+        tempListingSpaceA({
+          monday: { ...monday, startHour: time.hour, startMinute: time.minute }
+        });
+      } else {
+        tempListingSpaceA({
+          monday: { ...monday, endHour: time.hour, endMinute: time.minute }
+        });
+      }
+    } else if (activeDay.day === 'tuesday') {
+      if (activeDay.start) {
+        tempListingSpaceA({
+          tuesday: { ...tuesday, startHour: time.hour, startMinute: time.minute }
+        });
+      } else {
+        tempListingSpaceA({
+          tuesday: { ...tuesday, endHour: time.hour, endMinute: time.minute }
+        });
+      }
+    } else if (activeDay.day === 'wednesday') {
+      if (activeDay.start) {
+        tempListingSpaceA({
+          wednesday: { ...wednesday, startHour: time.hour, startMinute: time.minute }
+        });
+      } else {
+        tempListingSpaceA({
+          wednesday: { ...wednesday, endHour: time.hour, endMinute: time.minute }
+        });
+      }
+    } else if (activeDay.day === 'thursday') {
+      if (activeDay.start) {
+        tempListingSpaceA({
+          thursday: { ...thursday, startHour: time.hour, startMinute: time.minute }
+        });
+      } else {
+        tempListingSpaceA({
+          thursday: { ...thursday, endHour: time.hour, endMinute: time.minute }
+        });
+      }
+    } else if (activeDay.day === 'friday') {
+      if (activeDay.start) {
+        tempListingSpaceA({
+          friday: { ...friday, startHour: time.hour, startMinute: time.minute }
+        });
+      } else {
+        tempListingSpaceA({
+          friday: { ...friday, endHour: time.hour, endMinute: time.minute }
+        });
+      }
+    } else if (activeDay.day === 'saturday') {
+      if (activeDay.start) {
+        tempListingSpaceA({
+          saturday: { ...saturday, startHour: time.hour, startMinute: time.minute }
+        });
+      } else {
+        tempListingSpaceA({
+          saturday: { ...saturday, endHour: time.hour, endMinute: time.minute }
+        });
+      }
+    } else if (activeDay.day === 'sunday') {
+      if (activeDay.start) {
+        tempListingSpaceA({
+          sunday: { ...sunday, startHour: time.hour, startMinute: time.minute }
+        });
+      } else {
+        tempListingSpaceA({
+          sunday: { ...sunday, endHour: time.hour, endMinute: time.minute }
+        });
+      }
+    }
+    // hide modal
+    setShowTime(false);
   };
 
   return (
@@ -1226,8 +1316,18 @@ const AddListingForm = ({
           {scheduleType == 'fixed' && (
             <div className="question-item">
               <h1 className="heading">At what days can drivers park at your listing?</h1>
+              <Modal show={showTime} onHide={() => setShowTime(false)} size="sm">
+                <Modal.Body className="d-flex justify-content-center">
+                  <TimeKeeper
+                    time={time}
+                    onChange={({ hour, minute }) => setTime({ hour, minute })}
+                    onDoneClick={() => saveTime()}
+                    switchToMinuteOnHourSelect
+                  />
+                </Modal.Body>
+              </Modal>
               {validated &&
-                scheduleType == 'fixed' &&
+                scheduleType === 'fixed' &&
                 !(
                   monday.isActive ||
                   tuesday.isActive ||
@@ -1241,7 +1341,7 @@ const AddListingForm = ({
               <CheckBoxItem
                 label="Monday"
                 name="monday"
-                onClick={(event) =>
+                onClick={() =>
                   tempListingSpaceA({
                     monday: { ...monday, isActive: !monday.isActive }
                   })
@@ -1249,36 +1349,33 @@ const AddListingForm = ({
                 checked={monday.isActive}
               />
               {monday.isActive && (
-                <StartEndDateTimePicker
-                  start={monday.startTime}
-                  end={monday.endTime}
-                  onChange={(start, end) => {
-                    tempListingSpaceA({
-                      monday: { ...monday, startTime: start, endTime: end }
-                    });
-                  }}
+                <StartEndTimePicker
+                  day="monday"
+                  startHour={monday.startHour}
+                  startMinute={monday.startMinute}
+                  endHour={monday.endHour}
+                  endMinute={monday.endMinute}
+                  showTimeModal={showTimeModal}
                 />
               )}
               <CheckBoxItem
                 label="Tuesday"
                 name="tuesday"
-                onClick={(event) =>
+                onClick={() =>
                   tempListingSpaceA({
                     tuesday: { ...tuesday, isActive: !tuesday.isActive }
                   })
                 }
                 checked={tuesday.isActive}
               />
-
               {tuesday.isActive && (
-                <StartEndDateTimePicker
-                  start={tuesday.startTime}
-                  end={tuesday.endTime}
-                  onChange={(start, end) => {
-                    tempListingSpaceA({
-                      tuesday: { ...tuesday, startTime: start, endTime: end }
-                    });
-                  }}
+                <StartEndTimePicker
+                  day="tuesday"
+                  startHour={tuesday.startHour}
+                  startMinute={tuesday.startMinute}
+                  endHour={tuesday.endHour}
+                  endMinute={tuesday.endMinute}
+                  showTimeModal={showTimeModal}
                 />
               )}
               <CheckBoxItem
@@ -1291,20 +1388,14 @@ const AddListingForm = ({
                 }
                 checked={wednesday.isActive}
               />
-
               {wednesday.isActive && (
-                <StartEndDateTimePicker
-                  start={wednesday.startTime}
-                  end={wednesday.endTime}
-                  onChange={(start, end) => {
-                    tempListingSpaceA({
-                      wednesday: {
-                        ...wednesday,
-                        startTime: start,
-                        endTime: end
-                      }
-                    });
-                  }}
+                <StartEndTimePicker
+                  day="wednesday"
+                  startHour={wednesday.startHour}
+                  startMinute={wednesday.startMinute}
+                  endHour={wednesday.endHour}
+                  endMinute={wednesday.endMinute}
+                  showTimeModal={showTimeModal}
                 />
               )}
               <CheckBoxItem
@@ -1319,18 +1410,13 @@ const AddListingForm = ({
               />
 
               {thursday.isActive && (
-                <StartEndDateTimePicker
-                  start={thursday.startTime}
-                  end={thursday.endTime}
-                  onChange={(start, end) => {
-                    tempListingSpaceA({
-                      thursday: {
-                        ...thursday,
-                        startTime: start,
-                        endTime: end
-                      }
-                    });
-                  }}
+                <StartEndTimePicker
+                  day="thursday"
+                  startHour={thursday.startHour}
+                  startMinute={thursday.startMinute}
+                  endHour={thursday.endHour}
+                  endMinute={thursday.endMinute}
+                  showTimeModal={showTimeModal}
                 />
               )}
               <CheckBoxItem
@@ -1344,18 +1430,13 @@ const AddListingForm = ({
                 checked={friday.isActive}
               />
               {friday.isActive && (
-                <StartEndDateTimePicker
-                  start={friday.startTime}
-                  end={friday.endTime}
-                  onChange={(start, end) => {
-                    tempListingSpaceA({
-                      friday: {
-                        ...friday,
-                        startTime: start,
-                        endTime: end
-                      }
-                    });
-                  }}
+                <StartEndTimePicker
+                  day="friday"
+                  startHour={friday.startHour}
+                  startMinute={friday.startMinute}
+                  endHour={friday.endHour}
+                  endMinute={friday.endMinute}
+                  showTimeModal={showTimeModal}
                 />
               )}
               <CheckBoxItem
@@ -1370,18 +1451,13 @@ const AddListingForm = ({
               />
 
               {saturday.isActive && (
-                <StartEndDateTimePicker
-                  start={saturday.startTime}
-                  end={saturday.endTime}
-                  onChange={(start, end) => {
-                    tempListingSpaceA({
-                      saturday: {
-                        ...saturday,
-                        startTime: start,
-                        endTime: end
-                      }
-                    });
-                  }}
+                <StartEndTimePicker
+                  day="saturday"
+                  startHour={saturday.startHour}
+                  startMinute={saturday.startMinute}
+                  endHour={saturday.endHour}
+                  endMinute={saturday.endMinute}
+                  showTimeModal={showTimeModal}
                 />
               )}
               <CheckBoxItem
@@ -1394,27 +1470,21 @@ const AddListingForm = ({
                 }
                 checked={sunday.isActive}
               />
-
               {sunday.isActive && (
-                <StartEndDateTimePicker
-                  start={sunday.startTime}
-                  end={sunday.endTime}
-                  onChange={(start, end) => {
-                    tempListingSpaceA({
-                      sunday: {
-                        ...sunday,
-                        startTime: start,
-                        endTime: end
-                      }
-                    });
-                  }}
+                <StartEndTimePicker
+                  day="sunday"
+                  startHour={sunday.startHour}
+                  startMinute={sunday.startMinute}
+                  endHour={sunday.endHour}
+                  endMinute={sunday.endMinute}
+                  showTimeModal={showTimeModal}
                 />
               )}
             </div>
           )}
 
           <br />
-          {scheduleType == 'custom' && (
+          {scheduleType === 'custom' && (
             <>
               <h1 className="heading">Select a time range</h1>
               <Button

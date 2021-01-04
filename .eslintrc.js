@@ -26,6 +26,8 @@ module.exports = {
     'no-console': 'error',
     'no-underscore-dangle': 'off',
     'no-use-before-define': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
+    'jsx-a11y/no-static-element-interactions': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'jsx-a11y/anchor-is-valid': [

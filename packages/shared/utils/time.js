@@ -29,3 +29,15 @@ export const convertToMilliseconds = (value, unit) => {
   }
   return newValue;
 };
+
+export const timeTo12HrFormat = (hour, minute) => {
+  let tempHour = hour;
+  let meridiem = 'AM';
+  if (hour >= 12) {
+    meridiem = 'PM';
+    if (hour > 12) {
+      tempHour -= 12;
+    }
+  }
+  return `${tempHour}:${minute} ${meridiem}`;
+};

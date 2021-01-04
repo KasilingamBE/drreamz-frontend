@@ -25,8 +25,6 @@ import '../styles/styles.scss';
 import '../src/app/assets/css/stripestyles.css';
 
 import 'react-date-picker/dist/DatePicker.css';
-import 'react-calendar/dist/Calendar.css';
-import 'react-clock/dist/Clock.css';
 import 'react-time-picker/dist/TimePicker.css';
 import 'react-day-picker/lib/style.css';
 

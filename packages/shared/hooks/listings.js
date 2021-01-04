@@ -29,135 +29,155 @@ const GET_ALL = gql`
       count
       listings {
         _id
-        ownerId
-        ownerName
-        ownerEmail
-        published
+        bookingCount {
+          total
+        }
+        bookings
+        createdAt
         location {
-          type
           coordinates
+          type
         }
         locationDetails {
-          listingType
-          propertyType
-          propertyName
           address
           city
-          state
           country
-          postalCode
           code
-          phone
+          features
+          listingType
           marker {
-            type
             coordinates
+            type
           }
-          streetViewImages
           parkingEntranceImages
           parkingSpaceImages
-          features
+          phone
+          postalCode
+          propertyName
+          propertyType
+          state
+          streetViewImages
+          unitNum
+        }
+        ownerId
+        ownerEmail
+        ownerName
+        pricingDetails {
+          pricingRates {
+            perDayRate
+            perHourRate
+            perMonthRate
+            perWeekRate
+          }
+          pricingType
+        }
+        published
+        reviews
+        spaceAvailable {
+          advanceBookingTime {
+            unit
+            value
+          }
+          customTimeRange
+          friday {
+            endHour
+            endMinute
+            isActive
+            startHour
+            startMinute
+          }
+          hasNoticeTime
+          instantBooking
+          maxTime {
+            unit
+            value
+          }
+          minTime {
+            unit
+            value
+          }
+          monday {
+            endHour
+            endMinute
+            isActive
+            startHour
+            startMinute
+          }
+          noticeTime {
+            unit
+            value
+          }
+          saturday {
+            endHour
+            endMinute
+            isActive
+            startHour
+            startMinute
+          }
+          scheduleType
+          sunday {
+            endHour
+            endMinute
+            isActive
+            startHour
+            startMinute
+          }
+          thursday {
+            endHour
+            endMinute
+            isActive
+            startHour
+            startMinute
+          }
+          tuesday {
+            endHour
+            endMinute
+            isActive
+            startHour
+            startMinute
+          }
+          wednesday {
+            endHour
+            endMinute
+            isActive
+            startHour
+            startMinute
+          }
         }
         spaceDetails {
-          parkingSpaceType
-          qtyOfSpaces
-          heightRestriction
+          aboutSpace
+          accessInstructions
+          compact
+          compactSpaces
           height1 {
-            value
             unit
+            value
           }
           height2 {
-            value
             unit
+            value
           }
-          sameSizeSpaces
-          largestSize
-          motorcycle
-          compact
-          midsized
-          large
-          oversized
-          motorcycleSpaces
-          compactSpaces
-          midsizedSpaces
-          largeSpaces
-          oversizedSpaces
+          heightRestriction
           isLabelled
+          large
+          largeSpaces
+          largestSize
+          midsized
+          midsizedSpaces
+          motorcycle
+          motorcycleSpaces
+          oversized
+          oversizedSpaces
+          parkingSpaceType
+          qtyOfSpaces
+          sameSizeSpaces
           spaceLabels {
+            isBooked
             label
             largestSize
           }
-          aboutSpace
-          accessInstructions
         }
-        spaceAvailable {
-          scheduleType
-          instantBooking
-          monday {
-            isActive
-            startTime
-            endTime
-          }
-          tuesday {
-            isActive
-            startTime
-            endTime
-          }
-          wednesday {
-            isActive
-            startTime
-            endTime
-          }
-          thursday {
-            isActive
-            startTime
-            endTime
-          }
-          friday {
-            isActive
-            startTime
-            endTime
-          }
-          saturday {
-            isActive
-            startTime
-            endTime
-          }
-          sunday {
-            isActive
-            startTime
-            endTime
-          }
-          customTimeRange
-          noticeTime {
-            value
-            unit
-          }
-          advanceBookingTime {
-            value
-            unit
-          }
-          minTime {
-            value
-            unit
-          }
-          maxTime {
-            value
-            unit
-          }
-          instantBooking
-        }
-        pricingDetails {
-          pricingType
-          pricingRates {
-            perHourRate
-            perDayRate
-            perWeekRate
-            perMonthRate
-          }
-        }
-        bookings
-        reviews
-        createdAt
+        thumbnail
       }
     }
   }
@@ -167,137 +187,155 @@ const GET_ONE = gql`
   query GetListing($id: ID!) {
     getListing(id: $id) {
       _id
-      ownerId
-      ownerName
-      ownerEmail
-      published
-      location {
-        type
-        coordinates
-      }
-      locationDetails {
-        listingType
-        propertyType
-        propertyName
-        address
-        city
-        state
-        country
-        postalCode
-        code
-        phone
-        marker {
-          type
-          coordinates
-        }
-        streetViewImages
-        parkingEntranceImages
-        parkingSpaceImages
-        features
-      }
-      spaceDetails {
-        parkingSpaceType
-        qtyOfSpaces
-        heightRestriction
-        height1 {
-          value
-          unit
-        }
-        height2 {
-          value
-          unit
-        }
-        sameSizeSpaces
-        largestSize
-        motorcycle
-        compact
-        midsized
-        large
-        oversized
-        motorcycleSpaces
-        compactSpaces
-        midsizedSpaces
-        largeSpaces
-        oversizedSpaces
-        isLabelled
-        spaceLabels {
-          label
-          largestSize
-          isBooked
-        }
-        aboutSpace
-        accessInstructions
-      }
-      spaceAvailable {
-        scheduleType
-        instantBooking
-        monday {
-          isActive
-          startTime
-          endTime
-        }
-        tuesday {
-          isActive
-          startTime
-          endTime
-        }
-        wednesday {
-          isActive
-          startTime
-          endTime
-        }
-        thursday {
-          isActive
-          startTime
-          endTime
-        }
-        friday {
-          isActive
-          startTime
-          endTime
-        }
-        saturday {
-          isActive
-          startTime
-          endTime
-        }
-        sunday {
-          isActive
-          startTime
-          endTime
-        }
-        customTimeRange
-        hasNoticeTime
-        noticeTime {
-          value
-          unit
-        }
-        advanceBookingTime {
-          value
-          unit
-        }
-        minTime {
-          value
-          unit
-        }
-        maxTime {
-          value
-          unit
-        }
-        instantBooking
-      }
-      pricingDetails {
-        pricingType
-        pricingRates {
-          perHourRate
-          perDayRate
-          perWeekRate
-          perMonthRate
-        }
+      bookingCount {
+        total
       }
       bookings
-      reviews
       createdAt
+      location {
+        coordinates
+        type
+      }
+      locationDetails {
+        address
+        city
+        country
+        code
+        features
+        listingType
+        marker {
+          coordinates
+          type
+        }
+        parkingEntranceImages
+        parkingSpaceImages
+        phone
+        postalCode
+        propertyName
+        propertyType
+        state
+        streetViewImages
+        unitNum
+      }
+      ownerId
+      ownerEmail
+      ownerName
+      pricingDetails {
+        pricingRates {
+          perDayRate
+          perHourRate
+          perMonthRate
+          perWeekRate
+        }
+        pricingType
+      }
+      published
+      reviews
+      spaceAvailable {
+        advanceBookingTime {
+          unit
+          value
+        }
+        customTimeRange
+        friday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        hasNoticeTime
+        instantBooking
+        maxTime {
+          unit
+          value
+        }
+        minTime {
+          unit
+          value
+        }
+        monday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        noticeTime {
+          unit
+          value
+        }
+        saturday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        scheduleType
+        sunday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        thursday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        tuesday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        wednesday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+      }
+      spaceDetails {
+        aboutSpace
+        accessInstructions
+        compact
+        compactSpaces
+        height1 {
+          unit
+          value
+        }
+        height2 {
+          unit
+          value
+        }
+        heightRestriction
+        isLabelled
+        large
+        largeSpaces
+        largestSize
+        midsized
+        midsizedSpaces
+        motorcycle
+        motorcycleSpaces
+        oversized
+        oversizedSpaces
+        parkingSpaceType
+        qtyOfSpaces
+        sameSizeSpaces
+        spaceLabels {
+          isBooked
+          label
+          largestSize
+        }
+      }
+      thumbnail
     }
   }
 `;
@@ -370,136 +408,155 @@ export const CREATE_LISTING = gql`
       location: $location
     ) {
       _id
+      bookingCount {
+        total
+      }
+      bookings
+      createdAt
+      location {
+        coordinates
+        type
+      }
+      locationDetails {
+        address
+        city
+        country
+        code
+        features
+        listingType
+        marker {
+          coordinates
+          type
+        }
+        parkingEntranceImages
+        parkingSpaceImages
+        phone
+        postalCode
+        propertyName
+        propertyType
+        state
+        streetViewImages
+        unitNum
+      }
       ownerId
       ownerEmail
       ownerName
+      pricingDetails {
+        pricingRates {
+          perDayRate
+          perHourRate
+          perMonthRate
+          perWeekRate
+        }
+        pricingType
+      }
       published
-      location {
-        type
-        coordinates
-      }
-      locationDetails {
-        listingType
-        propertyType
-        propertyName
-        address
-        city
-        state
-        country
-        postalCode
-        code
-        phone
-        marker {
-          type
-          coordinates
-        }
-        streetViewImages
-        parkingEntranceImages
-        parkingSpaceImages
-        features
-      }
-      spaceDetails {
-        parkingSpaceType
-        qtyOfSpaces
-        heightRestriction
-        height1 {
-          value
-          unit
-        }
-        height2 {
-          value
-          unit
-        }
-        sameSizeSpaces
-        largestSize
-        motorcycle
-        compact
-        midsized
-        large
-        oversized
-        motorcycleSpaces
-        compactSpaces
-        midsizedSpaces
-        largeSpaces
-        oversizedSpaces
-        isLabelled
-        spaceLabels {
-          label
-          largestSize
-          isBooked
-        }
-        aboutSpace
-        accessInstructions
-      }
+      reviews
       spaceAvailable {
-        scheduleType
-        monday {
-          isActive
-          startTime
-          endTime
-        }
-        tuesday {
-          isActive
-          startTime
-          endTime
-        }
-        wednesday {
-          isActive
-          startTime
-          endTime
-        }
-        thursday {
-          isActive
-          startTime
-          endTime
-        }
-        friday {
-          isActive
-          startTime
-          endTime
-        }
-        saturday {
-          isActive
-          startTime
-          endTime
-        }
-        sunday {
-          isActive
-          startTime
-          endTime
+        advanceBookingTime {
+          unit
+          value
         }
         customTimeRange
-        hasNoticeTime
-        noticeTime {
-          value
-          unit
+        friday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
         }
-        advanceBookingTime {
-          value
+        hasNoticeTime
+        instantBooking
+        maxTime {
           unit
+          value
         }
         minTime {
-          value
           unit
-        }
-        maxTime {
           value
+        }
+        monday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        noticeTime {
           unit
+          value
         }
-        instantBooking
-      }
-      pricingDetails {
-        pricingType
-        pricingRates {
-          perHourRate
-          perDayRate
-          perWeekRate
-          perMonthRate
+        saturday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        scheduleType
+        sunday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        thursday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        tuesday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        wednesday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
         }
       }
-      bookings
-      reviews
-      createdAt
+      spaceDetails {
+        aboutSpace
+        accessInstructions
+        compact
+        compactSpaces
+        height1 {
+          unit
+          value
+        }
+        height2 {
+          unit
+          value
+        }
+        heightRestriction
+        isLabelled
+        large
+        largeSpaces
+        largestSize
+        midsized
+        midsizedSpaces
+        motorcycle
+        motorcycleSpaces
+        oversized
+        oversizedSpaces
+        parkingSpaceType
+        qtyOfSpaces
+        sameSizeSpaces
+        spaceLabels {
+          isBooked
+          label
+          largestSize
+        }
+      }
+      thumbnail
     }
   }
 `;
@@ -522,136 +579,155 @@ export const UPDATE_LISTING = gql`
       location: $location
     ) {
       _id
-      ownerId
-      ownerName
-      ownerEmail
-      published
-      location {
-        type
-        coordinates
-      }
-      locationDetails {
-        listingType
-        propertyType
-        propertyName
-        address
-        city
-        state
-        country
-        postalCode
-        code
-        phone
-        marker {
-          type
-          coordinates
-        }
-        streetViewImages
-        parkingEntranceImages
-        parkingSpaceImages
-        features
-      }
-      spaceDetails {
-        parkingSpaceType
-        qtyOfSpaces
-        heightRestriction
-        height1 {
-          value
-          unit
-        }
-        height2 {
-          value
-          unit
-        }
-        sameSizeSpaces
-        largestSize
-        motorcycle
-        compact
-        midsized
-        large
-        oversized
-        motorcycleSpaces
-        compactSpaces
-        midsizedSpaces
-        largeSpaces
-        oversizedSpaces
-        isLabelled
-        spaceLabels {
-          label
-          largestSize
-          isBooked
-        }
-        aboutSpace
-        accessInstructions
-      }
-      spaceAvailable {
-        scheduleType
-        monday {
-          isActive
-          startTime
-          endTime
-        }
-        tuesday {
-          isActive
-          startTime
-          endTime
-        }
-        wednesday {
-          isActive
-          startTime
-          endTime
-        }
-        thursday {
-          isActive
-          startTime
-          endTime
-        }
-        friday {
-          isActive
-          startTime
-          endTime
-        }
-        saturday {
-          isActive
-          startTime
-          endTime
-        }
-        sunday {
-          isActive
-          startTime
-          endTime
-        }
-        customTimeRange
-        hasNoticeTime
-        noticeTime {
-          value
-          unit
-        }
-        advanceBookingTime {
-          value
-          unit
-        }
-        minTime {
-          value
-          unit
-        }
-        maxTime {
-          value
-          unit
-        }
-        instantBooking
-      }
-      pricingDetails {
-        pricingType
-        pricingRates {
-          perHourRate
-          perDayRate
-          perWeekRate
-          perMonthRate
-        }
+      bookingCount {
+        total
       }
       bookings
-      reviews
       createdAt
+      location {
+        coordinates
+        type
+      }
+      locationDetails {
+        address
+        city
+        country
+        code
+        features
+        listingType
+        marker {
+          coordinates
+          type
+        }
+        parkingEntranceImages
+        parkingSpaceImages
+        phone
+        postalCode
+        propertyName
+        propertyType
+        state
+        streetViewImages
+        unitNum
+      }
+      ownerId
+      ownerEmail
+      ownerName
+      pricingDetails {
+        pricingRates {
+          perDayRate
+          perHourRate
+          perMonthRate
+          perWeekRate
+        }
+        pricingType
+      }
+      published
+      reviews
+      spaceAvailable {
+        advanceBookingTime {
+          unit
+          value
+        }
+        customTimeRange
+        friday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        hasNoticeTime
+        instantBooking
+        maxTime {
+          unit
+          value
+        }
+        minTime {
+          unit
+          value
+        }
+        monday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        noticeTime {
+          unit
+          value
+        }
+        saturday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        scheduleType
+        sunday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        thursday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        tuesday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        wednesday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+      }
+      spaceDetails {
+        aboutSpace
+        accessInstructions
+        compact
+        compactSpaces
+        height1 {
+          unit
+          value
+        }
+        height2 {
+          unit
+          value
+        }
+        heightRestriction
+        isLabelled
+        large
+        largeSpaces
+        largestSize
+        midsized
+        midsizedSpaces
+        motorcycle
+        motorcycleSpaces
+        oversized
+        oversizedSpaces
+        parkingSpaceType
+        qtyOfSpaces
+        sameSizeSpaces
+        spaceLabels {
+          isBooked
+          label
+          largestSize
+        }
+      }
+      thumbnail
     }
   }
 `;

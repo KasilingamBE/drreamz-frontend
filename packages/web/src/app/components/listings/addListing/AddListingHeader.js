@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import { Button, ProgressBar, Spinner } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import {
-  useAddOneListing,
-  CREATE_LISTING,
-  UPDATE_LISTING
-} from '@parkyourself-frontend/shared/hooks/listings';
+import { useAddOneListing } from '@parkyourself-frontend/shared/hooks/listings';
 import { deleteTempListing } from '@parkyourself-frontend/shared/redux/actions/tempListing';
 import {
   addListingLocal,
