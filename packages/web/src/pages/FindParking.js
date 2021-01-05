@@ -1,26 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { Nav, Form, Button, InputGroup, FormControl, Spinner } from 'react-bootstrap';
-import MapContainer from '../app/components/MapContainer';
-import StartEndTimePicker from '../app/components/StartEndTimePicker';
+import { Nav, Form, Button, Spinner } from 'react-bootstrap';
+import { IoIosCloseCircleOutline } from 'react-icons/io';
+import { showLoading, hideLoading } from 'react-redux-loading';
+import { BiCurrentLocation } from 'react-icons/bi';
 import { BsFilterRight } from 'react-icons/bs';
 import { FaSearchLocation } from 'react-icons/fa';
+import { ImLocation2, ImList2 } from 'react-icons/im';
 import { gql, useQuery } from '@apollo/client';
-import { client } from '../app/graphql/index';
+import { connect } from 'react-redux';
+import Geocode from 'react-geocode';
+import moment from 'moment';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
-import AuthContainer from '../app/components/AuthContainer';
+import MapContainer from '../app/components/MapContainer';
+import { client } from '../app/graphql/index';
 import DriverContainer from '../app/components/DriverContainer';
 import FindParkingList from '../app/components/FindParkingList';
 import { setSearchData } from '../app/redux/actions/findParking';
-import { connect } from 'react-redux';
 import StartEndDateTimePicker from '../app/components/StartEndDateTimePicker';
-import { BiCurrentLocation } from 'react-icons/bi';
-import Geocode from 'react-geocode';
-import moment from 'moment';
 import { roundTime } from '../helpers/utilities';
-import { ImLocation2, ImList2 } from 'react-icons/im';
 import ParkingsListView from '../app/components/ParkingsListView';
-import { IoIosCloseCircleOutline } from 'react-icons/io';
-import { showLoading, hideLoading } from 'react-redux-loading';
 
 Geocode.setApiKey('AIzaSyDF0pzALjYYanPshuclFzq_2F24xZWZjOg');
 
@@ -31,139 +29,157 @@ const GET_PUBLISHED_LISTINGS_WITH_LATLNG = gql`
       bookingCount {
         total
       }
-      ownerId
-      ownerName
-      published
+      bookings
+      createdAt
       location {
-        type
         coordinates
+        type
       }
       locationDetails {
-        listingType
-        propertyType
-        propertyName
         address
         city
-        state
         country
-        postalCode
         code
-        phone
+        features
+        listingType
         marker {
-          type
           coordinates
+          type
         }
-        streetViewImages
         parkingEntranceImages
         parkingSpaceImages
-        features
+        phone
+        postalCode
+        propertyName
+        propertyType
+        state
+        streetViewImages
+        unitNum
+      }
+      ownerId
+      ownerEmail
+      ownerName
+      pricingDetails {
+        pricingRates {
+          perDayRate
+          perHourRate
+          perMonthRate
+          perWeekRate
+        }
+        pricingType
+      }
+      published
+      reviews
+      spaceAvailable {
+        advanceBookingTime {
+          unit
+          value
+        }
+        customTimeRange
+        friday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        hasNoticeTime
+        instantBooking
+        maxTime {
+          unit
+          value
+        }
+        minTime {
+          unit
+          value
+        }
+        monday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        noticeTime {
+          unit
+          value
+        }
+        saturday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        scheduleType
+        sunday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        thursday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        tuesday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        wednesday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
       }
       spaceDetails {
-        parkingSpaceType
-        qtyOfSpaces
-        heightRestriction
+        aboutSpace
+        accessInstructions
+        compact
+        compactSpaces
         height1 {
-          value
           unit
+          value
         }
         height2 {
-          value
           unit
+          value
         }
-        sameSizeSpaces
-        largestSize
-        motorcycle
-        compact
-        midsized
-        large
-        oversized
-        motorcycleSpaces
-        compactSpaces
-        midsizedSpaces
-        largeSpaces
-        oversizedSpaces
+        heightRestriction
         isLabelled
+        large
+        largeSpaces
+        largestSize
+        midsized
+        midsizedSpaces
+        motorcycle
+        motorcycleSpaces
+        oversized
+        oversizedSpaces
+        parkingSpaceType
+        qtyOfSpaces
+        sameSizeSpaces
         spaceLabels {
+          isBooked
           label
           largestSize
         }
-        aboutSpace
-        accessInstructions
       }
-      spaceAvailable {
-        scheduleType
-        instantBooking
-        monday {
-          isActive
-          startTime
-          endTime
-        }
-        tuesday {
-          isActive
-          startTime
-          endTime
-        }
-        wednesday {
-          isActive
-          startTime
-          endTime
-        }
-        thursday {
-          isActive
-          startTime
-          endTime
-        }
-        friday {
-          isActive
-          startTime
-          endTime
-        }
-        saturday {
-          isActive
-          startTime
-          endTime
-        }
-        sunday {
-          isActive
-          startTime
-          endTime
-        }
-        customTimeRange
-        noticeTime {
-          value
-          unit
-        }
-        advanceBookingTime {
-          value
-          unit
-        }
-        minTime {
-          value
-          unit
-        }
-        maxTime {
-          value
-          unit
-        }
-        instantBooking
-      }
-      pricingDetails {
-        pricingType
-        pricingRates {
-          perHourRate
-          perDayRate
-          perWeekRate
-          perMonthRate
-        }
-      }
-      bookings
-      reviews
-      createdAt
+      thumbnail
     }
   }
 `;
 
-const FindParking = ({ findParking, setSearchData, dispatch }) => {
+const FindParking = ({ findParking, setSearchData, showLoading, hideLoading }) => {
   const [visible, setVisible] = useState(false);
   const [listView, setListView] = useState(false);
   const [selected, setSelected] = useState({});
@@ -302,7 +318,7 @@ const FindParking = ({ findParking, setSearchData, dispatch }) => {
           // console.log('qty res', status);
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         hideLoading();
         setDisabled(false);
       }
@@ -569,7 +585,7 @@ const FindParking = ({ findParking, setSearchData, dispatch }) => {
               variant="dark"
               className="col-xl-1 col-lg-1 col-md-1 col-sm-2 col-2 search-btn"
               onClick={onSubmitHandler}>
-              {disabled ? (
+              {!disabled ? (
                 <>
                   <Spinner
                     as="span"
@@ -577,7 +593,7 @@ const FindParking = ({ findParking, setSearchData, dispatch }) => {
                     size="sm"
                     role="status"
                     aria-hidden="true"
-                    className="mt-n4"
+                    className="mb-1"
                   />
                   <span className="sr-only">Loading...</span>
                 </>

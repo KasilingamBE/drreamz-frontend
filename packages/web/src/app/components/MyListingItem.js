@@ -13,131 +13,155 @@ const PUBLISH_LISTING = gql`
   mutation UpdateListing($id: ID!, $published: Boolean) {
     updateListing(id: $id, published: $published) {
       _id
+      bookingCount {
+        total
+      }
+      bookings
+      createdAt
+      location {
+        coordinates
+        type
+      }
+      locationDetails {
+        address
+        city
+        country
+        code
+        features
+        listingType
+        marker {
+          coordinates
+          type
+        }
+        parkingEntranceImages
+        parkingSpaceImages
+        phone
+        postalCode
+        propertyName
+        propertyType
+        state
+        streetViewImages
+        unitNum
+      }
       ownerId
       ownerEmail
       ownerName
-      published
-      locationDetails {
-        listingType
-        propertyType
-        propertyName
-        address
-        city
-        state
-        country
-        postalCode
-        code
-        phone
-        marker {
-          type
-          coordinates
+      pricingDetails {
+        pricingRates {
+          perDayRate
+          perHourRate
+          perMonthRate
+          perWeekRate
         }
-        streetViewImages
-        parkingEntranceImages
-        parkingSpaceImages
-        features
+        pricingType
+      }
+      published
+      reviews
+      spaceAvailable {
+        advanceBookingTime {
+          unit
+          value
+        }
+        customTimeRange
+        friday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        hasNoticeTime
+        instantBooking
+        maxTime {
+          unit
+          value
+        }
+        minTime {
+          unit
+          value
+        }
+        monday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        noticeTime {
+          unit
+          value
+        }
+        saturday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        scheduleType
+        sunday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        thursday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        tuesday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        wednesday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
       }
       spaceDetails {
-        parkingSpaceType
-        qtyOfSpaces
-        heightRestriction
+        aboutSpace
+        accessInstructions
+        compact
+        compactSpaces
         height1 {
-          value
           unit
+          value
         }
         height2 {
-          value
           unit
+          value
         }
-        sameSizeSpaces
-        largestSize
-        motorcycle
-        compact
-        midsized
-        large
-        oversized
-        motorcycleSpaces
-        compactSpaces
-        midsizedSpaces
-        largeSpaces
-        oversizedSpaces
+        heightRestriction
         isLabelled
+        large
+        largeSpaces
+        largestSize
+        midsized
+        midsizedSpaces
+        motorcycle
+        motorcycleSpaces
+        oversized
+        oversizedSpaces
+        parkingSpaceType
+        qtyOfSpaces
+        sameSizeSpaces
         spaceLabels {
+          isBooked
           label
           largestSize
         }
-        aboutSpace
-        accessInstructions
       }
-      spaceAvailable {
-        scheduleType
-        instantBooking
-        monday {
-          isActive
-          startTime
-          endTime
-        }
-        tuesday {
-          isActive
-          startTime
-          endTime
-        }
-        wednesday {
-          isActive
-          startTime
-          endTime
-        }
-        thursday {
-          isActive
-          startTime
-          endTime
-        }
-        friday {
-          isActive
-          startTime
-          endTime
-        }
-        saturday {
-          isActive
-          startTime
-          endTime
-        }
-        sunday {
-          isActive
-          startTime
-          endTime
-        }
-        customTimeRange
-        noticeTime {
-          value
-          unit
-        }
-        advanceBookingTime {
-          value
-          unit
-        }
-        minTime {
-          value
-          unit
-        }
-        maxTime {
-          value
-          unit
-        }
-        instantBooking
-      }
-      pricingDetails {
-        pricingType
-        pricingRates {
-          perHourRate
-          perDayRate
-          perWeekRate
-          perMonthRate
-        }
-      }
-      bookings
-      reviews
-      createdAt
+      thumbnail
     }
   }
 `;
@@ -328,14 +352,15 @@ const MyListingItem = ({
       aboutSpace &&
       accessInstructions &&
       (scheduleType == '24hours' ||
-        (scheduleType == 'fixed' &&
-          (monday.isActive ? monday.startTime && monday.endTime : true) &&
-          (tuesday.isActive ? tuesday.startTime && tuesday.endTime : true) &&
-          (wednesday.isActive ? wednesday.startTime && wednesday.endTime : true) &&
-          (thursday.isActive ? thursday.startTime && thursday.endTime : true) &&
-          (friday.isActive ? friday.startTime && friday.endTime : true) &&
-          (saturday.isActive ? saturday.startTime && saturday.endTime : true) &&
-          (sunday.isActive ? sunday.startTime && sunday.endTime : true)) ||
+        scheduleType == 'fixed' ||
+        // (scheduleType == 'fixed' &&
+        //   (monday.isActive ? monday.startTime && monday.endTime : true) &&
+        //   (tuesday.isActive ? tuesday.startTime && tuesday.endTime : true) &&
+        //   (wednesday.isActive ? wednesday.startTime && wednesday.endTime : true) &&
+        //   (thursday.isActive ? thursday.startTime && thursday.endTime : true) &&
+        //   (friday.isActive ? friday.startTime && friday.endTime : true) &&
+        //   (saturday.isActive ? saturday.startTime && saturday.endTime : true) &&
+        //   (sunday.isActive ? sunday.startTime && sunday.endTime : true))
         (scheduleType == 'custom' && customTimeRange.length > 0)) &&
       noticeTime.value >= 0 &&
       advanceBookingTime.value >= 0 &&
