@@ -23,8 +23,30 @@ import ParkingsListView from '../app/components/ParkingsListView';
 Geocode.setApiKey('AIzaSyDF0pzALjYYanPshuclFzq_2F24xZWZjOg');
 
 const GET_PUBLISHED_LISTINGS_WITH_LATLNG = gql`
-  query GetListingsWithBookings($lat: Float!, $lng: Float!, $start: String!, $end: String!) {
-    getListingsWithBookings(lat: $lat, lng: $lng, start: $start, end: $end) {
+  query GetListingsWithBookings(
+    $lat: Float!
+    $lng: Float!
+    $start: String!
+    $end: String!
+    $startDay: Int!
+    $startHour: Int!
+    $startMinute: Int!
+    $endDay: Int!
+    $endHour: Int!
+    $endMinute: Int!
+  ) {
+    getListingsWithBookings(
+      lat: $lat
+      lng: $lng
+      start: $start
+      end: $end
+      startDay: $startDay
+      startHour: $startHour
+      startMinute: $startMinute
+      endDay: $endDay
+      endHour: $endHour
+      endMinute: $endMinute
+    ) {
       _id
       bookingCount {
         total
@@ -287,13 +309,30 @@ const FindParking = ({ findParking, setSearchData, showLoading, hideLoading }) =
   };
 
   const onSubmitHandler = async () => {
+    const startDay = new Date(start).getDay();
+    const startHour = new Date(start).getHours();
+    const startMinute = new Date(start).getMinutes();
+    const endDay = new Date(end).getDay();
+    const endHour = new Date(end).getHours();
+    const endMinute = new Date(end).getMinutes();
     if (search && coordinates.length > 0 && start && end) {
       setDisabled(true);
       try {
         showLoading();
         const { data } = await client.query({
           query: GET_PUBLISHED_LISTINGS_WITH_LATLNG,
-          variables: { lat: coordinates[1], lng: coordinates[0], start, end }
+          variables: {
+            lat: coordinates[1],
+            lng: coordinates[0],
+            start,
+            end,
+            startDay,
+            startHour,
+            startMinute,
+            endDay,
+            endHour,
+            endMinute
+          }
         });
         setFindParkingData({
           ...findParkingData,
@@ -318,7 +357,7 @@ const FindParking = ({ findParking, setSearchData, showLoading, hideLoading }) =
           // console.log('qty res', status);
         }
       } catch (error) {
-        // console.log(error);
+        console.log(error);
         hideLoading();
         setDisabled(false);
       }
@@ -499,8 +538,7 @@ const FindParking = ({ findParking, setSearchData, showLoading, hideLoading }) =
                               });
                             }}>
                             <span className="input-group-text">
-                              {' '}
-                              <IoIosCloseCircleOutline />{' '}
+                              <IoIosCloseCircleOutline />
                             </span>
                           </div>
                         )}
@@ -585,7 +623,7 @@ const FindParking = ({ findParking, setSearchData, showLoading, hideLoading }) =
               variant="dark"
               className="col-xl-1 col-lg-1 col-md-1 col-sm-2 col-2 search-btn"
               onClick={onSubmitHandler}>
-              {!disabled ? (
+              {disabled ? (
                 <>
                   <Spinner
                     as="span"
