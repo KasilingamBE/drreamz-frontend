@@ -78,7 +78,10 @@ const GET_ALL = gql`
             unit
             value
           }
-          customTimeRange
+          customTimeRange {
+            startDate
+            endDate
+          }
           friday {
             endHour
             endMinute
@@ -236,7 +239,10 @@ const GET_ONE = gql`
           unit
           value
         }
-        customTimeRange
+        customTimeRange {
+          startDate
+          endDate
+        }
         friday {
           endHour
           endMinute
@@ -457,7 +463,10 @@ export const CREATE_LISTING = gql`
           unit
           value
         }
-        customTimeRange
+        customTimeRange {
+          startDate
+          endDate
+        }
         friday {
           endHour
           endMinute
@@ -628,7 +637,10 @@ export const UPDATE_LISTING = gql`
           unit
           value
         }
-        customTimeRange
+        customTimeRange {
+          startDate
+          endDate
+        }
         friday {
           endHour
           endMinute
@@ -871,7 +883,8 @@ export const useAddOneListing = () => {
       }
       dispatch(deleteTempListing());
     } catch (error) {
-      // console.log('Error handleSubmit', error);
+      alert('Error');
+      console.log('Error handleSubmit', error);
     }
   };
 

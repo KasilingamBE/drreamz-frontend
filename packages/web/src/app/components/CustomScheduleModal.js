@@ -8,7 +8,6 @@ import $ from 'jquery';
 const CustomScheduleModal = ({ show, handleClose, handleSave }) => {
   const [activeType, setActiveType] = useState('single'); //multiple, range
   const [selectedDate, setSelectedDate] = useState([]);
-  // const [selectedDate,setSelectedDate] = useState([moment(`${moment(new Date()).format('ll')} ${roundTime(moment(new Date()).format('LT'),15)}`)._d,moment(`${moment(new Date()).format('ll')} ${roundTime(moment(new Date()).format('LT'),15)}`)._d]);
   const [multipleDates, setMultipleDates] = useState([]);
   const [range, setRange] = useState({ from: null, to: null });
 
@@ -18,9 +17,6 @@ const CustomScheduleModal = ({ show, handleClose, handleSave }) => {
   const setStartTimeArray = (start) => {
     console.log('set start time ', start);
     var d = moment(`${moment(new Date()).format('ll')} 12:00 AM`)._d;
-    // if(moment(d).format('ll')==moment(start).format('ll')){
-    //   d=start;
-    // }
     let timeArray = [];
     for (let i = 0; i < 96; i++) {
       if (
@@ -190,32 +186,45 @@ const CustomScheduleModal = ({ show, handleClose, handleSave }) => {
   });
 
   const handleSingleDateSelect = (day, { selected }) => {
-    console.log('selected date : ', selectedDate);
-    setSelectedDate(selected ? [] : [day, day]);
+    // console.log('selected date : ', selectedDate);
+    setSelectedDate(
+      selected
+        ? []
+        : [new Date(new Date(day).setHours(0, 0, 0)), new Date(new Date(day).setHours(23, 59, 59))]
+    );
   };
 
   const handleMultipleDateSelect = (day, { selected }) => {
-    console.log(multipleDates);
-    console.log(day);
-    if (selected) {
-      const selectedIndex = multipleDates.filter((selectedDay) =>
-        DateUtils.isSameDay(selectedDay[1], day)
-      );
-      if (selectedIndex.length > 0) {
-        setMultipleDates(
-          multipleDates.filter((selectedDay) => !DateUtils.isSameDay(selectedDay[1], day))
-        );
-      }
-    } else {
-      setMultipleDates([...multipleDates, [day, day]]);
-    }
+    setMultipleDates([
+      ...multipleDates,
+      [new Date(new Date(day).setHours(0, 0, 0)), new Date(new Date(day).setHours(23, 59, 59))]
+    ]);
+    // console.log(multipleDates);
+    // console.log(day);
+    // console.log('selected', selected);
+    // if (selected) {
+    //   const selectedIndex = multipleDates.filter((selectedDay) =>
+    //     DateUtils.isSameDay(selectedDay[1], day)
+    //   );
+    //   if (selectedIndex.length > 0) {
+    //     setMultipleDates(
+    //       multipleDates.filter((selectedDay) => !DateUtils.isSameDay(selectedDay[1], day))
+    //     );
+    //   }
+    // } else {
+    //   setMultipleDates([...multipleDates, [day, day]]);
+    // }
   };
 
   const handleRangeSelect = (day) => {
-    console.log(range);
+    // console.log('range', range);
     const r = DateUtils.addDayToRange(day, range);
-    setRange(r);
-    console.log(range);
+    // console.log('r', r);
+    setRange({
+      from: new Date(new Date(r.from).setHours(0, 0, 0)),
+      to: new Date(new Date(r.to).setHours(23, 59, 59))
+    });
+    // console.log('range', range);
   };
 
   const checkValidity = () => {
@@ -231,7 +240,7 @@ const CustomScheduleModal = ({ show, handleClose, handleSave }) => {
       if (selectedDate.length == 0 || !selectedDate[0]) {
         alert('Please select a date');
       } else {
-        handleSave([selectedDate]);
+        handleSave([{ startDate: selectedDate[0], endDate: selectedDate[1] }]);
         handleClose();
       }
     } else if (activeType == 'multiple') {
@@ -241,8 +250,8 @@ const CustomScheduleModal = ({ show, handleClose, handleSave }) => {
         if (!checkValidity()) {
           alert('Please select start & end time');
         } else {
-          console.log(multipleDates.map((item) => [item[0], item[1]]));
-          handleSave(multipleDates.map((item) => [item[0], item[1]]));
+          // console.log(multipleDates.map((item) => [item[0], item[1]]));
+          handleSave(multipleDates.map((item) => ({ startDate: item[0], endDate: item[1] })));
           handleClose();
         }
       }
@@ -254,7 +263,7 @@ const CustomScheduleModal = ({ show, handleClose, handleSave }) => {
       } else if (range.from && !range.to) {
         alert('Please select end of range');
       } else {
-        handleSave([[range.from, range.to]]);
+        handleSave([{ startDate: range.from, endDate: range.to }]);
         handleClose();
       }
     }
@@ -506,7 +515,6 @@ const CustomScheduleModal = ({ show, handleClose, handleSave }) => {
                   controlId="exampleForm.SelectCustom mt-2"
                   style={{ marginTop: '5px !important' }}>
                   <Form.Label>End Time</Form.Label>
-
                   <input
                     list="range-end-time"
                     value={

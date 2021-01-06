@@ -39,5 +39,5 @@ export const timeTo12HrFormat = (hour, minute) => {
       tempHour -= 12;
     }
   }
-  return `${tempHour}:${minute} ${meridiem}`;
+  return `${tempHour}:${minute === 0 ? '00' : minute} ${meridiem}`;
 };

@@ -62,7 +62,10 @@ const PUBLISH_LISTING = gql`
           unit
           value
         }
-        customTimeRange
+        customTimeRange {
+          startDate
+          endDate
+        }
         friday {
           endHour
           endMinute

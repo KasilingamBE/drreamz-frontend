@@ -97,7 +97,10 @@ const GET_PUBLISHED_LISTINGS_WITH_LATLNG = gql`
           unit
           value
         }
-        customTimeRange
+        customTimeRange {
+          startDate
+          endDate
+        }
         friday {
           endHour
           endMinute

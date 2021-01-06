@@ -6,10 +6,8 @@ import { gql, useQuery } from '@apollo/client';
 import { client } from '../app/graphql/index';
 import MyListingItem from '../app/components/MyListingItem';
 import { loadUserListings, toggleLoading } from '../app/redux/actions/user';
-import AccessDenied from '../app/components/AccessDenied';
-import AuthContainer from '../app/components/AuthContainer';
 import SpaceOwnerContainer from '../app/components/SpaceOwnerContainer';
-// import CarLoader from '../app/components/CarLoader';
+import Loading from '../app/components/other/Loading';
 
 const GET_OWNER_LISTINGS = gql`
   query GetOwnerListings($ownerId: String!) {
@@ -64,7 +62,10 @@ const GET_OWNER_LISTINGS = gql`
           unit
           value
         }
-        customTimeRange
+        customTimeRange {
+          startDate
+          endDate
+        }
         friday {
           endHour
           endMinute
@@ -177,7 +178,7 @@ const MyListings = ({ loading, listings, loadUserListings, toggleLoading, userId
         variables: { ownerId: userId }
       })
       .then(({ data }) => {
-        console.log(data.getOwnerListings);
+        // console.log(data.getOwnerListings);
         loadUserListings(data.getOwnerListings);
       })
       .catch((err) => {
@@ -193,15 +194,8 @@ const MyListings = ({ loading, listings, loadUserListings, toggleLoading, userId
   const [listBy, setListBy] = useState('address');
 
   if (loading) {
-    return <div className="loading">Loading...</div>;
+    return <Loading />;
   }
-
-  // if (error || data.getUserListings == null) {
-  //   return <div className='loading'>No Listings Found!</div>;
-  // }
-
-  // loadUserListings(data.getUserListings);
-  // console.log('listings : ', data.getUserListings);
 
   return (
     <SpaceOwnerContainer>

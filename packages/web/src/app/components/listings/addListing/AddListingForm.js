@@ -1507,7 +1507,6 @@ const AddListingForm = ({
                 }}
               />
               <br />
-
               {customTimeRange.map((item, idx) => (
                 <Card>
                   <Card.Body
@@ -1516,7 +1515,9 @@ const AddListingForm = ({
                       justifyContent: 'space-between',
                       alignItems: 'center'
                     }}>
-                    {`${moment(item[0]).format('lll')} to ${moment(item[1]).format('lll')}`}{' '}
+                    {`${moment(item.startDate).format('lll')} to ${moment(item.endDate).format(
+                      'lll'
+                    )}`}{' '}
                     <Button
                       variant="danger"
                       onClick={() => {
