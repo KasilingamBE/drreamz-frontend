@@ -1,22 +1,19 @@
-import React, {Component} from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  Switch,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import SimpleLineIconsIcon from 'react-native-vector-icons/SimpleLineIcons';
-import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-// import {connect} from 'react-redux';
-// import PropTypes from 'prop-types';
-// import {toggleUserType} from '../../actions/user';
+import { useDispatch } from 'react-redux';
+import { tempListingMobileInitial } from '@parkyourself-frontend/shared/redux/actions/tempListing';
 
-function SpaceOwnerDashboard({navigation}) {
+function SpaceOwnerDashboard({ navigation }) {
+  const dispatch = useDispatch();
+
   const navigationHandler = (screen) => {
+    navigation.navigate(screen);
+  };
+  const addListingNavigationHandler = (screen) => {
+    dispatch(tempListingMobileInitial());
     navigation.navigate(screen);
   };
 
@@ -29,59 +26,42 @@ function SpaceOwnerDashboard({navigation}) {
           navigationHandler('CreateSpaceOwnerProfile');
         }}>
         <View style={styles.icon2Row}>
-          <SimpleLineIconsIcon
-            name="briefcase"
-            style={styles.icon2}></SimpleLineIconsIcon>
+          <SimpleLineIconsIcon name="briefcase" style={styles.icon2} />
           <View style={styles.spaceOwnerProfileColumn}>
             <Text style={styles.spaceOwnerProfile}>SPACE OWNER PROFILE</Text>
             <Text style={styles.exampleGmailCom1}>example@gmail.com</Text>
           </View>
-          {/* <IoniconsIcon name="ios-arrow-up" style={styles.icon1}></IoniconsIcon> */}
         </View>
       </TouchableOpacity>
       <Text style={styles.dashboard}>DASHBOARD</Text>
 
-      <TouchableOpacity
-        style={styles.rect2}
-        onPress={() => navigationHandler('MyListings')}>
+      <TouchableOpacity style={styles.rect2} onPress={() => navigationHandler('MyListings')}>
         <View style={styles.wrapper}>
-          <MaterialCommunityIconsIcon
-            name="calendar-clock"
-            style={styles.icon}></MaterialCommunityIconsIcon>
+          <MaterialCommunityIconsIcon name="calendar-clock" style={styles.icon} />
           <Text style={styles.btnText}>My Listings</Text>
         </View>
 
-        <FontAwesomeIcon
-          name="arrow-right"
-          style={styles.icon2}></FontAwesomeIcon>
+        <FontAwesomeIcon name="arrow-right" style={styles.icon2} />
       </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.rect2}
-        onPress={() => navigationHandler('ParkingOrders')}>
+      <TouchableOpacity style={styles.rect2} onPress={() => navigationHandler('ParkingOrders')}>
         <View style={styles.wrapper}>
-          <FontAwesomeIcon name="car" style={styles.icon}></FontAwesomeIcon>
+          <FontAwesomeIcon name="car" style={styles.icon} />
           <Text style={styles.btnText}>Parking Orders Recieved</Text>
         </View>
 
-        <FontAwesomeIcon
-          name="arrow-right"
-          style={styles.icon2}></FontAwesomeIcon>
+        <FontAwesomeIcon name="arrow-right" style={styles.icon2} />
       </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.rect2}
-        onPress={() => navigationHandler('AddListing')}>
+        onPress={() => addListingNavigationHandler('AddListing')}>
         <View style={styles.wrapper}>
-          <FontAwesomeIcon
-            name="credit-card"
-            style={styles.icon}></FontAwesomeIcon>
+          <FontAwesomeIcon name="credit-card" style={styles.icon} />
           <Text style={styles.btnText}>Add a Listing</Text>
         </View>
 
-        <FontAwesomeIcon
-          name="arrow-right"
-          style={styles.icon2}></FontAwesomeIcon>
+        <FontAwesomeIcon name="arrow-right" style={styles.icon2} />
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -90,41 +70,29 @@ function SpaceOwnerDashboard({navigation}) {
           navigationHandler('WithdrawalSettings');
         }}>
         <View style={styles.wrapper}>
-          <MaterialCommunityIconsIcon
-            name="cash-multiple"
-            style={styles.icon}></MaterialCommunityIconsIcon>
+          <MaterialCommunityIconsIcon name="cash-multiple" style={styles.icon} />
           <Text style={styles.btnText}>Withdrawal Settings</Text>
         </View>
 
-        <FontAwesomeIcon
-          name="arrow-right"
-          style={styles.icon2}></FontAwesomeIcon>
+        <FontAwesomeIcon name="arrow-right" style={styles.icon2} />
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.rect2} onPress={() => {}}>
         <View style={styles.wrapper}>
-          <SimpleLineIconsIcon
-            name="notebook"
-            style={styles.icon}></SimpleLineIconsIcon>
+          <SimpleLineIconsIcon name="notebook" style={styles.icon} />
           <Text style={styles.btnText}>Payout &amp; Deposit Reports</Text>
         </View>
 
-        <FontAwesomeIcon
-          name="arrow-right"
-          style={styles.icon2}></FontAwesomeIcon>
+        <FontAwesomeIcon name="arrow-right" style={styles.icon2} />
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.rect2} onPress={() => {}}>
         <View style={styles.wrapper}>
-          <FontAwesomeIcon
-            name="handshake-o"
-            style={styles.icon}></FontAwesomeIcon>
+          <FontAwesomeIcon name="handshake-o" style={styles.icon} />
           <Text style={styles.btnText}>Set Staff Credentials</Text>
         </View>
 
-        <FontAwesomeIcon
-          name="arrow-right"
-          style={styles.icon2}></FontAwesomeIcon>
+        <FontAwesomeIcon name="arrow-right" style={styles.icon2} />
       </TouchableOpacity>
 
       {/* <View style={styles.rect13}>
@@ -149,12 +117,12 @@ const styles = StyleSheet.create({
   container: {
     // flex: 1,
     backgroundColor: '#fff',
-    padding: 20,
+    padding: 20
   },
   spaceOwner: {
     // fontFamily: 'roboto-500',
     color: 'rgba(11,64,148,1)',
-    fontSize: 24,
+    fontSize: 24
   },
   rect1: {
     width: '100%',
@@ -162,7 +130,7 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0,0,0,1)',
     shadowOffset: {
       width: 3,
-      height: 3,
+      height: 3
     },
     elevation: 20,
     shadowOpacity: 0.1,
@@ -171,30 +139,30 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 10,
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   icon2: {
     color: 'rgba(11,64,148,1)',
     fontSize: 25,
     height: 28,
-    width: 25,
+    width: 25
     // marginTop: 7,
   },
   spaceOwnerProfile: {
     // fontFamily: 'roboto-300',
     color: '#121212',
     fontSize: 12,
-    marginLeft: 1,
+    marginLeft: 1
   },
   exampleGmailCom1: {
     // fontFamily: 'roboto-regular',
     color: '#121212',
     fontSize: 16,
-    marginTop: 4,
+    marginTop: 4
   },
   spaceOwnerProfileColumn: {
     // width: 150,
-    marginLeft: 19,
+    marginLeft: 19
   },
   rect2: {
     width: '100%',
@@ -209,31 +177,31 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0,0,0,1)',
     shadowOffset: {
       width: 6,
-      height: 6,
+      height: 6
     },
     shadowOpacity: 0.16,
     shadowRadius: 20,
-    marginTop: 20,
+    marginTop: 20
   },
   wrapper: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   icon: {
     color: 'rgba(11,64,148,1)',
     fontSize: 25,
-    height: 27,
+    height: 27
   },
   icon2: {
     color: 'rgba(39,170,225,1)',
     fontSize: 22,
-    height: 24,
+    height: 24
   },
   btnText: {
     // fontFamily: 'roboto-regular',
     color: '#121212',
     fontSize: 16,
-    marginLeft: 24,
+    marginLeft: 24
   },
   icon1: {
     color: 'rgba(39,170,225,1)',
@@ -241,21 +209,21 @@ const styles = StyleSheet.create({
     height: 24,
     width: 15,
     marginLeft: 90,
-    marginTop: 4,
+    marginTop: 4
   },
   icon2Row: {
     // height: 38,
     flexDirection: 'row',
     marginTop: 12,
     marginLeft: 14,
-    marginRight: 16,
+    marginRight: 16
   },
   icon9: {
     top: 19,
     left: 310,
     position: 'absolute',
     color: 'rgba(39,170,225,1)',
-    fontSize: 21,
+    fontSize: 21
   },
   rect8: {
     top: 0,
@@ -266,46 +234,46 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(208,206,206,1)',
     shadowOffset: {
       width: 3,
-      height: 3,
+      height: 3
     },
     elevation: 20,
     shadowOpacity: 0.88,
     shadowRadius: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#fff'
   },
   myListings: {
     // fontFamily: 'roboto-regular',
     color: '#121212',
     fontSize: 16,
     marginTop: 20,
-    marginLeft: 56,
+    marginLeft: 56
   },
   icon9Stack: {
     top: 0,
     left: 0,
     width: 329,
     height: 58,
-    position: 'absolute',
+    position: 'absolute'
   },
   icon14: {
     top: 20,
     left: 14,
     position: 'absolute',
     color: 'rgba(11,64,148,1)',
-    fontSize: 22,
+    fontSize: 22
   },
   icon9StackStack: {
     width: 329,
     height: 58,
     marginTop: 82,
-    marginLeft: 25,
+    marginLeft: 25
   },
   icon10: {
     top: 19,
     left: 17,
     position: 'absolute',
     color: 'rgba(11,64,148,1)',
-    fontSize: 22,
+    fontSize: 22
   },
   rect6: {
     top: 0,
@@ -316,25 +284,25 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(208,206,206,1)',
     shadowOffset: {
       width: 3,
-      height: 3,
+      height: 3
     },
     elevation: 60,
     shadowOpacity: 0.88,
     shadowRadius: 20,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   addAListing: {
     // fontFamily: 'roboto-regular',
     color: '#121212',
     fontSize: 16,
-    marginTop: 1,
+    marginTop: 1
   },
   icon17: {
     color: 'rgba(39,170,225,1)',
     fontSize: 21,
     height: 23,
     width: 7,
-    marginLeft: 158,
+    marginLeft: 158
   },
   addAListingRow: {
     height: 23,
@@ -342,13 +310,13 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 13,
     marginLeft: 58,
-    marginTop: 17,
+    marginTop: 17
   },
   icon10Stack: {
     width: 329,
     height: 58,
     marginTop: 100,
-    marginLeft: 25,
+    marginLeft: 25
   },
   rect7: {
     width: 329,
@@ -356,34 +324,34 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(208,206,206,1)',
     shadowOffset: {
       width: 3,
-      height: 3,
+      height: 3
     },
     elevation: 60,
     shadowOpacity: 0.88,
     shadowRadius: 20,
     flexDirection: 'row',
     marginTop: -137,
-    marginLeft: 25,
+    marginLeft: 25
   },
   icon11: {
     color: 'rgba(11,64,148,1)',
     fontSize: 22,
     height: 22,
     width: 25,
-    marginTop: 4,
+    marginTop: 4
   },
   loremIpsum: {
     // fontFamily: 'roboto-regular',
     color: '#121212',
     fontSize: 16,
     marginLeft: 16,
-    marginTop: 5,
+    marginTop: 5
   },
   dashboard: {
     // fontFamily: 'roboto-700',
     color: '#121212',
     fontSize: 18,
-    marginTop: 30,
+    marginTop: 30
   },
   rect9: {
     width: 329,
@@ -391,15 +359,15 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(208,206,206,1)',
     shadowOffset: {
       width: 3,
-      height: 3,
+      height: 3
     },
     elevation: 60,
     shadowOpacity: 0.88,
     shadowRadius: 20,
     flexDirection: 'row',
     marginTop: 250,
-    marginLeft: 25,
-  },
+    marginLeft: 25
+  }
 
   // rect12: {
   //   width: 150,

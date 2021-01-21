@@ -1,9 +1,7 @@
 import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import MainStack from './src/navigation/MainStack';
 import Amplify, { Auth, Hub } from 'aws-amplify';
-import config from './aws-exports';
 import reducer from '@parkyourself-frontend/shared/redux/reducers';
 import middleware from '@parkyourself-frontend/shared/redux/middleware';
 import { connect, Provider } from 'react-redux';
@@ -12,11 +10,12 @@ import { persistStore, persistReducer } from 'redux-persist5';
 import { PersistGate } from 'redux-persist5/integration/react';
 import { ApolloProvider } from '@apollo/client';
 import { client } from '@parkyourself-frontend/shared/graphql';
-
 import AsyncStorage from '@react-native-community/async-storage';
 import { setAuthUser, initialAuthUser } from '@parkyourself-frontend/shared/redux/actions/auth';
+import config from '@parkyourself-frontend/shared/aws-exports';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
 import { Alert, Linking } from 'react-native';
+import MainStack from './src/navigation/MainStack';
 
 async function urlOpener(url, redirectUrl) {
   await InAppBrowser.isAvailable();
@@ -40,8 +39,8 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, reducer);
 
-let store = createStore(persistedReducer, middleware);
-let persistor = persistStore(store);
+const store = createStore(persistedReducer, middleware);
+const persistor = persistStore(store);
 
 // Amplify.configure(config);
 Amplify.configure({
@@ -74,7 +73,7 @@ export default App;
 const GetData = connect()((props) => {
   const getAuthData = async () => {
     try {
-      let user = await Auth.currentAuthenticatedUser();
+      const user = await Auth.currentAuthenticatedUser();
       // console.log('User', user);
       if (user) {
         const data = {
@@ -104,7 +103,7 @@ const GetData = connect()((props) => {
         // case 'signOut':
         //   setUser(null);
         // break;
-        case 'signIn_failure':
+        // case 'signIn_failure':
         case 'cognitoHostedUI_failure':
           // console.log('Sign in failure', data);
           Alert.alert('SignIn Failed');

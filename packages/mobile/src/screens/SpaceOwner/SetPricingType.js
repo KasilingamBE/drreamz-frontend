@@ -1,10 +1,9 @@
 import React, { Component, useState } from 'react';
+import { connect } from 'react-redux';
+import { tempListingPricingD } from '@parkyourself-frontend/shared/redux/actions/tempListing';
 import { StyleSheet, View, Text, Switch, ScrollView, Dimensions, Alert } from 'react-native';
-import MaterialButtonPrimary from '../../components/MaterialButtonPrimary';
 import AddListingHeader from '../../components/SpaceOwner/AddListingHeader';
 import NextButton from '../../components/SpaceOwner/NextButton';
-import { connect } from 'react-redux';
-import { tempListingPricingD } from '../../app/redux/actions/tempListing';
 
 function SetPricingType({
   onBackButtonPress,

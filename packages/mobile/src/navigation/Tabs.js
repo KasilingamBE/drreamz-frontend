@@ -1,23 +1,23 @@
 import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Platform } from 'react-native';
 import DashboardDrawer from '../components/DashboardDrawer';
 import MyBookingsDrawer from '../components/MyBookingsDrawer';
 import FindParkingDrawer from '../components/FindParkingDrawer';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 import MyListingsDrawer from '../components/SpaceOwner/MyListingsDrawer';
 import ParkingOrderDrawer from '../components/SpaceOwner/ParkingOrderDrawer';
 import SpaceOwnerDrawer from '../components/SpaceOwner/SpaceOwnerDrawer';
-import {Platform} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
-function Tabs({isSpaceOwner}) {
+function Tabs({ isSpaceOwner }) {
   return isSpaceOwner ? (
     <Tab.Navigator
-      screenOptions={({route}) => ({
-        tabBarIcon: ({focused, color, size}) => {
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
           let iconName;
           if (route.name === 'My Listings') {
             iconName = 'calendar-clock';
@@ -28,7 +28,7 @@ function Tabs({isSpaceOwner}) {
           }
           // You can return any component that you like here!
           return <Icon name={iconName} size={30} color={color} />;
-        },
+        }
       })}
       tabBarOptions={{
         activeTintColor: '#0b4094',
@@ -38,15 +38,15 @@ function Tabs({isSpaceOwner}) {
         activeBackgroundColor: '#fff',
         labelStyle: {
           marginBottom: Platform.OS === 'ios' ? 0 : 10,
-          fontSize: 12,
+          fontSize: 12
         },
         style: {
           paddingTop: 5,
           height: Platform.OS === 'ios' ? 80 : 70,
           justifyContent: 'center',
           alignItems: 'center',
-          elevation: 10,
-        },
+          elevation: 10
+        }
       }}
       swipeEnabled={true}
       animationEnabled={true}>
@@ -56,8 +56,8 @@ function Tabs({isSpaceOwner}) {
     </Tab.Navigator>
   ) : (
     <Tab.Navigator
-      screenOptions={({route}) => ({
-        tabBarIcon: ({focused, color, size}) => {
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
           let iconName;
           if (route.name === 'My Bookings') {
             iconName = 'calendar-clock';
@@ -68,7 +68,7 @@ function Tabs({isSpaceOwner}) {
           }
           // You can return any component that you like here!
           return <Icon name={iconName} size={30} color={color} />;
-        },
+        }
       })}
       tabBarOptions={{
         activeTintColor: '#0b4094',
@@ -78,15 +78,15 @@ function Tabs({isSpaceOwner}) {
         activeBackgroundColor: '#fff',
         labelStyle: {
           marginBottom: Platform.OS === 'ios' ? 0 : 10,
-          fontSize: 12,
+          fontSize: 12
         },
         style: {
           paddingTop: 5,
           height: Platform.OS === 'ios' ? 80 : 70,
           justifyContent: 'center',
           alignItems: 'center',
-          elevation: 10,
-        },
+          elevation: 10
+        }
       }}
       swipeEnabled={true}
       animationEnabled={true}>
@@ -98,11 +98,11 @@ function Tabs({isSpaceOwner}) {
 }
 
 Tabs.propTypes = {
-  isSpaceOwner: PropTypes.bool.isRequired,
+  isSpaceOwner: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = (state) => ({
-  isSpaceOwner: state.user.isSpaceOwner,
+  isSpaceOwner: state.user.isSpaceOwner
 });
 
 export default connect(mapStateToProps, null)(Tabs);

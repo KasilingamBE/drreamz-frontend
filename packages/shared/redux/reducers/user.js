@@ -20,7 +20,7 @@ const initialState = {
   isSpaceOwner: false,
   profileType: 'personal', // or business
   listings: [],
-  bookings: [],
+  bookings: [1, 2, 3, 4, 4],
   loading: false
 };
 

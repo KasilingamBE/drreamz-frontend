@@ -12,19 +12,19 @@ const {
   ADD_BOOKING,
   UPDATE_BOOKING,
   DELETE_BOOKING,
-  LOAD_USER_TYPE,
+  LOAD_USER_TYPE
 } = require('../actions/types');
 
 const initialState = {
   isSpaceOwner: false,
-  profileType: 'personal', //or business
+  profileType: 'personal', // or business
   listings: [],
   bookings: [],
-  loading: false,
+  loading: false
 };
 
 export default function (state = initialState, action) {
-  const {type, payload} = action;
+  const { type, payload } = action;
 
   switch (type) {
     case INITIALIZE_USER: {
@@ -36,7 +36,7 @@ export default function (state = initialState, action) {
     case LOAD_USER_TYPE:
       return {
         ...state,
-        isSpaceOwner: payload,
+        isSpaceOwner: payload
       };
     case TOGGLE_USER_TYPE:
       // if(typeof window !== undefined){
@@ -44,39 +44,35 @@ export default function (state = initialState, action) {
       // }
       return {
         ...state,
-        isSpaceOwner: !state.isSpaceOwner,
+        isSpaceOwner: !state.isSpaceOwner
       };
     case TOGGLE_PROFILE_TYPE:
       return {
         ...state,
-        profileType: state.profileType === 'personal' ? 'business' : 'personal',
+        profileType: state.profileType === 'personal' ? 'business' : 'personal'
       };
     case TOGGLE_LOADING:
       return {
         ...state,
-        loading: !state.loading,
+        loading: !state.loading
       };
     case LOAD_USER_LISTINGS: {
       return {
         ...state,
         listings: payload,
-        loading: false,
+        loading: false
       };
     }
     case ADD_LISTING: {
       return {
         ...state,
-        listings: [...state.listings, payload],
+        listings: [...state.listings, payload]
       };
     }
     case UPDATE_LISTING: {
       return {
         ...state,
-        listings: [
-          ...state.listings.map((item) =>
-            item._id == payload._id ? payload : item,
-          ),
-        ],
+        listings: [...state.listings.map((item) => (item._id == payload._id ? payload : item))]
       };
     }
     case PUBLISH_LISTING: {
@@ -84,46 +80,40 @@ export default function (state = initialState, action) {
         ...state,
         listings: [
           ...state.listings.map((item) =>
-            item._id == payload._id
-              ? {...item, published: payload.published}
-              : item,
-          ),
-        ],
+            item._id == payload._id ? { ...item, published: payload.published } : item
+          )
+        ]
       };
     }
     case DELETE_LISTING: {
       return {
         ...state,
-        listings: [...state.listings.filter((item) => item._id !== payload)],
+        listings: [...state.listings.filter((item) => item._id !== payload)]
       };
     }
     case LOAD_USER_BOOKINGS: {
       return {
         ...state,
         bookings: payload,
-        loading: false,
+        loading: false
       };
     }
     case ADD_BOOKING: {
       return {
         ...state,
-        bookings: [...state.bookings, payload],
+        bookings: [...state.bookings, payload]
       };
     }
     case UPDATE_BOOKING: {
       return {
         ...state,
-        bookings: [
-          ...state.bookings.map((item) =>
-            item._id == payload._id ? payload : item,
-          ),
-        ],
+        bookings: [...state.bookings.map((item) => (item._id == payload._id ? payload : item))]
       };
     }
     case DELETE_BOOKING: {
       return {
         ...state,
-        bookings: [...state.bookings.filter((item) => item._id !== payload)],
+        bookings: [...state.bookings.filter((item) => item._id !== payload)]
       };
     }
     default:

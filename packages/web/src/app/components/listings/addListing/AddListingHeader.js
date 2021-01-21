@@ -30,7 +30,7 @@ const AddListingHeader = ({
     } catch (error) {
       // console.log('error', error);
       setDisabled(false);
-      alert('Something Went wrong!', error.message);
+      // alert('Something Went wrong!', error.message);
     }
   };
 

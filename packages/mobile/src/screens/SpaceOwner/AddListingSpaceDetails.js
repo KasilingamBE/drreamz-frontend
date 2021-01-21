@@ -10,6 +10,7 @@ import {
   Alert,
   Dimensions
 } from 'react-native';
+import { tempListingSpaceD } from '@parkyourself-frontend/shared/redux/actions/tempListing';
 import PropTypes from 'prop-types';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -24,7 +25,6 @@ import NextButton from '../../components/SpaceOwner/NextButton';
 import AddListingHeader from '../../components/SpaceOwner/AddListingHeader';
 import Input from '../../components/Input';
 import RadioListItem from '../../components/RadioListItem';
-import { tempListingSpaceD } from '../../app/redux/actions/tempListing';
 
 function AddListingSpaceDetails({
   onBackButtonPress,
@@ -262,8 +262,6 @@ function AddListingSpaceDetails({
     <>
       <AddListingHeader onPress={backButtonHandler} width={`${width}%`} navigation={navigation} />
       <ScrollView ref={scrollRef} contentContainerStyle={styles.container}>
-        {/* <Text style={styles.addAListing1}>Add a Listing</Text> */}
-        {/* <Text style={styles.spaceDetails}>Space Details</Text> */}
         {activeIndex == 1 && (
           <>
             <Text style={styles.heading}>Choose a Parking Space type</Text>

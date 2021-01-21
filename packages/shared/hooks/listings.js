@@ -883,7 +883,7 @@ export const useAddOneListing = () => {
       }
       dispatch(deleteTempListing());
     } catch (error) {
-      alert('Error');
+      // alert('Error');
       console.log('Error handleSubmit', error);
     }
   };

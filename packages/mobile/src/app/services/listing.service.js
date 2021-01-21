@@ -1,12 +1,9 @@
-import {Storage} from 'aws-amplify';
+import { Storage } from 'aws-amplify';
 import config from '../../../aws-exports';
-import {gql} from '@apollo/client';
-import {client} from '../../app/graphql/index';
+import { gql } from '@apollo/client';
+import { client } from '../../app/graphql/index';
 
-const {
-  aws_user_files_s3_bucket_region: region,
-  aws_user_files_s3_bucket: bucket,
-} = config;
+const { aws_user_files_s3_bucket_region: region, aws_user_files_s3_bucket: bucket } = config;
 
 const CREATE_LISTING = gql`
   mutation CreateListing(
@@ -456,15 +453,15 @@ const GET_OWNER_LISTINGS = gql`
   }
 `;
 
-const getMyListingService = async(userId,loadUserListings) =>{
-  const {data} = await client.query({
+const getMyListingService = async (userId, loadUserListings) => {
+  const { data } = await client.query({
     query: GET_OWNER_LISTINGS,
-    variables: {ownerId: userId},
+    variables: { ownerId: userId }
   });
   if (data.getOwnerListings) {
     return loadUserListings(data.getOwnerListings);
   }
-}
+};
 
 const addListingService = async (
   tempListing,
@@ -472,20 +469,16 @@ const addListingService = async (
   updateListing,
   userData,
   addListingLocal,
-  updateListingLocal,
+  updateListingLocal
 ) => {
   let streetViewImageArray = [...tempListing.locationDetails.streetViewImages];
-  let parkingEntranceImageArray = [
-    ...tempListing.locationDetails.parkingEntranceImages,
-  ];
-  let parkingSpaceImageArray = [
-    ...tempListing.locationDetails.parkingSpaceImages,
-  ];
+  let parkingEntranceImageArray = [...tempListing.locationDetails.parkingEntranceImages];
+  let parkingSpaceImageArray = [...tempListing.locationDetails.parkingSpaceImages];
 
   const {
     tStreetViewImages: streetViewImageFiles,
     tParkingEntranceImages: parkingEntranceImageFiles,
-    tParkingSpaceImages: parkingSpaceImageFiles,
+    tParkingSpaceImages: parkingSpaceImageFiles
   } = tempListing;
 
   let thumbnailURL = 'none';
@@ -518,7 +511,7 @@ const addListingService = async (
     let url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`;
     streetViewImageArray.push(url);
     await Storage.put(key, blob, {
-      contentType: 'image/jpeg',
+      contentType: 'image/jpeg'
     });
   }
 
@@ -531,7 +524,7 @@ const addListingService = async (
     let url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`;
     parkingEntranceImageArray.push(url);
     await Storage.put(key, blob, {
-      contentType: 'image/jpeg',
+      contentType: 'image/jpeg'
     });
   }
 
@@ -544,13 +537,12 @@ const addListingService = async (
     let url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`;
     parkingSpaceImageArray.push(url);
     await Storage.put(key, blob, {
-      contentType: 'image/jpeg',
+      contentType: 'image/jpeg'
     });
   }
 
   let variables = {
-    thumbnail:
-      streetViewImageArray.length > 0 ? streetViewImageArray[0] : thumbnailURL,
+    thumbnail: streetViewImageArray.length > 0 ? streetViewImageArray[0] : thumbnailURL,
     ownerId: userData.sub,
     ownerName: userData.name,
     ownerEmail: userData.email,
@@ -558,26 +550,26 @@ const addListingService = async (
       ...tempListing.locationDetails,
       streetViewImages: streetViewImageArray,
       parkingEntranceImages: parkingEntranceImageArray,
-      parkingSpaceImages: parkingSpaceImageArray,
+      parkingSpaceImages: parkingSpaceImageArray
     },
     spaceDetails: tempListing.spaceDetails,
     spaceAvailable: tempListing.spaceAvailable,
     pricingDetails: tempListing.pricingDetails,
-    location: tempListing.locationDetails.marker,
+    location: tempListing.locationDetails.marker
   };
   if (tempListing.edit) {
-    const {data} = await updateListing({
+    const { data } = await updateListing({
       variables: {
         id: tempListing._id,
         published: false,
-        ...variables,
-      },
+        ...variables
+      }
     });
     updateListingLocal(data.updateListing);
     return data;
   } else {
-    const {data: data1} = await createListing({
-      variables,
+    const { data: data1 } = await createListing({
+      variables
     });
     addListingLocal(data1.createListing);
     return data1;
@@ -588,5 +580,5 @@ export default {
   addListingService,
   getMyListingService,
   CREATE_LISTING,
-  UPDATE_LISTING,
+  UPDATE_LISTING
 };

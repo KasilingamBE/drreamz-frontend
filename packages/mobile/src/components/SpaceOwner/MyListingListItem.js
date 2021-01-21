@@ -113,7 +113,7 @@ function MyListingListItem({
   const { pricingRates } = item.pricingDetails;
 
   const viewDetailsHandler = () => {
-    navigation.navigate('DetailsScreen', { item: item });
+    navigation.navigate('DetailsScreen', { item });
   };
 
   // const omitTypename = (key, value) => (key === '__typename' ? undefined : value);
@@ -122,6 +122,7 @@ function MyListingListItem({
     addTempListing({
       ...item,
       edit: true,
+      mobile: true,
       locationDetails: JSON.parse(JSON.stringify(item.locationDetails), omitTypename),
       spaceDetails: JSON.parse(JSON.stringify(item.spaceDetails), omitTypename),
       spaceAvailable: JSON.parse(JSON.stringify(item.spaceAvailable), omitTypename),

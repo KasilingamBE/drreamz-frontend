@@ -1,5 +1,5 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import SpaceOwnerDashboard from '../../screens/SpaceOwner/SpaceOwnerDashboard';
 import CreateSpaceOwnerProfile from '../../screens/SpaceOwner/CreateSpaceOwnerProfile';
 import MyListings from '../../screens/SpaceOwner/MyListings';
@@ -19,56 +19,56 @@ const SpaceOwnerDashboardStack = () => {
         headerTitle: () => <HeaderLogo />,
         headerStyle: {
           elevation: 0,
-          shadowOpacity: 0,
-        },
+          shadowOpacity: 0
+        }
       }}>
       <Stack.Screen
         name="SpaceOwnerDashboard"
         component={SpaceOwnerDashboard}
-        options={({navigation}) => ({
+        options={({ navigation }) => ({
           title: '',
           headerTitle: () => <HeaderLogo />,
           headerLeft: () => <MenuButton navigation={navigation} />,
-          headerTitleAlign: 'center',
+          headerTitleAlign: 'center'
         })}
       />
       <Stack.Screen
         name="CreateSpaceOwnerProfile"
         component={CreateSpaceOwnerProfile}
-        options={({navigation}) => ({
+        options={({ navigation }) => ({
           title: '',
-          headerTitle: () => <HeaderLogo />,
+          headerTitle: () => <HeaderLogo />
         })}
       />
       <Stack.Screen
         name="MyListings"
         component={MyListings}
-        options={({navigation}) => ({
+        options={({ navigation }) => ({
           title: '',
-          headerTitle: () => <HeaderLogo />,
+          headerTitle: () => <HeaderLogo />
         })}
       />
       <Stack.Screen
         name="ParkingOrders"
         component={ParkingOrders}
-        options={({navigation}) => ({
+        options={({ navigation }) => ({
           title: '',
-          headerTitle: () => <HeaderLogo />,
+          headerTitle: () => <HeaderLogo />
         })}
       />
       <Stack.Screen
         name="AddListing"
         component={AddListing}
-        options={({navigation}) => ({
-          title: '',
+        options={({ navigation }) => ({
+          title: ''
           //   headerTitle: () => <HeaderLogo />,
         })}
       />
       <Stack.Screen
         name="WithdrawalSettings"
         component={WithdrawalSettings}
-        options={({navigation}) => ({
-          title: '',
+        options={({ navigation }) => ({
+          title: ''
           //   headerTitle: () => <HeaderLogo />,
         })}
       />

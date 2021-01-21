@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,17 +6,15 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
-  Alert,
+  Alert
 } from 'react-native';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import MaterialButtonPrimary from '../../components/MaterialButtonPrimary';
+import { connect } from 'react-redux';
 import TipsSettingRatesModal from '../../components/SpaceOwner/TipsSettingRatesModal';
-import {setListingPricingDetails} from '../../actions/listing';
 import NextButton from '../../components/SpaceOwner/NextButton';
 import AddListingHeader from '../../components/SpaceOwner/AddListingHeader';
 import Input from '../../components/Input';
-import {tempListingPricingD} from '../../app/redux/actions/tempListing';
+import { tempListingPricingD } from '@parkyourself-frontend/shared/redux/actions/tempListing';
 
 function FlatBillingType({
   onBackButtonPress,
@@ -24,16 +22,14 @@ function FlatBillingType({
   setListingPricingDetails,
   pricingDetails,
   tempListingPricingD,
-  navigation,
+  navigation
 }) {
   const [width, setWidth] = useState(0);
 
   const [validate, setValidate] = useState(false);
 
   const [dailyMax, setDailyMax] = useState(
-    pricingDetails && pricingDetails.pricingRates
-      ? pricingDetails.pricingRates.dailyMax
-      : '5.00',
+    pricingDetails && pricingDetails.pricingRates ? pricingDetails.pricingRates.dailyMax : '5.00'
   );
   const [visible, setVisible] = useState(false);
 
@@ -69,18 +65,13 @@ function FlatBillingType({
 
   return (
     <>
-      <AddListingHeader
-        onPress={backButtonHandler}
-        width={`${width}%`}
-        navigation={navigation}
-      />
+      <AddListingHeader onPress={backButtonHandler} width={`${width}%`} navigation={navigation} />
 
       <ScrollView contentContainerStyle={styles.container}>
         {/* <Text style={styles.setPricing1}>Set Pricing</Text> */}
         <Text style={styles.heading}>Set your desired rates</Text>
         <Text style={styles.subHeading}>
-          {pricingDetails.pricingType === 'flat' ? 'Flat' : 'Variable'} Billing
-          Type
+          {pricingDetails.pricingType === 'flat' ? 'Flat' : 'Variable'} Billing Type
         </Text>
         <Input
           placeholder="Per Hour"
@@ -95,8 +86,8 @@ function FlatBillingType({
             tempListingPricingD({
               pricingRates: {
                 ...pricingDetails.pricingRates,
-                perHourRate: input,
-              },
+                perHourRate: input
+              }
             })
           }
           style={styles.placeholder}
@@ -114,8 +105,8 @@ function FlatBillingType({
             tempListingPricingD({
               pricingRates: {
                 ...pricingDetails.pricingRates,
-                perDayRate: input,
-              },
+                perDayRate: input
+              }
             })
           }
           style={styles.placeholder}
@@ -133,8 +124,8 @@ function FlatBillingType({
             tempListingPricingD({
               pricingRates: {
                 ...pricingDetails.pricingRates,
-                perWeekRate: input,
-              },
+                perWeekRate: input
+              }
             })
           }
           style={styles.placeholder}
@@ -152,21 +143,16 @@ function FlatBillingType({
             tempListingPricingD({
               pricingRates: {
                 ...pricingDetails.pricingRates,
-                perMonthRate: input,
-              },
+                perMonthRate: input
+              }
             })
           }
           style={styles.placeholder}
         />
         <TouchableOpacity onPress={() => setVisible(true)}>
-          <Text style={styles.loremIpsum2}>
-            Tips for setting appropriate rates
-          </Text>
+          <Text style={styles.loremIpsum2}>Tips for setting appropriate rates</Text>
         </TouchableOpacity>
-        <TipsSettingRatesModal
-          visible={visible}
-          onPress={() => setVisible(false)}
-        />
+        <TipsSettingRatesModal visible={visible} onPress={() => setVisible(false)} />
       </ScrollView>
       <NextButton onPress={onSubmitHandler} />
     </>
@@ -179,44 +165,44 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 20,
     zIndex: 1,
-    paddingTop: 50,
+    paddingTop: 50
   },
   setPricing1: {
     // fontFamily: 'roboto-500',
     color: 'rgba(11,64,148,1)',
-    fontSize: 24,
+    fontSize: 24
   },
   heading: {
     color: 'rgba(11,64,148,1)',
     fontSize: 30,
     fontWeight: '700',
     marginTop: 30,
-    marginVertical: 20,
+    marginVertical: 20
   },
   subHeading: {
     color: '#27aae1',
     fontSize: 20,
     fontWeight: '700',
-    marginTop: 20,
+    marginTop: 20
   },
   loremIpsum: {
     // fontFamily: 'roboto-300',
     color: 'rgba(11,64,148,1)',
     fontSize: 16,
-    marginTop: 13,
+    marginTop: 13
   },
   flatBillingType: {
     // fontFamily: 'roboto-500',
     color: 'rgba(39,170,225,1)',
     fontSize: 17,
     marginTop: 45,
-    fontWeight: '700',
+    fontWeight: '700'
   },
   dailyMaximum: {
     // fontFamily: 'roboto-regular',
     color: '#b6b6b6',
     fontSize: 16,
-    marginTop: 22,
+    marginTop: 22
   },
   placeholder: {
     // fontFamily: 'roboto-regular',
@@ -226,14 +212,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 10,
     borderBottomColor: '#d6d6d6',
-    borderBottomWidth: 1,
+    borderBottomWidth: 1
   },
   loremIpsum2: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(39,170,225,1)',
     textDecorationLine: 'underline',
     marginTop: 37,
-    fontSize: 16,
+    fontSize: 16
   },
   materialButtonPrimary1: {
     width: 100,
@@ -241,19 +227,19 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0,0,0,1)',
     shadowOffset: {
       width: 10,
-      height: 10,
+      height: 10
     },
     elevation: 10,
     shadowOpacity: 0.2,
     shadowRadius: 20,
     marginTop: 136,
     alignSelf: 'center',
-    backgroundColor: '#27aae1',
-  },
+    backgroundColor: '#27aae1'
+  }
 });
 
-const mapStateToProps = ({tempListing}) => ({
-  pricingDetails: tempListing.pricingDetails,
+const mapStateToProps = ({ tempListing }) => ({
+  pricingDetails: tempListing.pricingDetails
 });
 
-export default connect(mapStateToProps, {tempListingPricingD})(FlatBillingType);
+export default connect(mapStateToProps, { tempListingPricingD })(FlatBillingType);

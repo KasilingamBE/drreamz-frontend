@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {StyleSheet, View, Text, TextInput, ScrollView} from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, View, Text, TextInput, ScrollView } from 'react-native';
 import MaterialButtonPrimary from '../../components/MaterialButtonPrimary';
 
-function CreateSpaceOwnerProfile({navigation}) {
+function CreateSpaceOwnerProfile({ navigation }) {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.spaceOwnerProfile}>Space Owner Profile</Text>
@@ -69,12 +69,12 @@ const styles = StyleSheet.create({
   container: {
     // flex: 1,
     backgroundColor: '#fff',
-    padding: 20,
+    padding: 20
   },
   spaceOwnerProfile: {
     // fontFamily: 'roboto-500',
     color: 'rgba(11,64,148,1)',
-    fontSize: 24,
+    fontSize: 24
   },
   firstName: {
     // fontFamily: 'roboto-regular',
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     borderBottomColor: '#d6d6d6',
     borderBottomWidth: 1,
-    paddingVertical: 7,
+    paddingVertical: 7
   },
   firstName1: {
     // fontFamily: 'roboto-regular',
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     borderBottomColor: '#d6d6d6',
     borderBottomWidth: 1,
-    paddingVertical: 7,
+    paddingVertical: 7
   },
   firstName2: {
     // fontFamily: 'roboto-regular',
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     borderBottomColor: '#d6d6d6',
     borderBottomWidth: 1,
-    paddingVertical: 7,
+    paddingVertical: 7
   },
   firstName3: {
     // fontFamily: 'roboto-regular',
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     borderBottomColor: '#d6d6d6',
     borderBottomWidth: 1,
-    paddingVertical: 7,
+    paddingVertical: 7
   },
   firstName4: {
     // fontFamily: 'roboto-regular',
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     borderBottomColor: '#d6d6d6',
     borderBottomWidth: 1,
-    paddingVertical: 7,
+    paddingVertical: 7
   },
   firstName5: {
     top: 0,
@@ -142,18 +142,18 @@ const styles = StyleSheet.create({
     fontSize: 18,
     borderBottomColor: '#d6d6d6',
     borderBottomWidth: 1,
-    paddingVertical: 5,
+    paddingVertical: 5
   },
   socialMedia: {
     // fontFamily: 'roboto-500',
     color: 'rgba(39,170,225,1)',
     fontSize: 20,
-    marginVertical: 20,
+    marginVertical: 20
   },
   firstName5Stack: {
     width: '100%',
     height: 66,
-    marginTop: 10,
+    marginTop: 10
   },
   firstName6: {
     top: 0,
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     borderBottomColor: '#d6d6d6',
     borderBottomWidth: 1,
-    paddingVertical: 7,
+    paddingVertical: 7
   },
   change: {
     top: 17,
@@ -174,13 +174,13 @@ const styles = StyleSheet.create({
     // fontFamily: 'roboto-regular',
     color: 'rgba(39,170,225,1)',
     textDecorationLine: 'underline',
-    fontSize: 12,
+    fontSize: 12
   },
   firstName6Stack: {
     height: 49,
     // marginTop: 62,
     // marginLeft: 41,
-    width: '100%',
+    width: '100%'
   },
   change1: {
     top: 17,
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     // fontFamily: 'roboto-regular',
     color: 'rgba(39,170,225,1)',
     textDecorationLine: 'underline',
-    fontSize: 12,
+    fontSize: 12
   },
   firstName7: {
     top: 0,
@@ -201,12 +201,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     borderBottomColor: '#d6d6d6',
     borderBottomWidth: 1,
-    paddingVertical: 7,
+    paddingVertical: 7
   },
   change1Stack: {
     width: '100%',
     height: 49,
-    marginTop: 7,
+    marginTop: 7
     // marginLeft: 41,
   },
   firstName8: {
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     borderBottomColor: '#d6d6d6',
     borderBottomWidth: 1,
-    paddingVertical: 7,
+    paddingVertical: 7
   },
   change2: {
     top: 17,
@@ -228,12 +228,12 @@ const styles = StyleSheet.create({
     // fontFamily: 'roboto-regular',
     color: 'rgba(39,170,225,1)',
     textDecorationLine: 'underline',
-    fontSize: 12,
+    fontSize: 12
   },
   firstName8Stack: {
     width: '100%',
     height: 49,
-    marginTop: 5,
+    marginTop: 5
     // marginLeft: 41,
   },
   materialButtonPrimary6: {
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0,0,0,1)',
     shadowOffset: {
       width: 10,
-      height: 10,
+      height: 10
     },
     elevation: 20,
     shadowOpacity: 0.2,
@@ -251,8 +251,8 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     // marginLeft: 122,
     alignSelf: 'center',
-    backgroundColor: '#27aae1',
-  },
+    backgroundColor: '#27aae1'
+  }
 });
 
 export default CreateSpaceOwnerProfile;

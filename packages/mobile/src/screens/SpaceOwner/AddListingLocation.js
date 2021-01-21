@@ -3,31 +3,31 @@ import {
   StyleSheet,
   View,
   Text,
-  TextInput,
   ScrollView,
   TouchableOpacity,
   Alert,
   Dimensions,
-  Image,
-  Modal
+  Image
 } from 'react-native';
-import PropTypes from 'prop-types';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import {
+  updateTempListing,
+  tempListingLocationD
+} from '@parkyourself-frontend/shared/redux/actions/tempListing';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
+// import PropTypes from 'prop-types';
 import MapView, { Marker } from 'react-native-maps';
-import IoniconsIcon from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialButtonPrimary from '../../components/MaterialButtonPrimary';
-import { addListingLocation } from '../../actions/listing';
+// import IoniconsIcon from 'react-native-vector-icons/Ionicons';
+// import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+// import MaterialButtonPrimary from '../../components/MaterialButtonPrimary';
+// import { addListingLocation } from '../../actions/listing';
 import { connect } from 'react-redux';
 import { Picker } from '@react-native-community/picker';
 import ImagePicker from 'react-native-image-picker';
-import RadioButton from '../../components/RadioButton';
 import NextButton from '../../components/SpaceOwner/NextButton';
 import AddListingHeader from '../../components/SpaceOwner/AddListingHeader';
 import Input from '../../components/Input';
 import RadioListItem from '../../components/RadioListItem';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { updateTempListing, tempListingLocationD } from '../../app/redux/actions/tempListing';
-import EntypoIcon from 'react-native-vector-icons/Entypo';
 
 const countryCodes = [
   { code: '+1', country: 'United States' },
@@ -381,7 +381,7 @@ function AddListingLocation({
     <>
       <AddListingHeader
         onPress={backButtonHandler}
-        icon={activeIndex == 1 ? 'close' : 'arrowleft'}
+        icon="arrowleft"
         width={`${width}%`}
         navigation={navigation}
         activeIndex={activeIndex}
@@ -411,7 +411,8 @@ function AddListingLocation({
               style={styles.textInput}
               value={locationDetails.propertyName}
               validate={validate}
-              onChangeText={(input) => tempListingLocationD({ propertyName: input })}></Input>
+              onChangeText={(input) => tempListingLocationD({ propertyName: input })}
+            />
           </>
         )}
         {activeIndex == 2 && (
@@ -555,35 +556,40 @@ function AddListingLocation({
               style={styles.placeholder}
               value={locationDetails.address}
               validate={validate}
-              onChangeText={(input) => tempListingLocationD({ locationDetails: input })}></Input>
+              onChangeText={(input) => tempListingLocationD({ locationDetails: input })}
+            />
             <Input
               placeholder="Unit #"
               placeholderTextColor="rgba(182,182,182,1)"
               style={styles.placeholder}
               value={locationDetails.unitNum}
               // validate={validate}
-              onChangeText={(input) => tempListingLocationD({ unitNum: input })}></Input>
+              onChangeText={(input) => tempListingLocationD({ unitNum: input })}
+            />
             <Input
               placeholder="City/Town"
               placeholderTextColor="rgba(182,182,182,1)"
               style={styles.placeholder}
               value={locationDetails.city}
               validate={validate}
-              onChangeText={(input) => tempListingLocationD({ city: input })}></Input>
+              onChangeText={(input) => tempListingLocationD({ city: input })}
+            />
             <Input
               placeholder="State/Province"
               placeholderTextColor="rgba(182,182,182,1)"
               style={styles.placeholder}
               value={locationDetails.state}
               validate={validate}
-              onChangeText={(input) => tempListingLocationD({ state: input })}></Input>
+              onChangeText={(input) => tempListingLocationD({ state: input })}
+            />
             <Input
               placeholder="Postal Code"
               placeholderTextColor="rgba(182,182,182,1)"
               style={styles.placeholder}
               value={locationDetails.postalCode}
               validate={validate}
-              onChangeText={(input) => tempListingLocationD({ postalCode: input })}></Input>
+              onChangeText={(input) => tempListingLocationD({ postalCode: input })}
+            />
             <View style={styles.phone}>
               {/* <View style={styles.pickerContainer}> */}
               <Picker
@@ -607,7 +613,8 @@ function AddListingLocation({
                 value={locationDetails.phone}
                 keyboardType="number-pad"
                 validate={validate}
-                onChangeText={(input) => tempListingLocationD({ phone: input })}></Input>
+                onChangeText={(input) => tempListingLocationD({ phone: input })}
+              />
             </View>
           </>
         )}
@@ -893,7 +900,7 @@ function AddListingLocation({
           </>
         )}
 
-        {activeIndex == 6 && (
+        {activeIndex === 6 && (
           <>
             <Text style={styles.heading}>What features will you offer?</Text>
             <View style={styles.features}>

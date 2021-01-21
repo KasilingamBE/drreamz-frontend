@@ -1,21 +1,13 @@
-import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-  ActivityIndicator,
-} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
-import {useMutation} from '@apollo/client';
-import ListingService from '../../app/services/listing.service';
-import {deleteTempListing} from '../../app/redux/actions/tempListing';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+import { useAddOneListing } from '@parkyourself-frontend/shared/hooks/listings';
+import { deleteTempListing } from '@parkyourself-frontend/shared/redux/actions/tempListing';
 import {
   addListingLocal,
-  updateListingLocal,
-} from '../../app/redux/actions/user';
+  updateListingLocal
+} from '@parkyourself-frontend/shared/redux/actions/user';
 
 const AddListingHeader = ({
   onPress,
@@ -23,40 +15,57 @@ const AddListingHeader = ({
   icon = 'arrowleft',
   onPressSaveAndExit,
   activeIndex = 0,
-
   navigation,
   tempListing,
   deleteTempListing,
   userData,
   addListingLocal,
-  updateListingLocal,
+  updateListingLocal
 }) => {
-  const [createListing] = useMutation(ListingService.CREATE_LISTING);
-  const [updateListing] = useMutation(ListingService.UPDATE_LISTING);
-
+  const { handleSubmit } = useAddOneListing();
   const [disabled, setDisabled] = useState(false);
+  // const [createListing] = useMutation(ListingService.CREATE_LISTING);
+  // const [updateListing] = useMutation(ListingService.UPDATE_LISTING);
+
+  // const onSubmitHandler = async () => {
+  //   try {
+  //     setDisabled(true);
+  //     await ListingService.addListingService(
+  //       tempListing,
+  //       createListing,
+  //       updateListing,
+  //       userData,
+  //       addListingLocal,
+  //       updateListingLocal
+  //     );
+  //     deleteTempListing();
+  //     setDisabled(false);
+  //     // if (tempListing.edit) {
+  //     //   navigation.navigate('MyListingsScreen');
+  //     // } else {
+  //     //   navigation.navigate('MyListingsScreen');
+  //     // }
+  //     navigation.navigate('MyListingsScreen');
+  //   } catch (error) {
+  //     console.log(error);
+  //     setDisabled(false);
+  //     Alert.alert('Something Went wrong!', error.message);
+  //   }
+  // };
 
   const onSubmitHandler = async () => {
     try {
       setDisabled(true);
-      await ListingService.addListingService(
-        tempListing,
-        createListing,
-        updateListing,
-        userData,
-        addListingLocal,
-        updateListingLocal,
-      );
-      deleteTempListing();
+      await handleSubmit();
       setDisabled(false);
-      // if (tempListing.edit) {
-      //   navigation.navigate('MyListingsScreen');
-      // } else {
-      //   navigation.navigate('MyListingsScreen');
-      // }
-      navigation.navigate('MyListingsScreen');
+      if (tempListing.edit) {
+        navigation.navigate('MyListingsScreen');
+      } else {
+        navigation.popToTop();
+      }
+      // navigation.navigate('SpaceOwnerDashboard');
     } catch (error) {
-      console.log(error);
+      // console.log('error', error);
       setDisabled(false);
       Alert.alert('Something Went wrong!', error.message);
     }
@@ -64,38 +73,33 @@ const AddListingHeader = ({
 
   const onSaveAndExit = () => {
     Alert.alert(
-      'Do you really want to exit?',
+      'Do you really want to Save and Exit?',
       '',
       [
         {
           text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
+          style: 'cancel'
         },
         {
           text: 'OK',
-          onPress: onSubmitHandler,
-        },
+          onPress: onSubmitHandler
+        }
       ],
-      {cancelable: false},
+      { cancelable: false }
     );
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.progressIndicator}>
-        <View style={{...styles.progress, width: width}}></View>
+        <View style={{ ...styles.progress, width: width }} />
       </View>
       <View style={styles.row}>
         <TouchableOpacity onPress={onPress} style={styles.backBtn}>
-          <AntDesignIcon name={icon} size={28} color="#666"></AntDesignIcon>
+          <AntDesignIcon name={icon} size={28} color="#666" />
         </TouchableOpacity>
         {disabled ? (
-          <ActivityIndicator
-            style={styles.loading}
-            color="#0b4094"
-            size="large"
-          />
+          <ActivityIndicator style={styles.loading} color="#0b4094" size="large" />
         ) : (
           <TouchableOpacity onPress={onSaveAndExit} style={styles.saveBtn}>
             <Text style={styles.save}>Save & Exit</Text>
@@ -114,15 +118,15 @@ const styles = StyleSheet.create({
     top: 0,
     marginBottom: 20,
     paddingBottom: 10,
-    zIndex: 1000000,
+    zIndex: 1000000
   },
   progressIndicator: {
     width: '100%',
-    height: 10,
+    height: 10
   },
   progress: {
     height: 10,
-    backgroundColor: '#27aae1',
+    backgroundColor: '#27aae1'
   },
   row: {
     flexDirection: 'row',
@@ -130,26 +134,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 10,
+    padding: 10
   },
   backBtn: {
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   saveBtn: {},
   save: {
     fontWeight: '700',
     fontSize: 16,
-    color: '#666',
-  },
+    color: '#666'
+  }
 });
 
-const mapStateToProps = ({tempListing, auth}) => ({
+const mapStateToProps = ({ tempListing, auth }) => ({
   tempListing,
-  userData: auth.authenticated ? auth.data.attributes : null,
+  userData: auth.authenticated ? auth.data.attributes : null
 });
 export default connect(mapStateToProps, {
   deleteTempListing,
   addListingLocal,
-  updateListingLocal,
+  updateListingLocal
 })(AddListingHeader);

@@ -1,16 +1,9 @@
-import React, {Component, useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Modal,
-} from 'react-native';
+import React, { Component, useState } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Modal } from 'react-native';
 import MaterialButtonPrimary from '../../components/MaterialButtonPrimary';
-import {Calendar} from 'react-native-calendars';
+import { Calendar } from 'react-native-calendars';
 
-function CustomSchedule({visible}) {
+function CustomSchedule({ visible }) {
   const [mode, setMode] = useState('date');
   const [date, setDate] = useState('');
 
@@ -27,13 +20,13 @@ function CustomSchedule({visible}) {
               '2020-09-16': {
                 selected: true,
                 marked: true,
-                selectedColor: '#27aae1',
+                selectedColor: '#27aae1'
               },
               '2020-09-22': {
                 startingDay: true,
                 marked: true,
                 selected: true,
-                color: '#27aae1',
+                color: '#27aae1'
               },
               '2020-09-23': {
                 color: '#27aae1',
@@ -41,9 +34,9 @@ function CustomSchedule({visible}) {
                 dotColor: 'red',
                 activeOpacity: 0,
                 selected: true,
-                endingDay: true,
+                endingDay: true
               },
-              '2020-09-24': {disabled: true, disableTouchEvent: true},
+              '2020-09-24': { disabled: true, disableTouchEvent: true }
             }}
             // Initially visible month. Default = Date()
             current={new Date()}
@@ -105,12 +98,12 @@ const styles = StyleSheet.create({
   container: {
     // flex: 1,
     backgroundColor: '#fff',
-    padding: 20,
+    padding: 20
   },
   customSchedule: {
     // fontFamily: 'roboto-500',
     color: 'rgba(11,64,148,1)',
-    fontSize: 24,
+    fontSize: 24
     // marginTop: 56,
     // marginLeft: 20,
   },
@@ -120,7 +113,7 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0,0,0,1)',
     shadowOffset: {
       width: 6,
-      height: 6,
+      height: 6
     },
     elevation: 30,
     shadowOpacity: 0.1,
@@ -129,10 +122,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     // marginLeft: 22,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   calendar: {
-    width: '100%',
+    width: '100%'
   },
   // calendar: {
   //   // fontFamily: 'roboto-regular',
@@ -143,7 +136,7 @@ const styles = StyleSheet.create({
     // fontFamily: 'roboto-regular',
     color: '#121212',
     fontSize: 17,
-    marginTop: 38,
+    marginTop: 38
     // marginLeft: 21,
   },
   date8January: {
@@ -151,56 +144,56 @@ const styles = StyleSheet.create({
     color: 'rgba(11,64,148,1)',
     fontSize: 16,
     opacity: 0.8,
-    marginTop: 25,
+    marginTop: 25
     // marginLeft: 23,
   },
   button2: {
     width: 150,
     height: 39,
     borderBottomWidth: 1,
-    borderColor: 'rgba(182,182,182,1)',
+    borderColor: 'rgba(182,182,182,1)'
   },
   startTime1: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(182,182,182,1)',
     fontSize: 18,
     marginTop: 9,
-    marginLeft: 2,
+    marginLeft: 2
   },
   button1: {
     width: 150,
     height: 39,
     borderBottomWidth: 1,
     borderColor: 'rgba(182,182,182,1)',
-    marginLeft: 25,
+    marginLeft: 25
   },
   endTime1: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(182,182,182,1)',
     fontSize: 18,
     marginTop: 9,
-    marginLeft: 2,
+    marginLeft: 2
   },
   button2Row: {
     height: 39,
     flexDirection: 'row',
     marginTop: 23,
     // marginLeft: 24,
-    marginRight: 26,
+    marginRight: 26
   },
   loremIpsum: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(39,170,225,1)',
     textDecorationLine: 'underline',
-    marginTop: 15,
+    marginTop: 15
   },
   materialButtonPrimary7: {
     height: 36,
     width: 150,
     backgroundColor: 'rgba(39,170,225,1)',
     marginVertical: 80,
-    alignSelf: 'center',
-  },
+    alignSelf: 'center'
+  }
 });
 
 export default CustomSchedule;

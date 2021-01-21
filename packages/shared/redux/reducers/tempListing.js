@@ -1,5 +1,6 @@
 import {
   ADD_TEMP_LISTING,
+  TEMP_LISTING_MOBILE_INITIAL,
   UPDATE_TEMP_LISTING,
   DELETE_TEMP_LISTING,
   TEMP_LISTING_UPDATE_LOCATIONDETAILS,
@@ -93,6 +94,9 @@ const initialListing = {
 
 const tempListing = (state = initialListing, action) => {
   switch (action.type) {
+    case TEMP_LISTING_MOBILE_INITIAL: {
+      return { ...initialListing, mobile: true };
+    }
     case ADD_TEMP_LISTING: {
       return {
         ...state,
@@ -104,10 +108,6 @@ const tempListing = (state = initialListing, action) => {
         spaceDetails: {
           ...state.spaceDetails,
           ...action.payload.spaceDetails
-        },
-        locationDetails: {
-          ...state.locationDetails,
-          ...action.payload.locationDetails
         },
         pricingDetails: {
           ...state.pricingDetails,
