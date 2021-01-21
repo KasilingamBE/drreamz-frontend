@@ -12,25 +12,29 @@ const Tab = createMaterialTopTabNavigator();
 export default function MyTabs({ user }) {
   return (
     <>
+      {/* <ScrollView> */}
       <View style={styles.headerView}>
         <ScreenTittle title="USER PROFILE" />
       </View>
       <UserProfileCard user={user} />
-      <Tab.Navigator
-        tabBarOptions={{
-          activeTintColor: colors.secondary,
-          indicatorStyle: {
-            backgroundColor: colors.primary
-          },
-          labelStyle: { fontWeight: 'bold' }
-        }}>
-        <Tab.Screen name="Bookings">
-          {(props) => <BookingTabs {...props} username={user.username} showHeader={false} />}
-        </Tab.Screen>
-        <Tab.Screen name="Listings">
-          {(props) => <ListingTabs {...props} username={user.username} showHeader={false} />}
-        </Tab.Screen>
-      </Tab.Navigator>
+      <View style={styles.tabContainer}>
+        <Tab.Navigator
+          tabBarOptions={{
+            activeTintColor: colors.secondary,
+            indicatorStyle: {
+              backgroundColor: colors.primary
+            },
+            labelStyle: { fontWeight: 'bold' }
+          }}>
+          <Tab.Screen name="Bookings">
+            {(props) => <BookingTabs {...props} username={user.username} showHeader={false} />}
+          </Tab.Screen>
+          <Tab.Screen name="Listings">
+            {(props) => <ListingTabs {...props} username={user.username} showHeader={false} />}
+          </Tab.Screen>
+        </Tab.Navigator>
+      </View>
+      {/* </ScrollView> */}
     </>
   );
 }
@@ -45,5 +49,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between'
+  },
+  tabContainer: {
+    height: 800
   }
 });

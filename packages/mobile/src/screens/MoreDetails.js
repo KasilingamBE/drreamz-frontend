@@ -1,20 +1,13 @@
-import React, {Component} from 'react';
-import {StyleSheet, ScrollView, Text} from 'react-native';
+import React from 'react';
+import { StyleSheet, ScrollView, Text } from 'react-native';
 import MoreDetailsOne from '../components/MoreDetailsOne';
 import MoreDetailsTwo from '../components/MoreDetailsTwo';
 import MoreDetailsThree from '../components/MoreDetailsThree';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
-function MoreDetails({route, listings, navigation, isSpaceOwner}) {
-  const id = route.params.id;
-  const listingDetail = listings.filter((item) => item._id === id)[0];
-  const {
-    locationDetails,
-    spaceAvailable,
-    spaceDetails,
-    pricingDetails,
-  } = listingDetail;
-  const {startTime, endTime, scheduleType} = spaceAvailable;
+function MoreDetails({ route, navigation, isSpaceOwner }) {
+  const { locationDetails, spaceAvailable, spaceDetails, pricingDetails } = route.params.item;
+  const { startTime, endTime, scheduleType } = spaceAvailable;
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <MoreDetailsOne
@@ -24,10 +17,7 @@ function MoreDetails({route, listings, navigation, isSpaceOwner}) {
         endTime={endTime}
         isSpaceOwner={isSpaceOwner}
       />
-      <MoreDetailsTwo
-        locationDetails={locationDetails}
-        spaceAvailable={spaceAvailable}
-      />
+      <MoreDetailsTwo locationDetails={locationDetails} spaceAvailable={spaceAvailable} />
       <MoreDetailsThree
         locationDetails={locationDetails}
         spaceDetails={spaceDetails}
@@ -44,13 +34,13 @@ const styles = StyleSheet.create({
     // flex: 1,
     padding: 20,
     width: '100%',
-    backgroundColor: 'rgba(39,170,225,0)',
-  },
+    backgroundColor: 'rgba(39,170,225,0)'
+  }
 });
 
 const mapStateToProps = (state) => ({
   listings: state.user.listings,
-  isSpaceOwner: state.user.isSpaceOwner,
+  isSpaceOwner: state.user.isSpaceOwner
 });
 
 export default connect(mapStateToProps)(MoreDetails);

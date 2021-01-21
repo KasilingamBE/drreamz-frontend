@@ -113,7 +113,7 @@ function MyListingListItem({
   const { pricingRates } = item.pricingDetails;
 
   const viewDetailsHandler = () => {
-    navigation.navigate('DetailsScreen', { id: item._id });
+    navigation.navigate('DetailsScreen', { item: item });
   };
 
   // const omitTypename = (key, value) => (key === '__typename' ? undefined : value);
@@ -306,9 +306,6 @@ function MyListingListItem({
                 ? { uri: streetViewImages[0] }
                 : require('../../assets/images/cars.jpg')
             }
-            // source={
-            //   require('../../assets/images/cars.jpg')
-            // }
             resizeMode="stretch"
             style={styles.image}
           />
@@ -332,7 +329,8 @@ function MyListingListItem({
         <MaterialButtonPrimary
           caption="VIEW DETAILS"
           style={styles.viewDetails}
-          onPress={viewDetailsHandler}></MaterialButtonPrimary>
+          onPress={viewDetailsHandler}
+        />
         <TouchableOpacity style={styles.modifyButton}>
           <Text style={styles.modify}>MANAGE STAFF</Text>
         </TouchableOpacity>
