@@ -3,9 +3,9 @@ import { Form, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { gql } from '@apollo/client';
 import { client } from '@parkyourself-frontend/shared/graphql';
-import MyListingItem from '../../MyListingItem';
 import { hideLoading, showLoading } from 'react-redux-loading';
 import { Menu } from 'react-feather';
+import MyListingItem from '../../MyListingItem';
 import Loading from '../../other/Loading';
 
 const GET_ALL = gql`
@@ -14,135 +14,158 @@ const GET_ALL = gql`
       count
       listings {
         _id
-        ownerId
-        ownerName
-        ownerEmail
-        published
+        bookingCount {
+          total
+        }
+        bookings
+        createdAt
         location {
-          type
           coordinates
+          type
         }
         locationDetails {
-          listingType
-          propertyType
-          propertyName
           address
           city
-          state
-          country
-          postalCode
           code
-          phone
+          country
+          features
+          listingType
           marker {
-            type
             coordinates
+            type
           }
-          streetViewImages
           parkingEntranceImages
           parkingSpaceImages
-          features
+          phone
+          postalCode
+          propertyName
+          propertyType
+          state
+          streetViewImages
+          unitNum
+        }
+        ownerEmail
+        ownerId
+        ownerName
+        pricingDetails {
+          pricingRates {
+            perDayRate
+            perHourRate
+            perMonthRate
+            perWeekRate
+          }
+          pricingType
+        }
+        published
+        reviews
+        spaceAvailable {
+          advanceBookingTime {
+            unit
+            value
+          }
+          customTimeRange {
+            endDate
+            startDate
+          }
+          friday {
+            endHour
+            endMinute
+            isActive
+            startHour
+            startMinute
+          }
+          hasNoticeTime
+          instantBooking
+          maxTime {
+            unit
+            value
+          }
+          minTime {
+            unit
+            value
+          }
+          monday {
+            endHour
+            endMinute
+            isActive
+            startHour
+            startMinute
+          }
+          noticeTime {
+            unit
+            value
+          }
+          saturday {
+            endHour
+            endMinute
+            isActive
+            startHour
+            startMinute
+          }
+          scheduleType
+          sunday {
+            endHour
+            endMinute
+            isActive
+            startHour
+            startMinute
+          }
+          thursday {
+            endHour
+            endMinute
+            isActive
+            startHour
+            startMinute
+          }
+          tuesday {
+            endHour
+            endMinute
+            isActive
+            startHour
+            startMinute
+          }
+          wednesday {
+            endHour
+            endMinute
+            isActive
+            startHour
+            startMinute
+          }
         }
         spaceDetails {
-          parkingSpaceType
-          qtyOfSpaces
-          heightRestriction
+          aboutSpace
+          accessInstructions
+          compact
+          compactSpaces
           height1 {
-            value
             unit
+            value
           }
           height2 {
-            value
             unit
+            value
           }
-          sameSizeSpaces
-          largestSize
-          motorcycle
-          compact
-          midsized
-          large
-          oversized
-          motorcycleSpaces
-          compactSpaces
-          midsizedSpaces
-          largeSpaces
-          oversizedSpaces
+          heightRestriction
           isLabelled
+          large
+          largeSpaces
+          largestSize
+          midsized
+          midsizedSpaces
+          motorcycle
+          motorcycleSpaces
+          oversized
+          oversizedSpaces
+          parkingSpaceType
+          qtyOfSpaces
+          sameSizeSpaces
           spaceLabels {
+            isBooked
             label
             largestSize
           }
-          aboutSpace
-          accessInstructions
         }
-        spaceAvailable {
-          scheduleType
-          instantBooking
-          monday {
-            isActive
-            startTime
-            endTime
-          }
-          tuesday {
-            isActive
-            startTime
-            endTime
-          }
-          wednesday {
-            isActive
-            startTime
-            endTime
-          }
-          thursday {
-            isActive
-            startTime
-            endTime
-          }
-          friday {
-            isActive
-            startTime
-            endTime
-          }
-          saturday {
-            isActive
-            startTime
-            endTime
-          }
-          sunday {
-            isActive
-            startTime
-            endTime
-          }
-          customTimeRange
-          noticeTime {
-            value
-            unit
-          }
-          advanceBookingTime {
-            value
-            unit
-          }
-          minTime {
-            value
-            unit
-          }
-          maxTime {
-            value
-            unit
-          }
-          instantBooking
-        }
-        pricingDetails {
-          pricingType
-          pricingRates {
-            perHourRate
-            perDayRate
-            perWeekRate
-            perMonthRate
-          }
-        }
-        bookings
-        reviews
-        createdAt
+        thumbnail
       }
     }
   }

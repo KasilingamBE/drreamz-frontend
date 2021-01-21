@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, DropdownButton, Dropdown } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Link from 'next/link';
-import { gql, useQuery } from '@apollo/client';
+import { gql } from '@apollo/client';
 import { client } from '../app/graphql/index';
 import MyListingItem from '../app/components/MyListingItem';
 import { loadUserListings, toggleLoading } from '../app/redux/actions/user';
@@ -182,7 +182,7 @@ const MyListings = ({ loading, listings, loadUserListings, toggleLoading, userId
         loadUserListings(data.getOwnerListings);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         toggleLoading();
       });
   };
