@@ -1,145 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { useMutation, gql } from '@apollo/client';
+import React from 'react';
+import PropTypes from 'prop-types';
 import colors from '@parkyourself-frontend/shared/config/colors';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, TextInput } from 'react-native';
-import { usePropertyType } from '@parkyourself-frontend/shared/hooks/adminSettings';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput } from 'react-native';
+import { useCRUDPropertyType } from '@parkyourself-frontend/shared/hooks/adminSettings';
 import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import ScreenTittle from '../common/ScreenTittle';
 import LoadingSpinner from '../common/LoadingSpinner';
 import MaterialButtonPrimary from '../MaterialButtonPrimary';
 
-const UPDATE_ONE = gql`
-  mutation UpdateOneFormOption($id: ID!, $options: [FormOptionInput], $updatedBy: String) {
-    updateOneFormOption(id: $id, options: $options, updatedBy: $updatedBy) {
-      _id
-      title
-      options {
-        label
-        value
-        published
-      }
-      formName
-      published
-    }
-  }
-`;
-
-export default function AdminPropertyType(props) {
-  const { loading, error, data } = usePropertyType(props.id);
-  const [updateOneFormOption] = useMutation(UPDATE_ONE);
-  const [disabled, updateDisabled] = useState(false);
-  const [payload, setPayload] = useState({
-    index: 0,
-    options: []
-  });
-  const [oneData, setOneData] = useState({ options: [] });
-  const [form, setForm] = useState({ form: false, edit: false });
-
-  useEffect(() => {
-    if (!error && data) {
-      setOneData(data.getOneFormOption);
-    }
-  }, [data]);
-
-  const handleEdit = (index) => {
-    setPayload({
-      index: index,
-      options: oneData.options.map((i) => ({
-        value: i.value,
-        label: i.label,
-        published: i.published
-      }))
-    });
-    setForm({ edit: true, form: true });
-  };
-
-  const handleAddNew = () => {
-    setPayload({
-      index: oneData.options.length,
-      options: [
-        ...oneData.options.map((i) => ({
-          value: i.value,
-          label: i.label,
-          published: i.published
-        })),
-        { value: '', label: '', published: true }
-      ]
-    });
-    setForm({ edit: false, form: true });
-  };
-
-  const handleSubmit = async () => {
-    if (!payload.options[payload.index] || payload.options[payload.index].value === '') {
-      Alert.alert('Please enter label of option');
-    }
-    updateDisabled(true);
-    try {
-      let { data } = await updateOneFormOption({
-        variables: {
-          id: props.id,
-          options: payload.options,
-          updatedBy: props.userId
-        }
-      });
-      setOneData({
-        ...oneData,
-        options: data.updateOneFormOption.options
-      });
-      updateDisabled(false);
-      setForm({ edit: false, form: false });
-    } catch (error) {
-      // console.log(error);
-      updateDisabled(false);
-      Alert.alert('Something went wrong please try again');
-    }
-  };
-
-  const handleChangeFormOption = (e) => {
-    const value = e;
-    let tempA = [...payload.options];
-    tempA = tempA.map((a, i) => {
-      if (i === payload.index) {
-        let tempa = a;
-        tempa.value = value;
-        tempa.label = value;
-        return tempa;
-      } else {
-        return a;
-      }
-    });
-    setPayload({
-      ...payload,
-      options: tempA
-    });
-  };
-
-  const handleDelete = async (index) => {
-    try {
-      updateDisabled(true);
-      let tempOptions = oneData.options.filter((o, i) => i !== index);
-      let { data } = await updateOneFormOption({
-        variables: {
-          id: props.id,
-          options: tempOptions.map((i) => ({
-            value: i.value,
-            label: i.label,
-            published: i.published
-          })),
-          updatedBy: props.userId
-        }
-      });
-      setOneData({
-        ...oneData,
-        options: data.updateOneFormOption.options
-      });
-      updateDisabled(false);
-    } catch (error) {
-      // console.log("Error", error);
-      updateDisabled(false);
-      Alert.alert('Something went wrong!', error.message);
-    }
-  };
+export default function FormOptionCRUD({ id, userId }) {
+  const {
+    setForm,
+    payload,
+    oneData,
+    loading,
+    handleDelete,
+    handleChangeFormOption,
+    handleSubmit,
+    handleAddNew,
+    handleEdit,
+    form,
+    disabled,
+    handlePublish
+  } = useCRUDPropertyType(id, userId);
 
   return (
     <View style={styles.outerView}>
@@ -156,12 +40,14 @@ export default function AdminPropertyType(props) {
             <TextInput
               onChangeText={(text) => handleChangeFormOption(text)}
               value={payload.options[payload.index] ? payload.options[payload.index].value : ''}
-              style={{ width: '100%', borderColor: 'grey', borderWidth: 1, height: 30, padding: 1 }}
+              style={styles.input}
+              placeholder="Property Type"
             />
             <MaterialButtonPrimary
               onPress={() => handleSubmit()}
               caption="Submit"
               style={styles.materialButtonPrimary}
+              disabled={disabled}
             />
           </View>
         </View>
@@ -178,13 +64,15 @@ export default function AdminPropertyType(props) {
         !form.form && (
           <FlatList
             data={oneData.options}
-            keyExtractor={(item, index) => item.label}
+            keyExtractor={(item) => item.label}
             renderItem={({ item, index }) => (
               <ListItem
                 label={item.label}
+                published={item.published}
                 index={index}
                 handleDelete={handleDelete}
                 handleEdit={handleEdit}
+                handlePublish={handlePublish}
               />
             )}
           />
@@ -194,11 +82,22 @@ export default function AdminPropertyType(props) {
   );
 }
 
-const ListItem = ({ label, index, handleDelete, handleEdit }) => {
+FormOptionCRUD.propTypes = {
+  id: PropTypes.any.isRequired,
+  userId: PropTypes.string.isRequired
+};
+
+const ListItem = ({ label, published, index, handleDelete, handleEdit, handlePublish }) => {
   return (
     <View style={styles.listItem}>
       <Text style={styles.label}>{label}</Text>
       <View style={styles.iconRow}>
+        <TouchableOpacity onPress={() => handlePublish(index)}>
+          <MaterialCommunityIconsIcon
+            name={published ? 'toggle-switch' : 'toggle-switch-off'}
+            style={styles.materialCIcon}
+          />
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => handleEdit(index)}>
           <FeatherIcon name="edit" style={styles.featherIcon} />
         </TouchableOpacity>
@@ -210,16 +109,24 @@ const ListItem = ({ label, index, handleDelete, handleEdit }) => {
   );
 };
 
+ListItem.propTypes = {
+  label: PropTypes.string.isRequired,
+  published: PropTypes.bool.isRequired,
+  index: PropTypes.number.isRequired,
+  handleDelete: PropTypes.func.isRequired,
+  handleEdit: PropTypes.func.isRequired,
+  handlePublish: PropTypes.func.isRequired
+};
+
 const styles = StyleSheet.create({
   formHeader: {
-    // flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 10
+    marginVertical: 10,
+    alignItems: 'center'
   },
   formHeaderText: {
     fontSize: 20
-    // color
   },
   materialButtonPrimary: {
     width: 100,
@@ -232,8 +139,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 20,
     marginTop: 10,
-    // alignSelf: 'center',
-    backgroundColor: '#0b4094',
+    backgroundColor: colors.secondary,
     paddingVertical: 12,
     borderRadius: 30
   },
@@ -243,13 +149,21 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center'
   },
+  input: {
+    width: '100%',
+    borderColor: colors.grey,
+    borderWidth: 0.5,
+    height: 40,
+    padding: 5,
+    borderRadius: 5
+  },
   label: {
     fontSize: 15
   },
   listItem: {
     marginTop: 20,
     marginBottom: 1,
-    borderBottomColor: 'grey',
+    borderBottomColor: colors.grey,
     borderBottomWidth: 1,
     paddingBottom: 5,
     flex: 1,
@@ -265,6 +179,6 @@ const styles = StyleSheet.create({
   featherIcon: {
     fontSize: 25,
     color: colors.secondary,
-    marginRight: 15
+    marginHorizontal: 15
   }
 });

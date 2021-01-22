@@ -1,234 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { useMutation, gql } from '@apollo/client';
-import { showLoading, hideLoading } from 'react-redux-loading';
-// import { client } from "../../../graphql/index";
-import { client } from '@parkyourself-frontend/shared/graphql';
-import { Modal, Button, Form, Row, Col, Spinner } from 'react-bootstrap';
-import { Edit, Eye, EyeOff } from 'react-feather';
+import PropTypes from 'prop-types';
+import { useCRUDPropertyType } from '@parkyourself-frontend/shared/hooks/adminSettings';
+import { Modal, Button, Form, Spinner } from 'react-bootstrap';
+import { Edit, Eye } from 'react-feather';
 import Table from './OptionsTable';
 
-const UPDATE_ONE = gql`
-  mutation UpdateOneFormOption($id: ID!, $options: [FormOptionInput], $updatedBy: String) {
-    updateOneFormOption(id: $id, options: $options, updatedBy: $updatedBy) {
-      _id
-      title
-      options {
-        label
-        value
-        published
-      }
-      formName
-      published
-    }
-  }
-`;
-
-const GET_ONE = gql`
-  query GetOneFormOption($id: ID!) {
-    getOneFormOption(id: $id) {
-      _id
-      title
-      options {
-        label
-        value
-        published
-      }
-      formName
-      published
-    }
-  }
-`;
-
-function FormOptionCRUD(props) {
-  const [updateOneFormOption] = useMutation(UPDATE_ONE);
-  const [payload, setPayload] = useState({
-    index: 0,
-    options: []
-  });
-  const [edit, setEdit] = useState(false);
-  const [disabled, updateDisabled] = useState(false);
-  const [loading, setLoading] = useState(false);
+function FormOptionCRUD({ id, userId }) {
+  const {
+    payload,
+    oneData,
+    loading,
+    handleDelete,
+    handleChangeFormOption,
+    handleSubmit,
+    handleAddNew,
+    handleEdit,
+    form,
+    setForm,
+    disabled,
+    handlePublish
+  } = useCRUDPropertyType(id, userId);
   const [preview, setPreview] = useState(false);
-  const [oneData, setOneData] = useState({ options: [] });
-  const [showModal, setShowModal] = useState(false);
 
-  const getAllData = async () => {
-    setLoading(true);
-    try {
-      let { data } = await client.query({
-        query: GET_ONE,
-        variables: { id: props.id }
-      });
-      setOneData(data.getOneFormOption);
-      setLoading(false);
-    } catch (error) {
-      // console.log(error);
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getAllData();
-  }, []);
-
-  const handleDelete = async (index) => {
-    try {
-      updateDisabled(true);
-      if (window.confirm('Are you sure you want to delete this item!')) {
-        props.dispatch(showLoading());
-        let tempOptions = oneData.options.filter((o, i) => i !== index);
-        let { data } = await updateOneFormOption({
-          variables: {
-            id: props.id,
-            options: tempOptions.map((i) => ({
-              value: i.value,
-              label: i.label,
-              published: i.published
-            })),
-            updatedBy: props.userId
-          }
-        });
-        setOneData({
-          ...oneData,
-          options: data.updateOneFormOption.options
-        });
-        updateDisabled(false);
-        props.dispatch(hideLoading());
-      } else {
-        return updateDisabled(false);
-      }
-    } catch (error) {
-      // console.log("Error", error);
-      props.dispatch(hideLoading());
-      updateDisabled(false);
-      alert('Something went wrong!');
-    }
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmitWeb = (e) => {
     e.preventDefault();
-    updateDisabled(true);
-    props.dispatch(showLoading());
-    try {
-      let { data } = await updateOneFormOption({
-        variables: {
-          id: props.id,
-          options: payload.options,
-          updatedBy: props.userId
-        }
-      });
-      setOneData({
-        ...oneData,
-        options: data.updateOneFormOption.options
-      });
-      props.dispatch(hideLoading());
-      updateDisabled(false);
-      setShowModal(false);
-    } catch (error) {
-      // console.log(error);
-      updateDisabled(false);
-      props.dispatch(hideLoading());
-      alert('Something went wrong please try again');
-    }
-  };
-
-  const handlePublish = async (index) => {
-    try {
-      updateDisabled(true);
-      props.dispatch(showLoading());
-      let { data } = await updateOneFormOption({
-        variables: {
-          id: props.id,
-          options: oneData.options.map((o, i) => {
-            if (i === index) {
-              console.log('Changed Status');
-              return {
-                value: o.value,
-                label: o.label,
-                published: !o.published
-              };
-            } else {
-              return {
-                value: o.value,
-                label: o.label,
-                published: o.published
-              };
-            }
-          }),
-          updatedBy: props.userId
-        }
-      });
-      setOneData({
-        ...oneData,
-        options: data.updateOneFormOption.options
-      });
-      updateDisabled(false);
-      props.dispatch(hideLoading());
-    } catch (error) {
-      updateDisabled(false);
-      props.dispatch(hideLoading());
-      alert('Something went wrong!');
-    }
-  };
-
-  const handleChangeFormOption = (e) => {
-    const value = e.target.value;
-    let tempA = [...payload.options];
-    tempA = tempA.map((a, i) => {
-      if (i === payload.index) {
-        let tempa = a;
-        tempa.value = value;
-        tempa.label = value;
-        return tempa;
-      } else {
-        return a;
-      }
-    });
-    setPayload({
-      ...payload,
-      options: tempA
-    });
-  };
-
-  const handleAddNew = () => {
-    setPayload({
-      index: oneData.options.length,
-      options: [
-        ...oneData.options.map((i) => ({
-          value: i.value,
-          label: i.label,
-          published: i.published
-        })),
-        { value: '', label: '', published: true }
-      ]
-    });
-    setEdit(false);
-    setShowModal(true);
-  };
-
-  const handleEdit = (index) => {
-    setPayload({
-      index: index,
-      options: oneData.options.map((i) => ({
-        value: i.value,
-        label: i.label,
-        published: i.published
-      }))
-    });
-    setEdit(true);
-    setShowModal(true);
+    handleSubmit();
   };
 
   return (
     <>
-      <Modal size="lg" centered show={showModal} onHide={() => setShowModal(false)}>
+      <Modal size="lg" centered show={form.form} onHide={() => setForm({ ...form, form: false })}>
         <Modal.Body>
-          <Form onSubmit={handleSubmit} className="pt-3">
+          <Form onSubmit={handleSubmitWeb} className="pt-3">
             <Form.Group>
               <Form.Label>Name</Form.Label>
               <Form.Control
-                onChange={handleChangeFormOption}
+                onChange={({ target: { value } }) => handleChangeFormOption(value)}
                 value={payload.options[payload.index] ? payload.options[payload.index].value : ''}
                 type="text"
                 name="value"
@@ -246,7 +54,7 @@ function FormOptionCRUD(props) {
                     role="status"
                     aria-hidden="true"
                   />
-                ) : edit ? (
+                ) : form.edit ? (
                   'Update'
                 ) : (
                   'Create'
@@ -257,7 +65,7 @@ function FormOptionCRUD(props) {
                 disabled={disabled}
                 type="button"
                 variant="danger"
-                onClick={() => setShowModal(false)}>
+                onClick={() => setForm({ ...form, form: false })}>
                 Cancel
               </Button>
             </div>
@@ -308,6 +116,11 @@ function FormOptionCRUD(props) {
     </>
   );
 }
+
+FormOptionCRUD.propTypes = {
+  id: PropTypes.any.isRequired,
+  userId: PropTypes.string.isRequired
+};
 
 const mapStateToProps = ({ auth }) => {
   return {
