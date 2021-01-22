@@ -65,7 +65,11 @@ function FlatBillingType({
 
   return (
     <>
-      <AddListingHeader onPress={backButtonHandler} width={`${width}%`} navigation={navigation} />
+      <AddListingHeader
+        onPress={backButtonHandler}
+        width={`${19 * 5.2}%`}
+        navigation={navigation}
+      />
 
       <ScrollView contentContainerStyle={styles.container}>
         {/* <Text style={styles.setPricing1}>Set Pricing</Text> */}
@@ -154,7 +158,7 @@ function FlatBillingType({
         </TouchableOpacity>
         <TipsSettingRatesModal visible={visible} onPress={() => setVisible(false)} />
       </ScrollView>
-      <NextButton onPress={onSubmitHandler} />
+      {/* <NextButton onPress={onSubmitHandler} /> */}
     </>
   );
 }

@@ -31,7 +31,7 @@ const AddListing = ({ navigation, tempListing, deleteTempListing }) => {
   };
 
   const onNextButtonPress = (count = 1) => {
-    if (activeIndex < 20) {
+    if (activeIndex < 21) {
       setActiveIndex(activeIndex + count);
     }
   };
@@ -45,6 +45,7 @@ const AddListing = ({ navigation, tempListing, deleteTempListing }) => {
           navigation={navigation}
           onBackButtonPress={onBackButtonPress}
           onNextButtonPress={onNextButtonPress}
+          activeIndex={activeIndex}
           setActiveIndex={setActiveIndex}
         />
       )}
@@ -54,42 +55,48 @@ const AddListing = ({ navigation, tempListing, deleteTempListing }) => {
           {activeIndex} {typeof activeIndex}
         </Text>
       </TouchableOpacity> */}
-      {activeIndex >= 1 && activeIndex < 6 && (
+      {activeIndex >= 1 && activeIndex < 7 && (
         <AddListingLocation
           navigation={navigation}
           onBackButtonPress={onBackButtonPress}
           onNextButtonPress={onNextButtonPress}
+          activeIndex={activeIndex}
+          setActiveIndex={setActiveIndex}
         />
       )}
-      {activeIndex >= 6 && activeIndex < 12 && (
+      {activeIndex >= 7 && activeIndex < 13 && (
         <AddListingSpaceDetails
           navigation={navigation}
           onBackButtonPress={onBackButtonPress}
           onNextButtonPress={onNextButtonPress}
+          activeIndex={activeIndex}
+          setActiveIndex={setActiveIndex}
         />
       )}
-      {/* {activeIndex === 3 && (
+      {activeIndex >= 13 && activeIndex < 18 && (
         <SpaceAvailable
           navigation={navigation}
           onBackButtonPress={onBackButtonPress}
           onNextButtonPress={onNextButtonPress}
+          activeIndex={activeIndex}
+          setActiveIndex={setActiveIndex}
         />
       )}
-      {activeIndex === 4 && (
+      {activeIndex === 18 && (
         <SetPricingType
           navigation={navigation}
           onBackButtonPress={onBackButtonPress}
           onNextButtonPress={onNextButtonPress}
         />
       )}
-      {activeIndex === 5 && (
+      {activeIndex === 19 && (
         <FlatBillingType
           navigation={navigation}
           onBackButtonPress={onBackButtonPress}
           onNextButtonPress={onNextButtonPress}
         />
       )}
-      {activeIndex === 6 && (
+      {/* {activeIndex === 20 && (
         <SaveSpaceDetails
           onBackButtonPress={onBackButtonPress}
           onNextButtonPress={onNextButtonPress}

@@ -12,8 +12,16 @@ const {
   LOAD_USER_BOOKINGS,
   TOGGLE_PROFILE_TYPE,
   LOAD_USER_TYPE,
-  TOGGLE_ADMIN_MODE
+  TOGGLE_ADMIN_MODE,
+  TOGGLE_LOADING_MODAL
 } = require('./types');
+
+export function toggleLoadingModal(status) {
+  return {
+    type: TOGGLE_LOADING_MODAL,
+    status
+  };
+}
 
 export const initializeUser = () => {
   return {

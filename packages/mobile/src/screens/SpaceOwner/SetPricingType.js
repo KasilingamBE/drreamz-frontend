@@ -53,7 +53,8 @@ function SetPricingType({
                 true: 'rgba(39,170,225,1)',
                 false: 'rgba(230, 230, 230,1)'
               }}
-              style={styles.switch}></Switch>
+              style={styles.switch}
+            />
           </View>
         </View>
         <View style={styles.rect}>
@@ -69,7 +70,8 @@ function SetPricingType({
                 true: 'rgba(39,170,225,1)',
                 false: 'rgba(230, 230, 230,1)'
               }}
-              style={styles.switch}></Switch>
+              style={styles.switch}
+            />
           </View>
         </View>
       </ScrollView>

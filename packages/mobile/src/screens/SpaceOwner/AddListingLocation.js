@@ -148,11 +148,13 @@ function AddListingLocation({
   addListingLocation,
   locationDetails,
   tempListingLocationD,
-  navigation
+  navigation,
+  activeIndex,
+  setActiveIndex
 }) {
   const scrollRef = useRef();
 
-  const [activeIndex, setActiveIndex] = useState(1);
+  // const [activeIndex, setActiveIndex] = useState(1);
 
   const [width, setWidth] = useState(0);
 
@@ -301,75 +303,54 @@ function AddListingLocation({
     });
   };
 
-  const backButtonHandler = () => {
-    if (activeIndex != 1) {
-      setActiveIndex(activeIndex - 1);
-      scrollRef.current.scrollTo({
-        y: 0,
-        animated: true
-      });
-      setWidth(width - 20);
-    } else {
-      onBackButtonPress();
-    }
-  };
+  // const backButtonHandler = () => {
+  //   if (activeIndex != 1) {
+  //     setActiveIndex(activeIndex - 1);
+  //     scrollRef.current.scrollTo({
+  //       y: 0,
+  //       animated: true
+  //     });
+  //     setWidth(width - 20);
+  //   } else {
+  //     onBackButtonPress();
+  //   }
+  // };
 
   const onSubmitHandler = () => {
     try {
-      if (activeIndex != 6) {
-        if (
-          (activeIndex == 1 && locationDetails.propertyName) ||
-          (activeIndex == 2 &&
-            locationDetails.country &&
-            locationDetails.address &&
-            // locationDetails.unitNum &&
-            locationDetails.city &&
-            locationDetails.state &&
-            locationDetails.postalCode &&
-            locationDetails.code &&
-            locationDetails.phone) ||
-          (activeIndex == 3 &&
-            locationDetails.country &&
-            locationDetails.address &&
-            // locationDetails.unitNum &&
-            locationDetails.city &&
-            locationDetails.state &&
-            locationDetails.postalCode &&
-            locationDetails.code &&
-            locationDetails.phone) ||
-          activeIndex == 4 ||
-          activeIndex == 5
-        ) {
-          setValidate(false);
-          setActiveIndex(activeIndex + 1);
-          scrollRef.current.scrollTo({
-            y: 0,
-            animated: true
-          });
-          setWidth(width + 20);
-        } else {
-          setValidate(true);
-        }
+      if (
+        (activeIndex == 1 && locationDetails.propertyName) ||
+        (activeIndex == 2 &&
+          locationDetails.country &&
+          locationDetails.address &&
+          // locationDetails.unitNum &&
+          locationDetails.city &&
+          locationDetails.state &&
+          locationDetails.postalCode &&
+          locationDetails.code &&
+          locationDetails.phone) ||
+        (activeIndex == 3 &&
+          locationDetails.country &&
+          locationDetails.address &&
+          // locationDetails.unitNum &&
+          locationDetails.city &&
+          locationDetails.state &&
+          locationDetails.postalCode &&
+          locationDetails.code &&
+          locationDetails.phone) ||
+        activeIndex === 4 ||
+        activeIndex === 5 ||
+        activeIndex === 6
+      ) {
+        setValidate(false);
+        setActiveIndex(activeIndex + 1);
+        scrollRef.current.scrollTo({
+          y: 0,
+          animated: true
+        });
+        setWidth(width + 20);
       } else {
-        // let locationData = {
-        //   listingType,
-        //   propertyName: propertyName,
-        //   country,
-        //   address,
-        //   unitNum,
-        //   city,
-        //   state,
-        //   postalCode,
-        //   code,
-        //   phone,
-        //   latlng: marker,
-        //   propertyType,
-        //   images,
-        //   features,
-        // };
-
-        // addListingLocation(locationData);
-        onNextButtonPress();
+        setValidate(true);
       }
     } catch (error) {
       console.log('Error', error);
@@ -380,9 +361,9 @@ function AddListingLocation({
   return (
     <>
       <AddListingHeader
-        onPress={backButtonHandler}
+        onPress={onBackButtonPress}
         icon="arrowleft"
-        width={`${width}%`}
+        width={`${activeIndex * 5.2}%`}
         navigation={navigation}
         activeIndex={activeIndex}
       />
@@ -390,7 +371,7 @@ function AddListingLocation({
         keyboardShouldPersistTaps="always"
         contentContainerStyle={styles.container}
         ref={scrollRef}>
-        {activeIndex == 1 && (
+        {activeIndex === 1 && (
           <>
             <Text style={styles.heading}>Choose a Listing Type</Text>
             <View style={styles.pickerContainer}>

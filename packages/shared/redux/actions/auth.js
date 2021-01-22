@@ -5,23 +5,23 @@ export const INITIAL_AUTHED_USER = 'INITIAL_AUTHED_USER';
 export function setAuthUser(user) {
   return {
     type: SET_AUTHED_USER,
-    user,
+    user
   };
 }
 
 export function unsetAuthUser() {
   return {
-    type: UNSET_AUTHED_USER,
+    type: UNSET_AUTHED_USER
   };
 }
 export function initialAuthUser() {
   return {
-    type: INITIAL_AUTHED_USER,
+    type: INITIAL_AUTHED_USER
   };
 }
 
 export const logoutUser = () => async (dispatch) => {
   dispatch({
-    type: UNSET_AUTHED_USER,
+    type: UNSET_AUTHED_USER
   });
 };

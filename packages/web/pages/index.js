@@ -1,19 +1,20 @@
-import Head from "next/head";
-import { connect } from "react-redux";
-import LoginRegister from "../src/app/components/auth/LoginRegister";
-import InitialLoading from "../src/app/components/other/InitialLoading";
-import { useRouter } from "next/router";
-import Nav from "../src/app/components/other/Nav";
+import Head from 'next/head';
+import { connect } from 'react-redux';
+import LoginRegister from '../src/app/components/auth/LoginRegister';
+import InitialLoading from '../src/app/components/other/InitialLoading';
+import { useRouter } from 'next/router';
+import Nav from '../src/app/components/other/Nav';
 
 function Home(props) {
   const router = useRouter();
 
   if (props.initial && props.authenticated) {
-    if (props.isSpaceOwner) {
-      router.push("/dashboard");
-    } else {
-      router.push("/parkings");
-    }
+    router.push('/dashboard');
+    // if (props.isSpaceOwner) {
+    //   router.push("/dashboard");
+    // } else {
+    //   router.push("/parkings");
+    // }
   }
   if (props.initial && !props.authenticated) {
     return (
@@ -40,7 +41,7 @@ const mapStateToProps = ({ auth, user }) => {
   return {
     authenticated: auth.authenticated,
     initial: auth.initial,
-    isSpaceOwner: user.isSpaceOwner,
+    isSpaceOwner: user.isSpaceOwner
   };
 };
 

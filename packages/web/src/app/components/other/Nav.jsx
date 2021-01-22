@@ -19,8 +19,8 @@ const NavC = (props) => {
   return (
     <Navbar expand="lg">
       <Navbar.Brand>
-        <Link href="/">
-          <img src={logo} alt="logo image" className="img-fluid" />
+        <Link href="/dashboard">
+          <img src={logo} alt="parkyourself" className="img-fluid" />
         </Link>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />

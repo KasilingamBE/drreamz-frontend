@@ -10,11 +10,11 @@ import {
   Dimensions,
   Alert
 } from 'react-native';
+import colors from '@parkyourself-frontend/shared/config/colors';
+import addListingMenu from '@parkyourself-frontend/shared/config/addListingMenu';
 import AddListingHeader from '../../components/SpaceOwner/AddListingHeader';
 import NextButton from '../../components/SpaceOwner/NextButton';
-import addListingMenu from '@parkyourself-frontend/shared/config/addListingMenu';
 import ScreenTittle from '../../components/common/ScreenTittle';
-import colors from '@parkyourself-frontend/shared/config/colors';
 
 function SetPricingType({
   onBackButtonPress,

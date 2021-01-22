@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,11 +7,11 @@ import {
   Switch,
   ScrollView,
   TouchableOpacity,
-  Alert,
+  Alert
 } from 'react-native';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {setListingPricingDetails} from '../../actions/listing';
+import { setListingPricingDetails } from '../../actions/listing';
 import MaterialButtonPrimary from '../../components/MaterialButtonPrimary';
 import TipsSettingRatesModal from '../../components/SpaceOwner/TipsSettingRatesModal';
 import VariableVsFlatModal from '../../components/SpaceOwner/VariableVsFlatModal';
@@ -23,43 +23,33 @@ function VariableBillingType({
   onBackButtonPress,
   onNextButtonPress,
   setListingPricingDetails,
-  pricingDetails,
+  pricingDetails
 }) {
-  const [width, setWidth] = useState(
-    pricingDetails && pricingDetails.pricingType ? 100 : 0,
-  );
+  const [width, setWidth] = useState(pricingDetails && pricingDetails.pricingType ? 100 : 0);
 
   const [validate, setValidate] = useState(false);
 
   const [perHourRate, setPerHourRate] = useState(
-    pricingDetails && pricingDetails.pricingRates
-      ? pricingDetails.pricingRates.perHourRate
-      : '1.80',
+    pricingDetails && pricingDetails.pricingRates ? pricingDetails.pricingRates.perHourRate : '1.80'
   );
   const [perDayRate, setPerDayRate] = useState(
-    pricingDetails && pricingDetails.pricingRates
-      ? pricingDetails.pricingRates.perDayRate
-      : '13.00',
+    pricingDetails && pricingDetails.pricingRates ? pricingDetails.pricingRates.perDayRate : '13.00'
   );
   const [perWeekRate, setPerWeekRate] = useState(
     pricingDetails && pricingDetails.pricingRates
       ? pricingDetails.pricingRates.perWeekRate
-      : '60.00',
+      : '60.00'
   );
   const [perMonthRate, setPerMonthRate] = useState(
     pricingDetails && pricingDetails.pricingRates
       ? pricingDetails.pricingRates.perMonthRate
-      : '200.00',
+      : '200.00'
   );
   const [perWeek, setPerWeek] = useState(
-    pricingDetails && pricingDetails.pricingRates
-      ? pricingDetails.pricingRates.perWeek
-      : false,
+    pricingDetails && pricingDetails.pricingRates ? pricingDetails.pricingRates.perWeek : false
   );
   const [perMonth, setPerMonth] = useState(
-    pricingDetails && pricingDetails.pricingRates
-      ? pricingDetails.pricingRates.perMonth
-      : true,
+    pricingDetails && pricingDetails.pricingRates ? pricingDetails.pricingRates.perMonth : true
   );
 
   const [visible1, setVisible1] = useState(false);
@@ -82,8 +72,8 @@ function VariableBillingType({
             perWeekRate,
             perMonthRate,
             perWeek,
-            perMonth,
-          },
+            perMonth
+          }
         };
         setListingPricingDetails(pricingDetails);
         // navigation.navigate('SaveSpaceDetails');
@@ -135,7 +125,7 @@ function VariableBillingType({
             value={perWeek}
             trackColor={{
               true: 'rgba(230, 230, 230,1)',
-              false: 'rgba(155,155,155,1)',
+              false: 'rgba(155,155,155,1)'
             }}
             disabled={false}
             style={styles.switch}></Switch>
@@ -154,15 +144,13 @@ function VariableBillingType({
             value={perMonth}
             trackColor={{
               true: 'rgba(230, 230, 230,1)',
-              false: 'rgba(155,155,155,1)',
+              false: 'rgba(155,155,155,1)'
             }}
             disabled={false}
             style={styles.switch}></Switch>
         </View>
         <TouchableOpacity onPress={() => setVisible1(true)}>
-          <Text style={styles.loremIpsum2}>
-            Tips for setting appropriate rates
-          </Text>
+          <Text style={styles.loremIpsum2}>Tips for setting appropriate rates</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setVisible2(true)}>
           <Text style={styles.loremIpsum2}>Variable vs Flat Rates</Text>
@@ -172,10 +160,7 @@ function VariableBillingType({
         onPress={onPressHandler}
         caption="NEXT"
         style={styles.materialButtonPrimary1}></MaterialButtonPrimary> */}
-        <TipsSettingRatesModal
-          visible={visible1}
-          onPress={() => setVisible1(false)}
-        />
+        <TipsSettingRatesModal visible={visible1} onPress={() => setVisible1(false)} />
         <VariableVsFlatModal visible={visible2} onPress={onSubmitHandler} />
       </ScrollView>
       <NextButton onPress={onSubmitHandler} />
@@ -190,53 +175,53 @@ const styles = StyleSheet.create({
     padding: 20,
     zIndex: 1,
     paddingVertical: 50,
-    paddingBottom: 80,
+    paddingBottom: 80
   },
   setPricing1: {
     // fontFamily: 'roboto-500',
     color: 'rgba(11,64,148,1)',
-    fontSize: 24,
+    fontSize: 24
   },
   heading: {
     color: 'rgba(11,64,148,1)',
     fontSize: 30,
     fontWeight: '700',
     marginTop: 30,
-    marginVertical: 20,
+    marginVertical: 20
   },
   subHeading: {
     color: '#27aae1',
     fontSize: 20,
     fontWeight: '700',
-    marginTop: 20,
+    marginTop: 20
   },
   loremIpsum: {
     // fontFamily: 'roboto-300',
     color: 'rgba(11,64,148,1)',
     fontSize: 16,
-    marginTop: 13,
+    marginTop: 13
   },
   flatBillingType: {
     // fontFamily: 'roboto-500',
     color: 'rgba(39,170,225,1)',
     fontSize: 17,
     marginTop: 45,
-    fontWeight: '700',
+    fontWeight: '700'
   },
   dailyMaximum: {
     // fontFamily: 'roboto-regular',
     color: '#b6b6b6',
     fontSize: 16,
-    marginTop: 22,
+    marginTop: 22
   },
   perWeek: {
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   switch: {
     position: 'absolute',
     right: 10,
-    top: 10,
+    top: 10
   },
   placeholder: {
     // fontFamily: 'roboto-regular',
@@ -246,14 +231,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 10,
     borderBottomColor: '#d6d6d6',
-    borderBottomWidth: 1,
+    borderBottomWidth: 1
   },
   loremIpsum2: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(39,170,225,1)',
     textDecorationLine: 'underline',
     marginTop: 37,
-    fontSize: 16,
+    fontSize: 16
   },
   materialButtonPrimary1: {
     width: 100,
@@ -261,19 +246,19 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0,0,0,1)',
     shadowOffset: {
       width: 10,
-      height: 10,
+      height: 10
     },
     elevation: 10,
     shadowOpacity: 0.2,
     shadowRadius: 20,
     marginTop: 136,
     alignSelf: 'center',
-    backgroundColor: '#27aae1',
-  },
+    backgroundColor: '#27aae1'
+  }
 });
 
 VariableBillingType.propTypes = {
-  setListingPricingDetails: PropTypes.func.isRequired,
+  setListingPricingDetails: PropTypes.func.isRequired
 };
 
-export default connect(null, {setListingPricingDetails})(VariableBillingType);
+export default connect(null, { setListingPricingDetails })(VariableBillingType);

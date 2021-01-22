@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
+import { Alert, Linking, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import Amplify, { Auth, Hub } from 'aws-amplify';
 import reducer from '@parkyourself-frontend/shared/redux/reducers';
@@ -13,9 +14,10 @@ import { client } from '@parkyourself-frontend/shared/graphql';
 import AsyncStorage from '@react-native-community/async-storage';
 import { setAuthUser, initialAuthUser } from '@parkyourself-frontend/shared/redux/actions/auth';
 import config from '@parkyourself-frontend/shared/aws-exports';
+import { toggleLoadingModal } from '@parkyourself-frontend/shared/redux/actions/user';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
-import { Alert, Linking } from 'react-native';
 import MainStack from './src/navigation/MainStack';
+import LoadingModal from './src/components/common/LoadingModal';
 
 async function urlOpener(url, redirectUrl) {
   await InAppBrowser.isAvailable();
@@ -25,9 +27,12 @@ async function urlOpener(url, redirectUrl) {
     enableDefaultShare: false,
     ephemeralWebSession: false
   });
-
+  let splitUrl = newUrl;
+  if (splitUrl && splitUrl.includes('?code')) {
+    splitUrl = `parkyourself://?${newUrl.split('#_=_')[0].split('?')[1] || ''}`;
+  }
   if (type === 'success') {
-    Linking.openURL(newUrl);
+    Linking.openURL(splitUrl);
   }
 }
 
@@ -58,6 +63,7 @@ const App = (props) => {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <ApolloProvider client={client}>
+          <LoadingModal />
           <GetData />
           <NavigationContainer>
             <MainStack />
@@ -73,9 +79,12 @@ export default App;
 const GetData = connect()((props) => {
   const getAuthData = async () => {
     try {
+      // Alert.alert('Fecthing User');
+      props.dispatch(toggleLoadingModal(true));
       const user = await Auth.currentAuthenticatedUser();
       // console.log('User', user);
       if (user) {
+        // Alert.alert('User', 'Got user');
         const data = {
           attributes: user.attributes,
           signInUserSession: user.signInUserSession,
@@ -84,33 +93,47 @@ const GetData = connect()((props) => {
               -1
             : false
         };
+        props.dispatch(toggleLoadingModal(false));
         props.dispatch(setAuthUser(data));
       }
       props.dispatch(initialAuthUser());
     } catch (error) {
       props.dispatch(initialAuthUser());
+      props.dispatch(toggleLoadingModal(false));
+      // Alert.alert('No Data Found', error.message);
       // console.log('Error', error);
     }
   };
 
   useEffect(() => {
+    if (Platform.OS === 'android') {
+      Linking.getInitialURL().then((url2) => {
+        handleOpenURL({ url: url2 });
+      });
+    } else {
+      Linking.addEventListener('url', handleOpenURL);
+    }
     Hub.listen('auth', ({ payload: { event, data } }) => {
       switch (event) {
         case 'signIn':
-        case 'cognitoHostedUI':
           getAuthData();
           break;
-        // case 'signOut':
-        //   setUser(null);
-        // break;
-        // case 'signIn_failure':
         case 'cognitoHostedUI_failure':
-          // console.log('Sign in failure', data);
-          Alert.alert('SignIn Failed');
+          Alert.alert('Sign In Failed', `Please try again`);
+          props.dispatch(toggleLoadingModal(false));
           break;
+        default:
+          return null;
       }
     });
     getAuthData();
+    return () => Linking.removeEventListener('url', handleOpenURL);
   }, []);
+
+  const handleOpenURL = (event) => {
+    if (event.url && event.url.includes('?code')) {
+      props.dispatch(toggleLoadingModal(true));
+    }
+  };
   return null;
 });

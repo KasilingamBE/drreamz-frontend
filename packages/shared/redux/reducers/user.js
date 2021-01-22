@@ -12,7 +12,8 @@ const {
   UPDATE_BOOKING,
   DELETE_BOOKING,
   LOAD_USER_TYPE,
-  TOGGLE_ADMIN_MODE
+  TOGGLE_ADMIN_MODE,
+  TOGGLE_LOADING_MODAL
 } = require('../actions/types');
 
 const initialState = {
@@ -21,13 +22,17 @@ const initialState = {
   profileType: 'personal', // or business
   listings: [],
   bookings: [1, 2, 3, 4, 4],
-  loading: false
+  loading: false,
+  loadingModal: false
 };
 
 export default function (state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
+    case TOGGLE_LOADING_MODAL: {
+      return { ...state, loadingModal: action.status };
+    }
     case INITIALIZE_USER: {
       return initialState;
     }

@@ -32,11 +32,13 @@ function AddListingSpaceDetails({
   spaceDetails,
   addListingSpaceDetails,
   tempListingSpaceD,
-  navigation
+  navigation,
+  activeIndex,
+  setActiveIndex
 }) {
   const scrollRef = useRef();
 
-  const [activeIndex, setActiveIndex] = useState(1);
+  // const [activeIndex, setActiveIndex] = useState(1);
 
   const [width, setWidth] = useState(0);
 
@@ -178,75 +180,76 @@ function AddListingSpaceDetails({
     return flag;
   };
 
-  const backButtonHandler = () => {
-    if (activeIndex != 1) {
-      setActiveIndex(activeIndex - 1);
-      scrollRef.current.scrollTo({
-        y: 0,
-        animated: true
-      });
-      setWidth(width - 20);
-    } else {
-      onBackButtonPress();
-    }
-  };
+  // const backButtonHandler = () => {
+  //   if (activeIndex != 1) {
+  //     setActiveIndex(activeIndex - 1);
+  //     scrollRef.current.scrollTo({
+  //       y: 0,
+  //       animated: true
+  //     });
+  //     setWidth(width - 20);
+  //   } else {
+  //     onBackButtonPress();
+  //   }
+  // };
 
   const onSubmitHandler = () => {
     try {
-      if (activeIndex != 6) {
-        if (
-          (activeIndex == 1 && spaceDetails.qtyOfSpaces) ||
-          activeIndex == 2 ||
-          (activeIndex == 3 &&
-            (spaceDetails.motorcycle ||
-              spaceDetails.compact ||
-              spaceDetails.midsized ||
-              spaceDetails.large ||
-              spaceDetails.oversized) &&
-            (sameSizeSpaces || spacesSum === qtyOfSpaces)) ||
-          (activeIndex == 4 && (!spaceDetails.isLabelled || checkAllSpaceLabels())) ||
-          (activeIndex == 5 && spaceDetails.aboutSpace)
-        ) {
-          setValidate(false);
-          setActiveIndex(activeIndex + 1);
-          scrollRef.current.scrollTo({
-            y: 0,
-            animated: true
-          });
-          setWidth(width + 20);
-        } else {
-          setValidate(true);
-        }
+      // if (activeIndex != 6) {
+      if (
+        (activeIndex === 7 && spaceDetails.qtyOfSpaces) ||
+        activeIndex === 8 ||
+        (activeIndex === 9 &&
+          (spaceDetails.motorcycle ||
+            spaceDetails.compact ||
+            spaceDetails.midsized ||
+            spaceDetails.large ||
+            spaceDetails.oversized) &&
+          (sameSizeSpaces || spacesSum === qtyOfSpaces)) ||
+        (activeIndex === 10 && (!spaceDetails.isLabelled || checkAllSpaceLabels())) ||
+        (activeIndex === 11 && spaceDetails.aboutSpace) ||
+        (activeIndex === 12 && spaceDetails.accessInstructions)
+      ) {
+        setValidate(false);
+        setActiveIndex(activeIndex + 1);
+        scrollRef.current.scrollTo({
+          y: 0,
+          animated: true
+        });
+        // setWidth(width + 20);
       } else {
-        if (spaceDetails.accessInstructions) {
-          // let spaceDetails = {
-          //   spaceType: parkingSpaceType,
-          //   qtyOfSpaces,
-          //   sameSizeSpaces,
-          //   vehicleHeightLimit,
-          //   vehicleSizes: {
-          //     motorcycle: motorcycle,
-          //     compact: compact,
-          //     midsized: midsized,
-          //     large: large,
-          //     oversized: oversized,
-          //   },
-          //   motorcycleSpaces,
-          //   compactSpaces,
-          //   midsizedSpaces,
-          //   largeSpaces,
-          //   oversizedSpaces,
-          //   isLabelled,
-          //   spaceLabels,
-          //   aboutSpace,
-          //   accessInstructions,
-          // };
-          // addListingSpaceDetails(spaceDetails);
-          onNextButtonPress();
-        } else {
-          setValidate(true);
-        }
+        setValidate(true);
       }
+      // } else {
+      //   if (spaceDetails.accessInstructions) {
+      //     // let spaceDetails = {
+      //     //   spaceType: parkingSpaceType,
+      //     //   qtyOfSpaces,
+      //     //   sameSizeSpaces,
+      //     //   vehicleHeightLimit,
+      //     //   vehicleSizes: {
+      //     //     motorcycle: motorcycle,
+      //     //     compact: compact,
+      //     //     midsized: midsized,
+      //     //     large: large,
+      //     //     oversized: oversized,
+      //     //   },
+      //     //   motorcycleSpaces,
+      //     //   compactSpaces,
+      //     //   midsizedSpaces,
+      //     //   largeSpaces,
+      //     //   oversizedSpaces,
+      //     //   isLabelled,
+      //     //   spaceLabels,
+      //     //   aboutSpace,
+      //     //   accessInstructions,
+      //     // };
+      //     // addListingSpaceDetails(spaceDetails);
+      //     onNextButtonPress();
+      //   } else {
+      //     setValidate(true);
+      //   }
+      // }
     } catch (error) {
       Alert.alert('Something Went wrong!', 'Unable to add space details');
     }
@@ -260,9 +263,13 @@ function AddListingSpaceDetails({
     parseInt(spaceDetails.oversizedSpaces);
   return (
     <>
-      <AddListingHeader onPress={backButtonHandler} width={`${width}%`} navigation={navigation} />
+      <AddListingHeader
+        onPress={onBackButtonPress}
+        width={`${activeIndex * 5.2}%`}
+        navigation={navigation}
+      />
       <ScrollView ref={scrollRef} contentContainerStyle={styles.container}>
-        {activeIndex == 1 && (
+        {activeIndex === 7 && (
           <>
             <Text style={styles.heading}>Choose a Parking Space type</Text>
 
@@ -304,7 +311,7 @@ function AddListingSpaceDetails({
             />
           </>
         )}
-        {activeIndex == 2 && (
+        {activeIndex === 8 && (
           <>
             <Text style={styles.heading}>Are all parking spaces of same size?</Text>
             <RadioListItem
@@ -398,7 +405,7 @@ function AddListingSpaceDetails({
           </>
         )}
 
-        {activeIndex == 3 && (
+        {activeIndex === 9 && (
           <>
             <Text style={styles.heading}>Vehicle Sizes</Text>
             <Text style={styles.description}>
@@ -621,7 +628,7 @@ function AddListingSpaceDetails({
             </Modal>
           </>
         )}
-        {activeIndex == 4 && (
+        {activeIndex === 10 && (
           <>
             <Text style={styles.heading}>Are the spaces numbered or labelled ?</Text>
             <RadioListItem
@@ -707,7 +714,7 @@ function AddListingSpaceDetails({
           </>
         )}
 
-        {activeIndex == 5 && (
+        {activeIndex === 11 && (
           <>
             <Text style={styles.heading}>Tell Guests about your space</Text>
             <Input
@@ -729,7 +736,7 @@ function AddListingSpaceDetails({
               }></Input>
           </>
         )}
-        {activeIndex == 6 && (
+        {activeIndex === 12 && (
           <>
             <Text style={styles.heading}>Tell Guests what to do when they arrive?</Text>
             <Input
@@ -762,8 +769,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%'
-    // borderBottomColor: '#d6d6d6',
-    // borderBottomWidth: 1,
   },
   container: {
     // flex: 1,
