@@ -1,14 +1,14 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import MaterialButtonPrimary from './MaterialButtonPrimary';
+import moment from 'moment';
 import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
-import moment from 'moment';
 
-export default function BookingItem({item, navigation}) {
-  const {location, card, startDate, endDate, listingId, price} = item;
+export default function BookingItem({ item, navigation }) {
+  const { location, card, startDate, endDate, listingId, price } = item;
   return (
     <View style={styles.bookingItem}>
       <View style={styles.rect3}>
@@ -27,8 +27,7 @@ export default function BookingItem({item, navigation}) {
               </View>
             </View>
             <Text style={styles.loremIpsum2}>
-              {moment(startDate).format('lll')} to{' '}
-              {moment(endDate).format('lll')}
+              {moment(startDate).format('lll')} to {moment(endDate).format('lll')}
             </Text>
           </View>
         </View>
@@ -37,22 +36,16 @@ export default function BookingItem({item, navigation}) {
         <View style={styles.buttonRow}>
           <View style={styles.button}>
             <View style={styles.iconRow}>
-              <FontAwesomeIcon
-                name="cc-visa"
-                style={styles.icon}></FontAwesomeIcon>
+              <FontAwesomeIcon name="cc-visa" style={styles.icon}></FontAwesomeIcon>
               <Text style={styles.visa6094320}>
-                VISA *
-                {card.cardNumber.subString(
-                  cardNumber.length - 4,
-                  cardNumber.length,
-                )}{' '}
-                | {price}
+                VISA *{card.cardNumber.subString(cardNumber.length - 4, cardNumber.length)} |{' '}
+                {price}
               </Text>
             </View>
           </View>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('MoreDetails', {id: listingId});
+              navigation.navigate('MoreDetails', { id: listingId });
             }}>
             <Text style={styles.moreDetails}>More Details</Text>
           </TouchableOpacity>
@@ -97,7 +90,7 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0,0,0,1)',
     shadowOffset: {
       height: 10,
-      width: 10,
+      width: 10
     },
     elevation: 20,
     shadowOpacity: 0.17,
@@ -106,28 +99,28 @@ const styles = StyleSheet.create({
     width: '100%',
     marginVertical: 10,
     // padding: 10,
-    overflow: 'hidden',
+    overflow: 'hidden'
   },
   rect3: {
     width: '100%',
-    height: 85,
+    height: 85
   },
   rect4: {
     width: 82,
-    height: 85,
+    height: 85
   },
   image: {
     width: 49,
     height: 49,
     borderRadius: 100,
     marginTop: 12,
-    marginLeft: 12,
+    marginLeft: 12
   },
   loremIpsum: {
     // fontFamily: 'roboto-700',
     color: '#121212',
     fontSize: 15,
-    marginTop: 1,
+    marginTop: 1
   },
   rect5: {
     width: 50,
@@ -135,41 +128,41 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(39,170,225,0.2)',
     marginLeft: -12,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   rebook: {
     // fontFamily: 'roboto-500',
     color: 'rgba(39,170,225,1)',
-    fontSize: 10,
+    fontSize: 10
     // marginTop: 5,
     // marginLeft: 10,
   },
   loremIpsumRow: {
     height: 37,
     flexDirection: 'row',
-    marginLeft: 1,
+    marginLeft: 1
   },
   loremIpsum2: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(39,170,225,1)',
     fontSize: 12,
-    marginTop: 8,
+    marginTop: 8
   },
   loremIpsumRowColumn: {
     width: 242,
     marginTop: 14,
-    marginBottom: 11,
+    marginBottom: 11
   },
   rect4Row: {
     height: 85,
     flexDirection: 'row',
-    marginRight: 6,
+    marginRight: 6
   },
   materialButtonPrimary2: {
     height: 36,
     width: 140,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   rect9: {
     width: 140,
@@ -178,12 +171,12 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(39,170,225,1)',
     marginLeft: 13,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   cancelBooking: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(39,170,225,1)',
-    fontSize: 12,
+    fontSize: 12
     // marginTop: 11,
     // marginLeft: 7,
   },
@@ -193,7 +186,7 @@ const styles = StyleSheet.create({
     width: 38,
     height: 36,
     position: 'absolute',
-    backgroundColor: 'rgba(39,170,225,0.2)',
+    backgroundColor: 'rgba(39,170,225,0.2)'
   },
   icon6: {
     top: 0,
@@ -202,12 +195,12 @@ const styles = StyleSheet.create({
     color: 'rgba(39,170,225,1)',
     fontSize: 34,
     height: 37,
-    width: 34,
+    width: 34
   },
   rect10Stack: {
     width: 38,
     height: 37,
-    marginLeft: 11,
+    marginLeft: 11
   },
   materialButtonPrimary2Row: {
     width: '100%',
@@ -215,7 +208,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 92,
     marginLeft: 13,
-    marginRight: 13,
+    marginRight: 13
   },
   rect6: {
     top: 97,
@@ -227,7 +220,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(223,220,220,1)',
     borderBottomWidth: 1,
     borderTopWidth: 1,
-    flexDirection: 'row',
+    flexDirection: 'row'
     // justifyContent: 'space-between',
   },
   button: {
@@ -235,20 +228,20 @@ const styles = StyleSheet.create({
     height: 32,
     borderWidth: 1,
     borderColor: 'rgba(187,186,186,1)',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   icon: {
     color: 'rgba(11,64,148,1)',
     fontSize: 20,
     height: 20,
-    width: 26,
+    width: 26
   },
   visa6094320: {
     // fontFamily: 'roboto-500',
     color: '#121212',
     fontSize: 10,
     marginLeft: 10,
-    marginTop: 3,
+    marginTop: 3
   },
   iconRow: {
     height: 20,
@@ -256,27 +249,27 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 9,
     marginLeft: 8,
-    marginTop: 5,
+    marginTop: 5
   },
   moreDetails: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(11,64,148,1)',
     fontSize: 10,
-    textDecorationLine: 'underline',
+    textDecorationLine: 'underline'
     // marginHorizontal: 10,
     // marginTop: 10,
   },
   rect8: {
     width: 120,
     height: 30,
-    flexDirection: 'row',
+    flexDirection: 'row'
     // marginLeft: 9,
   },
   icon2: {
     color: 'rgba(248,201,28,1)',
     fontSize: 15,
     height: 17,
-    width: 13,
+    width: 13
   },
   icon3: {
     color: 'rgba(248,201,28,1)',
@@ -284,7 +277,7 @@ const styles = StyleSheet.create({
     height: 17,
     width: 13,
     marginLeft: 5,
-    marginTop: 1,
+    marginTop: 1
   },
   icon4: {
     color: 'rgba(248,201,28,1)',
@@ -292,7 +285,7 @@ const styles = StyleSheet.create({
     height: 17,
     width: 13,
     marginLeft: 6,
-    marginTop: 1,
+    marginTop: 1
   },
   icon5: {
     color: 'rgba(248,201,28,1)',
@@ -300,7 +293,7 @@ const styles = StyleSheet.create({
     height: 17,
     width: 13,
     marginLeft: 5,
-    marginTop: 1,
+    marginTop: 1
   },
   loremIpsum3: {
     // fontFamily: 'roboto-regular',
@@ -308,7 +301,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     marginLeft: 9,
     // marginTop: 4,
-    marginRight: 7,
+    marginRight: 7
   },
   icon2Row: {
     height: 18,
@@ -316,7 +309,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // marginRight: 6,
     marginTop: 7,
-    alignItems: 'center',
+    alignItems: 'center'
   },
   buttonRow: {
     height: 32,
@@ -326,6 +319,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 6,
     marginLeft: 13,
-    marginTop: 19,
-  },
+    marginTop: 19
+  }
 });

@@ -168,8 +168,8 @@ const styles = StyleSheet.create({
     // flex: 1,
     backgroundColor: '#fff',
     padding: 20,
-    zIndex: 1,
-    paddingTop: 50
+    zIndex: 1
+    // paddingTop: 50
   },
   setPricing1: {
     // fontFamily: 'roboto-500',
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     color: 'rgba(11,64,148,1)',
     fontSize: 30,
     fontWeight: '700',
-    marginTop: 30,
+    // marginTop: 30,
     marginVertical: 20
   },
   subHeading: {

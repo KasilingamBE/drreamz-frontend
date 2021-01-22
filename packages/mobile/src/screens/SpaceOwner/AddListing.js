@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, StatusBar, Text, TouchableOpacity, View } from 'react-native';
+import { Modal, StatusBar, Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import { deleteTempListing } from '@parkyourself-frontend/shared/redux/actions/tempListing';
 import AddListingLocation from './AddListingLocation';
@@ -7,7 +7,7 @@ import AddListingSpaceDetails from './AddListingSpaceDetails';
 import SpaceAvailable from './SpaceAvailable';
 import SetPricingType from './SetPricingType';
 import FlatBillingType from './FlatBillingType';
-import SaveSpaceDetails from './SaveSpaceDetails';
+// import SaveSpaceDetails from './SaveSpaceDetails';
 import AddListingMenu from './AddListingMenu';
 
 const AddListing = ({ navigation, tempListing, deleteTempListing }) => {
@@ -23,9 +23,9 @@ const AddListing = ({ navigation, tempListing, deleteTempListing }) => {
       setVisible(false);
       if (tempListing.edit) {
         deleteTempListing();
-        navigation.navigate('MyListingsScreen');
+        navigation.navigate('My Listings');
       } else {
-        navigation.navigate('SpaceOwnerDashboard');
+        navigation.navigate('Dashboard');
       }
     }
   };
@@ -37,9 +37,10 @@ const AddListing = ({ navigation, tempListing, deleteTempListing }) => {
   };
 
   return (
-    <Modal visible={visible} animationType="slide">
+    <SafeAreaView>
+      {/* <Modal visible={visible} animationType="slide"> */}
       {/* <SafeAreaView style={{ flex: 1,  }}> */}
-      <StatusBar hidden showHideTransition="slide" />
+      {/* <StatusBar hidden showHideTransition="slide" /> */}
       {activeIndex === 0 && (
         <AddListingMenu
           navigation={navigation}
@@ -47,14 +48,9 @@ const AddListing = ({ navigation, tempListing, deleteTempListing }) => {
           onNextButtonPress={onNextButtonPress}
           activeIndex={activeIndex}
           setActiveIndex={setActiveIndex}
+          edit={tempListing.edit}
         />
       )}
-      {/* <TouchableOpacity onPress={() => setActiveIndex(0)}>
-        <Text style={{ marginTop: 50 }}>
-          {activeIndex > 0 && activeIndex < 6 ? 'AddListingLocation' : 'some other'}Hello
-          {activeIndex} {typeof activeIndex}
-        </Text>
-      </TouchableOpacity> */}
       {activeIndex >= 1 && activeIndex < 7 && (
         <AddListingLocation
           navigation={navigation}
@@ -104,7 +100,8 @@ const AddListing = ({ navigation, tempListing, deleteTempListing }) => {
         />
       )} */}
       {/* </SafeAreaView> */}
-    </Modal>
+      {/* </Modal> */}
+    </SafeAreaView>
   );
 };
 

@@ -786,7 +786,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 20,
     minHeight: Dimensions.get('window').height,
-    paddingTop: 50,
+    // paddingTop: 50,
     paddingBottom: 80
   },
   spaceAvailable: {
@@ -798,14 +798,14 @@ const styles = StyleSheet.create({
     color: 'rgba(11,64,148,1)',
     fontSize: 30,
     fontWeight: '700',
-    marginTop: 30,
+    // marginTop: 30,
     marginVertical: 20
   },
   subHeading: {
     color: 'rgba(11,64,148,1)',
     fontSize: 20,
-    fontWeight: '700',
-    marginTop: 40
+    fontWeight: '700'
+    // marginTop: 40
   },
   loremIpsum: {
     // fontFamily: 'roboto-300',

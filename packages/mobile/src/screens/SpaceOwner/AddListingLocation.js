@@ -909,7 +909,6 @@ function AddListingLocation({
 const styles = StyleSheet.create({
   deleteIcon: {
     fontSize: 40,
-    // color: '#fff',
     color: 'red'
   },
   iconContainer: {
@@ -919,12 +918,11 @@ const styles = StyleSheet.create({
     left: 5
   },
   container: {
-    // flex: 1,
     backgroundColor: '#fff',
     padding: 20,
     minHeight: Dimensions.get('window').height,
     zIndex: 0,
-    paddingVertical: 80
+    paddingBottom: 50
   },
   heading: {
     // fontFamily: 'roboto-500',

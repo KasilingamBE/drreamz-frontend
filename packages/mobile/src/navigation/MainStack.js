@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { createStackNavigator } from '@react-navigation/stack';
 import SignInStack from './SignInStack';
 import SignUpStack from './SignUpStack';
-import Tabs from './Tabs';
 import InitialLoadingScreen from '../screens/InitialLoadingScreen';
 import AdminStack from './AdminStack';
+import UserStack from './UserStack';
 
 const Stack = createStackNavigator();
 
@@ -14,18 +14,12 @@ function MainStack(props) {
     return <InitialLoadingScreen />;
   }
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: {
-          elevation: 0,
-          shadowOpacity: 0
-        }
-      }}>
+    <Stack.Navigator>
       {props.authenticated ? (
         props.admin && props.adminMode ? (
           <Stack.Screen name="AdminStack" component={AdminStack} options={{ headerShown: false }} />
         ) : (
-          <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
+          <Stack.Screen name="UserStack" component={UserStack} options={{ headerShown: false }} />
         )
       ) : (
         <>

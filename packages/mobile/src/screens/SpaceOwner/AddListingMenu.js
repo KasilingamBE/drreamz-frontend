@@ -16,48 +16,17 @@ import AddListingHeader from '../../components/SpaceOwner/AddListingHeader';
 import NextButton from '../../components/SpaceOwner/NextButton';
 import ScreenTittle from '../../components/common/ScreenTittle';
 
-function SetPricingType({
-  onBackButtonPress,
-  onNextButtonPress,
-  pricingDetails,
-  tempListingPricingD,
-  setActiveIndex,
-  navigation
-}) {
-  const [billingType, setBillingType] = useState(
-    pricingDetails && pricingDetails.pricingType
-      ? pricingDetails.pricingType == 'Flat'
-        ? 1
-        : 0
-      : 1
-  );
-
-  //   const [width, setWidth] = useState(pricingDetails && pricingDetails.pricingType ? 100 : 0);
-
-  const backButtonHandler = () => {
-    onBackButtonPress();
-  };
-
-  const onSubmitHandler = () => {
-    try {
-      onNextButtonPress();
-    } catch (error) {
-      Alert.alert('Something Went wrong!', 'Unable to set pricing type');
-    }
-  };
-
+function SetPricingType({ onBackButtonPress, setActiveIndex, navigation, edit }) {
   return (
     <>
       <AddListingHeader
-        onPress={backButtonHandler}
+        onPress={onBackButtonPress}
         width={`${0}%`}
         navigation={navigation}
         icon="close"
       />
       <ScrollView contentContainerStyle={styles.container}>
-        <View style={{ marginTop: 30 }}>
-          <ScreenTittle title="Add Listing" />
-        </View>
+        <ScreenTittle title={`${edit ? 'Update' : 'Add'} Listing`} />
         {addListingMenu.map((item) => (
           <TouchableOpacity
             key={item.index}
@@ -80,8 +49,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.white,
     padding: 20,
-    minHeight: Dimensions.get('window').height,
-    paddingTop: 50
+    paddingBottom: 50
   },
   item: { marginTop: 20 },
   label: { color: colors.black, fontSize: 20, fontWeight: 'bold' }

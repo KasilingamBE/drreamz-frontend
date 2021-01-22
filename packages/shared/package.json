@@ -6,6 +6,7 @@
     "@apollo/client": "*",
     "aws-amplify": "*",
     "aws-appsync": "*",
+    "react": "*",
     "redux": "*",
     "react-redux": "*",
     "redux-thunk": "*",

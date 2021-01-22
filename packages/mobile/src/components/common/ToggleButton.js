@@ -1,12 +1,12 @@
 import React from 'react';
-import {Text, View, StyleSheet, Switch} from 'react-native';
+import { Text, View, StyleSheet, Switch } from 'react-native';
 
-export default function ToggleButton({value, onChange, label}) {
+export default function ToggleButton({ value, onChange, label }) {
   return (
     <View style={styles.rect12}>
       <Switch
         value={value}
-        trackColor={{true: 'rgba(74,144,226,1)', false: 'rgba(0,0,0,1)'}}
+        trackColor={{ true: 'rgba(74,144,226,1)', false: 'rgba(0,0,0,1)' }}
         onValueChange={onChange}
       />
       <Text style={styles.switchToDriver}>{label}</Text>
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(180,177,177,1)',
     shadowOffset: {
       width: 3,
-      height: 3,
+      height: 3
     },
     elevation: 20,
     shadowOpacity: 1,
@@ -32,11 +32,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 10,
-    borderRadius: 5,
+    borderRadius: 5
   },
   switchToDriver: {
     color: 'rgba(255,255,255,1)',
     fontSize: 15,
-    marginLeft: 10,
-  },
+    marginLeft: 10
+  }
 });

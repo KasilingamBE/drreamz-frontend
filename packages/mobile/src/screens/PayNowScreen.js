@@ -1,23 +1,15 @@
-import React, {useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
-import Svg, {Ellipse} from 'react-native-svg';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import Svg, { Ellipse } from 'react-native-svg';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialButtonPrimary from '../components/MaterialButtonPrimary';
 import LocationHeader from '../components/LocationHeader';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {addBooking} from '../actions/user';
-import {v4 as uuidv4} from 'uuid';
+import { addBooking } from '../actions/user';
+import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment';
 
-function PayNowScreen({navigation, route, listings}) {
+function PayNowScreen({ navigation, route, listings }) {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [mode, setMode] = useState('date');
@@ -28,11 +20,9 @@ function PayNowScreen({navigation, route, listings}) {
   const [listingId, setListingId] = useState(route.params.lId);
   const [price, setPrice] = useState(route.params.price);
 
-  const [listingData] = useState(
-    listings.filter((item) => item.id === listingId)[0],
-  )[0];
+  const [listingData] = useState(listings.filter((item) => item.id === listingId)[0])[0];
 
-  const {address, city, state, postalCode} = listingData.locationDetails;
+  const { address, city, state, postalCode } = listingData.locationDetails;
 
   if (route.params.vehicle) {
     console.log('Vehicle data ', vehicle);
@@ -56,11 +46,11 @@ function PayNowScreen({navigation, route, listings}) {
           duration: moment.duration(endDate.diff(startDate)).asHours(),
           vehicle,
           price,
-          card,
+          card
         };
         addBooking(bookingData);
         navigation.navigate('SuccessfullyBooked', {
-          bookingData: bookingData,
+          bookingData: bookingData
         });
       } else {
         Alert.alert('Missing Inputs', 'Please fill all the inputs');
@@ -101,9 +91,7 @@ function PayNowScreen({navigation, route, listings}) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <LocationHeader
-        location={`${address}, ${city}, ${state}, ${postalCode}`}
-      />
+      <LocationHeader location={`${address}, ${city}, ${state}, ${postalCode}`} />
       <View style={styles.rect2Stack}>
         <View style={styles.listItem}>
           <Text style={styles.arriving}>Arriving</Text>
@@ -146,9 +134,7 @@ function PayNowScreen({navigation, route, listings}) {
         <View style={styles.listItem}>
           <Text style={styles.duration}>Duration</Text>
           <Text style={styles.loremIpsum5}>
-            {startDate &&
-              endDate &&
-              moment.duration(endDate.diff(startDate)).asHours()}
+            {startDate && endDate && moment.duration(endDate.diff(startDate)).asHours()}
           </Text>
         </View>
         <View style={styles.listItem}>
@@ -187,9 +173,7 @@ function PayNowScreen({navigation, route, listings}) {
         </View>
         <View style={styles.listItem}>
           <Text style={styles.cardNumber}>Card Number</Text>
-          <FontAwesomeIcon
-            name="cc-visa"
-            style={styles.icon5}></FontAwesomeIcon>
+          <FontAwesomeIcon name="cc-visa" style={styles.icon5}></FontAwesomeIcon>
           <Text style={styles.xxxXxxxXxxx0147}>{card.cardNumber}</Text>
           <TouchableOpacity
             style={styles.ellipse1Stack}
@@ -212,8 +196,8 @@ function PayNowScreen({navigation, route, listings}) {
           style={styles.materialButtonPrimary3}
           onPress={onSubmitHandler}></MaterialButtonPrimary>
         <Text style={styles.loremIpsum10}>
-          By Making payment you indicate your acceptance of our Terms &amp;
-          Conditions and Privacy Policy.
+          By Making payment you indicate your acceptance of our Terms &amp; Conditions and Privacy
+          Policy.
         </Text>
       </View>
     </ScrollView>
@@ -225,7 +209,7 @@ const styles = StyleSheet.create({
     // flex: 1,
     width: '100%',
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#fff'
   },
   listItem: {
     width: '100%',
@@ -236,17 +220,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     // marginVertical: 10,
     borderBottomColor: '#ddd',
-    borderBottomWidth: 1,
+    borderBottomWidth: 1
   },
   rect3: {
     width: '100%',
     height: 60,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   arriving: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(179,177,177,1)',
-    fontSize: 16,
+    fontSize: 16
   },
   loremIpsum3: {
     // fontFamily: 'roboto-700',
@@ -254,45 +238,45 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginLeft: 80,
     marginTop: 3,
-    width: 170,
+    width: 170
   },
   change: {
     // fontFamily: 'roboto-500',
     color: 'rgba(39,170,225,1)',
     fontSize: 12,
     marginLeft: 5,
-    marginTop: 6,
+    marginTop: 6
   },
   duration: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(179,177,177,1)',
-    fontSize: 16,
+    fontSize: 16
   },
   loremIpsum5: {
     // fontFamily: 'roboto-700',
     color: '#121212',
     fontSize: 15,
-    marginLeft: 133,
+    marginLeft: 133
   },
   vehicle: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(179,177,177,1)',
     fontSize: 16,
-    marginTop: 4,
+    marginTop: 4
   },
   loremIpsum6: {
     // fontFamily: 'roboto-700',
     color: 'rgba(39,170,225,1)',
     fontSize: 15,
     marginLeft: 134,
-    marginTop: 5,
+    marginTop: 5
   },
   ellipse: {
     top: 3,
     left: 0,
     width: 22,
     height: 22,
-    position: 'absolute',
+    position: 'absolute'
   },
   loremIpsum7: {
     top: 0,
@@ -300,29 +284,29 @@ const styles = StyleSheet.create({
     // position: 'absolute',
     // fontFamily: 'roboto-regular',
     color: 'rgba(255,255,255,1)',
-    fontSize: 20,
+    fontSize: 20
   },
   ellipseStack: {
     width: 22,
-    height: 24,
+    height: 24
     // marginLeft: 13,
   },
   payment: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(179,177,177,1)',
-    fontSize: 16,
+    fontSize: 16
   },
   loremIpsum8: {
     // fontFamily: 'roboto-700',
     color: '#121212',
     fontSize: 16,
-    marginLeft: 210,
+    marginLeft: 210
   },
   cardNumber: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(179,177,177,1)',
     fontSize: 16,
-    marginTop: 5,
+    marginTop: 5
   },
   icon5: {
     color: 'rgba(11,64,148,1)',
@@ -330,20 +314,20 @@ const styles = StyleSheet.create({
     height: 25,
     width: 32,
     marginLeft: 19,
-    marginTop: 2,
+    marginTop: 2
   },
   xxxXxxxXxxx0147: {
     // fontFamily: 'roboto-700',
     color: '#121212',
     fontSize: 15,
     marginLeft: 6,
-    marginTop: 6,
+    marginTop: 6
   },
   ellipse1: {
     top: 1,
     left: 0,
     width: 22,
-    height: 22,
+    height: 22
     // position: 'absolute',
   },
   loremIpsum9: {
@@ -352,25 +336,25 @@ const styles = StyleSheet.create({
     position: 'absolute',
     // fontFamily: 'roboto-regular',
     color: 'rgba(255,255,255,1)',
-    fontSize: 20,
+    fontSize: 20
   },
   ellipse1Stack: {
     width: 22,
     height: 26,
     // marginLeft: 8,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   materialButtonPrimary3: {
     height: 36,
     width: 100,
     marginTop: 34,
-    alignSelf: 'center',
+    alignSelf: 'center'
   },
   leaving: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(179,177,177,1)',
-    fontSize: 16,
+    fontSize: 16
   },
   loremIpsum4: {
     // fontFamily: 'roboto-700',
@@ -378,20 +362,20 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginLeft: 80,
     marginTop: 1,
-    width: 170,
+    width: 170
   },
   change2: {
     // fontFamily: 'roboto-500',
     color: 'rgba(39,170,225,1)',
     fontSize: 12,
     marginLeft: 5,
-    marginTop: 4,
+    marginTop: 4
   },
   profileCategory: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(179,177,177,1)',
     fontSize: 16,
-    marginTop: 8,
+    marginTop: 8
   },
   rect9: {
     width: 108,
@@ -399,27 +383,27 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(216,212,212,1)',
     borderRadius: 38,
     flexDirection: 'row',
-    marginLeft: 92,
+    marginLeft: 92
   },
   rect10: {
     width: 55,
     height: 25,
     backgroundColor: 'rgba(39,170,225,1)',
-    borderRadius: 57,
+    borderRadius: 57
   },
   business: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(255,255,255,1)',
     fontSize: 9,
     marginTop: 6,
-    marginLeft: 9,
+    marginLeft: 9
   },
   personal: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(39,170,225,1)',
     fontSize: 9,
     marginLeft: 7,
-    marginTop: 8,
+    marginTop: 8
   },
   rect10Row: {
     height: 25,
@@ -427,7 +411,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 8,
     marginLeft: 3,
-    marginTop: 3,
+    marginTop: 3
   },
   loremIpsum10: {
     // top: 412,
@@ -436,14 +420,14 @@ const styles = StyleSheet.create({
     // fontFamily: 'roboto-regular',
     color: '#121212',
     textAlign: 'center',
-    marginVertical: 30,
+    marginVertical: 30
   },
   rect2Stack: {
     height: 580,
-    marginTop: 20,
+    marginTop: 20
     // marginLeft: 16,
     // marginRight: -31,
-  },
+  }
 });
 
 export default PayNowScreen;

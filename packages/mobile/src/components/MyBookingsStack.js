@@ -14,21 +14,17 @@ export default function MyBookingsStack() {
         headerTitle: () => <HeaderLogo />,
         headerStyle: {
           elevation: 0,
-          shadowOpacity: 0,
-        },
-      }}
-    >
+          shadowOpacity: 0
+        }
+      }}>
       <Stack.Screen
-        name='MyBookingsScreen'
+        name="MyBookingsScreen"
         component={MyBookings}
         options={({ navigation }) => ({
-          //   headerStyle: {
-          //     // paddingHorizontal: 10,
-          //   },
           headerLeft: () => <MenuButton navigation={navigation} />,
           headerTitle: () => <HeaderLogo />,
           headerRight: () => <Filter />,
-          headerTitleAlign: 'center',
+          headerTitleAlign: 'center'
         })}
       />
     </Stack.Navigator>

@@ -8,6 +8,7 @@ import HeaderLogo from '../HeaderLogo';
 import MenuButton from '../MenuButton';
 import AddListing from '../../screens/SpaceOwner/AddListing';
 import WithdrawalSettings from '../../screens/SpaceOwner/WithdrawalSettings';
+import SaveAndExit from '../listing/addListing/SaveAndExit';
 
 const Stack = createStackNavigator();
 
@@ -32,46 +33,17 @@ const SpaceOwnerDashboardStack = () => {
           headerTitleAlign: 'center'
         })}
       />
-      <Stack.Screen
-        name="CreateSpaceOwnerProfile"
-        component={CreateSpaceOwnerProfile}
-        options={({ navigation }) => ({
-          title: '',
-          headerTitle: () => <HeaderLogo />
-        })}
-      />
-      <Stack.Screen
-        name="MyListings"
-        component={MyListings}
-        options={({ navigation }) => ({
-          title: '',
-          headerTitle: () => <HeaderLogo />
-        })}
-      />
-      <Stack.Screen
-        name="ParkingOrders"
-        component={ParkingOrders}
-        options={({ navigation }) => ({
-          title: '',
-          headerTitle: () => <HeaderLogo />
-        })}
-      />
+      <Stack.Screen name="CreateSpaceOwnerProfile" component={CreateSpaceOwnerProfile} />
+      <Stack.Screen name="MyListings" component={MyListings} />
+      <Stack.Screen name="ParkingOrders" component={ParkingOrders} />
       <Stack.Screen
         name="AddListing"
         component={AddListing}
         options={({ navigation }) => ({
-          title: ''
-          //   headerTitle: () => <HeaderLogo />,
+          headerShown: false
         })}
       />
-      <Stack.Screen
-        name="WithdrawalSettings"
-        component={WithdrawalSettings}
-        options={({ navigation }) => ({
-          title: ''
-          //   headerTitle: () => <HeaderLogo />,
-        })}
-      />
+      <Stack.Screen name="WithdrawalSettings" component={WithdrawalSettings} />
     </Stack.Navigator>
   );
 };

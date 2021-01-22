@@ -34,8 +34,6 @@ const AdminStack = () => {
         name="AdminDashboard"
         component={AdminDashboard}
         options={({ navigation }) => ({
-          title: '',
-          headerTitle: () => <HeaderLogo />,
           headerLeft: () => <MenuButton navigation={navigation} />,
           headerTitleAlign: 'center'
         })}
@@ -44,7 +42,6 @@ const AdminStack = () => {
         name="AdminBooking"
         component={AdminBooking}
         options={({ navigation }) => ({
-          headerTitle: () => <HeaderLogo />,
           headerTitleAlign: 'center'
         })}
       />

@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 20,
     zIndex: 1,
-    paddingVertical: 50,
+    // paddingVertical: 50,
     paddingBottom: 80
   },
   setPricing1: {

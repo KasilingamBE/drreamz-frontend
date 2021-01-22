@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+  SafeAreaView
+} from 'react-native';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import { connect } from 'react-redux';
 import { useAddOneListing } from '@parkyourself-frontend/shared/hooks/listings';
@@ -8,62 +16,29 @@ import {
   addListingLocal,
   updateListingLocal
 } from '@parkyourself-frontend/shared/redux/actions/user';
+import colors from '@parkyourself-frontend/shared/config/colors';
 
 const AddListingHeader = ({
   onPress,
   width = '100%',
   icon = 'arrowleft',
-  onPressSaveAndExit,
-  activeIndex = 0,
   navigation,
-  tempListing,
-  deleteTempListing,
-  userData,
-  addListingLocal,
-  updateListingLocal
+  tempListing
 }) => {
   const { handleSubmit } = useAddOneListing();
   const [disabled, setDisabled] = useState(false);
-  // const [createListing] = useMutation(ListingService.CREATE_LISTING);
-  // const [updateListing] = useMutation(ListingService.UPDATE_LISTING);
-
-  // const onSubmitHandler = async () => {
-  //   try {
-  //     setDisabled(true);
-  //     await ListingService.addListingService(
-  //       tempListing,
-  //       createListing,
-  //       updateListing,
-  //       userData,
-  //       addListingLocal,
-  //       updateListingLocal
-  //     );
-  //     deleteTempListing();
-  //     setDisabled(false);
-  //     // if (tempListing.edit) {
-  //     //   navigation.navigate('MyListingsScreen');
-  //     // } else {
-  //     //   navigation.navigate('MyListingsScreen');
-  //     // }
-  //     navigation.navigate('MyListingsScreen');
-  //   } catch (error) {
-  //     console.log(error);
-  //     setDisabled(false);
-  //     Alert.alert('Something Went wrong!', error.message);
-  //   }
-  // };
 
   const onSubmitHandler = async () => {
     try {
       setDisabled(true);
       await handleSubmit();
       setDisabled(false);
-      if (tempListing.edit) {
-        navigation.navigate('MyListingsScreen');
-      } else {
-        navigation.popToTop();
-      }
-      // navigation.navigate('SpaceOwnerDashboard');
+      // if (tempListing.edit) {
+      //   navigation.navigate('MyListingsScreen');
+      // } else {
+      //   navigation.popToTop();
+      // }
+      navigation.navigate('My Listings');
     } catch (error) {
       // console.log('error', error);
       setDisabled(false);
@@ -90,16 +65,17 @@ const AddListingHeader = ({
   };
 
   return (
+    // <SafeAreaView>
     <View style={styles.container}>
       <View style={styles.progressIndicator}>
-        <View style={{ ...styles.progress, width: width }} />
+        <View style={{ ...styles.progress, width }} />
       </View>
       <View style={styles.row}>
         <TouchableOpacity onPress={onPress} style={styles.backBtn}>
           <AntDesignIcon name={icon} size={28} color="#666" />
         </TouchableOpacity>
         {disabled ? (
-          <ActivityIndicator style={styles.loading} color="#0b4094" size="large" />
+          <ActivityIndicator style={styles.loading} color="#0b4094" size="small" />
         ) : (
           <TouchableOpacity onPress={onSaveAndExit} style={styles.saveBtn}>
             <Text style={styles.save}>Save & Exit</Text>
@@ -107,26 +83,28 @@ const AddListingHeader = ({
         )}
       </View>
     </View>
+    // </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    backgroundColor: '#fff',
-    position: 'absolute',
-    top: 0,
-    marginBottom: 20,
-    paddingBottom: 10,
-    zIndex: 1000000
+    // marginTop: 30,
+    backgroundColor: colors.white,
+    width: '100%'
+    // position: 'absolute',
+    // top: 0,
+    // marginBottom: 20,
+    // paddingBottom: 10,
+    // zIndex: 1000000
   },
   progressIndicator: {
     width: '100%',
-    height: 10
+    height: 5
   },
   progress: {
     height: 10,
-    backgroundColor: '#27aae1'
+    backgroundColor: colors.primary
   },
   row: {
     flexDirection: 'row',
@@ -142,9 +120,9 @@ const styles = StyleSheet.create({
   },
   saveBtn: {},
   save: {
-    fontWeight: '700',
+    fontWeight: 'bold',
     fontSize: 16,
-    color: '#666'
+    color: colors.grey
   }
 });
 
