@@ -9,7 +9,7 @@ import ScreenTittle from '../common/ScreenTittle';
 import LoadingSpinner from '../common/LoadingSpinner';
 import MaterialButtonPrimary from '../MaterialButtonPrimary';
 
-export default function FormOptionCRUD({ id, userId }) {
+export default function FormOptionCRUD({ id }) {
   const {
     setForm,
     payload,
@@ -23,7 +23,7 @@ export default function FormOptionCRUD({ id, userId }) {
     form,
     disabled,
     handlePublish
-  } = useCRUDPropertyType(id, userId);
+  } = useCRUDPropertyType(id);
 
   return (
     <View style={styles.outerView}>
@@ -83,8 +83,7 @@ export default function FormOptionCRUD({ id, userId }) {
 }
 
 FormOptionCRUD.propTypes = {
-  id: PropTypes.any.isRequired,
-  userId: PropTypes.string.isRequired
+  id: PropTypes.any.isRequired
 };
 
 const ListItem = ({ label, published, index, handleDelete, handleEdit, handlePublish }) => {

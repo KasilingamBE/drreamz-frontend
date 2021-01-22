@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useQuery, gql, useMutation } from '@apollo/client';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { showLoading, hideLoading } from 'react-redux-loading';
 
 const GET_ONE = gql`
@@ -48,7 +48,7 @@ export function useAppFee() {
   return data;
 }
 
-export function useCRUDPropertyType(id, userId) {
+export function useCRUDPropertyType(id) {
   const { data, loading, error } = useQuery(GET_ONE_PROPERTY, { variables: { id } });
   const [updateOneFormOption] = useMutation(UPDATE_ONE_PROPERTY);
   const [disabled, updateDisabled] = useState(false);
@@ -58,6 +58,7 @@ export function useCRUDPropertyType(id, userId) {
   });
   const [oneData, setOneData] = useState({ options: [] });
   const [form, setForm] = useState({ form: false, edit: false });
+  const userId = useSelector(({ auth }) => (auth.authenticated ? auth.data.attributes.sub : null));
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -94,9 +95,6 @@ export function useCRUDPropertyType(id, userId) {
   };
 
   const handleSubmit = async () => {
-    // if (!payload.options[payload.index] || payload.options[payload.index].value === '') {
-    //   Alert.alert('Please enter label of option');
-    // }
     updateDisabled(true);
     dispatch(showLoading());
     try {

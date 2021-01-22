@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useCRUDPropertyType } from '@parkyourself-frontend/shared/hooks/adminSettings';
 import { Modal, Button, Form, Spinner } from 'react-bootstrap';
 import { Edit, Eye } from 'react-feather';
 import Table from './OptionsTable';
 
-function FormOptionCRUD({ id, userId }) {
+export default function FormOptionCRUD({ id }) {
   const {
     payload,
     oneData,
@@ -20,7 +19,7 @@ function FormOptionCRUD({ id, userId }) {
     setForm,
     disabled,
     handlePublish
-  } = useCRUDPropertyType(id, userId);
+  } = useCRUDPropertyType(id);
   const [preview, setPreview] = useState(false);
 
   const handleSubmitWeb = (e) => {
@@ -118,15 +117,5 @@ function FormOptionCRUD({ id, userId }) {
 }
 
 FormOptionCRUD.propTypes = {
-  id: PropTypes.any.isRequired,
-  userId: PropTypes.string.isRequired
+  id: PropTypes.any.isRequired
 };
-
-const mapStateToProps = ({ auth }) => {
-  return {
-    authenticated: auth.authenticated,
-    userId: auth.authenticated ? auth.data.attributes.sub : null
-  };
-};
-
-export default connect(mapStateToProps)(FormOptionCRUD);
