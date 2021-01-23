@@ -2,12 +2,12 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import SpaceOwnerDashboard from '../../screens/SpaceOwner/SpaceOwnerDashboard';
 import CreateSpaceOwnerProfile from '../../screens/SpaceOwner/CreateSpaceOwnerProfile';
+import WithdrawalSettings from '../../screens/SpaceOwner/WithdrawalSettings';
 import MyListings from '../../screens/SpaceOwner/MyListings';
 import ParkingOrders from '../../screens/SpaceOwner/ParkingOrders';
 import HeaderLogo from '../HeaderLogo';
 import MenuButton from '../MenuButton';
 import AddListing from '../../screens/SpaceOwner/AddListing';
-import WithdrawalSettings from '../../screens/SpaceOwner/WithdrawalSettings';
 import SaveAndExit from '../listing/addListing/SaveAndExit';
 
 const Stack = createStackNavigator();
