@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
   Alert,
   Dimensions,
-  Image
+  Image,
+  Modal
 } from 'react-native';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import {
   updateTempListing,
   tempListingLocationD
@@ -17,17 +17,17 @@ import {
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 // import PropTypes from 'prop-types';
 import MapView, { Marker } from 'react-native-maps';
-// import IoniconsIcon from 'react-native-vector-icons/Ionicons';
-// import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-// import MaterialButtonPrimary from '../../components/MaterialButtonPrimary';
-// import { addListingLocation } from '../../actions/listing';
 import { connect } from 'react-redux';
 import { Picker } from '@react-native-community/picker';
-import ImagePicker from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 import NextButton from '../../components/SpaceOwner/NextButton';
 import AddListingHeader from '../../components/SpaceOwner/AddListingHeader';
 import Input from '../../components/Input';
 import RadioListItem from '../../components/RadioListItem';
+import AddressModal from '../../components/listing/addListing/AddressModal';
+import CountryModal from '../../components/listing/addListing/CountryModal';
+import OutlineButton from '../../components/common/OutlineButton';
+import InputButton from '../../components/listing/addListing/InputButton';
 
 const countryCodes = [
   { code: '+1', country: 'United States' },
@@ -154,11 +154,11 @@ function AddListingLocation({
 }) {
   const scrollRef = useRef();
 
-  // const [activeIndex, setActiveIndex] = useState(1);
-
   const [width, setWidth] = useState(0);
-
   const [validate, setValidate] = useState(false);
+
+  const [showAddressModal, setShowAddressModal] = useState(false);
+  const [showCountryModal, setShowCountryModal] = useState(false);
 
   const [visible, setVisible] = useState(false);
 
@@ -250,7 +250,7 @@ function AddListingLocation({
   };
 
   const streetViewImagePickerHandler = () => {
-    ImagePicker.showImagePicker(options, (response) => {
+    launchImageLibrary(options, (response) => {
       // console.log('Response = ', response);
       if (response.didCancel) {
         // console.log('User cancelled image picker');
@@ -259,8 +259,8 @@ function AddListingLocation({
       } else if (response.customButton) {
         // console.log('User tapped custom button: ', response.customButton);
       } else {
-        const source = { uri: response.uri };
-        setImages([...images, source]);
+        // const source = { uri: response.uri };
+        // setImages([...images, source]);
         tempListingLocationD({
           streetViewImages: [response.uri]
         });
@@ -269,7 +269,7 @@ function AddListingLocation({
     });
   };
   const parkingEntranceImagePickerHandler = () => {
-    ImagePicker.showImagePicker(options, (response) => {
+    launchImageLibrary(options, (response) => {
       // console.log('Response = ', response);
       if (response.didCancel) {
         // console.log('User cancelled image picker');
@@ -285,8 +285,9 @@ function AddListingLocation({
       }
     });
   };
+
   const parkingSpaceImagePickerHandler = () => {
-    ImagePicker.showImagePicker(options, (response) => {
+    launchImageLibrary(options, (response) => {
       // console.log('Response = ', response);
       if (response.didCancel) {
         // console.log('User cancelled image picker');
@@ -302,19 +303,6 @@ function AddListingLocation({
       }
     });
   };
-
-  // const backButtonHandler = () => {
-  //   if (activeIndex != 1) {
-  //     setActiveIndex(activeIndex - 1);
-  //     scrollRef.current.scrollTo({
-  //       y: 0,
-  //       animated: true
-  //     });
-  //     setWidth(width - 20);
-  //   } else {
-  //     onBackButtonPress();
-  //   }
-  // };
 
   const onSubmitHandler = () => {
     try {
@@ -399,145 +387,33 @@ function AddListingLocation({
         {activeIndex == 2 && (
           <>
             <Text style={styles.heading}>Listing Address</Text>
-            <GooglePlacesAutocomplete
-              placeholder="Search your location"
-              onPress={(data, details = null) => {
-                // 'details' is provided when fetchDetails = true
-                // console.log(data);
-                // console.log(details);
-                let tempLoc = {
-                  marker: {
-                    type: 'Point',
-                    coordinates: [details.geometry.location.lng, details.geometry.location.lat]
-                  }
-                };
-
-                let add = '';
-                add += data.structured_formatting.main_text;
-
-                setMarker({
-                  latitude: details.geometry.location.lat,
-                  longitude: details.geometry.location.lng
-                });
-
-                details.address_components.forEach((item) => {
-                  if (item.types.includes('route')) {
-                    add += `, ${item.long_name}`;
-                  }
-                  if (item.types.includes('sublocality')) {
-                    add += `, ${item.long_name}`;
-                    // console.log('address :', add);
-                  }
-                  if (item.types.includes('country')) {
-                    console.log('country :', item.long_name);
-                    setCountry(item.long_name);
-                    setCode(countryCodes.filter((i) => i.country == item.long_name)[0].code);
-                    tempLoc = {
-                      ...tempLoc,
-                      country: item.long_name,
-                      code: countryCodes.filter((i) => i.country == item.long_name)[0].code
-                    };
-                  }
-                  if (item.types.includes('administrative_area_level_1')) {
-                    console.log('state :', item.long_name);
-                    setState(item.long_name);
-                    tempLoc = {
-                      ...tempLoc,
-                      state: item.long_name
-                    };
-                  }
-                  if (item.types.includes('administrative_area_level_2')) {
-                    console.log('city :', item.long_name);
-                    setCity(item.long_name);
-                    tempLoc = {
-                      ...tempLoc,
-                      city: item.long_name
-                    };
-                  }
-                  if (item.types.includes('postal_code')) {
-                    console.log('postal code :', item.long_name);
-                    setPostalCode(item.long_name);
-                    tempLoc = {
-                      ...tempLoc,
-                      postalCode: item.long_name
-                    };
-                  }
-                });
-                tempListingLocationD({ ...tempLoc, address: add });
-                // setAddress(add);
-              }}
-              poweredContainer={false}
-              listViewDisplayed={false}
-              fetchDetails={true}
-              // currentLocation={true}
-              // currentLocationLabel="Current Location"
-              nearbyPlacesAPI="GooglePlacesSearch"
-              GooglePlacesSearchQuery={{
-                rankby: 'distance',
-                type: ['cities']
-              }}
-              GooglePlacesDetailsQuery={{
-                fields: ['formatted_address', 'geometry']
-              }}
-              debounce={200}
-              filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}
-              enablePoweredByContainer={false}
-              query={{
-                key: 'AIzaSyDF0pzALjYYanPshuclFzq_2F24xZWZjOg',
-                language: 'en',
-                location: '30.36214,78.26541',
-                radius: 100
-              }}
-              styles={{
-                textInputContainer: {
-                  width: '100%',
-                  padding: 0,
-                  backgroundColor: '#fff',
-                  borderWidth: 2,
-                  borderRadius: 5,
-                  borderColor: '#d6d6d6',
-                  marginTop: 20,
-                  marginBottom: 30,
-                  elevation: 10
-                },
-                listView: {
-                  position: 'absolute',
-                  backgroundColor: 'rgb(255,255,255)',
-                  top: 70,
-                  zIndex: 99999
-                },
-                row: {
-                  backgroundColor: 'rgb(255,255,255)'
-                },
-                textInput: {
-                  height: '100%',
-                  marginTop: 0,
-                  marginBottom: 0,
-                  marginLeft: 0,
-                  marginRight: 0,
-                  fontSize: 18,
-                  paddingVertical: 10
-                }
-              }}
+            <OutlineButton label="Search your address" onPress={() => setShowAddressModal(true)} />
+            <AddressModal
+              visible={showAddressModal}
+              onHide={() => setShowAddressModal(false)}
+              setMarker={setMarker}
+              tempListingLocationD={tempListingLocationD}
             />
-
-            <View style={styles.pickerContainer}>
-              <Picker
-                selectedValue={country}
-                style={styles.picker}
-                onValueChange={(itemValue, itemIndex) => setCountry(itemValue)}>
-                {countryCodes.map((item) => (
-                  <Picker.Item key={item} label={item.country} value={item.country} />
-                ))}
-              </Picker>
-            </View>
+            <View style={{ marginBottom: 10 }} />
+            <CountryModal
+              visible={showCountryModal}
+              onHide={() => setShowCountryModal(false)}
+              selectedCountry={locationDetails.country}
+              tempListingLocationD={tempListingLocationD}
+              // onSelect={(tempCountry) => tempListingLocationD({ country: tempCountry })}
+            />
+            <InputButton
+              label="Country"
+              onPress={() => setShowCountryModal(true)}
+              value={locationDetails.country}
+            />
             <Input
               placeholder="Address"
               placeholderTextColor="rgba(182,182,182,1)"
               style={styles.placeholder}
               value={locationDetails.address}
               validate={validate}
-              onChangeText={(input) => tempListingLocationD({ locationDetails: input })}
+              onChangeText={(input) => tempListingLocationD({ address: input })}
             />
             <Input
               placeholder="Unit #"
@@ -571,22 +447,8 @@ function AddListingLocation({
               validate={validate}
               onChangeText={(input) => tempListingLocationD({ postalCode: input })}
             />
-            <View style={styles.phone}>
-              {/* <View style={styles.pickerContainer}> */}
-              <Picker
-                selectedValue={locationDetails.code}
-                style={{ width: 120, marginTop: 10 }}
-                onValueChange={(itemValue, itemIndex) => setCode(itemValue)}>
-                {countryCodes.map((item) => (
-                  <Picker.Item
-                    key={item}
-                    label={`${item.code}  ${item.country}`}
-                    value={item.code}
-                  />
-                ))}
-              </Picker>
-              {/* </View> */}
-
+            <View style={{ flexDirection: 'row' }}>
+              <InputButton label=" " value={locationDetails.code} style={{ marginRight: 10 }} />
               <Input
                 placeholder="Phone Number"
                 placeholderTextColor="rgba(182,182,182,1)"

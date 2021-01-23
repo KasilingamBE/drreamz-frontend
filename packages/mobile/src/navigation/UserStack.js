@@ -42,7 +42,7 @@ const UserStack = () => {
           headerShown: false
         }}
       />
-      <Stack.Screen name="AddListing" component={AddListing} />
+      <Stack.Screen name="AddListing" component={AddListing} options={{ headerShown: false }} />
       <Stack.Screen
         name="MyBookings"
         component={MyBookings}

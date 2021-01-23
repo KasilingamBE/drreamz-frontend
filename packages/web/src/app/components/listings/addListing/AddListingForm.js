@@ -19,7 +19,8 @@ import {
 } from '@parkyourself-frontend/shared/redux/actions/tempListing';
 import API from '@parkyourself-frontend/shared/config/apiKeys';
 import AddListingHeader from './AddListingHeader';
-import MapContainer from '../../MapContainer';
+import MapContainer from '../MapContainer';
+// import MapContainer from '../../MapContainer';
 import CheckBoxItem from '../../CheckBoxItem';
 import RadioItem from '../../RadioItem';
 import CustomScheduleModal from '../../CustomScheduleModal';
@@ -651,7 +652,11 @@ const AddListingForm = ({
               OR
             </p>
             <h1 className="heading">Mark your location on the Map</h1>
-            <MapContainer onMapClick={onMapClick} coordinates={marker.coordinates} />
+            <MapContainer
+              onMapClick={onMapClick}
+              coordinates={marker.coordinates}
+              // googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyDF0pzALjYYanPshuclFzq_2F24xZWZjOg&libraries=places"
+            />
           </div>
         </div>
       )}

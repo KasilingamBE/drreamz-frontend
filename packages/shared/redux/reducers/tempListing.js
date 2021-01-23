@@ -30,7 +30,7 @@ const initialListing = {
     state: '',
     postalCode: '',
     code: '+1',
-    phone: '12313',
+    phone: '8053007217',
     marker: {
       type: 'Point',
       coordinates: [-122.4324, 37.78825]

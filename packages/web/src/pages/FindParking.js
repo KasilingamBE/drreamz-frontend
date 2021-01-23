@@ -11,7 +11,8 @@ import { connect } from 'react-redux';
 import Geocode from 'react-geocode';
 import moment from 'moment';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
-import MapContainer from '../app/components/MapContainer';
+// import MapContainer from '../app/components/MapContainer';
+import MapContainer from '../app/components/listings/FindParkingMapContainer';
 import { client } from '../app/graphql/index';
 import DriverContainer from '../app/components/DriverContainer';
 import FindParkingList from '../app/components/FindParkingList';
@@ -662,6 +663,8 @@ const FindParking = ({ findParking, setSearchData, showLoading, hideLoading }) =
             onMapClick={onMapClick}
             onMarkerClick={onMarkerClick}
             parkings={parkings}
+            start={start}
+            end={end}
           />
 
           {visible && (

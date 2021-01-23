@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import React from 'react';
-// import scriptLoader from 'react-async-script-loader';
+import scriptLoader from 'react-async-script-loader';
 import { gql } from '@apollo/client';
 import ParkingDetails from '../../src/pages/ParkingDetails';
 import AuthRequired from '../../src/app/components/other/AuthRequired';
@@ -30,7 +30,7 @@ const GET_LISTING = gql`
   }
 `;
 
-export default function Page(props) {
+function Page(props) {
   return (
     <div>
       <Nav />
@@ -53,14 +53,11 @@ export default function Page(props) {
         )}
       </Head>
       <div className="container">
-        <AuthRequired redirectPath="/">
-          <ParkingDetails />
-        </AuthRequired>
-        {/* {props.isScriptLoaded && props.isScriptLoadSucceed ? (
+        {props.isScriptLoaded && props.isScriptLoadSucceed ? (
           <AuthRequired redirectPath="/">
             <ParkingDetails />
           </AuthRequired>
-        ) : null} */}
+        ) : null}
       </div>
     </div>
   );
@@ -86,6 +83,6 @@ export async function getServerSideProps({ query }) {
   }
 }
 
-// export default scriptLoader([
-//   "https://maps.googleapis.com/maps/api/js?key=AIzaSyDF0pzALjYYanPshuclFzq_2F24xZWZjOg&libraries=geometry,drawing,places",
-// ])(Home);
+export default scriptLoader([
+  'https://maps.googleapis.com/maps/api/js?key=AIzaSyDF0pzALjYYanPshuclFzq_2F24xZWZjOg&libraries=geometry,drawing,places'
+])(Page);

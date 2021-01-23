@@ -1,5 +1,5 @@
-import React from "react";
-import { FaMapMarker } from "react-icons/fa";
+import React from 'react';
+import { FaMapMarker } from 'react-icons/fa';
 
 const MarkerItem = () => {
   return (
