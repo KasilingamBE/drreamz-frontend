@@ -1,19 +1,19 @@
 import React from 'react';
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import ScreenTittle from '../common/ScreenTittle';
 
-function Untitled23({ navigation }) {
+export default function Inbox({ navigation }) {
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.inbox}>Inbox</Text>
+      <ScreenTittle title="Inbox" />
       <TouchableOpacity
         style={styles.rect}
         onPress={() => {
           navigation.navigate('ChatScreen');
         }}>
         <View style={styles.iconRow}>
-          <FontAwesomeIcon name="user-circle" style={styles.icon}></FontAwesomeIcon>
+          <FontAwesomeIcon name="user-circle" style={styles.icon} />
           <View style={styles.rect2}>
             <View style={styles.gabrielaPepeRow}>
               <Text style={styles.gabrielaPepe}>Gabriela &amp; Pepe</Text>
@@ -32,7 +32,7 @@ function Untitled23({ navigation }) {
           navigation.navigate('ChatScreen');
         }}>
         <View style={styles.iconRow}>
-          <FontAwesomeIcon name="user-circle" style={styles.icon}></FontAwesomeIcon>
+          <FontAwesomeIcon name="user-circle" style={styles.icon} />
           <View style={styles.rect2}>
             <View style={styles.gabrielaPepeRow}>
               <Text style={styles.gabrielaPepe}>Gabriela &amp; Pepe</Text>
@@ -51,7 +51,7 @@ function Untitled23({ navigation }) {
           navigation.navigate('ChatScreen');
         }}>
         <View style={styles.iconRow}>
-          <FontAwesomeIcon name="user-circle" style={styles.icon}></FontAwesomeIcon>
+          <FontAwesomeIcon name="user-circle" style={styles.icon} />
           <View style={styles.rect2}>
             <View style={styles.gabrielaPepeRow}>
               <Text style={styles.gabrielaPepe}>Gabriela &amp; Pepe</Text>
@@ -70,12 +70,10 @@ function Untitled23({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     backgroundColor: '#fff',
     padding: 20
   },
   inbox: {
-    // fontFamily: 'roboto-500',
     color: 'rgba(11,64,148,1)',
     fontSize: 24
   },
@@ -219,5 +217,3 @@ const styles = StyleSheet.create({
     marginLeft: 21
   }
 });
-
-export default Untitled23;

@@ -10,7 +10,7 @@ import MyBookings from '../screens/MyBookings';
 import AddVehicle from '../screens/AddVehicle';
 import Payments from '../screens/Payments';
 import AddCreditDebitCard from '../screens/AddCreditDebitCard';
-import Inbox from '../screens/Inbox';
+import InboxScreen from '../screens/InboxScreen';
 import ChatScreen from '../screens/ChatScreen';
 import MyReviews from '../screens/MyReviews';
 import ReviewDetails from '../screens/ReviewDetails';
@@ -27,7 +27,6 @@ import CodeScreen from '../screens/CodeScreen';
 import PayNowScreen from '../screens/PayNowScreen';
 import CreateSpaceOwnerProfile from '../screens/SpaceOwner/CreateSpaceOwnerProfile';
 import WithdrawalSettings from '../screens/SpaceOwner/WithdrawalSettings';
-// import Filter from './Filter';
 
 const drawer = createDrawerNavigator();
 
@@ -74,7 +73,7 @@ const UserStack = () => {
       />
       <Stack.Screen
         name="Inbox"
-        component={Inbox}
+        component={InboxScreen}
         options={({ navigation }) => ({
           title: '',
           headerTitle: () => <HeaderLogo />
@@ -84,8 +83,7 @@ const UserStack = () => {
         name="ChatScreen"
         component={ChatScreen}
         options={({ navigation }) => ({
-          // headerLeft: () => <MenuButton />
-          // headerTitle: () => <HeaderLogo />
+          headerTitle: () => <HeaderLogo />
         })}
       />
       <Stack.Screen
