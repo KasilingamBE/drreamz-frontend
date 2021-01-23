@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { IoIosStar, IoIosStarHalf } from 'react-icons/io';
 import { FaMotorcycle, FaCarSide, FaCar, FaShuttleVan } from 'react-icons/fa';
 import { AiFillCar } from 'react-icons/ai';
-import MapContainer from '../app/components/MapContainer';
+// import MapContainer from '../app/components/MapContainer';
+import MapContainer2 from '../app/components/listings/MapContainer';
 import { Button, Table } from 'react-bootstrap';
 import { gql, useQuery } from '@apollo/client';
 import { client } from '../app/graphql/index';
@@ -205,7 +206,8 @@ const MoreDetails = ({ id, listings, isSpaceOwner }) => {
       {marker && (
         <div className="detail-item">
           <h4>Location on the Map</h4>
-          <MapContainer coordinates={marker.coordinates} />
+          {/* <MapContainer coordinates={marker.coordinates} /> */}
+          <MapContainer2 coordinates={marker.coordinates} />
           <p className="lead">{address}</p>
         </div>
       )}

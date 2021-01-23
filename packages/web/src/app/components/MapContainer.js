@@ -1,14 +1,8 @@
-import React, { useEffect, useState } from "react";
-import {
-  Map,
-  InfoWindow,
-  Marker,
-  GoogleApiWrapper,
-  Polyline,
-} from "google-maps-react";
-import MarkerItem from "./MarkerItem";
-import moment from "moment";
-import { connect } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { Map, InfoWindow, Marker, GoogleApiWrapper, Polyline } from 'google-maps-react';
+import MarkerItem from './MarkerItem';
+import moment from 'moment';
+import { connect } from 'react-redux';
 // import { GoogleMap, Marker } from "react-google-maps"
 // const { MarkerWithLabel } = require("react-google-maps/lib/components/addons/MarkerWithLabel");
 
@@ -18,11 +12,11 @@ const MapContainer = ({
   coordinates,
   onMarkerClick = () => {},
   parkings = [],
-  findParking,
+  findParking
 }) => {
   const { start, end } = findParking;
-  console.log("coordinates:", coordinates);
-  console.log("parkings:", parkings);
+  console.log('coordinates:', coordinates);
+  console.log('parkings:', parkings);
   const [bounds, setBounds] = useState(new google.maps.LatLngBounds());
   // const triangleCoords = [
   //   { lat: 25.774, lng: -80.19 },
@@ -32,7 +26,7 @@ const MapContainer = ({
   // ];
 
   const adjustMap = (mapProps, map) => {
-    console.log("in adjust map");
+    console.log('in adjust map');
     const { google, markers } = mapProps;
     console.log(google, markers);
     const bounds = new google.maps.LatLngBounds();
@@ -48,13 +42,13 @@ const MapContainer = ({
   // useEffect(()=>{
   // var bounds = new google.maps.LatLngBounds();
   useEffect(() => {
-    console.log("use effect : ", bounds, parkings);
+    console.log('use effect : ', bounds, parkings);
     if (parkings) {
       for (var i = 0; i < parkings.length; i++) {
         setBounds(
           bounds.extend({
             lat: parkings[i].location.coordinates[1],
-            lng: parkings[i].location.coordinates[1],
+            lng: parkings[i].location.coordinates[1]
           })
         );
       }
@@ -80,7 +74,7 @@ const MapContainer = ({
       <Marker
         position={{ lng: coordinates[0], lat: coordinates[1] }}
         onClick={() => {}}
-        name={"Current location"}
+        name={'Current location'}
         // icon={{
         //   url:
         //     'https://www.pinclipart.com/picdir/big/2-29504_eye-clip-google-blue-marker-google-maps-png.png',
@@ -101,14 +95,14 @@ const MapContainer = ({
             <Marker
               icon={{
                 url:
-                  "https://parkyourselfbucket154227-dev.s3.amazonaws.com/public/images/marker1.png",
+                  'https://parkyourselfbucket154227-dev.s3.amazonaws.com/public/images/marker1.png',
                 // 'https://www.pinclipart.com/picdir/big/2-29504_eye-clip-google-blue-marker-google-maps-png.png',
                 anchor: new google.maps.Point(32, 32),
-                scaledSize: new google.maps.Size(64, 64),
+                scaledSize: new google.maps.Size(64, 64)
               }}
               position={{
                 lng: item.location.coordinates[0],
-                lat: item.location.coordinates[1],
+                lat: item.location.coordinates[1]
               }}
               onClick={() => {
                 onMarkerClick(item);
@@ -116,15 +110,13 @@ const MapContainer = ({
               label={{
                 text: status
                   ? `$${(
-                      moment
-                        .duration(moment(end).diff(moment(start)))
-                        .asHours() *
+                      moment.duration(moment(end).diff(moment(start))).asHours() *
                       item.pricingDetails.pricingRates.perHourRate
                     ).toFixed(1)}`
-                  : "Full",
-                fontFamily: "Arial",
-                fontSize: "13px",
-                color: "#fff",
+                  : 'Full',
+                fontFamily: 'Arial',
+                fontSize: '13px',
+                color: '#fff'
               }}
             />
           );
@@ -163,11 +155,11 @@ const MapContainer = ({
 };
 
 const mapStateToProps = ({ findParking }) => ({
-  findParking,
+  findParking
 });
 
 export default GoogleApiWrapper({
-  apiKey: "AIzaSyDF0pzALjYYanPshuclFzq_2F24xZWZjOg",
+  apiKey: 'AIzaSyDF0pzALjYYanPshuclFzq_2F24xZWZjOg'
 })(connect(mapStateToProps)(MapContainer));
 // export default connect(mapStateToProps)(MapContainer);
 
