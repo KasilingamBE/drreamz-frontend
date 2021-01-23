@@ -347,7 +347,7 @@ const GET_ONE = gql`
 `;
 
 export function useGetOneListing(id) {
-  const data = useQuery(GET_ONE, { variables: { id: id } });
+  const data = useQuery(GET_ONE, { variables: { id } });
   return data;
 }
 

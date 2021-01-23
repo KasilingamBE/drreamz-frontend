@@ -1,149 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import { IoIosStar, IoIosStarHalf } from "react-icons/io";
-import { FaMotorcycle, FaCarSide, FaCar, FaShuttleVan } from "react-icons/fa";
-import { AiFillCar } from "react-icons/ai";
-import MapContainer from "../app/components/MapContainer";
-import { Button, Table } from "react-bootstrap";
-import { gql, useQuery } from "@apollo/client";
-import { client } from "../app/graphql/index";
-import { convertTo12hrformat } from "../helpers/utilities";
-import moment from "moment";
-import Link from "next/link";
-import StarRatings from "react-star-ratings";
-
-const GET_LISTING = gql`
-  query GetListing($id: ID!) {
-    getListing(id: $id) {
-      _id
-      ownerId
-      ownerName
-      ownerEmail
-      published
-      locationDetails {
-        listingType
-        propertyType
-        propertyName
-        address
-        city
-        state
-        country
-        postalCode
-        code
-        phone
-        marker {
-          type
-          coordinates
-        }
-        streetViewImages
-        parkingEntranceImages
-        parkingSpaceImages
-        features
-      }
-      spaceDetails {
-        parkingSpaceType
-        qtyOfSpaces
-        heightRestriction
-        height1 {
-          value
-          unit
-        }
-        height2 {
-          value
-          unit
-        }
-        sameSizeSpaces
-        largestSize
-        motorcycle
-        compact
-        midsized
-        large
-        oversized
-        motorcycleSpaces
-        compactSpaces
-        midsizedSpaces
-        largeSpaces
-        oversizedSpaces
-        isLabelled
-        spaceLabels {
-          label
-          largestSize
-        }
-        aboutSpace
-        accessInstructions
-      }
-      spaceAvailable {
-        scheduleType
-        instantBooking
-        monday {
-          isActive
-          startTime
-          endTime
-        }
-        tuesday {
-          isActive
-          startTime
-          endTime
-        }
-        wednesday {
-          isActive
-          startTime
-          endTime
-        }
-        thursday {
-          isActive
-          startTime
-          endTime
-        }
-        friday {
-          isActive
-          startTime
-          endTime
-        }
-        saturday {
-          isActive
-          startTime
-          endTime
-        }
-        sunday {
-          isActive
-          startTime
-          endTime
-        }
-        customTimeRange
-        noticeTime {
-          value
-          unit
-        }
-        advanceBookingTime {
-          value
-          unit
-        }
-        minTime {
-          value
-          unit
-        }
-        maxTime {
-          value
-          unit
-        }
-        instantBooking
-      }
-      pricingDetails {
-        pricingType
-        pricingRates {
-          perHourRate
-          perDayRate
-          perWeekRate
-          perMonthRate
-        }
-      }
-      bookings
-      reviews
-      createdAt
-    }
-  }
-`;
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { IoIosStar, IoIosStarHalf } from 'react-icons/io';
+import { FaMotorcycle, FaCarSide, FaCar, FaShuttleVan } from 'react-icons/fa';
+import { AiFillCar } from 'react-icons/ai';
+import MapContainer from '../app/components/MapContainer';
+import { Button, Table } from 'react-bootstrap';
+import { gql, useQuery } from '@apollo/client';
+import { client } from '../app/graphql/index';
+import moment from 'moment';
+import Link from 'next/link';
+import StarRatings from 'react-star-ratings';
+import { useGetOneListing } from '../../../shared/hooks/listings';
 
 const GET_LISTING_REVIEWS = gql`
   query GetListingReviews($listingId: String!) {
@@ -162,44 +29,33 @@ const GET_LISTING_REVIEWS = gql`
 `;
 
 const MoreDetails = ({ id, listings, isSpaceOwner }) => {
-  const { loading, error, data } = useQuery(GET_LISTING, {
-    variables: { id: id },
-  });
+  const { loading, error, data } = useGetOneListing(id);
+
+  // const { loading, error, data } = useQuery(GET_LISTING, {
+  //   variables: { id: id }
+  // });
 
   const [rating, setRating] = useState(0);
 
-  console.log("data=======", data);
-
-  useEffect(() => {
-    client
-      .query({
-        query: GET_LISTING_REVIEWS,
-        variables: { listingId: id },
-      })
-      .then(({ data }) => {
-        if (data.getListingReviews) {
-          if (data.getListingReviews.length == 0) {
-            setRating(0);
-          } else {
-            let sum = 0;
-            data.getListingReviews.forEach((item) => {
-              sum += item.rating;
-            });
-            // console.log("rating :",sum/data.getListingReviews.length);
-            setRating(sum / data.getListingReviews.length);
-          }
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  // useEffect(() => {
+  //   if (data && data.getListingReviews) {
+  //     if (data.getListingReviews.length < 1) {
+  //       setRating(0);
+  //     } else {
+  //       let sum = 0;
+  //       data.getListingReviews.forEach((item) => {
+  //         sum += item.rating;
+  //       });
+  //       setRating(sum / data.getListingReviews.length);
+  //     }
+  //   }
+  // }, [data]);
 
   if (loading) {
     return <div className="loading">Loading...</div>;
   }
 
-  if (error || data.getListing == null) {
+  if (error || !data || data.getListing == null) {
     return <div className="loading">No Results Found!</div>;
   }
 
@@ -222,12 +78,11 @@ const MoreDetails = ({ id, listings, isSpaceOwner }) => {
 
   const {
     _id,
-    userId,
     locationDetails,
     spaceDetails,
     spaceAvailable,
     pricingDetails,
-    reviews,
+    reviews
   } = data.getListing;
   const {
     address,
@@ -241,7 +96,7 @@ const MoreDetails = ({ id, listings, isSpaceOwner }) => {
     parkingEntranceImages,
     parkingSpaceImages,
     features,
-    propertyType,
+    propertyType
   } = locationDetails;
   const {
     qtyOfSpaces,
@@ -263,7 +118,7 @@ const MoreDetails = ({ id, listings, isSpaceOwner }) => {
     height2,
     aboutSpace,
     accessInstructions,
-    spaceLabels,
+    spaceLabels
   } = spaceDetails;
   const {
     scheduleType,
@@ -279,26 +134,24 @@ const MoreDetails = ({ id, listings, isSpaceOwner }) => {
     advanceBookingTime,
     minTime,
     maxTime,
-    instantBooking,
+    instantBooking
   } = spaceAvailable;
   const { pricingRates, pricingType } = pricingDetails;
   const streetViewImageArray = streetViewImages.map((item) => ({
     original: item,
-    thumbnail: item,
+    thumbnail: item
   }));
   const parkingEntranceImageArray = parkingEntranceImages.map((item) => ({
     original: item,
-    thumbnail: item,
+    thumbnail: item
   }));
   const parkingSpaceImageArray = parkingSpaceImages.map((item) => ({
     original: item,
-    thumbnail: item,
+    thumbnail: item
   }));
   return (
     <div className="dg__account">
-      {address && city && state && postalCode && country && (
-        <h1 className="heading">{address}</h1>
-      )}
+      {address && city && state && postalCode && country && <h1 className="heading">{address}</h1>}
       {propertyName && <p className="lead">{propertyName}</p>}
       {/* <div className="stars">
         <IoIosStar className="star" />
@@ -314,9 +167,7 @@ const MoreDetails = ({ id, listings, isSpaceOwner }) => {
         name="rating"
         isAggregateRating={true}
       />
-      <span style={{ marginLeft: "10px", fontSize: "18px" }}>
-        {reviews.length}
-      </span>
+      <span style={{ marginLeft: '10px', fontSize: '18px' }}>{reviews.length}</span>
       {streetViewImages.length > 0 && (
         <div className="detail-item">
           <h4>Street View Images</h4>
@@ -329,10 +180,7 @@ const MoreDetails = ({ id, listings, isSpaceOwner }) => {
         <div className="detail-item">
           <h4>Parking Entrance Images</h4>
           <div>
-            <img
-              className="parking-detail-img"
-              src={parkingEntranceImages[0]}
-            />
+            <img className="parking-detail-img" src={parkingEntranceImages[0]} />
           </div>
         </div>
       )}
@@ -364,10 +212,8 @@ const MoreDetails = ({ id, listings, isSpaceOwner }) => {
       {scheduleType && (
         <div className="detail-item">
           <h4>Hours</h4>
-          {scheduleType == "24hours" && (
-            <p className="lead">This facility is open 24/7.</p>
-          )}
-          {scheduleType == "fixed" && (
+          {scheduleType == '24hours' && <p className="lead">This facility is open 24/7.</p>}
+          {scheduleType == 'fixed' && (
             <div className="schedule-table">
               <p className="lead">This facility is open on :</p>
               <Table striped bordered hover>
@@ -382,60 +228,60 @@ const MoreDetails = ({ id, listings, isSpaceOwner }) => {
                   {monday.isActive && (
                     <tr>
                       <td>Monday</td>
-                      <td>{moment(monday.startTime).format("lll")}</td>
-                      <td>{moment(monday.endTime).format("lll")}</td>
+                      <td>{moment(monday.startTime).format('lll')}</td>
+                      <td>{moment(monday.endTime).format('lll')}</td>
                     </tr>
                   )}
                   {tuesday.isActive && (
                     <tr>
                       <td>Tuesday</td>
-                      <td>{moment(tuesday.startTime).format("lll")}</td>
-                      <td>{moment(tuesday.endTime).format("lll")}</td>
+                      <td>{moment(tuesday.startTime).format('lll')}</td>
+                      <td>{moment(tuesday.endTime).format('lll')}</td>
                     </tr>
                   )}
                   {wednesday.isActive && (
                     <tr>
                       <td>Wednesday</td>
-                      <td>{moment(wednesday.startTime).format("lll")}</td>
-                      <td>{moment(wednesday.endTime).format("lll")}</td>
+                      <td>{moment(wednesday.startTime).format('lll')}</td>
+                      <td>{moment(wednesday.endTime).format('lll')}</td>
                     </tr>
                   )}
                   {thursday.isActive && (
                     <tr>
                       <td>Thursday</td>
-                      <td>{moment(thursday.startTime).format("lll")}</td>
-                      <td>{moment(thursday.endTime).format("lll")}</td>
+                      <td>{moment(thursday.startTime).format('lll')}</td>
+                      <td>{moment(thursday.endTime).format('lll')}</td>
                     </tr>
                   )}
                   {friday.isActive && (
                     <tr>
                       <td>Friday</td>
-                      <td>{moment(friday.startTime).format("lll")}</td>
-                      <td>{moment(friday.endTime).format("lll")}</td>
+                      <td>{moment(friday.startTime).format('lll')}</td>
+                      <td>{moment(friday.endTime).format('lll')}</td>
                     </tr>
                   )}
                   {saturday.isActive && (
                     <tr>
                       <td>Saturday</td>
-                      <td>{moment(saturday.startTime).format("lll")}</td>
-                      <td>{moment(saturday.endTime).format("lll")}</td>
+                      <td>{moment(saturday.startTime).format('lll')}</td>
+                      <td>{moment(saturday.endTime).format('lll')}</td>
                     </tr>
                   )}
                   {sunday.isActive && (
                     <tr>
                       <td>Sunday</td>
-                      <td>{moment(sunday.startTime).format("lll")}</td>
-                      <td>{moment(sunday.endTime).format("lll")}</td>
+                      <td>{moment(sunday.startTime).format('lll')}</td>
+                      <td>{moment(sunday.endTime).format('lll')}</td>
                     </tr>
                   )}
                 </tbody>
               </Table>
             </div>
           )}
-          {scheduleType == "custom" && (
+          {scheduleType == 'custom' && (
             <>
               <p className="lead">
-                This facility is open from{" "}
+                This facility is open from{' '}
                 {/* {moment(Date.parse(customTimeRange[0])).format("llll")} to{" "}
               {moment(Date.parse(customTimeRange[1])).format("llll")}.{" "} */}
               </p>
@@ -449,8 +295,8 @@ const MoreDetails = ({ id, listings, isSpaceOwner }) => {
                 <tbody>
                   {customTimeRange.map((item) => (
                     <tr>
-                      <td>{moment(item[0]).format("lll")}</td>
-                      <td>{moment(item[1]).format("lll")}</td>
+                      <td>{moment(item[0]).format('lll')}</td>
+                      <td>{moment(item[1]).format('lll')}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -465,180 +311,173 @@ const MoreDetails = ({ id, listings, isSpaceOwner }) => {
         midsized ||
         large ||
         oversized) && (
-          <div className="detail-item">
-            <h4>Vehicle Sizes Accepted</h4>
+        <div className="detail-item">
+          <h4>Vehicle Sizes Accepted</h4>
 
-            <div className="vehicles">
-              {sameSizeSpaces ? (
-                largestSize == "Motorcycle" ? (
+          <div className="vehicles">
+            {sameSizeSpaces ? (
+              largestSize == 'Motorcycle' ? (
+                <div className="vehicle">
+                  <FaMotorcycle className="vehicle-icon" />
+                  <p>Motorcycle</p>
+                </div>
+              ) : largestSize == 'Compact' ? (
+                <>
                   <div className="vehicle">
                     <FaMotorcycle className="vehicle-icon" />
                     <p>Motorcycle</p>
                   </div>
-                ) : largestSize == "Compact" ? (
-                  <>
-                    <div className="vehicle">
-                      <FaMotorcycle className="vehicle-icon" />
-                      <p>Motorcycle</p>
-                    </div>
-                    <div className="vehicle">
-                      <FaCarSide className="vehicle-icon" />
-                      <p>Compact</p>
-                    </div>
-                  </>
-                ) : largestSize == "Mid Sized" ? (
-                  <>
-                    <div className="vehicle">
-                      <FaMotorcycle className="vehicle-icon" />
-                      <p>Motorcycle</p>
-                    </div>
-                    <div className="vehicle">
-                      <FaCarSide className="vehicle-icon" />
-                      <p>Compact</p>
-                    </div>
-                    <div className="vehicle">
-                      <FaCar className="vehicle-icon" />
-                      <p>Mid Sized</p>
-                    </div>
-                  </>
-                ) : largestSize == "Large" ? (
-                  <>
-                    <div className="vehicle">
-                      <FaMotorcycle className="vehicle-icon" />
-                      <p>Motorcycle</p>
-                    </div>
-                    <div className="vehicle">
-                      <FaCarSide className="vehicle-icon" />
-                      <p>Compact</p>
-                    </div>
-                    <div className="vehicle">
-                      <FaCar className="vehicle-icon" />
-                      <p>Mid Sized</p>
-                    </div>
-                    <div className="vehicle">
-                      <AiFillCar className="vehicle-icon" />
-                      <p>Large</p>
-                    </div>
-                  </>
-                ) : (
-                          <>
-                            <div className="vehicle">
-                              <FaMotorcycle className="vehicle-icon" />
-                              <p>Motorcycle</p>
-                            </div>
-                            <div className="vehicle">
-                              <FaCarSide className="vehicle-icon" />
-                              <p>Compact</p>
-                            </div>
-                            <div className="vehicle">
-                              <FaCar className="vehicle-icon" />
-                              <p>Mid Sized</p>
-                            </div>
-                            <div className="vehicle">
-                              <AiFillCar className="vehicle-icon" />
-                              <p>Large</p>
-                            </div>
-                            <div className="vehicle">
-                              <FaShuttleVan className="vehicle-icon" />
-                              <p>Oversized</p>
-                            </div>
-                          </>
-                        )
+                  <div className="vehicle">
+                    <FaCarSide className="vehicle-icon" />
+                    <p>Compact</p>
+                  </div>
+                </>
+              ) : largestSize == 'Mid Sized' ? (
+                <>
+                  <div className="vehicle">
+                    <FaMotorcycle className="vehicle-icon" />
+                    <p>Motorcycle</p>
+                  </div>
+                  <div className="vehicle">
+                    <FaCarSide className="vehicle-icon" />
+                    <p>Compact</p>
+                  </div>
+                  <div className="vehicle">
+                    <FaCar className="vehicle-icon" />
+                    <p>Mid Sized</p>
+                  </div>
+                </>
+              ) : largestSize == 'Large' ? (
+                <>
+                  <div className="vehicle">
+                    <FaMotorcycle className="vehicle-icon" />
+                    <p>Motorcycle</p>
+                  </div>
+                  <div className="vehicle">
+                    <FaCarSide className="vehicle-icon" />
+                    <p>Compact</p>
+                  </div>
+                  <div className="vehicle">
+                    <FaCar className="vehicle-icon" />
+                    <p>Mid Sized</p>
+                  </div>
+                  <div className="vehicle">
+                    <AiFillCar className="vehicle-icon" />
+                    <p>Large</p>
+                  </div>
+                </>
               ) : (
-                  <>
-                    {motorcycle && (
-                      <div className="vehicle">
-                        <FaMotorcycle className="vehicle-icon" />
-                        <p>Motorcycle</p>
-                      </div>
-                    )}
-                    {compact && (
-                      <div className="vehicle">
-                        <FaCarSide className="vehicle-icon" />
-                        <p>Compact</p>
-                      </div>
-                    )}
-                    {midsized && (
-                      <div className="vehicle">
-                        <FaCar className="vehicle-icon" />
-                        <p>Mid Sized</p>
-                      </div>
-                    )}
-                    {large && (
-                      <div className="vehicle">
-                        <AiFillCar className="vehicle-icon" />
-                        <p>Large</p>
-                      </div>
-                    )}
-                    {oversized && (
-                      <div className="vehicle">
-                        <FaShuttleVan className="vehicle-icon" />
-                        <p>Oversized</p>
-                      </div>
-                    )}
-                  </>
-                )}
-            </div>
-            {propertyType && parkingSpaceType && (
-              <p className="lead">
-                This parking space is a {propertyType} and {parkingSpaceType}{" "}
-              parking type.
-              </p>
-            )}
-            {heightRestriction && (
-              <p className="lead">
-                This parking has a {height1.value} {height1.unit} {height2.value}{" "}
-                {height2.unit} vehicle height limit
-              </p>
-            )}
-          </div>
-        )}
-      {qtyOfSpaces &&
-        (largestSize ||
-          motorcycle ||
-          compact ||
-          midsized ||
-          large ||
-          oversized) && (
-          <div className="detail-item">
-            <h4>Space Details</h4>
-            {sameSizeSpaces ? (
-              <p className="lead">
-                This parking has total {qtyOfSpaces} quantity of{" "}
-                {qtyOfSpaces > 1 ? "spaces  of same size" : "space"}.
-              </p>
+                <>
+                  <div className="vehicle">
+                    <FaMotorcycle className="vehicle-icon" />
+                    <p>Motorcycle</p>
+                  </div>
+                  <div className="vehicle">
+                    <FaCarSide className="vehicle-icon" />
+                    <p>Compact</p>
+                  </div>
+                  <div className="vehicle">
+                    <FaCar className="vehicle-icon" />
+                    <p>Mid Sized</p>
+                  </div>
+                  <div className="vehicle">
+                    <AiFillCar className="vehicle-icon" />
+                    <p>Large</p>
+                  </div>
+                  <div className="vehicle">
+                    <FaShuttleVan className="vehicle-icon" />
+                    <p>Oversized</p>
+                  </div>
+                </>
+              )
             ) : (
-                <p className="lead">
-                  This parking has total {qtyOfSpaces} quantity of spaces for{" "}
-                  {motorcycle && `${motorcycleSpaces} motorcycle, `}
-                  {compact && `${compactSpaces} compact, `}
-                  {midsized && `${midsizedSpaces} mid sized, `}
-                  {large && `${largeSpaces} large, `}
-                  {oversized && `${oversizedSpaces} over sized`}.
-                </p>
-              )}
-            {spaceLabels.length > 0 && (
-              <div className="schedule-table">
-                <Table striped bordered hover>
-                  <thead>
-                    <tr>
-                      <th>Label</th>
-                      <th>Vehicle Size</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {spaceLabels.map((item) => (
-                      <tr key={item.label}>
-                        <td>{item.label}</td>
-                        <td>{item.largestSize}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              </div>
+              <>
+                {motorcycle && (
+                  <div className="vehicle">
+                    <FaMotorcycle className="vehicle-icon" />
+                    <p>Motorcycle</p>
+                  </div>
+                )}
+                {compact && (
+                  <div className="vehicle">
+                    <FaCarSide className="vehicle-icon" />
+                    <p>Compact</p>
+                  </div>
+                )}
+                {midsized && (
+                  <div className="vehicle">
+                    <FaCar className="vehicle-icon" />
+                    <p>Mid Sized</p>
+                  </div>
+                )}
+                {large && (
+                  <div className="vehicle">
+                    <AiFillCar className="vehicle-icon" />
+                    <p>Large</p>
+                  </div>
+                )}
+                {oversized && (
+                  <div className="vehicle">
+                    <FaShuttleVan className="vehicle-icon" />
+                    <p>Oversized</p>
+                  </div>
+                )}
+              </>
             )}
           </div>
-        )}
+          {propertyType && parkingSpaceType && (
+            <p className="lead">
+              This parking space is a {propertyType} and {parkingSpaceType} parking type.
+            </p>
+          )}
+          {heightRestriction && (
+            <p className="lead">
+              This parking has a {height1.value} {height1.unit} {height2.value} {height2.unit}{' '}
+              vehicle height limit
+            </p>
+          )}
+        </div>
+      )}
+      {qtyOfSpaces && (largestSize || motorcycle || compact || midsized || large || oversized) && (
+        <div className="detail-item">
+          <h4>Space Details</h4>
+          {sameSizeSpaces ? (
+            <p className="lead">
+              This parking has total {qtyOfSpaces} quantity of{' '}
+              {qtyOfSpaces > 1 ? 'spaces  of same size' : 'space'}.
+            </p>
+          ) : (
+            <p className="lead">
+              This parking has total {qtyOfSpaces} quantity of spaces for{' '}
+              {motorcycle && `${motorcycleSpaces} motorcycle, `}
+              {compact && `${compactSpaces} compact, `}
+              {midsized && `${midsizedSpaces} mid sized, `}
+              {large && `${largeSpaces} large, `}
+              {oversized && `${oversizedSpaces} over sized`}.
+            </p>
+          )}
+          {spaceLabels.length > 0 && (
+            <div className="schedule-table">
+              <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>Label</th>
+                    <th>Vehicle Size</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {spaceLabels.map((item) => (
+                    <tr key={item.label}>
+                      <td>{item.label}</td>
+                      <td>{item.largestSize}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </div>
+          )}
+        </div>
+      )}
       {noticeTime.value > 0 && (
         <div className="detail-item">
           <h4>How much notice time space owner needs before you arrive?</h4>
@@ -687,9 +526,7 @@ const MoreDetails = ({ id, listings, isSpaceOwner }) => {
           <div className="detail-item">
             <h4>Pricing Table</h4>
 
-            <p className="lead">
-              This parking has a {pricingType} billing type.
-            </p>
+            <p className="lead">This parking has a {pricingType} billing type.</p>
             <div className="schedule-table">
               <Table striped bordered hover>
                 <thead>
@@ -730,12 +567,12 @@ const MoreDetails = ({ id, listings, isSpaceOwner }) => {
           </div>
         )}
 
-      {!(instantBooking === "") && (
+      {!(instantBooking === '') && (
         <div className="detail-item">
           <h4>Booking Process</h4>
           <p className="lead">
             {instantBooking
-              ? "You can instantly book your space."
+              ? 'You can instantly book your space.'
               : "You will need owner's approval to confirm your booking."}
           </p>
         </div>
@@ -751,11 +588,11 @@ const MoreDetails = ({ id, listings, isSpaceOwner }) => {
               <Button variant="primary">Close</Button>
             </Link>
           ) : (
-              <>
-                <Link href={`/book-now/${_id}`}>
-                  <Button variant="primary">Book Now</Button>
-                </Link>
-                {/* <StripeBookNow
+            <>
+              <Link href={`/book-now/${_id}`}>
+                <Button variant="primary">Book Now</Button>
+              </Link>
+              {/* <StripeBookNow
                 // address={address}
                 // description={`This parking has total ${qtyOfSpaces} quantity of space`}
                 // spaceId={_id}
@@ -767,9 +604,9 @@ const MoreDetails = ({ id, listings, isSpaceOwner }) => {
                 }}
                 images={streetViewImages}
               /> */}
-                {/* <CheckoutForm ownerId={} */}
-              </>
-            )}
+              {/* <CheckoutForm ownerId={} */}
+            </>
+          )}
         </div>
       )}
       {/* <CheckoutForm /> */}
@@ -779,7 +616,7 @@ const MoreDetails = ({ id, listings, isSpaceOwner }) => {
 
 const mapStateToProps = ({ listing, user }) => ({
   isSpaceOwner: user.isSpaceOwner,
-  listings: user.listings,
+  listings: user.listings
 });
 
 export default connect(mapStateToProps)(MoreDetails);

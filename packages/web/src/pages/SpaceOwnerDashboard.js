@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Accordion, Card, Form, Button, Nav, ListGroup, Table } from 'react-bootstrap';
 import { IoIosArrowUp, IoIosArrowDown, IoIosArrowForward } from 'react-icons/io';
-import { MdEdit, MdDelete } from 'react-icons/md';
 import { connect } from 'react-redux';
 import { toggleLoading, toggleProfileType } from '../app/redux/actions/user';
 import { ToastContainer, toast } from 'react-toastify';

@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {StyleSheet, View, Text, TextInput, ScrollView} from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, View, Text, TextInput, ScrollView } from 'react-native';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import SimpleLineIconsIcon from 'react-native-vector-icons/SimpleLineIcons';
 
-function Untitled24({navigation}) {
+function Untitled24({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.gabrielaPepe}>Gabriela &amp; Pepe</Text>
@@ -12,9 +12,7 @@ function Untitled24({navigation}) {
       <ScrollView contentContainerStyle={styles.rectStack}>
         <View style={styles.rect2}>
           <View style={styles.iconRow}>
-            <FontAwesomeIcon
-              name="user-circle"
-              style={styles.icon}></FontAwesomeIcon>
+            <FontAwesomeIcon name="user-circle" style={styles.icon}></FontAwesomeIcon>
             <View style={styles.rect3}>
               <Text style={styles.loremIpsum2}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit
@@ -27,14 +25,12 @@ function Untitled24({navigation}) {
           <View style={styles.rect4Row}>
             <View style={styles.rect4}>
               <Text style={styles.loremIpsum4}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                incididunt
               </Text>
               <Text style={styles.loremIpsum5}>11:56 AM</Text>
             </View>
-            <FontAwesomeIcon
-              name="user-circle"
-              style={styles.icon1}></FontAwesomeIcon>
+            <FontAwesomeIcon name="user-circle" style={styles.icon1}></FontAwesomeIcon>
           </View>
         </View>
       </ScrollView>
@@ -46,9 +42,7 @@ function Untitled24({navigation}) {
               placeholder="Type a Comment"
               placeholderTextColor="rgba(11,64,148,1)"
               style={styles.typeAComment}></TextInput>
-            <SimpleLineIconsIcon
-              name="paper-clip"
-              style={styles.icon6}></SimpleLineIconsIcon>
+            <SimpleLineIconsIcon name="paper-clip" style={styles.icon6}></SimpleLineIconsIcon>
           </View>
           <View style={styles.rect12}>
             <FeatherIcon name="arrow-right" style={styles.icon4}></FeatherIcon>
@@ -63,18 +57,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 20,
+    padding: 20
   },
   gabrielaPepe: {
     // fontFamily: 'roboto-500',
     color: 'rgba(11,64,148,1)',
-    fontSize: 24,
+    fontSize: 24
   },
   loremIpsum: {
     // fontFamily: 'roboto-300',
     color: 'rgba(11,64,148,1)',
     fontSize: 18,
-    marginTop: 8,
+    marginTop: 8
   },
   rect: {
     // top: 86,
@@ -87,12 +81,12 @@ const styles = StyleSheet.create({
     width: 375,
     // height: 127,
     flexDirection: 'row',
-    marginTop: 41,
+    marginTop: 41
   },
   rect4: {
     width: 238,
     // height: 105,
-    backgroundColor: 'rgba(39,170,225,1)',
+    backgroundColor: 'rgba(39,170,225,1)'
   },
   loremIpsum4: {
     // fontFamily: 'roboto-regular',
@@ -100,14 +94,14 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 22,
     marginTop: 11,
-    marginLeft: 13,
+    marginLeft: 13
   },
   loremIpsum5: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(214,214,214,1)',
     fontSize: 13,
     marginTop: 4,
-    marginLeft: 174,
+    marginLeft: 174
   },
   icon1: {
     color: 'rgba(128,128,128,1)',
@@ -115,7 +109,7 @@ const styles = StyleSheet.create({
     height: 50,
     width: 50,
     marginLeft: 9,
-    marginTop: 55,
+    marginTop: 55
   },
   rect4Row: {
     height: 105,
@@ -123,14 +117,14 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 17,
     marginLeft: 61,
-    marginTop: 12,
+    marginTop: 12
   },
   icon3: {
     color: 'rgba(128,128,128,1)',
     fontSize: 50,
     height: 50,
     width: 50,
-    marginTop: 43,
+    marginTop: 43
   },
   loremIpsum8: {
     top: 64,
@@ -138,14 +132,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     // fontFamily: 'roboto-regular',
     color: 'rgba(11,64,148,1)',
-    fontSize: 13,
+    fontSize: 13
   },
   loremIpsum8Stack: {
     top: 0,
     left: 0,
     width: 233,
     height: 93,
-    position: 'absolute',
+    position: 'absolute'
   },
   loremIpsum9: {
     top: 14,
@@ -154,17 +148,17 @@ const styles = StyleSheet.create({
     // fontFamily: 'roboto-regular',
     color: '#121212',
     lineHeight: 22,
-    fontSize: 15,
+    fontSize: 15
   },
   loremIpsum8StackStack: {
     width: 233,
     height: 93,
-    marginLeft: 10,
+    marginLeft: 10
   },
   rect6: {
     width: 238,
     height: 105,
-    backgroundColor: 'rgba(39,170,225,1)',
+    backgroundColor: 'rgba(39,170,225,1)'
   },
   loremIpsum7: {
     // fontFamily: 'roboto-regular',
@@ -172,14 +166,14 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 22,
     marginTop: 11,
-    marginLeft: 14,
+    marginLeft: 14
   },
   loremIpsum6: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(214,214,214,1)',
     fontSize: 13,
     marginTop: 3,
-    marginLeft: 174,
+    marginLeft: 174
   },
   icon2: {
     color: 'rgba(128,128,128,1)',
@@ -187,14 +181,14 @@ const styles = StyleSheet.create({
     height: 50,
     width: 50,
     marginLeft: 10,
-    marginTop: 55,
+    marginTop: 55
   },
   rect6Row: {
     height: 105,
     flexDirection: 'row',
     marginTop: 36,
     marginLeft: 60,
-    marginRight: 17,
+    marginRight: 17
   },
   rect2: {
     // top: 0,
@@ -202,21 +196,21 @@ const styles = StyleSheet.create({
     width: 375,
     height: 114,
     // position: 'absolute',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   icon: {
     color: 'rgba(128,128,128,1)',
     fontSize: 50,
     height: 50,
     width: 50,
-    marginTop: 42,
+    marginTop: 42
   },
   rect3: {
     width: 233,
     height: 93,
     borderWidth: 1,
     borderColor: 'rgba(214,214,214,1)',
-    marginLeft: 9,
+    marginLeft: 9
   },
   loremIpsum2: {
     // fontFamily: 'roboto-regular',
@@ -224,14 +218,14 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     fontSize: 15,
     marginTop: 13,
-    marginLeft: 14,
+    marginLeft: 14
   },
   loremIpsum3: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(11,64,148,1)',
     fontSize: 13,
     marginTop: 6,
-    marginLeft: 170,
+    marginLeft: 170
   },
   iconRow: {
     height: 93,
@@ -239,39 +233,39 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 67,
     marginLeft: 16,
-    marginTop: 11,
+    marginTop: 11
   },
   rect7: {
     top: 484,
     left: 0,
     width: 375,
     height: 127,
-    position: 'absolute',
+    position: 'absolute'
   },
   rect9: {
     top: 271,
     left: 0,
     width: 375,
     height: 114,
-    position: 'absolute',
+    position: 'absolute'
   },
   rectStack: {
     width: 376,
     height: 500,
     marginTop: 32,
-    marginLeft: -1,
+    marginLeft: -1
   },
   rect10: {
     // top: 0,
     // left: 1,
     width: '100%',
-    height: 57,
+    height: 57
     // position: 'absolute',
   },
   rect12: {
     width: '15%',
     height: 57,
-    backgroundColor: 'rgba(39,170,225,1)',
+    backgroundColor: 'rgba(39,170,225,1)'
     // marginLeft: 315,
   },
   icon4: {
@@ -280,7 +274,7 @@ const styles = StyleSheet.create({
     height: 30,
     width: 30,
     marginTop: 14,
-    marginLeft: 17,
+    marginLeft: 17
   },
   rect11: {
     // top: 0,
@@ -288,21 +282,21 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 58,
     // position: 'absolute',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   icon5: {
     color: 'rgba(11,64,148,1)',
     fontSize: 25,
     height: 25,
     width: 25,
-    marginTop: 17,
+    marginTop: 17
   },
   typeAComment: {
     // fontFamily: 'roboto-regular',
     color: '#121212',
     height: 57,
     width: 224,
-    marginLeft: 9,
+    marginLeft: 9
   },
   icon6: {
     color: 'rgba(39,170,225,1)',
@@ -310,7 +304,7 @@ const styles = StyleSheet.create({
     height: 25,
     width: 22,
     marginLeft: 13,
-    marginTop: 17,
+    marginTop: 17
   },
   icon5Row: {
     width: '80%',
@@ -318,7 +312,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
     marginRight: 9,
-    marginLeft: 14,
+    marginLeft: 14
   },
   rect10Stack: {
     width: '100%',
@@ -328,8 +322,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-  },
+    justifyContent: 'space-between'
+  }
 });
 
 export default Untitled24;
