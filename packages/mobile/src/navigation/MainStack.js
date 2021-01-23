@@ -1,22 +1,23 @@
+/* eslint-disable no-nested-ternary */
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStackNavigator } from '@react-navigation/stack';
 import SignInStack from './SignInStack';
 import SignUpStack from './SignUpStack';
-import InitialLoadingScreen from '../screens/InitialLoadingScreen';
+// import InitialLoadingScreen from '../screens/InitialLoadingScreen';
 import AdminStack from './AdminStack';
 import UserStack from './UserStack';
 
 const Stack = createStackNavigator();
 
-function MainStack(props) {
-  if (!props.initial) {
-    return <InitialLoadingScreen />;
-  }
+function MainStack({ authenticated, admin, adminMode }) {
+  // if (!props.initial) {
+  //   return <InitialLoadingScreen />;
+  // }
   return (
     <Stack.Navigator>
-      {props.authenticated ? (
-        props.admin && props.adminMode ? (
+      {authenticated ? (
+        admin && adminMode ? (
           <Stack.Screen name="AdminStack" component={AdminStack} options={{ headerShown: false }} />
         ) : (
           <Stack.Screen name="UserStack" component={UserStack} options={{ headerShown: false }} />
