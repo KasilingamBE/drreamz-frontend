@@ -1,11 +1,11 @@
-import Head from "next/head";
-import React from "react";
-import scriptLoader from "react-async-script-loader";
-import { gql } from "@apollo/client";
-import ParkingDetails from "../../src/pages/ParkingDetails";
-import AuthRequired from "../../src/app/components/other/AuthRequired";
-import Nav from "../../src/app/components/other/Nav";
-import { client } from "../../src/app/graphql/index";
+import Head from 'next/head';
+import React from 'react';
+// import scriptLoader from 'react-async-script-loader';
+import { gql } from '@apollo/client';
+import ParkingDetails from '../../src/pages/ParkingDetails';
+import AuthRequired from '../../src/app/components/other/AuthRequired';
+import Nav from '../../src/app/components/other/Nav';
+import { client } from '../../src/app/graphql/index';
 
 const GET_LISTING = gql`
   query GetListing($id: ID!) {
@@ -30,7 +30,7 @@ const GET_LISTING = gql`
   }
 `;
 
-function Home(props) {
+export default function Page(props) {
   return (
     <div>
       <Nav />
@@ -53,11 +53,14 @@ function Home(props) {
         )}
       </Head>
       <div className="container">
-        {props.isScriptLoaded && props.isScriptLoadSucceed ? (
+        <AuthRequired redirectPath="/">
+          <ParkingDetails />
+        </AuthRequired>
+        {/* {props.isScriptLoaded && props.isScriptLoadSucceed ? (
           <AuthRequired redirectPath="/">
             <ParkingDetails />
           </AuthRequired>
-        ) : null}
+        ) : null} */}
       </div>
     </div>
   );
@@ -68,20 +71,21 @@ export async function getServerSideProps({ query }) {
     const { id } = query;
     const parking = await client.query({
       query: GET_LISTING,
-      variables: { id: id },
+      variables: { id: id }
     });
-    console.log("parking Query", parking.data.getListing.locationDetails);
+
+    // console.log('parking Query', parking.data.getListing.locationDetails);
 
     return {
-      props: { parking: parking.data.getListing },
+      props: { parking: parking.data.getListing }
     };
   } catch (error) {
     return {
-      props: { parking: undefined },
+      props: { parking: undefined }
     };
   }
 }
 
-export default scriptLoader([
-  "https://maps.googleapis.com/maps/api/js?key=AIzaSyDF0pzALjYYanPshuclFzq_2F24xZWZjOg&libraries=geometry,drawing,places",
-])(Home);
+// export default scriptLoader([
+//   "https://maps.googleapis.com/maps/api/js?key=AIzaSyDF0pzALjYYanPshuclFzq_2F24xZWZjOg&libraries=geometry,drawing,places",
+// ])(Home);

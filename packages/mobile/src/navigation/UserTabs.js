@@ -44,7 +44,8 @@ export default function UserTabs() {
         inactiveTintColor: colors.primary
       }}
       swipeEnabled
-      animationEnabled>
+      animationEnabled
+      initialRouteName="Dashboard">
       {isSpaceOwner ? (
         <>
           <Tab.Screen name="My Listings" component={MyListingsStack} />
