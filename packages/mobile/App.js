@@ -39,7 +39,7 @@ async function urlOpener(url, redirectUrl) {
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  blacklist: ['tempListing', 'redirect']
+  blacklist: ['tempListing', 'redirect', 'findParking']
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer);

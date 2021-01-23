@@ -21,6 +21,7 @@ export const DELETE_LISTING = 'DELETE_LISTING';
 // Find Parking
 export const SET_SEARCH_DATA = 'SET_SEARCH_DATA';
 export const CLEAR_SEARCH_DATA = 'CLEAR_SEARCH_DATA';
+export const UPDATE_SEARCH_DATA = 'UPDATE_SEARCH_DATA';
 
 // Add Booking
 export const ADD_BOOKING = 'ADD_BOOKING';

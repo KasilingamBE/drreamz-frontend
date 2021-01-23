@@ -1,4 +1,4 @@
-const { SET_SEARCH_DATA, CLEAR_SEARCH_DATA } = require('../actions/types');
+const { SET_SEARCH_DATA, CLEAR_SEARCH_DATA, UPDATE_SEARCH_DATA } = require('../actions/types');
 
 const initialState = {
   search: '',
@@ -15,6 +15,12 @@ export default function (state = initialState, action) {
   switch (type) {
     case SET_SEARCH_DATA: {
       return {
+        ...payload
+      };
+    }
+    case UPDATE_SEARCH_DATA: {
+      return {
+        ...state,
         ...payload
       };
     }

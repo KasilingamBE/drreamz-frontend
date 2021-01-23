@@ -1,69 +1,48 @@
-import React, {useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import MapView from 'react-native-maps';
-import {Marker} from 'react-native-maps';
+import { Marker } from 'react-native-maps';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import SimpleLineIconsIcon from 'react-native-vector-icons/SimpleLineIcons';
-import MaterialIconsIcon from 'react-native-vector-icons/MaterialIcons';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import MapMarker from '../components/MapMarker';
 import CardListItem from '../components/CardListItem';
-import FindParkingForm from '../components/FindParkingForm';
-import {connect} from 'react-redux';
+import FindParkingForm from '../components/listing/findParking/Form';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-function FindParking({navigation, listings}) {
+function FindParking({ navigation, listings }) {
   const [markers, setMarkers] = useState([
     {
       id: '1',
       price: '$3.20',
-      latlng: {latitude: 37.78825, longitude: -122.4324},
-      location: '906 Peg Shop St.Franklyn, NY',
+      latlng: { latitude: 37.78825, longitude: -122.4324 },
+      location: '906 Peg Shop St.Franklyn, NY'
     },
     {
       id: '2',
       price: '$2.90',
-      latlng: {latitude: 37.795, longitude: -122.4424},
-      location: '88C Martin Road St.Franklyn, NY',
+      latlng: { latitude: 37.795, longitude: -122.4424 },
+      location: '88C Martin Road St.Franklyn, NY'
     },
     {
       id: '3',
       price: 'FREE',
-      latlng: {latitude: 37.78925, longitude: -122.469},
-      location: '906 Amsterdam Avenue, NY',
+      latlng: { latitude: 37.78925, longitude: -122.469 },
+      location: '906 Amsterdam Avenue, NY'
     },
     {
       id: '4',
       price: '$1.30',
-      latlng: {latitude: 37.765, longitude: -122.4614},
-      location: '711-2880 Nulla St. Mankato Mississippi',
+      latlng: { latitude: 37.765, longitude: -122.4614 },
+      location: '711-2880 Nulla St. Mankato Mississippi'
     },
     {
       id: '5',
       price: '$0.90',
-      latlng: {latitude: 37.772, longitude: -122.4214},
-      location: '3279 Viverra. Avenue Latrobe DE',
-    },
+      latlng: { latitude: 37.772, longitude: -122.4214 },
+      location: '3279 Viverra. Avenue Latrobe DE'
+    }
   ]);
-
-  // const [markers, setMarkers] = useState(
-  //   listings.map((index, item) => ({
-  //     id: item.id,
-  //     price:
-  //       item.pricingDetails.pricingType == 'Flat'
-  //         ? item.pricingDetails.pricingRates.dailyMax
-  //         : item.pricingDetails.pricingRates.perDayRate,
-  //     latlng: item.locationDetails.latlng,
-  //     location: `${item.locationDetails.address}, ${item.locationDetails.city}, ${item.locationDetails.state}, ${item.locationDetails.postalCode}`,
-  //   })),
-  // );
 
   const [showCardList, setShowCardList] = useState(false);
   const [cardList, setCardList] = useState(false);
@@ -91,180 +70,179 @@ function FindParking({navigation, listings}) {
 
   return (
     <View style={styles.container}>
-      {/* <View style={styles.mapViewStack}> */}
       <MapView
         //provider={MapView.PROVIDER_GOOGLE}
         initialRegion={{
           latitude: 37.78825,
           longitude: -122.4324,
           latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          longitudeDelta: 0.0421
         }}
         customMapStyle={[
           {
             elementType: 'geometry',
             stylers: [
               {
-                color: '#f5f5f5',
-              },
-            ],
+                color: '#f5f5f5'
+              }
+            ]
           },
           {
             elementType: 'labels.icon',
             stylers: [
               {
-                visibility: 'off',
-              },
-            ],
+                visibility: 'off'
+              }
+            ]
           },
           {
             elementType: 'labels.text.fill',
             stylers: [
               {
-                color: '#616161',
-              },
-            ],
+                color: '#616161'
+              }
+            ]
           },
           {
             elementType: 'labels.text.stroke',
             stylers: [
               {
-                color: '#f5f5f5',
-              },
-            ],
+                color: '#f5f5f5'
+              }
+            ]
           },
           {
             featureType: 'administrative.land_parcel',
             elementType: 'labels.text.fill',
             stylers: [
               {
-                color: '#bdbdbd',
-              },
-            ],
+                color: '#bdbdbd'
+              }
+            ]
           },
           {
             featureType: 'poi',
             elementType: 'geometry',
             stylers: [
               {
-                color: '#eeeeee',
-              },
-            ],
+                color: '#eeeeee'
+              }
+            ]
           },
           {
             featureType: 'poi',
             elementType: 'labels.text.fill',
             stylers: [
               {
-                color: '#757575',
-              },
-            ],
+                color: '#757575'
+              }
+            ]
           },
           {
             featureType: 'poi.park',
             elementType: 'geometry',
             stylers: [
               {
-                color: '#e5e5e5',
-              },
-            ],
+                color: '#e5e5e5'
+              }
+            ]
           },
           {
             featureType: 'poi.park',
             elementType: 'labels.text.fill',
             stylers: [
               {
-                color: '#9e9e9e',
-              },
-            ],
+                color: '#9e9e9e'
+              }
+            ]
           },
           {
             featureType: 'road',
             elementType: 'geometry',
             stylers: [
               {
-                color: '#ffffff',
-              },
-            ],
+                color: '#ffffff'
+              }
+            ]
           },
           {
             featureType: 'road.arterial',
             elementType: 'labels.text.fill',
             stylers: [
               {
-                color: '#757575',
-              },
-            ],
+                color: '#757575'
+              }
+            ]
           },
           {
             featureType: 'road.highway',
             elementType: 'geometry',
             stylers: [
               {
-                color: '#dadada',
-              },
-            ],
+                color: '#dadada'
+              }
+            ]
           },
           {
             featureType: 'road.highway',
             elementType: 'labels.text.fill',
             stylers: [
               {
-                color: '#616161',
-              },
-            ],
+                color: '#616161'
+              }
+            ]
           },
           {
             featureType: 'road.local',
             elementType: 'labels.text.fill',
             stylers: [
               {
-                color: '#9e9e9e',
-              },
-            ],
+                color: '#9e9e9e'
+              }
+            ]
           },
           {
             featureType: 'transit.line',
             elementType: 'geometry',
             stylers: [
               {
-                color: '#e5e5e5',
-              },
-            ],
+                color: '#e5e5e5'
+              }
+            ]
           },
           {
             featureType: 'transit.station',
             elementType: 'geometry',
             stylers: [
               {
-                color: '#eeeeee',
-              },
-            ],
+                color: '#eeeeee'
+              }
+            ]
           },
           {
             featureType: 'water',
             elementType: 'geometry',
             stylers: [
               {
-                color: '#c9c9c9',
-              },
-            ],
+                color: '#c9c9c9'
+              }
+            ]
           },
           {
             featureType: 'water',
             elementType: 'labels.text.fill',
             stylers: [
               {
-                color: '#9e9e9e',
-              },
-            ],
-          },
+                color: '#9e9e9e'
+              }
+            ]
+          }
         ]}
         style={styles.mapView}>
         <Marker
           coordinate={{
             latitude: 37.78825,
-            longitude: -122.4324,
+            longitude: -122.4324
           }}>
           <MapMarker title="$72" />
         </Marker>
@@ -283,7 +261,6 @@ function FindParking({navigation, listings}) {
           ))} */}
       </MapView>
       <FindParkingForm setShowMarkers={setShowMarkers} />
-      {/* {true && ( */}
       <View style={styles.controlBtns}>
         <TouchableOpacity
           style={styles.button2}
@@ -295,12 +272,9 @@ function FindParking({navigation, listings}) {
           <EntypoIcon name="location-pin" style={styles.icon5}></EntypoIcon>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={showCardListHandler}>
-          <FontAwesomeIcon
-            name="th-list"
-            style={styles.icon6}></FontAwesomeIcon>
+          <FontAwesomeIcon name="th-list" style={styles.icon6}></FontAwesomeIcon>
         </TouchableOpacity>
       </View>
-      {/* )} */}
 
       {showCardList && (
         <ScrollView
@@ -313,14 +287,13 @@ function FindParking({navigation, listings}) {
         </ScrollView>
       )}
     </View>
-    // </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
+    width: '100%'
     // alignItems: 'center',
   },
   mapView: {
@@ -328,7 +301,7 @@ const styles = StyleSheet.create({
     // top: 46,
     height: 702,
     width: '100%',
-    left: 0,
+    left: 0
   },
   controlBtns: {
     width: '100%',
@@ -337,7 +310,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     padding: 20,
-    zIndex: 10,
+    zIndex: 10
   },
   button2: {
     // top: 184,
@@ -349,7 +322,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 7,
     backgroundColor: 'rgba(255,255,255,1)',
     borderWidth: 1,
-    borderColor: 'rgba(208,208,208,1)',
+    borderColor: 'rgba(208,208,208,1)'
   },
   icon5: {
     color: 'rgba(39,170,225,1)',
@@ -357,7 +330,7 @@ const styles = StyleSheet.create({
     height: 27,
     width: 25,
     marginTop: 4,
-    marginLeft: 8,
+    marginLeft: 8
   },
   button: {
     width: 39,
@@ -367,7 +340,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 10,
     borderWidth: 1,
     borderColor: 'rgba(208,205,205,1)',
-    borderLeftWidth: 1,
+    borderLeftWidth: 1
   },
   icon6: {
     color: 'rgba(11,64,148,1)',
@@ -375,15 +348,15 @@ const styles = StyleSheet.create({
     height: 20,
     width: 20,
     marginTop: 8,
-    marginLeft: 9,
+    marginLeft: 9
   },
   cardList: {
     minHeight: 300,
     width: '100%',
     zIndex: 100,
     paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
+    paddingVertical: 10
+  }
 });
 
 // FindParkingForm.propTypes = {
@@ -391,7 +364,7 @@ const styles = StyleSheet.create({
 // };
 
 const mapStateTopProps = (state) => ({
-  listings: state.user.listings,
+  listings: state.user.listings
 });
 
 export default connect(mapStateTopProps, null)(FindParking);
