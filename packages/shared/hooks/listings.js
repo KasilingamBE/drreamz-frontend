@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { v4 as uuid } from 'uuid';
 import { addListingLocal, updateListingLocal } from '../redux/actions/user';
 import { deleteTempListing } from '../redux/actions/tempListing';
+import guid from '../utils/guid';
 
 import config from '../aws-exports';
 
@@ -776,10 +777,10 @@ export const useAddOneListing = () => {
       if (tempListing.mobile) {
         if (streetViewImageFiles.length > 0) {
           let file = streetViewImageFiles[0];
-          const response = await fetch(file);
-          const blob = await response.blob();
+          let response = await fetch(file);
+          let blob = await response.blob();
           let extension = 'jpeg';
-          let key = `images-mobile/${uuid()}-${uuid()}.${extension}`;
+          let key = `images-mobile/${guid()}-${guid()}.${extension}`;
           let url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`;
           streetViewImageArray = [url];
           await Storage.put(key, blob, {
@@ -789,10 +790,10 @@ export const useAddOneListing = () => {
 
         if (parkingEntranceImageFiles.length > 0) {
           let file = parkingEntranceImageFiles[0];
-          const response = await fetch(file);
-          const blob = await response.blob();
+          let response = await fetch(file);
+          let blob = await response.blob();
           let extension = 'jpeg';
-          let key = `images-mobile/${uuid()}${uuid()}.${extension}`;
+          let key = `images-mobile/${guid()}${guid()}.${extension}`;
           let url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`;
           parkingEntranceImageArray = [url];
           await Storage.put(key, blob, {
@@ -802,10 +803,10 @@ export const useAddOneListing = () => {
 
         if (parkingSpaceImageFiles.length > 0) {
           let file = parkingSpaceImageFiles[0];
-          const response = await fetch(file);
-          const blob = await response.blob();
+          let response = await fetch(file);
+          let blob = await response.blob();
           let extension = 'jpeg';
-          let key = `images-mobile/${uuid()}${uuid()}.${extension}`;
+          let key = `images-mobile/${guid()}${guid()}.${extension}`;
           let url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`;
           parkingSpaceImageArray = [url];
           await Storage.put(key, blob, {

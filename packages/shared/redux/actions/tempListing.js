@@ -13,6 +13,7 @@ export function addTempListing(payload) {
     payload
   };
 }
+
 export function tempListingMobileInitial() {
   return {
     type: TEMP_LISTING_MOBILE_INITIAL

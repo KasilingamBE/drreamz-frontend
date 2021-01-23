@@ -1,4 +1,4 @@
-import React, { Component, useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -144,10 +144,9 @@ const featureList = [
 
 function AddListingLocation({
   onBackButtonPress,
-  onNextButtonPress,
-  addListingLocation,
   locationDetails,
   tempListingLocationD,
+  updateTempListing,
   navigation,
   activeIndex,
   setActiveIndex
@@ -1533,4 +1532,6 @@ const mapStateToProps = ({ tempListing }) => ({
   locationDetails: tempListing.locationDetails
 });
 
-export default connect(mapStateToProps, { tempListingLocationD })(AddListingLocation);
+export default connect(mapStateToProps, { tempListingLocationD, updateTempListing })(
+  AddListingLocation
+);

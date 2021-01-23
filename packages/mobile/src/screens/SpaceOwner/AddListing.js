@@ -41,6 +41,7 @@ const AddListing = ({ navigation, tempListing, deleteTempListing }) => {
       {/* <Modal visible={visible} animationType="slide"> */}
       {/* <SafeAreaView style={{ flex: 1,  }}> */}
       {/* <StatusBar hidden showHideTransition="slide" /> */}
+      <Text>Hello--{tempListing.mobile.toString()}</Text>
       {activeIndex === 0 && (
         <AddListingMenu
           navigation={navigation}
