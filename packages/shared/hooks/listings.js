@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { v4 as uuid } from 'uuid';
 import { addListingLocal, updateListingLocal } from '../redux/actions/user';
 import { deleteTempListing } from '../redux/actions/tempListing';
+import { updateFindParkingData } from '../redux/actions/findParking';
 import guid from '../utils/guid';
 
 import config from '../aws-exports';
@@ -892,4 +893,220 @@ export const useAddOneListing = () => {
   return {
     handleSubmit
   };
+};
+
+const GET_PUBLISHED_LISTINGS_WITH_LATLNG = gql`
+  query GetListingsWithBookings(
+    $lat: Float!
+    $lng: Float!
+    $start: String!
+    $end: String!
+    $startDay: Int!
+    $startHour: Int!
+    $startMinute: Int!
+    $endDay: Int!
+    $endHour: Int!
+    $endMinute: Int!
+  ) {
+    getListingsWithBookings(
+      lat: $lat
+      lng: $lng
+      start: $start
+      end: $end
+      startDay: $startDay
+      startHour: $startHour
+      startMinute: $startMinute
+      endDay: $endDay
+      endHour: $endHour
+      endMinute: $endMinute
+    ) {
+      _id
+      bookingCount {
+        total
+      }
+      bookings
+      createdAt
+      location {
+        coordinates
+        type
+      }
+      locationDetails {
+        address
+        city
+        country
+        code
+        features
+        listingType
+        marker {
+          coordinates
+          type
+        }
+        parkingEntranceImages
+        parkingSpaceImages
+        phone
+        postalCode
+        propertyName
+        propertyType
+        state
+        streetViewImages
+        unitNum
+      }
+      ownerId
+      ownerEmail
+      ownerName
+      pricingDetails {
+        pricingRates {
+          perDayRate
+          perHourRate
+          perMonthRate
+          perWeekRate
+        }
+        pricingType
+      }
+      published
+      reviews
+      spaceAvailable {
+        advanceBookingTime {
+          unit
+          value
+        }
+        customTimeRange {
+          startDate
+          endDate
+        }
+        friday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        hasNoticeTime
+        instantBooking
+        maxTime {
+          unit
+          value
+        }
+        minTime {
+          unit
+          value
+        }
+        monday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        noticeTime {
+          unit
+          value
+        }
+        saturday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        scheduleType
+        sunday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        thursday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        tuesday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+        wednesday {
+          endHour
+          endMinute
+          isActive
+          startHour
+          startMinute
+        }
+      }
+      spaceDetails {
+        aboutSpace
+        accessInstructions
+        compact
+        compactSpaces
+        height1 {
+          unit
+          value
+        }
+        height2 {
+          unit
+          value
+        }
+        heightRestriction
+        isLabelled
+        large
+        largeSpaces
+        largestSize
+        midsized
+        midsizedSpaces
+        motorcycle
+        motorcycleSpaces
+        oversized
+        oversizedSpaces
+        parkingSpaceType
+        qtyOfSpaces
+        sameSizeSpaces
+        spaceLabels {
+          isBooked
+          label
+          largestSize
+        }
+      }
+      thumbnail
+    }
+  }
+`;
+
+export const useFindParking = () => {
+  const { start, end, coordinates } = useSelector(({ findParking }) => findParking);
+  const startDay = new Date(start).getDay();
+  const startHour = new Date(start).getHours();
+  const startMinute = new Date(start).getMinutes();
+  const endDay = new Date(end).getDay();
+  const endHour = new Date(end).getHours();
+  const endMinute = new Date(end).getMinutes();
+  const lat = coordinates[1];
+  const lng = coordinates[0];
+  const { loading, error, data } = useQuery(GET_PUBLISHED_LISTINGS_WITH_LATLNG, {
+    variables: {
+      lat,
+      lng,
+      start,
+      end,
+      startDay,
+      startHour,
+      startMinute,
+      endDay,
+      endHour,
+      endMinute
+    }
+    // fetchPolicy: 'network-only' // 'cache-and-network' // 'network-only'
+  });
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (data && data.getListingsWithBookings && data.getListingsWithBookings !== null) {
+      dispatch(updateFindParkingData({ parkings: data.getListingsWithBookings }));
+    }
+  }, [data]);
+  return { loading, error, data };
 };

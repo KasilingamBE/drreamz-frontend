@@ -8,7 +8,6 @@ target 'mobile' do
 
   use_react_native!(:path => '../../../node_modules/react-native')
 
-  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
   target 'mobileTests' do
     inherit! :complete

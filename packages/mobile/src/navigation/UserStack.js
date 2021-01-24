@@ -143,7 +143,7 @@ const UserStack = () => {
         })}
       />
       <Stack.Screen name="PayNow" component={PayNowScreen} />
-      <Stack.Screen name="MoreDetails" component={MoreDetails} />
+      <Stack.Screen name="DetailsScreen" component={MoreDetails} />
       <Stack.Screen name="Reviews" component={Reviews} />
       <Stack.Screen name="SuccessfullyBooked" component={SuccessfullyBooked} />
       <Stack.Screen name="CodeScreen" component={CodeScreen} />

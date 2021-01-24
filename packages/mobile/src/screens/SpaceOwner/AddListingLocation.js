@@ -21,6 +21,7 @@ import { connect } from 'react-redux';
 import { Picker } from '@react-native-community/picker';
 import { launchImageLibrary } from 'react-native-image-picker';
 import NextButton from '../../components/SpaceOwner/NextButton';
+import countries from '@parkyourself-frontend/shared/config/countries';
 import AddListingHeader from '../../components/SpaceOwner/AddListingHeader';
 import Input from '../../components/Input';
 import RadioListItem from '../../components/RadioListItem';
@@ -152,64 +153,10 @@ function AddListingLocation({
   setActiveIndex
 }) {
   const scrollRef = useRef();
-
-  const [width, setWidth] = useState(0);
   const [validate, setValidate] = useState(false);
 
   const [showAddressModal, setShowAddressModal] = useState(false);
   const [showCountryModal, setShowCountryModal] = useState(false);
-
-  const [visible, setVisible] = useState(false);
-
-  const [listingType, setListingType] = useState(
-    locationDetails && locationDetails.listingType ? locationDetails.listingType : 'Business'
-  );
-  const [propertyType, setPropertyType] = useState(
-    locationDetails && locationDetails.propertyType ? locationDetails.propertyType : 'Driveway'
-  );
-  const [propertyName, setPropertyName] = useState(
-    locationDetails && locationDetails.propertyName ? locationDetails.propertyName : ''
-  );
-  const [country, setCountry] = useState(
-    locationDetails && locationDetails.country ? locationDetails.country : countryCodes[0].country
-  );
-  const [address, setAddress] = useState(
-    locationDetails && locationDetails.address ? locationDetails.address : ''
-  );
-  const [unitNum, setUnitNum] = useState(
-    locationDetails && locationDetails.unitNum ? locationDetails.unitNum : ''
-  );
-  const [city, setCity] = useState(locationDetails ? locationDetails.city : '');
-  const [state, setState] = useState(
-    locationDetails && locationDetails.state ? locationDetails.state : ''
-  );
-  const [postalCode, setPostalCode] = useState(
-    locationDetails && locationDetails.postalCode ? locationDetails.postalCode : ''
-  );
-
-  const [code, setCode] = useState(
-    locationDetails && locationDetails.code ? locationDetails.code : countryCodes[0].code
-  );
-  const [phone, setPhone] = useState(
-    locationDetails && locationDetails.phone ? locationDetails.phone : ''
-  );
-
-  const [marker, setMarker] = useState(
-    locationDetails && locationDetails.latlng
-      ? locationDetails.latlng
-      : {
-          latitude: 37.78825,
-          longitude: -122.4324
-        }
-  );
-
-  const [images, setImages] = useState(
-    locationDetails && locationDetails.images ? locationDetails.images : []
-  );
-
-  const [features, setFeatures] = useState(
-    locationDetails && locationDetails.features ? locationDetails.features : []
-  );
 
   const toggleFeatures = (feature) => {
     if (locationDetails.features.includes(feature)) {
@@ -258,8 +205,6 @@ function AddListingLocation({
       } else if (response.customButton) {
         // console.log('User tapped custom button: ', response.customButton);
       } else {
-        // const source = { uri: response.uri };
-        // setImages([...images, source]);
         tempListingLocationD({
           streetViewImages: [response.uri]
         });
@@ -335,12 +280,12 @@ function AddListingLocation({
           y: 0,
           animated: true
         });
-        setWidth(width + 20);
+        // setWidth(width + 20);
       } else {
         setValidate(true);
       }
     } catch (error) {
-      console.log('Error', error);
+      // console.log('Error', error);
       Alert.alert('Something Went wrong!', 'Unable to add location data');
     }
   };
@@ -390,8 +335,51 @@ function AddListingLocation({
             <AddressModal
               visible={showAddressModal}
               onHide={() => setShowAddressModal(false)}
-              setMarker={setMarker}
-              tempListingLocationD={tempListingLocationD}
+              onSelect={(data, details = null) => {
+                let tempLoc = {
+                  marker: {
+                    type: 'Point',
+                    coordinates: [details.geometry.location.lng, details.geometry.location.lat]
+                  }
+                };
+                let add = '';
+                add += data.structured_formatting.main_text;
+                details.address_components.forEach((item) => {
+                  if (item.types.includes('route')) {
+                    add += `, ${item.long_name}`;
+                  }
+                  if (item.types.includes('sublocality')) {
+                    add += `, ${item.long_name}`;
+                  }
+                  if (item.types.includes('country')) {
+                    tempLoc = {
+                      ...tempLoc,
+                      country: item.long_name,
+                      code: countries.filter((i) => i.country == item.long_name)[0].code
+                    };
+                  }
+                  if (item.types.includes('administrative_area_level_1')) {
+                    tempLoc = {
+                      ...tempLoc,
+                      state: item.long_name
+                    };
+                  }
+                  if (item.types.includes('administrative_area_level_2')) {
+                    tempLoc = {
+                      ...tempLoc,
+                      city: item.long_name
+                    };
+                  }
+                  if (item.types.includes('postal_code')) {
+                    tempLoc = {
+                      ...tempLoc,
+                      postalCode: item.long_name
+                    };
+                  }
+                });
+                tempListingLocationD({ ...tempLoc, address: add });
+                setShowAddressModal(false);
+              }}
             />
             <View style={{ marginBottom: 10 }} />
             <CountryModal

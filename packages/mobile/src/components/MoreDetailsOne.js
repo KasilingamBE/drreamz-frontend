@@ -1,5 +1,5 @@
-import React, {Fragment} from 'react';
-import {StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native';
+import React, { Fragment } from 'react';
+import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 
@@ -8,7 +8,7 @@ export default function MoreDetailsOne({
   scheduleType,
   startTime,
   endTime,
-  isSpaceOwner,
+  isSpaceOwner
 }) {
   const {
     propertyName,
@@ -17,7 +17,7 @@ export default function MoreDetailsOne({
     city,
     state,
     postalCode,
-    streetViewImages,
+    streetViewImages
   } = locationDetails;
 
   return (
@@ -29,38 +29,33 @@ export default function MoreDetailsOne({
       <View style={styles.rectStack}>
         <View style={styles.rect}>
           <View style={styles.icon1Row}>
-            <IoniconsIcon name="ios-star" style={styles.icon1}></IoniconsIcon>
-            <IoniconsIcon name="ios-star" style={styles.icon2}></IoniconsIcon>
-            <IoniconsIcon name="ios-star" style={styles.icon3}></IoniconsIcon>
-            <IoniconsIcon
-              name="ios-star-half"
-              style={styles.icon4}></IoniconsIcon>
+            <IoniconsIcon name="ios-star" style={styles.icon1} />
+            <IoniconsIcon name="ios-star" style={styles.icon2} />
+            <IoniconsIcon name="ios-star" style={styles.icon3} />
+            <IoniconsIcon name="ios-star-half" style={styles.icon4} />
             <Text style={styles.loremIpsum2}>656</Text>
           </View>
         </View>
-        <IoniconsIcon name="ios-star" style={styles.icon}></IoniconsIcon>
+        <IoniconsIcon name="ios-star" style={styles.icon} />
       </View>
       <Image
         source={
           streetViewImages.length > 0
-            ? {uri: streetViewImages[0]}
+            ? { uri: streetViewImages[0] }
             : require('../assets/images/parking.jpg')
         }
         resizeMode="stretch"
-        style={styles.image}></Image>
+        style={styles.image}
+      />
       <View style={styles.rect2}>
         <Text style={styles.loremIpsum3}>
           {scheduleType == 'daily'
-            ? `${moment(startTime).format('lll')} to ${moment(endTime).format(
-                'lll',
-              )}`
+            ? `${moment(startTime).format('lll')} to ${moment(endTime).format('lll')}`
             : '24 Hours a day'}
         </Text>
         {!isSpaceOwner && (
           <View style={styles.loremIpsum4Row}>
-            <Text style={styles.loremIpsum4}>
-              My time has been Extended for free
-            </Text>
+            <Text style={styles.loremIpsum4}>My time has been Extended for free</Text>
             <TouchableOpacity>
               <Text style={styles.why}>Why?</Text>
             </TouchableOpacity>
@@ -83,12 +78,12 @@ const styles = StyleSheet.create({
   loremIpsum: {
     // fontFamily: 'roboto-500',
     color: 'rgba(11,64,148,1)',
-    fontSize: 28,
+    fontSize: 28
   },
   ownerBusinessName: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(155,155,155,1)',
-    marginTop: 10,
+    marginTop: 10
   },
   rect: {
     top: 0,
@@ -96,40 +91,40 @@ const styles = StyleSheet.create({
     width: 170,
     height: 32,
     position: 'absolute',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   icon1: {
     color: 'rgba(248,231,28,1)',
     fontSize: 22,
     height: 24,
-    width: 19,
+    width: 19
   },
   icon2: {
     color: 'rgba(248,231,28,1)',
     fontSize: 22,
     height: 24,
     width: 19,
-    marginLeft: 5,
+    marginLeft: 5
   },
   icon3: {
     color: 'rgba(248,231,28,1)',
     fontSize: 22,
     height: 24,
     width: 19,
-    marginLeft: 5,
+    marginLeft: 5
   },
   icon4: {
     color: 'rgba(248,231,28,1)',
     fontSize: 22,
     height: 24,
     width: 19,
-    marginLeft: 5,
+    marginLeft: 5
   },
   loremIpsum2: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(130,130,130,1)',
     marginLeft: 10,
-    marginTop: 5,
+    marginTop: 5
   },
   icon1Row: {
     height: 24,
@@ -137,19 +132,19 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 22,
     marginLeft: 24,
-    marginTop: 3,
+    marginTop: 3
   },
   icon: {
     top: 3,
     left: 0,
     position: 'absolute',
     color: 'rgba(248,231,28,1)',
-    fontSize: 22,
+    fontSize: 22
   },
   rectStack: {
     width: '100%',
     height: 32,
-    marginTop: 9,
+    marginTop: 9
   },
   image: {
     // width: '100%',
@@ -157,40 +152,40 @@ const styles = StyleSheet.create({
     // marginTop: 9,
     resizeMode: 'contain',
     flex: 1,
-    aspectRatio: 1,
+    aspectRatio: 1
   },
   rect2: {
     width: '100%',
     backgroundColor: 'rgba(255,255,255,1)',
     marginTop: 25,
     paddingHorizontal: 7,
-    paddingVertical: 10,
+    paddingVertical: 10
   },
   loremIpsum3: {
     // fontFamily: 'roboto-500',
     color: 'rgba(39,170,225,1)',
     fontSize: 16,
     // marginTop: 16,
-    marginLeft: 8,
+    marginLeft: 8
   },
   loremIpsum4: {
     // fontFamily: 'roboto-regular',
     color: '#121212',
-    fontSize: 17,
+    fontSize: 17
   },
   why: {
     // fontFamily: 'roboto-500',
     color: 'rgba(39,170,225,1)',
     fontSize: 17,
     marginLeft: 6,
-    marginTop: 1,
+    marginTop: 1
   },
   loremIpsum4Row: {
     height: 21,
     flexDirection: 'row',
     marginTop: 14,
     marginLeft: 11,
-    marginRight: 21,
+    marginRight: 21
   },
   rect3: {
     borderRadius: 19,
@@ -200,11 +195,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 10,
     paddingVertical: 5,
-    marginRight: 5,
+    marginRight: 5
   },
   valet: {
     // fontFamily: 'roboto-regular',
-    color: 'rgba(196,195,195,1)',
+    color: 'rgba(196,195,195,1)'
   },
   rect4: {
     width: 91,
@@ -212,13 +207,13 @@ const styles = StyleSheet.create({
     borderRadius: 19,
     borderWidth: 1,
     borderColor: 'rgba(196,195,195,1)',
-    marginLeft: 12,
+    marginLeft: 12
   },
   covered: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(196,195,195,1)',
     marginTop: 5,
-    marginLeft: 15,
+    marginLeft: 15
   },
   rect5: {
     width: 127,
@@ -226,13 +221,13 @@ const styles = StyleSheet.create({
     borderRadius: 19,
     borderWidth: 1,
     borderColor: 'rgba(196,195,195,1)',
-    marginLeft: 12,
+    marginLeft: 12
   },
   onSiteStaff: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(196,195,195,1)',
     marginTop: 5,
-    marginLeft: 16,
+    marginLeft: 16
   },
   rect3Row: {
     width: '100%',
@@ -241,7 +236,7 @@ const styles = StyleSheet.create({
     marginTop: 21,
     marginLeft: 11,
     marginRight: 17,
-    flexWrap: 'wrap',
+    flexWrap: 'wrap'
   },
   rect6: {
     width: 117,
@@ -250,12 +245,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(196,195,195,1)',
     marginTop: 10,
-    marginLeft: 11,
+    marginLeft: 11
   },
   accessible: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(196,195,195,1)',
     marginTop: 5,
-    marginLeft: 20,
-  },
+    marginLeft: 20
+  }
 });

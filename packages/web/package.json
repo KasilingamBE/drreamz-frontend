@@ -37,7 +37,7 @@
     "next-images": "^1.6.2",
     "next-transpile-modules": "^6.0.0",
     "node-sass": "^4.13.1",
-    "prop-types": "^15.7.2",
+    "prop-types": "15.7.2",
     "qrcode.react": "^1.0.0",
     "query-string": "^6.13.5",
     "react": "17.0.1",

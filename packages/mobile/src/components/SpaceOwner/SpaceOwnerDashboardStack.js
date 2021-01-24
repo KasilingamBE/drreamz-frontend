@@ -8,7 +8,6 @@ import ParkingOrders from '../../screens/SpaceOwner/ParkingOrders';
 import HeaderLogo from '../HeaderLogo';
 import MenuButton from '../MenuButton';
 import AddListing from '../../screens/SpaceOwner/AddListing';
-import SaveAndExit from '../listing/addListing/SaveAndExit';
 
 const Stack = createStackNavigator();
 

@@ -3,9 +3,8 @@ import { SafeAreaView, View, Text, Modal, StyleSheet, TouchableOpacity } from 'r
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import colors from '@parkyourself-frontend/shared/config/colors';
-import countries from '@parkyourself-frontend/shared/config/countries';
 
-export default function AddressModal({ visible = false, onHide, setMarker, tempListingLocationD }) {
+export default function AddressModal({ visible = false, onHide, onSelect = () => {} }) {
   return (
     <Modal visible={visible} animationType="slide">
       <SafeAreaView>
@@ -16,76 +15,14 @@ export default function AddressModal({ visible = false, onHide, setMarker, tempL
             </TouchableOpacity>
           </View>
           <View>
-            <Text style={styles.label}>Search Your Address</Text>
+            <Text style={styles.label}>Search Your Location</Text>
             <GooglePlacesAutocomplete
-              placeholder="Search your location"
-              onPress={(data, details = null) => {
-                let tempLoc = {
-                  marker: {
-                    type: 'Point',
-                    coordinates: [details.geometry.location.lng, details.geometry.location.lat]
-                  }
-                };
-
-                let add = '';
-                add += data.structured_formatting.main_text;
-
-                setMarker({
-                  latitude: details.geometry.location.lat,
-                  longitude: details.geometry.location.lng
-                });
-
-                details.address_components.forEach((item) => {
-                  if (item.types.includes('route')) {
-                    add += `, ${item.long_name}`;
-                  }
-                  if (item.types.includes('sublocality')) {
-                    add += `, ${item.long_name}`;
-                    // console.log('address :', add);
-                  }
-                  if (item.types.includes('country')) {
-                    // console.log('country :', item.long_name);
-                    // setCountry(item.long_name);
-                    // setCode(countries.filter((i) => i.country == item.long_name)[0].code);
-                    tempLoc = {
-                      ...tempLoc,
-                      country: item.long_name,
-                      code: countries.filter((i) => i.country == item.long_name)[0].code
-                    };
-                  }
-                  if (item.types.includes('administrative_area_level_1')) {
-                    // console.log('state :', item.long_name);
-                    // setState(item.long_name);
-                    tempLoc = {
-                      ...tempLoc,
-                      state: item.long_name
-                    };
-                  }
-                  if (item.types.includes('administrative_area_level_2')) {
-                    // console.log('city :', item.long_name);
-                    // setCity(item.long_name);
-                    tempLoc = {
-                      ...tempLoc,
-                      city: item.long_name
-                    };
-                  }
-                  if (item.types.includes('postal_code')) {
-                    // console.log('postal code :', item.long_name);
-                    // setPostalCode(item.long_name);
-                    tempLoc = {
-                      ...tempLoc,
-                      postalCode: item.long_name
-                    };
-                  }
-                });
-                tempListingLocationD({ ...tempLoc, address: add });
-                onHide();
-              }}
+              onPress={onSelect}
+              placeholder="Search Your Location"
+              clearButtonMode
               poweredContainer={false}
               listViewDisplayed={false}
               fetchDetails
-              // currentLocation={true}
-              // currentLocationLabel="Current Location"
               nearbyPlacesAPI="GooglePlacesSearch"
               GooglePlacesSearchQuery={{
                 rankby: 'distance',

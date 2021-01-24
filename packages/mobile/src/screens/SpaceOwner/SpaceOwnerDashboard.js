@@ -35,7 +35,7 @@ function SpaceOwnerDashboard({ navigation }) {
       </TouchableOpacity>
       <Text style={styles.dashboard}>DASHBOARD</Text>
 
-      <TouchableOpacity style={styles.rect2} onPress={() => navigationHandler('MyListings')}>
+      <TouchableOpacity style={styles.rect2} onPress={() => navigationHandler('My Listings')}>
         <View style={styles.wrapper}>
           <MaterialCommunityIconsIcon name="calendar-clock" style={styles.icon} />
           <Text style={styles.btnText}>My Listings</Text>

@@ -49,7 +49,9 @@
 	<key>NSCameraUsageDescription</key>
 	<string>App needs Camera Access Permission for testing</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>App needs Location for Searching based on location</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>App needs Location for Searching based on location</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>App needs photo library Access</string>
 	<key>UIAppFonts</key>
