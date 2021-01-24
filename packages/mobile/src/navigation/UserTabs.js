@@ -11,7 +11,8 @@ import SpaceOwnerDashboard from '../screens/SpaceOwner/SpaceOwnerDashboard';
 import ParkingOrders from '../screens/SpaceOwner/ParkingOrders';
 import MyListings from '../screens/SpaceOwner/MyListings';
 import MyBookings from '../screens/MyBookings';
-import FindParking from '../screens/FindParking';
+// import FindParking from '../screens/FindParking';
+import FindParking from '../screens/FindParkingScreen';
 import DriverDashboard from '../screens/Dashboard';
 
 const Stack = createStackNavigator();
@@ -41,6 +42,7 @@ export default function UserTabs() {
         }
       })}
       tabBarOptions={{
+        keyboardHidesTabBar: true,
         activeTintColor: colors.secondary,
         inactiveTintColor: colors.primary,
         tabStyle: {

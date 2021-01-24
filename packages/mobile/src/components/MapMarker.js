@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
-import Svg, {Ellipse} from 'react-native-svg';
+import React, { Component } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import Svg, { Ellipse } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/Entypo';
 
-function MapMarker({title, onPress}) {
+function MapMarker({ title, onPress }) {
   return (
     <TouchableOpacity style={styles.rectStack} onPress={onPress}>
       <View style={styles.rect}>
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     height: 95,
     position: 'absolute',
     left: 0,
-    top: 4,
+    top: 4
   },
   ellipse: {
     top: 0,
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: '#fff',
     // zIndex: 100,
-    borderRadius: 50,
+    borderRadius: 50
   },
   loremIpsum: {
     top: 12,
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     // fontFamily: 'roboto-900',
     color: '#121212',
-    fontSize: 12,
+    fontSize: 12
   },
   ellipseStack: {
     width: 40,
@@ -59,22 +59,22 @@ const styles = StyleSheet.create({
     marginLeft: 31,
     zIndex: 100,
     borderRadius: 50,
-    backgroundColor: '#fff',
+    backgroundColor: '#fff'
   },
   icon: {
     top: 0,
     left: 5,
     position: 'absolute',
     color: 'rgba(11,64,148,1)',
-    fontSize: 90,
+    fontSize: 90
   },
   rectStack: {
     width: 100,
     height: 105,
     marginTop: 355,
-    marginLeft: 137,
+    marginLeft: 137
     // backgroundColor: '#fff',
-  },
+  }
 });
 
 export default MapMarker;

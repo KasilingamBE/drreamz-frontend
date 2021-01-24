@@ -43,11 +43,11 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0,0,0,1)',
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 1
     },
-    elevation: 20,
+    elevation: 3,
     shadowOpacity: 0.26,
-    shadowRadius: 10,
+    shadowRadius: 3,
     backgroundColor: '#fff'
   },
   dropItem: {

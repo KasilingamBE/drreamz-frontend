@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import MaterialButtonPrimary from './MaterialButtonPrimary';
 import moment from 'moment';
 import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
+import MaterialButtonPrimary from './MaterialButtonPrimary';
 
 export default function BookingItem({ item, navigation }) {
   const { location, card, startDate, endDate, listingId, price } = item;
@@ -17,7 +17,8 @@ export default function BookingItem({ item, navigation }) {
             <Image
               source={require('../assets/images/cars.jpg')}
               resizeMode="stretch"
-              style={styles.image}></Image>
+              style={styles.image}
+            />
           </View>
           <View style={styles.loremIpsumRowColumn}>
             <View style={styles.loremIpsumRow}>
@@ -36,9 +37,9 @@ export default function BookingItem({ item, navigation }) {
         <View style={styles.buttonRow}>
           <View style={styles.button}>
             <View style={styles.iconRow}>
-              <FontAwesomeIcon name="cc-visa" style={styles.icon}></FontAwesomeIcon>
+              <FontAwesomeIcon name="cc-visa" style={styles.icon} />
               <Text style={styles.visa6094320}>
-                VISA *{card.cardNumber.subString(cardNumber.length - 4, cardNumber.length)} |{' '}
+                VISA
                 {price}
               </Text>
             </View>
@@ -66,17 +67,13 @@ export default function BookingItem({ item, navigation }) {
         </View>
       </View>
       <View style={styles.materialButtonPrimary2Row}>
-        <MaterialButtonPrimary
-          caption="EARLY CHECK-IN"
-          style={styles.materialButtonPrimary2}></MaterialButtonPrimary>
+        <MaterialButtonPrimary caption="EARLY CHECK-IN" style={styles.materialButtonPrimary2} />
         <TouchableOpacity style={styles.rect9}>
           <Text style={styles.cancelBooking}>CANCEL BOOKING</Text>
         </TouchableOpacity>
         <View style={styles.rect10Stack}>
           <View style={styles.rect10}></View>
-          <MaterialCommunityIconsIcon
-            name="qrcode"
-            style={styles.icon6}></MaterialCommunityIconsIcon>
+          <MaterialCommunityIconsIcon name="qrcode" style={styles.icon6} />
         </View>
       </View>
     </View>

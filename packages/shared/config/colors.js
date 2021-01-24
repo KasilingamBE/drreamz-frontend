@@ -4,6 +4,7 @@ export default {
   white: '#fff',
   black: 'black',
   grey: 'grey',
+  lightGrey: 'rgba(232,232,232,1)',
   lightBlue: '#cce5ff',
   darkBlue: '#004085'
 };

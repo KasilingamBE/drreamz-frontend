@@ -2,7 +2,7 @@ const { SET_SEARCH_DATA, CLEAR_SEARCH_DATA, UPDATE_SEARCH_DATA } = require('../a
 
 const initialState = {
   search: '',
-  coordinates: [],
+  coordinates: [-122.4324, 37.78825],
   parkings: [],
   start: new Date(new Date(new Date()).setHours(new Date().getHours() + 1)),
   end: new Date(new Date(new Date()).setHours(new Date().getHours() + 3)),

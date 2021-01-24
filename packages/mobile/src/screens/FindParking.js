@@ -70,7 +70,7 @@ function FindParking({ navigation, listings }) {
 
   return (
     <View style={styles.container}>
-      <MapView
+      {/* <MapView
         //provider={MapView.PROVIDER_GOOGLE}
         initialRegion={{
           latitude: 37.78825,
@@ -246,22 +246,189 @@ function FindParking({ navigation, listings }) {
           }}>
           <MapMarker title="$72" />
         </Marker>
-        {/* {showMarkers &&
-          markers.map((marker) => (
-            <Marker
-              coordinate={marker.latlng}
-              key={marker.id}
-              // title={marker.price}
-              // description={marker.description}
-              onPress={() => {
-                showSpecificCard(marker.id);
-              }}>
-              <MapMarker title={marker.price} />
-            </Marker>
-          ))} */}
       </MapView>
-      <FindParkingForm setShowMarkers={setShowMarkers} />
-      <View style={styles.controlBtns}>
+       */}
+      {/* <FindParkingForm setShowMarkers={setShowMarkers} /> */}
+      <View style={{ flex: 1 }}>
+        <MapView
+          //provider={MapView.PROVIDER_GOOGLE}
+          initialRegion={{
+            latitude: 37.78825,
+            longitude: -122.4324,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421
+          }}
+          customMapStyle={[
+            {
+              elementType: 'geometry',
+              stylers: [
+                {
+                  color: '#f5f5f5'
+                }
+              ]
+            },
+            {
+              elementType: 'labels.icon',
+              stylers: [
+                {
+                  visibility: 'off'
+                }
+              ]
+            },
+            {
+              elementType: 'labels.text.fill',
+              stylers: [
+                {
+                  color: '#616161'
+                }
+              ]
+            },
+            {
+              elementType: 'labels.text.stroke',
+              stylers: [
+                {
+                  color: '#f5f5f5'
+                }
+              ]
+            },
+            {
+              featureType: 'administrative.land_parcel',
+              elementType: 'labels.text.fill',
+              stylers: [
+                {
+                  color: '#bdbdbd'
+                }
+              ]
+            },
+            {
+              featureType: 'poi',
+              elementType: 'geometry',
+              stylers: [
+                {
+                  color: '#eeeeee'
+                }
+              ]
+            },
+            {
+              featureType: 'poi',
+              elementType: 'labels.text.fill',
+              stylers: [
+                {
+                  color: '#757575'
+                }
+              ]
+            },
+            {
+              featureType: 'poi.park',
+              elementType: 'geometry',
+              stylers: [
+                {
+                  color: '#e5e5e5'
+                }
+              ]
+            },
+            {
+              featureType: 'poi.park',
+              elementType: 'labels.text.fill',
+              stylers: [
+                {
+                  color: '#9e9e9e'
+                }
+              ]
+            },
+            {
+              featureType: 'road',
+              elementType: 'geometry',
+              stylers: [
+                {
+                  color: '#ffffff'
+                }
+              ]
+            },
+            {
+              featureType: 'road.arterial',
+              elementType: 'labels.text.fill',
+              stylers: [
+                {
+                  color: '#757575'
+                }
+              ]
+            },
+            {
+              featureType: 'road.highway',
+              elementType: 'geometry',
+              stylers: [
+                {
+                  color: '#dadada'
+                }
+              ]
+            },
+            {
+              featureType: 'road.highway',
+              elementType: 'labels.text.fill',
+              stylers: [
+                {
+                  color: '#616161'
+                }
+              ]
+            },
+            {
+              featureType: 'road.local',
+              elementType: 'labels.text.fill',
+              stylers: [
+                {
+                  color: '#9e9e9e'
+                }
+              ]
+            },
+            {
+              featureType: 'transit.line',
+              elementType: 'geometry',
+              stylers: [
+                {
+                  color: '#e5e5e5'
+                }
+              ]
+            },
+            {
+              featureType: 'transit.station',
+              elementType: 'geometry',
+              stylers: [
+                {
+                  color: '#eeeeee'
+                }
+              ]
+            },
+            {
+              featureType: 'water',
+              elementType: 'geometry',
+              stylers: [
+                {
+                  color: '#c9c9c9'
+                }
+              ]
+            },
+            {
+              featureType: 'water',
+              elementType: 'labels.text.fill',
+              stylers: [
+                {
+                  color: '#9e9e9e'
+                }
+              ]
+            }
+          ]}
+          style={{ flex: 1 }}>
+          <Marker
+            coordinate={{
+              latitude: 37.78825,
+              longitude: -122.4324
+            }}>
+            <MapMarker title="$72" />
+          </Marker>
+        </MapView>
+      </View>
+      {/* <View style={styles.controlBtns}>
         <TouchableOpacity
           style={styles.button2}
           onPress={() => {
@@ -269,13 +436,12 @@ function FindParking({ navigation, listings }) {
               showSpecificCard(markers[0].id);
             }
           }}>
-          <EntypoIcon name="location-pin" style={styles.icon5}></EntypoIcon>
+          <EntypoIcon name="location-pin" style={styles.icon5} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={showCardListHandler}>
-          <FontAwesomeIcon name="th-list" style={styles.icon6}></FontAwesomeIcon>
+          <FontAwesomeIcon name="th-list" style={styles.icon6} />
         </TouchableOpacity>
       </View>
-
       {showCardList && (
         <ScrollView
           contentContainerStyle={styles.cardList}
@@ -285,7 +451,7 @@ function FindParking({ navigation, listings }) {
             <CardListItem {...item} key={item.id} navigation={navigation} />
           ))}
         </ScrollView>
-      )}
+      )} */}
     </View>
   );
 }
@@ -293,13 +459,14 @@ function FindParking({ navigation, listings }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%'
+    backgroundColor: 'blue'
+    // width: '100%'
     // alignItems: 'center',
   },
   mapView: {
-    position: 'absolute',
+    // position: 'absolute',
     // top: 46,
-    height: 702,
+    // height: 702,
     width: '100%',
     left: 0
   },
