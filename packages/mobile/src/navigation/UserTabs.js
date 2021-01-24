@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '@parkyourself-frontend/shared/config/colors';
+import { Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HeaderLogo from '../components/HeaderLogo';
 import MenuButton from '../components/MenuButton';
@@ -41,7 +42,10 @@ export default function UserTabs() {
       })}
       tabBarOptions={{
         activeTintColor: colors.secondary,
-        inactiveTintColor: colors.primary
+        inactiveTintColor: colors.primary,
+        tabStyle: {
+          paddingBottom: Platform.OS === 'ios' ? 0 : 5
+        }
       }}
       swipeEnabled
       animationEnabled
