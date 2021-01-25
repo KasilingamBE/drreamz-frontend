@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import slugify from "slugify";
-import { useMutation, gql } from "@apollo/client";
-import { showLoading, hideLoading } from "react-redux-loading";
-import { Modal, Button, Form, Row, Col, Spinner } from "react-bootstrap";
-import { client } from "../../graphql/index";
-import { XCircle, PlusCircle } from "react-feather";
-import Table from "./FormOptionTable";
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import slugify from 'slugify';
+import { useMutation, gql } from '@apollo/client';
+import { showLoading, hideLoading } from 'react-redux-loading';
+import { XCircle, PlusCircle } from 'react-feather';
+import { Modal, Button, Form, Row, Col, Spinner } from 'react-bootstrap';
+import { client } from '../../graphql/index';
+import Table from './FormOptionTable';
 
 const CREATE_ONE = gql`
   mutation CreateOneFormOption(
@@ -85,11 +85,7 @@ const GET_ALL = gql`
 `;
 
 const PUBLISH_UPDATE_ONE = gql`
-  mutation UpdateOneFormOption(
-    $id: ID!
-    $published: Boolean
-    $updatedBy: String
-  ) {
+  mutation UpdateOneFormOption($id: ID!, $published: Boolean, $updatedBy: String) {
     updateOneFormOption(id: $id, published: $published, updatedBy: $updatedBy) {
       _id
       title
@@ -115,8 +111,8 @@ function FormOptionCRUD(props) {
   const [loading, setLoading] = useState(false);
   const [allData, setAllData] = useState([]);
   const [tempFormOption, setTempFormOption] = useState({
-    title: "",
-    options: [],
+    title: '',
+    options: []
   });
   const [showModal, setShowModal] = useState(false);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
@@ -126,7 +122,7 @@ function FormOptionCRUD(props) {
     setLoading(true);
     try {
       let { data } = await client.query({
-        query: GET_ALL,
+        query: GET_ALL
       });
       // console.log("Data", data);
       setAllData(data.getAllFormOptions);
@@ -153,44 +149,44 @@ function FormOptionCRUD(props) {
           createdBy: props.userId,
           title: payload.title,
           formName: payload.formName,
-          options: payload.options,
-        },
+          options: payload.options
+        }
       });
       updateDisabled(false);
       props.dispatch(hideLoading());
       setAllData([...allData, response.data.createOneFormOption]);
       setPayload({
-        id: "",
-        title: "",
+        id: '',
+        title: ''
       });
       setShowModal(false);
-      alert("Succesfully created!");
+      alert('Succesfully created!');
     } catch (error) {
       updateDisabled(false);
       props.dispatch(hideLoading());
-      if (error.message.includes("E11000")) {
-        return alert("Title is already present!");
+      if (error.message.includes('E11000')) {
+        return alert('Title is already present!');
       }
-      alert("Something went wrong please try again");
+      alert('Something went wrong please try again');
     }
   };
 
   const handleChange = (e) => {
     setPayload({
       ...payload,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
 
   const handleDelete = async (id) => {
     try {
       updateDisabled(true);
-      if (window.confirm("Are you sure you want to delete this item!")) {
+      if (window.confirm('Are you sure you want to delete this item!')) {
         props.dispatch(showLoading());
         await deleteOneFormOption({
           variables: {
-            id: id,
-          },
+            id: id
+          }
         });
         setAllData(allData.filter((r) => r._id !== id));
         updateDisabled(false);
@@ -201,7 +197,7 @@ function FormOptionCRUD(props) {
     } catch (error) {
       props.dispatch(hideLoading());
       updateDisabled(false);
-      alert("Something went wrong!");
+      alert('Something went wrong!');
     }
   };
 
@@ -224,18 +220,14 @@ function FormOptionCRUD(props) {
             ...payload.options.map((i) => ({
               value: i.value,
               label: i.label,
-              published: true,
-            })),
+              published: true
+            }))
           ],
           id: payload._id,
-          formName: payload.formName,
-        },
+          formName: payload.formName
+        }
       });
-      setAllData(
-        allData.map((r) =>
-          r._id === payload._id ? res.data.updateOneFormOption : r
-        )
-      );
+      setAllData(allData.map((r) => (r._id === payload._id ? res.data.updateOneFormOption : r)));
       props.dispatch(hideLoading());
       updateDisabled(false);
       setShowModal(false);
@@ -243,10 +235,10 @@ function FormOptionCRUD(props) {
       console.log(error);
       updateDisabled(false);
       props.dispatch(hideLoading());
-      if (error.message.includes("E11000")) {
-        return alert("Title is already present!");
+      if (error.message.includes('E11000')) {
+        return alert('Title is already present!');
       }
-      alert("Something went wrong please try again");
+      alert('Something went wrong please try again');
     }
   };
 
@@ -257,14 +249,12 @@ function FormOptionCRUD(props) {
       let res = await publishFormOptionMutation({
         variables: {
           id: id,
-          published: published,
-        },
+          published: published
+        }
       });
       setAllData(
         allData.map((r) =>
-          r._id === res.data.updateOneFormOption._id
-            ? res.data.updateOneFormOption
-            : r
+          r._id === res.data.updateOneFormOption._id ? res.data.updateOneFormOption : r
         )
       );
       updateDisabled(false);
@@ -272,7 +262,7 @@ function FormOptionCRUD(props) {
     } catch (error) {
       updateDisabled(false);
       props.dispatch(hideLoading());
-      alert("Something went wrong!");
+      alert('Something went wrong!');
     }
   };
 
@@ -282,8 +272,7 @@ function FormOptionCRUD(props) {
       if (i === index) {
         let tempa = a;
         tempa[name] = value;
-        if (name === "label" && tempa.value === "")
-          tempa.value = slugify(value, { lower: true });
+        if (name === 'label' && tempa.value === '') tempa.value = slugify(value, { lower: true });
         return tempa;
       } else {
         return a;
@@ -291,7 +280,7 @@ function FormOptionCRUD(props) {
     });
     setPayload({
       ...payload,
-      options: tempA,
+      options: tempA
     });
   };
 
@@ -300,7 +289,7 @@ function FormOptionCRUD(props) {
     tempA.splice(index, 1);
     setPayload({
       ...payload,
-      options: tempA,
+      options: tempA
     });
   };
 
@@ -315,13 +304,9 @@ function FormOptionCRUD(props) {
         size="lg"
         // centered
         show={showModal}
-        onHide={() => setShowModal(false)}
-      >
+        onHide={() => setShowModal(false)}>
         <Modal.Body>
-          <Form
-            onSubmit={edit ? handleSubmitEdit : handleSubmit}
-            className="pt-3"
-          >
+          <Form onSubmit={edit ? handleSubmitEdit : handleSubmit} className="pt-3">
             <Form.Group>
               <Form.Label>Title</Form.Label>
               <Form.Control
@@ -355,10 +340,7 @@ function FormOptionCRUD(props) {
                   onClick={() =>
                     setPayload({
                       ...payload,
-                      options: [
-                        ...payload.options,
-                        { label: "", value: "", published: true },
-                      ],
+                      options: [...payload.options, { label: '', value: '', published: true }]
                     })
                   }
                 />
@@ -370,9 +352,7 @@ function FormOptionCRUD(props) {
                   <Row key={i} className="mt-1">
                     <Col sm={5}>
                       <Form.Control
-                        onChange={(e) =>
-                          handleChangeFormOption("label", e.target.value, i)
-                        }
+                        onChange={(e) => handleChangeFormOption('label', e.target.value, i)}
                         value={a.label}
                         type="text"
                         name="aminityLabel"
@@ -383,9 +363,7 @@ function FormOptionCRUD(props) {
                     <Col sm={5}>
                       <Form.Control
                         placeholder="Last name"
-                        onChange={(e) =>
-                          handleChangeFormOption("value", e.target.value, i)
-                        }
+                        onChange={(e) => handleChangeFormOption('value', e.target.value, i)}
                         value={a.value}
                         type="text"
                         name="aminityvalue"
@@ -416,30 +394,24 @@ function FormOptionCRUD(props) {
                     aria-hidden="true"
                   />
                 ) : edit ? (
-                  "Update"
+                  'Update'
                 ) : (
-                  "Create"
+                  'Create'
                 )}
-              </Button>{" "}
+              </Button>{' '}
               <Button
                 className="ml-2"
                 disabled={disabled}
                 type="button"
                 variant="danger"
-                onClick={() => setShowModal(false)}
-              >
+                onClick={() => setShowModal(false)}>
                 Cancel
               </Button>
             </div>
           </Form>
         </Modal.Body>
       </Modal>
-      <Modal
-        size="lg"
-        centered
-        show={showPreviewModal}
-        onHide={() => setShowPreviewModal(false)}
-      >
+      <Modal size="lg" centered show={showPreviewModal} onHide={() => setShowPreviewModal(false)}>
         <Modal.Body>
           <Form className="pt-4 pb-3">
             <Form.Group controlId="exampleForm.SelectCustom">
@@ -460,8 +432,7 @@ function FormOptionCRUD(props) {
               disabled={disabled}
               type="button"
               variant="primary"
-              onClick={() => setShowPreviewModal(false)}
-            >
+              onClick={() => setShowPreviewModal(false)}>
               Close
             </Button>
           </Form>
@@ -471,15 +442,14 @@ function FormOptionCRUD(props) {
         variant="primary"
         onClick={() => {
           setPayload({
-            _id: "",
-            title: "",
-            formName: "",
-            options: [{ label: "", value: "", published: true }],
+            _id: '',
+            title: '',
+            formName: '',
+            options: [{ label: '', value: '', published: true }]
           });
           setEdit(false);
           setShowModal(true);
-        }}
-      >
+        }}>
         Add New
       </Button>
       <Table
@@ -498,7 +468,7 @@ function FormOptionCRUD(props) {
 const mapStateToProps = ({ auth }) => {
   return {
     authenticated: auth.authenticated,
-    userId: auth.authenticated ? auth.data.attributes.sub : null,
+    userId: auth.authenticated ? auth.data.attributes.sub : null
   };
 };
 

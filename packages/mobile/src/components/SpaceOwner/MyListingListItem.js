@@ -344,7 +344,7 @@ function MyListingListItem({
           {loadingP ? (
             <ActivityIndicator color="#27aae1" />
           ) : (
-            <Text style={styles.modify}>{item.published ? 'INACTIVE' : 'ACTIVE'}</Text>
+            <Text style={styles.modify}>{item.published ? 'UnPublish' : 'Publish'}</Text>
           )}
         </TouchableOpacity>
         <TouchableOpacity style={styles.modifyButton} onPress={handleDelete}>

@@ -9,14 +9,7 @@ import {
 } from '@parkyourself-frontend/shared/redux/actions/user';
 import { useRouter } from 'next/router';
 
-const AddListingHeader = ({
-  saveAndExitHandler,
-  onBackButtonPress,
-  onNextButtonPress,
-  activeIndex,
-  tempListing,
-  userData
-}) => {
+const AddListingHeader = ({ onBackButtonPress, onNextButtonPress, activeIndex }) => {
   const router = useRouter();
   const { handleSubmit } = useAddOneListing();
   const [disabled, setDisabled] = useState(false);
@@ -37,10 +30,10 @@ const AddListingHeader = ({
   return (
     <div className="add-listing-header">
       <div className="progress-bar-row">
-        <ProgressBar now={activeIndex * 5.5} />
+        <ProgressBar now={activeIndex * 5.8} />
       </div>
       <div className="btn-row">
-        <h4>{activeIndex}/18</h4>
+        <h4>{activeIndex}/17</h4>
         <div>
           <Button
             className="mr-2"
@@ -49,7 +42,7 @@ const AddListingHeader = ({
             style={{ pointerEvents: disabled ? 'none' : 'auto' }}>
             Back
           </Button>
-          {activeIndex < 18 && (
+          {activeIndex < 17 && (
             <Button
               className="mr-2"
               variant="success"

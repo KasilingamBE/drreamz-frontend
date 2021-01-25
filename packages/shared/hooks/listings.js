@@ -5,7 +5,7 @@ import { useQuery, gql, useMutation } from '@apollo/client';
 import { useSelector, useDispatch } from 'react-redux';
 import { v4 as uuid } from 'uuid';
 import { addListingLocal, updateListingLocal } from '../redux/actions/user';
-import { deleteTempListing } from '../redux/actions/tempListing';
+import { deleteTempListing, updateTempListing } from '../redux/actions/tempListing';
 import { updateFindParkingData } from '../redux/actions/findParking';
 import guid from '../utils/guid';
 
@@ -746,6 +746,52 @@ export const UPDATE_LISTING = gql`
   }
 `;
 
+const GET_ALL_FORMOPTION = gql`
+  query GetAllFormOptions($filter: String) {
+    getAllFormOptions(filter: $filter) {
+      _id
+      title
+      options {
+        label
+        value
+      }
+      formName
+      published
+    }
+  }
+`;
+
+export const useGetAllFormOptions = (filter = null) => {
+  const { data } = useQuery(GET_ALL_FORMOPTION, {
+    variables: { filter }
+  });
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (
+      data &&
+      data.getAllFormOptions &&
+      data.getAllFormOptions !== null &&
+      data.getAllFormOptions.length > 0
+    ) {
+      let listingTypeOptions = [];
+      let propertyTypeOptions = [];
+      data.getAllFormOptions.forEach((item) => {
+        if (item._id === '5fccdb80d9db4a00080a0bda') {
+          listingTypeOptions = item.options;
+        } else if (item._id === '5fcd2fb3ad371d00086e767d') {
+          propertyTypeOptions = item.options;
+        }
+      });
+      if (listingTypeOptions.length > 0 || propertyTypeOptions.length > 0) {
+        dispatch(updateTempListing({ listingTypeOptions, propertyTypeOptions }));
+      }
+    }
+  }, [data]);
+
+  // return { formOption: data, error };
+};
+
 export const useAddOneListing = () => {
   const [createListing] = useMutation(CREATE_LISTING);
   const [updateListing] = useMutation(UPDATE_LISTING);
@@ -760,6 +806,159 @@ export const useAddOneListing = () => {
       : {}
   );
   const dispatch = useDispatch();
+
+  const {
+    locationDetails,
+    spaceDetails,
+    spaceAvailable,
+    pricingDetails,
+    activeIndex
+  } = tempListing;
+
+  const {
+    listingType,
+    propertyType,
+    propertyName,
+    country,
+    address,
+    unitNum,
+    city,
+    state,
+    postalCode,
+    code,
+    phone,
+    marker,
+    streetViewImages,
+    parkingEntranceImages,
+    parkingSpaceImages,
+    features
+  } = locationDetails;
+
+  const {
+    parkingSpaceType,
+    qtyOfSpaces,
+    heightRestriction,
+    height1,
+    height2,
+    sameSizeSpaces,
+    largestSize,
+    motorcycle,
+    compact,
+    midsized,
+    large,
+    oversized,
+    motorcycleSpaces,
+    compactSpaces,
+    midsizedSpaces,
+    largeSpaces,
+    oversizedSpaces,
+    isLabelled,
+    spaceLabels,
+    aboutSpace,
+    accessInstructions
+  } = spaceDetails;
+
+  const {
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday,
+    saturday,
+    sunday,
+    scheduleType,
+    customTimeRange,
+    hasNoticeTime,
+    noticeTime,
+    advanceBookingTime,
+    minTime,
+    maxTime,
+    instantBooking
+  } = spaceAvailable;
+
+  const { pricingType, pricingRates } = pricingDetails;
+
+  const spacesSum =
+    parseInt(motorcycleSpaces) +
+    parseInt(compactSpaces) +
+    parseInt(midsizedSpaces) +
+    parseInt(largeSpaces) +
+    parseInt(oversizedSpaces);
+
+  const checkAllSpaceLabels = () => {
+    let flag = true;
+    spaceDetails.spaceLabels.forEach((item) => {
+      if (item.label === '') {
+        flag = false;
+      }
+    });
+    return flag;
+  };
+
+  const handleNext = () => {
+    try {
+      if (
+        (activeIndex === 1 && propertyName) ||
+        (activeIndex === 2 && country && address && city && state && postalCode && code && phone) ||
+        activeIndex === 3 ||
+        activeIndex === 4 ||
+        activeIndex === 5 ||
+        (activeIndex === 6 && qtyOfSpaces > 0) ||
+        // (activeIndex === 7 &&
+        //   sameSizeSpaces != null &&
+        //   (heightRestriction ? height1.value > 0 : true)) ||
+        (activeIndex === 7 &&
+          (motorcycle || compact || midsized || large || oversized) &&
+          (sameSizeSpaces ||
+            (spacesSum == qtyOfSpaces &&
+              (!motorcycle || (motorcycle && motorcycleSpaces > 0)) &&
+              (!compact || (compact && compactSpaces > 0)) &&
+              (!midsized || (midsized && midsizedSpaces > 0)) &&
+              (!large || (large && largeSpaces > 0)) &&
+              (!oversized || (oversized && oversizedSpaces > 0))))) ||
+        (activeIndex === 8 && (!isLabelled || checkAllSpaceLabels())) ||
+        (activeIndex === 9 && aboutSpace) ||
+        (activeIndex === 10 && accessInstructions) ||
+        (activeIndex === 11 &&
+          (scheduleType === '24hours' ||
+            (scheduleType === 'fixed' &&
+              (monday.isActive ||
+                tuesday.isActive ||
+                wednesday.isActive ||
+                thursday.isActive ||
+                friday.isActive ||
+                saturday.isActive ||
+                sunday.isActive)) ||
+            (scheduleType === 'custom' && customTimeRange.length > 0))) ||
+        (activeIndex === 12 &&
+          (!hasNoticeTime ||
+            (hasNoticeTime && noticeTime.value !== '' && noticeTime.value >= 0))) ||
+        (activeIndex === 13 && advanceBookingTime.value !== '' && advanceBookingTime.value >= 0) ||
+        (activeIndex === 14 &&
+          minTime.value !== '' &&
+          minTime.value >= 0 &&
+          maxTime.value !== '' &&
+          maxTime.value >= 0) ||
+        (activeIndex === 15 && !(instantBooking === '')) ||
+        (activeIndex === 16 && pricingType) ||
+        (activeIndex === 17 &&
+          pricingRates.perHourRate !== '' &&
+          pricingRates.perDayRate !== '' &&
+          pricingRates.perWeekRate !== '' &&
+          pricingRates.perMonthRate !== '' &&
+          pricingRates.perHourRate >= 0 &&
+          pricingRates.perDayRate >= 0 &&
+          pricingRates.perWeekRate >= 0 &&
+          pricingRates.perMonthRate >= 0)
+      ) {
+        dispatch(updateTempListing({ activeIndex: activeIndex + 1, validated: false }));
+      } else {
+        dispatch(updateTempListing({ validated: true }));
+      }
+    } catch (error) {
+      // alert('Error while Validatings');
+    }
+  };
 
   const handleSubmit = async () => {
     try {
@@ -891,7 +1090,8 @@ export const useAddOneListing = () => {
   };
 
   return {
-    handleSubmit
+    handleSubmit,
+    handleNext
   };
 };
 

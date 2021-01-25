@@ -17,22 +17,20 @@ import {
   tempListingSpaceA,
   tempListingPricingD
 } from '@parkyourself-frontend/shared/redux/actions/tempListing';
+import { useAddOneListing } from '@parkyourself-frontend/shared/hooks/listings';
 import API from '@parkyourself-frontend/shared/config/apiKeys';
 import AddListingHeader from './AddListingHeader';
 import MapContainer from '../MapContainer';
-// import MapContainer from '../../MapContainer';
 import CheckBoxItem from '../../CheckBoxItem';
 import RadioItem from '../../RadioItem';
 import CustomScheduleModal from '../../CustomScheduleModal';
-import StartEndDateTimePicker from '../../StartEndDateTimePicker';
+// import StartEndDateTimePicker from '../../StartEndDateTimePicker';
 import UseFormOption from '../../formOptions/UseFormOption';
 import StartEndTimePicker from './StartEndTimePicker';
 
 Geocode.setApiKey(API.GOGGLE);
 
 const AddListingForm = ({
-  activeIndex,
-  setActiveIndex,
   tempListing,
   updateTempListing,
   tempListingLocationD,
@@ -40,7 +38,7 @@ const AddListingForm = ({
   tempListingSpaceA,
   tempListingPricingD
 }) => {
-  const [validated, setValidated] = useState(false);
+  const { handleNext } = useAddOneListing();
   const [search, setSearch] = useState('');
   const [showCustomScheduleModal, setShowCustomScheduleModal] = useState(false);
   const [time, setTime] = useState({
@@ -53,7 +51,16 @@ const AddListingForm = ({
   const onChangeSearch = (value) => {
     setSearch(value);
   };
-  const { locationDetails, spaceDetails, spaceAvailable, pricingDetails } = tempListing;
+  const {
+    locationDetails,
+    spaceDetails,
+    spaceAvailable,
+    pricingDetails,
+    activeIndex,
+    validated,
+    listingTypeOptions,
+    propertyTypeOptions
+  } = tempListing;
 
   const {
     listingType,
@@ -118,78 +125,7 @@ const AddListingForm = ({
 
   const { pricingType, pricingRates } = pricingDetails;
 
-  const handleVerify = () => {
-    try {
-      if (
-        (activeIndex == 1 && propertyName) ||
-        (activeIndex == 2 && country && address && city && state && postalCode && code && phone) ||
-        activeIndex == 3 ||
-        activeIndex == 4 ||
-        activeIndex == 5 ||
-        (activeIndex == 6 && qtyOfSpaces >= 1) ||
-        (activeIndex == 7 &&
-          sameSizeSpaces != null &&
-          (heightRestriction ? height1.value > 0 : true)) ||
-        (activeIndex == 8 &&
-          (motorcycle || compact || midsized || large || oversized) &&
-          (sameSizeSpaces || spacesSum === qtyOfSpaces)) ||
-        (activeIndex == 9 && (!isLabelled || checkAllSpaceLabels())) ||
-        (activeIndex == 10 && aboutSpace) ||
-        (activeIndex == 11 && accessInstructions) ||
-        (activeIndex == 12 &&
-          (scheduleType === '24hours' ||
-            scheduleType === 'fixed' ||
-            // (scheduleType === 'fixed' &&
-            //   (monday.isActive ? monday.startTime && monday.endTime : true) &&
-            //   (tuesday.isActive ? tuesday.startTime && tuesday.endTime : true) &&
-            //   (wednesday.isActive ? wednesday.startTime && wednesday.endTime : true) &&
-            //   (thursday.isActive ? thursday.startTime && thursday.endTime : true) &&
-            //   (friday.isActive ? friday.startTime && friday.endTime : true) &&
-            //   (saturday.isActive ? saturday.startTime && saturday.endTime : true) &&
-            //   (sunday.isActive ? sunday.startTime && sunday.endTime : true))
-            (scheduleType == 'custom' && customTimeRange.length > 0))) ||
-        (activeIndex == 13 &&
-          (!hasNoticeTime ||
-            (hasNoticeTime && noticeTime.value !== '' && noticeTime.value >= 0))) ||
-        (activeIndex == 14 && advanceBookingTime.value !== '' && advanceBookingTime.value >= 0) ||
-        (activeIndex == 15 &&
-          minTime.value !== '' &&
-          minTime.value >= 0 &&
-          maxTime.value !== '' &&
-          maxTime.value >= 0) ||
-        (activeIndex == 16 && !(instantBooking === '')) ||
-        (activeIndex == 17 && pricingType) ||
-        (activeIndex == 18 &&
-          pricingRates.perHourRate !== '' &&
-          pricingRates.perDayRate !== '' &&
-          pricingRates.perWeekRate !== '' &&
-          pricingRates.perMonthRate !== '' &&
-          pricingRates.perHourRate >= 0 &&
-          pricingRates.perDayRate >= 0 &&
-          pricingRates.perWeekRate >= 0 &&
-          pricingRates.perMonthRate >= 0)
-      ) {
-        // setValidated(false);
-        return false;
-
-        // setActiveIndex(activeIndex + 1);
-      }
-      // setValidated(true);
-      return true;
-    } catch (error) {
-      alert('Error while Validatings');
-    }
-  };
-
-  const nextButtonHandler = () => {
-    const status = handleVerify();
-    if (!status) {
-      setValidated(false);
-      setActiveIndex(activeIndex + 1);
-    } else {
-      setValidated(true);
-    }
-  };
+  const setActiveIndex = (index) => updateTempListing({ activeIndex: index });
 
   const onMapClick = (mapProps, map, clickEvent) => {
     const lat = clickEvent.latLng.lat();
@@ -338,16 +274,6 @@ const AddListingForm = ({
     });
   };
 
-  const checkAllSpaceLabels = () => {
-    var flag = true;
-    spaceDetails.spaceLabels.forEach((item) => {
-      if (item.label === '') {
-        flag = false;
-      }
-    });
-    return flag;
-  };
-
   const resetVehicleSize = () => {
     tempListingSpaceD({
       motorcycle: false,
@@ -448,42 +374,37 @@ const AddListingForm = ({
     setShowTime(false);
   };
 
+  const nonEmpty = (value) => {
+    let tempValue = 0;
+    if (value) {
+      tempValue = value;
+    }
+    return tempValue;
+  };
+
   return (
     <div>
       <AddListingHeader
-        saveAndExitHandler={() => setActiveIndex(0)}
         activeIndex={activeIndex}
-        onNextButtonPress={nextButtonHandler}
+        onNextButtonPress={handleNext}
         onBackButtonPress={() => setActiveIndex(activeIndex - 1)}
       />
-      {/* <AddListingButtonRow
-        onNextButtonPress={nextButtonHandler}
-        onBackButtonPress={() => setActiveIndex(activeIndex - 1)}
-        activeIndex={activeIndex}
-      /> */}
       {activeIndex === 1 && (
         <div className="question-item">
           <h1 className="heading">Choose a Listing Type {listingType}</h1>
           <Form validated={validated}>
             <Form.Group controlId="exampleForm.SelectCustom">
-              <UseFormOption
-                id="5fccdb80d9db4a00080a0bda"
-                value={listingType}
-                onChange={(e) => tempListingLocationD({ listingType: e.target.value })}
-              />
-              {/* <Form.Control
+              <Form.Control
+                value={propertyType}
+                onChange={(e) => tempListingLocationD({ propertyType: e.target.value })}
                 as="select"
-                name="listingType"
-                custom
-                value={listingType}
-                onChange={(e) =>
-                  tempListingLocationD({ listingType: e.target.value })
-                }
-              >
-                <option value="Business">Business</option>
-                <option value="Residential">Residential</option>
-                <option value="Others">Others</option>
-              </Form.Control> */}
+                custom>
+                {listingTypeOptions.map((o, i) => (
+                  <option key={i} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </Form.Control>
             </Form.Group>
             <Form.Group controlId="formBasicEmail">
               <Form.Label>Property Name*</Form.Label>
@@ -652,11 +573,7 @@ const AddListingForm = ({
               OR
             </p>
             <h1 className="heading">Mark your location on the Map</h1>
-            <MapContainer
-              onMapClick={onMapClick}
-              coordinates={marker.coordinates}
-              // googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyDF0pzALjYYanPshuclFzq_2F24xZWZjOg&libraries=places"
-            />
+            <MapContainer onMapClick={onMapClick} coordinates={marker.coordinates} />
           </div>
         </div>
       )}
@@ -665,27 +582,17 @@ const AddListingForm = ({
           <h1 className="heading">Choose a Property Type</h1>
           <Form>
             <Form.Group controlId="exampleForm.SelectCustom">
-              <UseFormOption
-                id="5fcd2fb3ad371d00086e767d"
+              <Form.Control
                 value={propertyType}
                 onChange={(e) => tempListingLocationD({ propertyType: e.target.value })}
-              />
-              {/* <Form.Control
                 as="select"
-                custom
-                name="propertyType"
-                value={propertyType}
-                onChange={(e) =>
-                  tempListingLocationD({ propertyType: e.target.value })
-                }
-              >
-                <option value="Driveway">Driveway</option>
-                <option value="Residential Garage">Residential Garage</option>
-                <option value="Open Air Lot">Open Air Lot</option>
-                <option value="Commercial Parking Structure">
-                  Commercial Parking Structure
-                </option>
-              </Form.Control> */}
+                custom>
+                {propertyTypeOptions.map((o, i) => (
+                  <option key={i} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </Form.Control>
             </Form.Group>
           </Form>
         </div>
@@ -841,17 +748,49 @@ const AddListingForm = ({
                 name="qtyOfSpaces"
                 min="1"
                 required
-                value={qtyOfSpaces}
-                onChange={(e) => tempListingSpaceD({ qtyOfSpaces: e.target.value })}
+                onChange={(e) => {
+                  tempListingSpaceD({
+                    qtyOfSpaces: e.target.value == '' ? 0 : e.target.value
+                  });
+                }}
+                value={qtyOfSpaces == 0 ? '' : qtyOfSpaces}
               />
               <Form.Control.Feedback type="invalid">
                 Minimum 1 parking space is required.
               </Form.Control.Feedback>
             </Form.Group>
+            {qtyOfSpaces && qtyOfSpaces > 1 && (
+              <>
+                <h1 className="heading">Are all parking spaces the same size?</h1>
+                {validated && sameSizeSpaces == null && (
+                  <p className="invalid-feedback-text">Please select Yes or No</p>
+                )}
+                <RadioItem
+                  label="Yes"
+                  name="sameSizeSpaces"
+                  onClick={(event) => {
+                    tempListingSpaceD({ sameSizeSpaces: true });
+                    resetVehicleSize();
+                  }}
+                  value={true}
+                  checked={sameSizeSpaces}
+                />
+                <RadioItem
+                  label="No, some are different"
+                  name="sameSizeSpaces"
+                  value={false}
+                  onClick={(event) => {
+                    tempListingSpaceD({ sameSizeSpaces: false });
+                    resetVehicleSize();
+                  }}
+                  checked={!sameSizeSpaces}
+                />
+              </>
+            )}
           </Form>
         </div>
       )}
-      {activeIndex === 7 && (
+      {/* {activeIndex === 7 && (
         <div className="question-item">
           <h1 className="heading">Are all parking spaces the same size?</h1>
           <Form validated={validated}>
@@ -955,8 +894,8 @@ const AddListingForm = ({
             )}
           </Form>
         </div>
-      )}
-      {activeIndex === 8 && (
+      )} */}
+      {activeIndex === 7 && (
         <div className="question-item">
           <h1 className="heading">Select your Vehicle Size?</h1>
           <p className="description">Select the largest vehicle size for your parking spaces</p>
@@ -965,7 +904,7 @@ const AddListingForm = ({
               <p className=" ">
                 Sum of Entered Spaces / Total Qty. of Spaces : {spacesSum} / {qtyOfSpaces}
               </p>
-              {validated && parseInt(spacesSum) !== parseInt(qtyOfSpaces) && (
+              {validated && parseInt(spacesSum) != parseInt(qtyOfSpaces) && (
                 <p className="invalid-feedback-text">
                   Sum of all spaces must equal the total quantity of spaces
                 </p>
@@ -1001,13 +940,13 @@ const AddListingForm = ({
                 <Form.Label>Motorcycle Spaces</Form.Label>
                 <Form.Control
                   type="number"
-                  min="0"
+                  min={1}
                   placeholder="Number of Spaces"
                   name="motorcycleSpaces"
                   required
                   onChange={(e) => {
                     tempListingSpaceD({
-                      motorcycleSpaces: e.target.value == '' ? 0 : e.target.value
+                      motorcycleSpaces: e.target.value === '' ? 0 : e.target.value
                     });
                   }}
                   value={motorcycleSpaces == 0 ? '' : motorcycleSpaces}
@@ -1139,10 +1078,10 @@ const AddListingForm = ({
                   required
                   onChange={(e) => {
                     tempListingSpaceD({
-                      largeSpaces: e.target.value == '' ? 0 : e.target.value
+                      largeSpaces: e.target.value === '' ? 0 : e.target.value
                     });
                   }}
-                  value={largeSpaces == 0 ? '' : largeSpaces}
+                  value={largeSpaces === 0 ? '' : largeSpaces}
                 />
                 <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
               </Form.Group>
@@ -1183,10 +1122,10 @@ const AddListingForm = ({
                   required
                   onChange={(e) => {
                     tempListingSpaceD({
-                      oversizedSpaces: e.target.value == '' ? 0 : e.target.value
+                      oversizedSpaces: e.target.value === '' ? 0 : e.target.value
                     });
                   }}
-                  value={oversizedSpaces == 0 ? '' : oversizedSpaces}
+                  value={oversizedSpaces === 0 ? '' : oversizedSpaces}
                 />
                 <Form.Control.Feedback type="invalid">This field is required</Form.Control.Feedback>
               </Form.Group>
@@ -1199,7 +1138,7 @@ const AddListingForm = ({
           <p className="modal-link">How do I determine my space size?</p>
         </div>
       )}
-      {activeIndex === 9 && (
+      {activeIndex === 8 && (
         <div className="question-item">
           <h1 className="heading">Are the spaces numbered or labelled?</h1>
           <RadioItem
@@ -1255,7 +1194,7 @@ const AddListingForm = ({
           )}
         </div>
       )}
-      {activeIndex === 10 && (
+      {activeIndex === 9 && (
         <div className="question-item">
           <h1 className="heading">Tell guests about your space</h1>
           <Form validated={validated}>
@@ -1274,7 +1213,7 @@ const AddListingForm = ({
           </Form>
         </div>
       )}
-      {activeIndex === 11 && (
+      {activeIndex === 10 && (
         <div className="question-item">
           <h1 className="heading">Tell guests what to do when they arrive</h1>
           <Form validated={validated}>
@@ -1293,7 +1232,7 @@ const AddListingForm = ({
           </Form>
         </div>
       )}
-      {activeIndex === 12 && (
+      {activeIndex === 11 && (
         <div className="question-item">
           <h1 className="heading">What are the timings?</h1>
           {validated && !scheduleType && (
@@ -1302,23 +1241,23 @@ const AddListingForm = ({
           <RadioItem
             label="Set to 24 hours a day"
             name="scheduleType"
-            onClick={(event) => tempListingSpaceA({ scheduleType: '24hours' })}
+            onClick={() => tempListingSpaceA({ scheduleType: '24hours' })}
             checked={scheduleType === '24hours'}
           />
 
           <RadioItem
             label="Set to a Fixed schedule"
             name="scheduleType"
-            onClick={(event) => tempListingSpaceA({ scheduleType: 'fixed' })}
+            onClick={() => tempListingSpaceA({ scheduleType: 'fixed' })}
             checked={scheduleType == 'fixed'}
           />
           <RadioItem
             label="Set a Custom Schedule"
             name="scheduleType"
-            onClick={(event) => tempListingSpaceA({ scheduleType: 'custom' })}
+            onClick={() => tempListingSpaceA({ scheduleType: 'custom' })}
             checked={scheduleType == 'custom'}
           />
-          {scheduleType == 'fixed' && (
+          {scheduleType === 'fixed' && (
             <div className="question-item">
               <h1 className="heading">At what days can drivers park at your listing?</h1>
               <Modal show={showTime} onHide={() => setShowTime(false)} size="sm">
@@ -1492,6 +1431,9 @@ const AddListingForm = ({
           {scheduleType === 'custom' && (
             <>
               <h1 className="heading">Select a time range</h1>
+              {validated && scheduleType === 'custom' && customTimeRange.length === 0 && (
+                <p className="invalid-feedback-text">Please add atleast one Time Range</p>
+              )}
               <Button
                 variant="outline-secondary"
                 onClick={() => {
@@ -1539,7 +1481,7 @@ const AddListingForm = ({
           )}
         </div>
       )}
-      {activeIndex === 13 && (
+      {activeIndex === 12 && (
         <div className="question-item">
           <h1 className="heading">How much notice time do you need before guests arrives?</h1>
           <CheckBoxItem
@@ -1603,7 +1545,7 @@ const AddListingForm = ({
           </p>
         </div>
       )}
-      {activeIndex === 14 && (
+      {activeIndex === 13 && (
         <div className="question-item">
           <h1 className="heading">How far in advance can guests book?</h1>
           <Form validated={validated}>
@@ -1653,7 +1595,7 @@ const AddListingForm = ({
           </p>
         </div>
       )}
-      {activeIndex === 15 && (
+      {activeIndex === 14 && (
         <div className="question-item">
           <h1 className="heading">How long can guests stay?</h1>
           <Form validated={validated}>
@@ -1742,7 +1684,7 @@ const AddListingForm = ({
           </p>
         </div>
       )}
-      {activeIndex === 16 && (
+      {activeIndex === 15 && (
         <div className="question-item">
           <h1 className="heading">Which booking process do you prefer?</h1>
           {validated && instantBooking === '' && (
@@ -1762,7 +1704,7 @@ const AddListingForm = ({
           />
         </div>
       )}
-      {activeIndex == 17 && (
+      {activeIndex === 16 && (
         <div className="question-item">
           <h1 className="heading">Choose how you want to charge for the bookings?</h1>
           <RadioItem
@@ -1793,7 +1735,7 @@ const AddListingForm = ({
           )}
         </div>
       )}
-      {activeIndex === 18 && (
+      {activeIndex === 17 && (
         <div className="question-item">
           <h1 className="heading">Set your desired rates</h1>
           <h4>Flat Billing Type</h4>

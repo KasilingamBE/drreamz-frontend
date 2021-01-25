@@ -503,7 +503,7 @@ const MyListingItem = ({
             </Button>
           </Link>
           <Button variant="outline-success" onClick={handlePublish} disabled={disabled}>
-            {published ? 'Inactive' : 'Active'}
+            {published ? 'UnPublish' : 'Publish'}
           </Button>
           <Link href={`/listings/inbox/${_id}`}>
             <Button variant="outline-primary" disabled={disabled}>

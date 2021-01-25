@@ -10,6 +10,10 @@ import {
 } from '../actions/tempListing';
 
 const initialListing = {
+  activeIndex: 0,
+  validated: false,
+  listingTypeOptions: [],
+  propertyTypeOptions: [],
   mobile: false,
   edit: false,
   tStreetViewImages: [],
@@ -42,7 +46,7 @@ const initialListing = {
   },
   spaceDetails: {
     parkingSpaceType: 'Tandem',
-    qtyOfSpaces: 4,
+    qtyOfSpaces: 0,
     heightRestriction: false,
     height1: { value: 1, unit: 'feet' },
     height2: { value: 1, unit: 'inches' },

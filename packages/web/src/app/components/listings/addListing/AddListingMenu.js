@@ -1,7 +1,39 @@
 import React from 'react';
 import { ChevronsRight } from 'react-feather';
 
-const AddListingMenu = ({ activeIndex, setActiveIndex }) => {
+const AddListingMenu = ({ activeIndex, setActiveIndex, spaceDetails }) => {
+  const {
+    qtyOfSpaces,
+    sameSizeSpaces,
+    motorcycle,
+    compact,
+    midsized,
+    large,
+    oversized,
+    motorcycleSpaces,
+    compactSpaces,
+    midsizedSpaces,
+    largeSpaces,
+    oversizedSpaces
+  } = spaceDetails;
+
+  const spacesSum =
+    parseInt(motorcycleSpaces) +
+    parseInt(compactSpaces) +
+    parseInt(midsizedSpaces) +
+    parseInt(largeSpaces) +
+    parseInt(oversizedSpaces);
+
+  const spaceLabelActive =
+    qtyOfSpaces > 0 &&
+    (sameSizeSpaces ||
+      (spacesSum == qtyOfSpaces &&
+        (!motorcycle || (motorcycle && motorcycleSpaces > 0)) &&
+        (!compact || (compact && compactSpaces > 0)) &&
+        (!midsized || (midsized && midsizedSpaces > 0)) &&
+        (!large || (large && largeSpaces > 0)) &&
+        (!oversized || (oversized && oversizedSpaces > 0))));
+
   return (
     <div className="add-listing-menu">
       <ol>
@@ -42,20 +74,28 @@ const AddListingMenu = ({ activeIndex, setActiveIndex }) => {
         </li>
         <li
           className={activeIndex === 7 ? 'active-menu-item' : ' '}
-          onClick={() => setActiveIndex(7)}>
-          Parking Space Size
+          onClick={() => setActiveIndex(7)}
+          style={{
+            opacity: qtyOfSpaces > 0 ? 1 : 0.4,
+            pointerEvents: qtyOfSpaces > 0 ? 'auto' : 'none'
+          }}>
+          Vehicle Size
           <ChevronsRight className="add-listing-arrow" size={24} />
         </li>
         <li
           className={activeIndex === 8 ? 'active-menu-item' : ' '}
-          onClick={() => setActiveIndex(8)}>
-          Vehicle Size
+          onClick={() => setActiveIndex(8)}
+          style={{
+            opacity: spaceLabelActive ? 1 : 0.4,
+            pointerEvents: spaceLabelActive ? 'auto' : 'none'
+          }}>
+          Spaces Labels
           <ChevronsRight className="add-listing-arrow" size={24} />
         </li>
         <li
           className={activeIndex === 9 ? 'active-menu-item' : ' '}
           onClick={() => setActiveIndex(9)}>
-          Spaces Labeled?
+          Instruction
           <ChevronsRight className="add-listing-arrow" size={24} />
         </li>
         <li
@@ -67,48 +107,42 @@ const AddListingMenu = ({ activeIndex, setActiveIndex }) => {
         <li
           className={activeIndex === 11 ? 'active-menu-item' : ' '}
           onClick={() => setActiveIndex(11)}>
-          Instruction
+          Timings
           <ChevronsRight className="add-listing-arrow" size={24} />
         </li>
         <li
           className={activeIndex === 12 ? 'active-menu-item' : ' '}
           onClick={() => setActiveIndex(12)}>
-          Timings
+          Notice Time
           <ChevronsRight className="add-listing-arrow" size={24} />
         </li>
         <li
           className={activeIndex === 13 ? 'active-menu-item' : ' '}
           onClick={() => setActiveIndex(13)}>
-          Notice Time
+          Advance booking time
           <ChevronsRight className="add-listing-arrow" size={24} />
         </li>
         <li
           className={activeIndex === 14 ? 'active-menu-item' : ' '}
           onClick={() => setActiveIndex(14)}>
-          Advance booking time
+          Max Stay Time
           <ChevronsRight className="add-listing-arrow" size={24} />
         </li>
         <li
           className={activeIndex === 15 ? 'active-menu-item' : ' '}
           onClick={() => setActiveIndex(15)}>
-          Max Stay Time
+          Booking process
           <ChevronsRight className="add-listing-arrow" size={24} />
         </li>
         <li
           className={activeIndex === 16 ? 'active-menu-item' : ' '}
           onClick={() => setActiveIndex(16)}>
-          Booking process
+          Charge Type
           <ChevronsRight className="add-listing-arrow" size={24} />
         </li>
         <li
           className={activeIndex === 17 ? 'active-menu-item' : ' '}
           onClick={() => setActiveIndex(17)}>
-          Charge Type
-          <ChevronsRight className="add-listing-arrow" size={24} />
-        </li>
-        <li
-          className={activeIndex === 18 ? 'active-menu-item' : ' '}
-          onClick={() => setActiveIndex(18)}>
           Pricing
           <ChevronsRight className="add-listing-arrow" size={24} />
         </li>
