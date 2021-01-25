@@ -36,7 +36,6 @@ function SetPricingType({
 
   return (
     <>
-      <AddListingHeader onPress={backButtonHandler} width={`${width}%`} navigation={navigation} />
       <ScrollView contentContainerStyle={styles.container}>
         {/* <Text style={styles.setPricing}>Set Pricing</Text> */}
         <Text style={styles.heading}>Choose how you want to charge for the bookings</Text>

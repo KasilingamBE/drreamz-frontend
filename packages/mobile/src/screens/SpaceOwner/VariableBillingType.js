@@ -88,7 +88,7 @@ function VariableBillingType({
 
   return (
     <>
-      <AddListingHeader onPress={backButtonHandler} width={`${width}%`} />
+      <AddListingHeader onPress={backButtonHandler} width={`${width}%`} activeIndex={activeIndex} />
 
       <ScrollView contentContainerStyle={styles.container}>
         {/* <Text style={styles.setPricing1}>Set Pricing</Text> */}

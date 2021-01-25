@@ -6,73 +6,22 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
-  Alert
+  Alert,
+  Dimensions
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TipsSettingRatesModal from '../../components/SpaceOwner/TipsSettingRatesModal';
-import NextButton from '../../components/SpaceOwner/NextButton';
-import AddListingHeader from '../../components/SpaceOwner/AddListingHeader';
 import Input from '../../components/Input';
 import { tempListingPricingD } from '@parkyourself-frontend/shared/redux/actions/tempListing';
+import colors from '@parkyourself-frontend/shared/config/colors';
 
-function FlatBillingType({
-  onBackButtonPress,
-  onNextButtonPress,
-  setListingPricingDetails,
-  pricingDetails,
-  tempListingPricingD,
-  navigation
-}) {
-  const [width, setWidth] = useState(0);
-
-  const [validate, setValidate] = useState(false);
-
-  const [dailyMax, setDailyMax] = useState(
-    pricingDetails && pricingDetails.pricingRates ? pricingDetails.pricingRates.dailyMax : '5.00'
-  );
+function FlatBillingType({ pricingDetails, tempListingPricingD, validated }) {
   const [visible, setVisible] = useState(false);
-
-  const backButtonHandler = () => {
-    onBackButtonPress();
-  };
-
-  const onSubmitHandler = () => {
-    try {
-      if (
-        pricingDetails.pricingRates.perHourRate ||
-        pricingDetails.pricingRates.perDayRate ||
-        pricingDetails.pricingRates.perWeekRate ||
-        pricingDetails.pricingRates.perMonthRate
-      ) {
-        setValidate(false);
-        // let pricingDetails = {
-        //   pricingType: 'Flat',
-        //   pricingRates: {
-        //     dailyMax,
-        //   },
-        // };
-        // setListingPricingDetails(pricingDetails);
-        // navigation.navigate('SaveSpaceDetails');
-        onNextButtonPress(1);
-      } else {
-        setValidate(true);
-      }
-    } catch (error) {
-      Alert.alert('Something Went wrong!', 'Unable to set pricing details');
-    }
-  };
 
   return (
     <>
-      <AddListingHeader
-        onPress={backButtonHandler}
-        width={`${19 * 5.2}%`}
-        navigation={navigation}
-      />
-
       <ScrollView contentContainerStyle={styles.container}>
-        {/* <Text style={styles.setPricing1}>Set Pricing</Text> */}
         <Text style={styles.heading}>Set your desired rates</Text>
         <Text style={styles.subHeading}>
           {pricingDetails.pricingType === 'flat' ? 'Flat' : 'Variable'} Billing Type
@@ -84,7 +33,7 @@ function FlatBillingType({
               ? ''
               : pricingDetails.pricingRates.perHourRate.toString()
           }
-          validate={validate}
+          validated={validated}
           keyboardType="number-pad"
           onChangeText={(input) =>
             tempListingPricingD({
@@ -103,7 +52,7 @@ function FlatBillingType({
               ? ''
               : pricingDetails.pricingRates.perDayRate.toString()
           }
-          validate={validate}
+          validated={validated}
           keyboardType="number-pad"
           onChangeText={(input) =>
             tempListingPricingD({
@@ -122,7 +71,7 @@ function FlatBillingType({
               ? ''
               : pricingDetails.pricingRates.perWeekRate.toString()
           }
-          validate={validate}
+          validated={validated}
           keyboardType="number-pad"
           onChangeText={(input) =>
             tempListingPricingD({
@@ -141,7 +90,7 @@ function FlatBillingType({
               ? ''
               : pricingDetails.pricingRates.perMonthRate.toString()
           }
-          validate={validate}
+          validated={validated}
           keyboardType="number-pad"
           onChangeText={(input) =>
             tempListingPricingD({
@@ -158,7 +107,6 @@ function FlatBillingType({
         </TouchableOpacity>
         <TipsSettingRatesModal visible={visible} onPress={() => setVisible(false)} />
       </ScrollView>
-      {/* <NextButton onPress={onSubmitHandler} /> */}
     </>
   );
 }
@@ -166,10 +114,9 @@ function FlatBillingType({
 const styles = StyleSheet.create({
   container: {
     // flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     padding: 20,
-    zIndex: 1
-    // paddingTop: 50
+    minHeight: Dimensions.get('window').height
   },
   setPricing1: {
     // fontFamily: 'roboto-500',
@@ -243,7 +190,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ tempListing }) => ({
-  pricingDetails: tempListing.pricingDetails
+  pricingDetails: tempListing.pricingDetails,
+  validated: tempListing.validated
 });
 
 export default connect(mapStateToProps, { tempListingPricingD })(FlatBillingType);

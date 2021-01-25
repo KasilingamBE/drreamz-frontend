@@ -26,7 +26,7 @@ const initialListing = {
   locationDetails: {
     listingType: 'Residential',
     propertyType: 'Driveway',
-    propertyName: 'sample',
+    propertyName: 'Sample Listing',
     country: 'United States',
     address: '',
     // unitNum: '',
@@ -46,7 +46,7 @@ const initialListing = {
   },
   spaceDetails: {
     parkingSpaceType: 'Tandem',
-    qtyOfSpaces: 0,
+    qtyOfSpaces: 4,
     heightRestriction: false,
     height1: { value: 1, unit: 'feet' },
     height2: { value: 1, unit: 'inches' },
@@ -79,9 +79,9 @@ const initialListing = {
     customTimeRange: [],
     hasNoticeTime: false,
     noticeTime: { value: 3600000, unit: 'Hours' },
-    advanceBookingTime: { value: 7200000, unit: 'Hours' },
+    advanceBookingTime: { value: 86400000, unit: 'Days' },
     minTime: { value: 3600000, unit: 'Hours' },
-    maxTime: { value: 7200000, unit: 'Hours' },
+    maxTime: { value: 86400000, unit: 'Days' },
     instantBooking: true
   },
   pricingDetails: {

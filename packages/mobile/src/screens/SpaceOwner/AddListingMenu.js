@@ -12,19 +12,11 @@ import {
 } from 'react-native';
 import colors from '@parkyourself-frontend/shared/config/colors';
 import addListingMenu from '@parkyourself-frontend/shared/config/addListingMenu';
-import AddListingHeader from '../../components/SpaceOwner/AddListingHeader';
-import NextButton from '../../components/SpaceOwner/NextButton';
 import ScreenTittle from '../../components/common/ScreenTittle';
 
 function SetPricingType({ onBackButtonPress, setActiveIndex, navigation, edit }) {
   return (
     <>
-      <AddListingHeader
-        onPress={onBackButtonPress}
-        width={`${0}%`}
-        navigation={navigation}
-        icon="close"
-      />
       <ScrollView contentContainerStyle={styles.container}>
         <ScreenTittle title={`${edit ? 'Update' : 'Add'} Listing`} />
         {addListingMenu.map((item) => (

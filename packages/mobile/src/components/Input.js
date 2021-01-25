@@ -2,19 +2,19 @@ import colors from '@parkyourself-frontend/shared/config/colors';
 import React from 'react';
 import { View, TextInput, StyleSheet, Text, Platform } from 'react-native';
 
-export default function Input({ validate, value, ...rest }) {
+export default function Input({ validated, value, ...rest }) {
   return (
     <View style={styles.container}>
       <View
         style={
-          validate && !value
+          validated && !value
             ? { ...styles.inputContainer, ...styles.required }
             : styles.inputContainer
         }>
         <Text style={styles.label}>{rest.placeholder}</Text>
         <TextInput value={value} {...rest} style={styles.textInput} />
       </View>
-      {validate && !value && <Text style={styles.requiredText}>This field is required</Text>}
+      {validated && !value && <Text style={styles.requiredText}>This field is required</Text>}
     </View>
   );
 }

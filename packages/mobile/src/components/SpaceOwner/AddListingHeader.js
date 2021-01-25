@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-  ActivityIndicator,
-  SafeAreaView
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import { connect } from 'react-redux';
-import { useAddOneListing } from '@parkyourself-frontend/shared/hooks/listings';
 import { deleteTempListing } from '@parkyourself-frontend/shared/redux/actions/tempListing';
 import {
   addListingLocal,
@@ -20,12 +11,12 @@ import colors from '@parkyourself-frontend/shared/config/colors';
 
 const AddListingHeader = ({
   onPress,
-  width = '100%',
   icon = 'arrowleft',
   navigation,
-  tempListing
+  activeIndex = 0,
+  handleSubmit,
+  propertyName
 }) => {
-  const { handleSubmit } = useAddOneListing();
   const [disabled, setDisabled] = useState(false);
 
   const onSubmitHandler = async () => {
@@ -33,11 +24,6 @@ const AddListingHeader = ({
       setDisabled(true);
       await handleSubmit();
       setDisabled(false);
-      // if (tempListing.edit) {
-      //   navigation.navigate('MyListingsScreen');
-      // } else {
-      //   navigation.popToTop();
-      // }
       navigation.navigate('My Listings');
     } catch (error) {
       // console.log('error', error);
@@ -65,10 +51,9 @@ const AddListingHeader = ({
   };
 
   return (
-    // <SafeAreaView>
     <View style={styles.container}>
       <View style={styles.progressIndicator}>
-        <View style={{ ...styles.progress, width }} />
+        <View style={{ ...styles.progress, width: `${activeIndex * 5.8}%` }} />
       </View>
       <View style={styles.row}>
         <TouchableOpacity onPress={onPress} style={styles.backBtn}>
@@ -76,14 +61,13 @@ const AddListingHeader = ({
         </TouchableOpacity>
         {disabled ? (
           <ActivityIndicator style={styles.loading} color="#0b4094" size="small" />
-        ) : (
+        ) : activeIndex == 0 && propertyName == '' ? null : (
           <TouchableOpacity onPress={onSaveAndExit} style={styles.saveBtn}>
             <Text style={styles.save}>Save & Exit</Text>
           </TouchableOpacity>
         )}
       </View>
     </View>
-    // </SafeAreaView>
   );
 };
 

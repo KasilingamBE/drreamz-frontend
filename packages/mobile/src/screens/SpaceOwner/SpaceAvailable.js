@@ -12,7 +12,7 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
-import IoniconsIcon from 'react-native-vector-icons/Ionicons';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import { convertToUnit, convertToMilliseconds } from '@parkyourself-frontend/shared/utils/time';
 import { tempListingSpaceA } from '@parkyourself-frontend/shared/redux/actions/tempListing';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -25,6 +25,7 @@ import AddListingHeader from '../../components/SpaceOwner/AddListingHeader';
 import NextButton from '../../components/SpaceOwner/NextButton';
 import RadioListItem from '../../components/RadioListItem';
 import Input from '../../components/Input';
+import UnitModal from '../../components/listing/addListing/UnitModal';
 import colors from '@parkyourself-frontend/shared/config/colors';
 
 function SpaceAvailable({
@@ -34,15 +35,17 @@ function SpaceAvailable({
   tempListingSpaceA,
   navigation,
   activeIndex,
-  setActiveIndex
+  setActiveIndex,
+  validated
 }) {
   const scrollRef = useRef();
 
   // const [activeIndex, setActiveIndex] = useState(1);
 
-  const [width, setWidth] = useState(0);
+  const [showUnitModal, setShowUnitModal] = useState(false);
+  const [howLong, setHowLong] = useState('minTime');
 
-  const [validate, setValidate] = useState(false);
+  // const [validated, setvalidated] = useState(false);
 
   //for custom schedule modal
   const [visible, setVisible] = useState(false);
@@ -114,6 +117,7 @@ function SpaceAvailable({
         startTime: currentDate
       }
     });
+    setStartShow(false);
   };
 
   const onEndDateChange = (event, selectedDate) => {
@@ -147,87 +151,10 @@ function SpaceAvailable({
     showMode('time', item);
   };
 
-  // const backButtonHandler = () => {
-  //   if (activeIndex != 1) {
-  //     setActiveIndex(activeIndex - 1);
-  //     scrollRef.current.scrollTo({
-  //       y: 0,
-  //       animated: true
-  //     });
-  //     setWidth(width - 20);
-  //   } else {
-  //     onBackButtonPress();
-  //   }
-  // };
-
-  const onSubmitHandler = () => {
-    try {
-      // if (activeIndex != 5) {
-      if (
-        (activeIndex == 13 &&
-          (spaceAvailable.scheduleType === '24hours' ||
-            spaceAvailable.scheduleType === 'custom' ||
-            spaceAvailable.monday.isActive ||
-            spaceAvailable.tuesday.isActive ||
-            spaceAvailable.wednesday.isActive ||
-            spaceAvailable.thursday.isActive ||
-            spaceAvailable.friday.isActive ||
-            spaceAvailable.saturday.isActive ||
-            spaceAvailable.sunday.isActive)) ||
-        activeIndex === 14 ||
-        activeIndex === 15 ||
-        activeIndex === 16 ||
-        activeIndex === 17
-      ) {
-        setValidate(false);
-        setActiveIndex(activeIndex + 1);
-        scrollRef.current.scrollTo({
-          y: 0,
-          animated: true
-        });
-        setWidth(width + 20);
-      } else {
-        setValidate(true);
-      }
-      // } else {
-      //   // let spaceAvailableData = {
-      //   //   activeDays: {
-      //   //     monday: monday,
-      //   //     tuesday: tuesday,
-      //   //     wednesday: wednesday,
-      //   //     thursday: thursday,
-      //   //     friday: friday,
-      //   //     saturday: saturday,
-      //   //     sunday: sunday,
-      //   //   },
-      //   //   scheduleType: scheduleType == 1 ? 'daily' : '24hours',
-      //   //   startTime,
-      //   //   endTime,
-      //   //   noticeTime,
-      //   //   advanceBookingTime,
-      //   //   minTime,
-      //   //   maxTime,
-      //   //   instantBooking,
-      //   // };
-      //   // addListingSpaceAvailable(spaceAvailableData);
-      //   onNextButtonPress();
-      // }
-    } catch (error) {
-      Alert.alert('Something Went wrong!', 'Unable to add space available details');
-    }
-  };
-
   return (
     <>
-      <AddListingHeader
-        onPress={onBackButtonPress}
-        width={`${activeIndex * 5.2}%`}
-        navigation={navigation}
-      />
       <ScrollView ref={scrollRef} contentContainerStyle={styles.container}>
-        {/* <Text style={styles.spaceAvailable}>Space Available</Text> */}
-
-        {activeIndex === 13 && (
+        {activeIndex === 11 && (
           <>
             <Text style={styles.heading}>What are the timings?</Text>
             <RadioListItem
@@ -251,7 +178,8 @@ function SpaceAvailable({
                 {showStart && (
                   <DateTimePicker
                     testID="dateTimePicker"
-                    value={spaceAvailable[activeDay].startTime}
+                    value={new Date()}
+                    // value={spaceAvailable[activeDay].startTime}
                     mode={mode}
                     is24Hour={true}
                     display="default"
@@ -261,7 +189,8 @@ function SpaceAvailable({
                 {showEnd && (
                   <DateTimePicker
                     testID="dateTimePicker"
-                    value={spaceAvailable[activeDay].endTime}
+                    value={new Date()}
+                    // value={spaceAvailable[activeDay].endTime}
                     mode={mode}
                     is24Hour={true}
                     display="default"
@@ -287,7 +216,7 @@ function SpaceAvailable({
                         style={styles.button2}
                         onPress={() => showDatepicker('start', 'monday')}>
                         <Text style={styles.startTime} numberOfLines={1}>
-                          {moment(spaceAvailable.monday.startTime).format('lll')}
+                          {`${spaceAvailable.monday.startHour}:${spaceAvailable.monday.startMinute}`}
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -296,7 +225,7 @@ function SpaceAvailable({
                         style={styles.button2}
                         onPress={() => showDatepicker('end', 'monday')}>
                         <Text style={styles.endTime} numberOfLines={1}>
-                          {moment(spaceAvailable.monday.endTime).format('lll')}
+                          {`${spaceAvailable.monday.endHour}:${spaceAvailable.monday.endMinute}`}
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -321,7 +250,7 @@ function SpaceAvailable({
                         style={styles.button2}
                         onPress={() => showDatepicker('start', 'tuesday')}>
                         <Text style={styles.startTime} numberOfLines={1}>
-                          {moment(spaceAvailable.tuesday.startTime).format('lll')}
+                          {`${spaceAvailable.tuesday.startHour}:${spaceAvailable.tuesday.startMinute}`}
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -330,7 +259,7 @@ function SpaceAvailable({
                         style={styles.button2}
                         onPress={() => showDatepicker('end', 'tuesday')}>
                         <Text style={styles.endTime} numberOfLines={1}>
-                          {moment(spaceAvailable.tuesday.endTime).format('lll')}
+                          {`${spaceAvailable.tuesday.endHour}:${spaceAvailable.tuesday.endMinute}`}
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -355,7 +284,7 @@ function SpaceAvailable({
                         style={styles.button2}
                         onPress={() => showDatepicker('start', 'wednesday')}>
                         <Text style={styles.startTime} numberOfLines={1}>
-                          {moment(spaceAvailable.wednesday.startTime).format('lll')}
+                          {`${spaceAvailable.wednesday.startHour}:${spaceAvailable.wednesday.startMinute}`}
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -364,7 +293,7 @@ function SpaceAvailable({
                         style={styles.button2}
                         onPress={() => showDatepicker('end', 'wednesday')}>
                         <Text style={styles.endTime} numberOfLines={1}>
-                          {moment(spaceAvailable.wednesday.endTime).format('lll')}
+                          {`${spaceAvailable.wednesday.endHour}:${spaceAvailable.wednesday.endMinute}`}
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -389,7 +318,7 @@ function SpaceAvailable({
                         style={styles.button2}
                         onPress={() => showDatepicker('start', 'thursday')}>
                         <Text style={styles.startTime} numberOfLines={1}>
-                          {moment(spaceAvailable.thursday.startTime).format('lll')}
+                          {`${spaceAvailable.thursday.startHour}:${spaceAvailable.thursday.startMinute}`}
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -398,7 +327,7 @@ function SpaceAvailable({
                         style={styles.button2}
                         onPress={() => showDatepicker('end', 'thursday')}>
                         <Text style={styles.endTime} numberOfLines={1}>
-                          {moment(spaceAvailable.thursday.endTime).format('lll')}
+                          {`${spaceAvailable.thursday.endHour}:${spaceAvailable.thursday.endMinute}`}
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -423,7 +352,7 @@ function SpaceAvailable({
                         style={styles.button2}
                         onPress={() => showDatepicker('start', 'friday')}>
                         <Text style={styles.startTime} numberOfLines={1}>
-                          {moment(spaceAvailable.friday.startTime).format('lll')}
+                          {`${spaceAvailable.friday.startHour}:${spaceAvailable.friday.startMinute}`}
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -432,7 +361,7 @@ function SpaceAvailable({
                         style={styles.button2}
                         onPress={() => showDatepicker('end', 'friday')}>
                         <Text style={styles.endTime} numberOfLines={1}>
-                          {moment(spaceAvailable.friday.endTime).format('lll')}
+                          {`${spaceAvailable.friday.endHour}:${spaceAvailable.friday.endMinute}`}
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -457,7 +386,7 @@ function SpaceAvailable({
                         style={styles.button2}
                         onPress={() => showDatepicker('start', 'saturday')}>
                         <Text style={styles.startTime} numberOfLines={1}>
-                          {moment(spaceAvailable.saturday.startTime).format('lll')}
+                          {`${spaceAvailable.saturday.startHour}:${spaceAvailable.saturday.startMinute}`}
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -466,7 +395,7 @@ function SpaceAvailable({
                         style={styles.button2}
                         onPress={() => showDatepicker('end', 'saturday')}>
                         <Text style={styles.endTime} numberOfLines={1}>
-                          {moment(spaceAvailable.saturday.endTime).format('lll')}
+                          {`${spaceAvailable.saturday.endHour}:${spaceAvailable.saturday.endMinute}`}
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -491,7 +420,7 @@ function SpaceAvailable({
                         style={styles.button2}
                         onPress={() => showDatepicker('start', 'sunday')}>
                         <Text style={styles.startTime} numberOfLines={1}>
-                          {moment(spaceAvailable.sunday.startTime).format('lll')}
+                          {`${spaceAvailable.sunday.startHour}:${spaceAvailable.sunday.startMinute}`}
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -500,13 +429,13 @@ function SpaceAvailable({
                         style={styles.button2}
                         onPress={() => showDatepicker('end', 'sunday')}>
                         <Text style={styles.endTime} numberOfLines={1}>
-                          {moment(spaceAvailable.sunday.endTime).format('lll')}
+                          {`${spaceAvailable.sunday.endHour}:${spaceAvailable.sunday.endMinute}`}
                         </Text>
                       </TouchableOpacity>
                     </View>
                   </View>
                 )}
-                {validate &&
+                {validated &&
                   !(
                     spaceAvailable.monday.isActive ||
                     spaceAvailable.tuesday.isActive ||
@@ -521,7 +450,7 @@ function SpaceAvailable({
           </>
         )}
 
-        {activeIndex === 14 && (
+        {activeIndex === 12 && (
           <>
             <Text style={styles.heading}>How much notice do you need before a Guest arrives?</Text>
             <RadioListItem
@@ -552,7 +481,7 @@ function SpaceAvailable({
                                 spaceAvailable.noticeTime.value,
                                 spaceAvailable.noticeTime.unit
                               ) - 1,
-                              noticeTime.unit
+                              spaceAvailable.noticeTime.unit
                             )
                           }
                         });
@@ -560,10 +489,18 @@ function SpaceAvailable({
                     }}>
                     <EntypoIcon name="circle-with-minus" style={styles.icon} />
                   </TouchableOpacity>
-                  <Text style={styles.loremIpsum11}>
-                    {convertToUnit(spaceAvailable.noticeTime.value, spaceAvailable.noticeTime.unit)}{' '}
-                    {spaceAvailable.noticeTime.unit}
-                  </Text>
+                  <TouchableOpacity
+                    onPress={() => setShowUnitModal(true)}
+                    style={styles.unitButton}>
+                    <Text style={styles.unitText}>
+                      {convertToUnit(
+                        spaceAvailable.noticeTime.value,
+                        spaceAvailable.noticeTime.unit
+                      )}{' '}
+                      {spaceAvailable.noticeTime.unit}
+                    </Text>
+                    <AntDesignIcon name="caretdown" style={styles.unitText} />
+                  </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() =>
                       tempListingSpaceA({
@@ -574,7 +511,7 @@ function SpaceAvailable({
                               spaceAvailable.noticeTime.value,
                               spaceAvailable.noticeTime.unit
                             ) + 1,
-                            noticeTime.unit
+                            spaceAvailable.noticeTime.unit
                           )
                         }
                       })
@@ -584,7 +521,20 @@ function SpaceAvailable({
                 </View>
               </View>
             )}
-
+            <UnitModal
+              onHide={() => setShowUnitModal(false)}
+              visible={showUnitModal}
+              unit={spaceAvailable.noticeTime.unit}
+              onSelect={(value, unit) => {
+                tempListingSpaceA({
+                  noticeTime: {
+                    unit,
+                    value
+                  }
+                });
+                setShowUnitModal(false);
+              }}
+            />
             <Text style={styles.description}>
               Tip : At least 2 days&#39; notice can help you plan for a guest&#39;s arrival, but you
               might miss out last minute trips.
@@ -592,7 +542,7 @@ function SpaceAvailable({
           </>
         )}
 
-        {activeIndex === 15 && (
+        {activeIndex === 13 && (
           <>
             <Text style={styles.heading}>How far in advance can guests book?</Text>
             <View style={styles.rect10}>
@@ -613,7 +563,7 @@ function SpaceAvailable({
                               spaceAvailable.advanceBookingTime.value,
                               spaceAvailable.advanceBookingTime.unit
                             ) - 1,
-                            noticeTime.unit
+                            spaceAvailable.advanceBookingTime.unit
                           )
                         }
                       });
@@ -621,13 +571,16 @@ function SpaceAvailable({
                   }}>
                   <EntypoIcon name="circle-with-minus" style={styles.icon} />
                 </TouchableOpacity>
-                <Text style={styles.loremIpsum11}>
-                  {convertToUnit(
-                    spaceAvailable.advanceBookingTime.value,
-                    spaceAvailable.advanceBookingTime.unit
-                  )}{' '}
-                  {spaceAvailable.advanceBookingTime.unit}
-                </Text>
+                <TouchableOpacity onPress={() => setShowUnitModal(true)} style={styles.unitButton}>
+                  <Text style={styles.unitText}>
+                    {convertToUnit(
+                      spaceAvailable.advanceBookingTime.value,
+                      spaceAvailable.advanceBookingTime.unit
+                    )}{' '}
+                    {spaceAvailable.advanceBookingTime.unit}
+                  </Text>
+                  <AntDesignIcon name="caretdown" style={styles.unitText} />
+                </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() =>
                     tempListingSpaceA({
@@ -638,7 +591,7 @@ function SpaceAvailable({
                             spaceAvailable.advanceBookingTime.value,
                             spaceAvailable.advanceBookingTime.unit
                           ) + 1,
-                          noticeTime.unit
+                          spaceAvailable.advanceBookingTime.unit
                         )
                       }
                     })
@@ -647,13 +600,27 @@ function SpaceAvailable({
                 </TouchableOpacity>
               </View>
             </View>
+            <UnitModal
+              onHide={() => setShowUnitModal(false)}
+              visible={showUnitModal}
+              unit={spaceAvailable.advanceBookingTime.unit}
+              onSelect={(value, unit) => {
+                tempListingSpaceA({
+                  advanceBookingTime: {
+                    unit,
+                    value
+                  }
+                });
+                setShowUnitModal(false);
+              }}
+            />
             <Text style={styles.description}>
               Tip : Avoid cancelling or declining guests by only unblocking dates you can host.
             </Text>
           </>
         )}
 
-        {activeIndex === 16 && (
+        {activeIndex === 14 && (
           <>
             <Text style={styles.heading}>How long can guests stay?</Text>
             <View style={styles.rect10}>
@@ -671,7 +638,7 @@ function SpaceAvailable({
                               spaceAvailable.minTime.value,
                               spaceAvailable.minTime.unit
                             ) - 1,
-                            noticeTime.unit
+                            spaceAvailable.minTime.unit
                           )
                         }
                       });
@@ -679,10 +646,18 @@ function SpaceAvailable({
                   }}>
                   <EntypoIcon name="circle-with-minus" style={styles.icon} />
                 </TouchableOpacity>
-                <Text style={styles.loremIpsum11}>
-                  {convertToUnit(spaceAvailable.minTime.value, spaceAvailable.minTime.unit)}{' '}
-                  {spaceAvailable.minTime.unit} Minimum
-                </Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    setShowUnitModal(true);
+                    setHowLong('minTime');
+                  }}
+                  style={styles.unitButton}>
+                  <Text style={styles.unitText}>
+                    Min {convertToUnit(spaceAvailable.minTime.value, spaceAvailable.minTime.unit)}{' '}
+                    {spaceAvailable.minTime.unit}
+                  </Text>
+                  <AntDesignIcon name="caretdown" style={styles.unitText} />
+                </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() =>
                     tempListingSpaceA({
@@ -691,7 +666,7 @@ function SpaceAvailable({
                         value: convertToMilliseconds(
                           convertToUnit(spaceAvailable.minTime.value, spaceAvailable.minTime.unit) +
                             1,
-                          noticeTime.unit
+                          spaceAvailable.maxTime.unit
                         )
                       }
                     })
@@ -715,7 +690,7 @@ function SpaceAvailable({
                               spaceAvailable.maxTime.value,
                               spaceAvailable.maxTime.unit
                             ) - 1,
-                            noticeTime.unit
+                            spaceAvailable.maxTime.unit
                           )
                         }
                       });
@@ -723,10 +698,18 @@ function SpaceAvailable({
                   }}>
                   <EntypoIcon name="circle-with-minus" style={styles.icon} />
                 </TouchableOpacity>
-                <Text style={styles.loremIpsum11}>
-                  {convertToUnit(spaceAvailable.maxTime.value, spaceAvailable.maxTime.unit)}{' '}
-                  {spaceAvailable.maxTime.unit} Maximum
-                </Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    setShowUnitModal(true);
+                    setHowLong('maxTime');
+                  }}
+                  style={styles.unitButton}>
+                  <Text style={styles.unitText}>
+                    Max {convertToUnit(spaceAvailable.maxTime.value, spaceAvailable.maxTime.unit)}{' '}
+                    {spaceAvailable.maxTime.unit}
+                  </Text>
+                  <AntDesignIcon name="caretdown" style={styles.unitText} />
+                </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() =>
                     tempListingSpaceA({
@@ -735,7 +718,7 @@ function SpaceAvailable({
                         value: convertToMilliseconds(
                           convertToUnit(spaceAvailable.maxTime.value, spaceAvailable.maxTime.unit) +
                             1,
-                          noticeTime.unit
+                          spaceAvailable.maxTime.unit
                         )
                       }
                     })
@@ -744,6 +727,20 @@ function SpaceAvailable({
                 </TouchableOpacity>
               </View>
             </View>
+            <UnitModal
+              onHide={() => setShowUnitModal(false)}
+              visible={showUnitModal}
+              unit={spaceAvailable[howLong].unit}
+              onSelect={(value, unit) => {
+                tempListingSpaceA({
+                  [howLong]: {
+                    unit,
+                    value
+                  }
+                });
+                setShowUnitModal(false);
+              }}
+            />
             <Text style={styles.description}>
               Tip : Shorter trips can mean more reservations but you might have to turn over your
               space more often.
@@ -751,7 +748,7 @@ function SpaceAvailable({
           </>
         )}
 
-        {activeIndex === 17 && (
+        {activeIndex === 15 && (
           <>
             <Text style={styles.heading}>Which booking process do you prefer?</Text>
             <RadioListItem
@@ -775,12 +772,19 @@ function SpaceAvailable({
           </>
         )}
       </ScrollView>
-      <NextButton onPress={onSubmitHandler} />
     </>
   );
 }
 
 const styles = StyleSheet.create({
+  unitButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  unitText: {
+    fontSize: 20
+  },
   container: {
     // flex: 1,
     backgroundColor: '#fff',
@@ -864,11 +868,10 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(182,182,182,1)'
   },
   startTime: {
-    // fontFamily: 'roboto-regular',
-    color: 'rgba(182,182,182,1)',
+    color: colors.black,
     fontSize: 16,
-    marginTop: 9
-    // marginLeft: 28,
+    marginTop: 9,
+    textAlign: 'center'
   },
   button3: {
     width: '50%',
@@ -878,11 +881,10 @@ const styles = StyleSheet.create({
     marginLeft: 38
   },
   endTime: {
-    // fontFamily: 'roboto-regular',
-    color: 'rgba(182,182,182,1)',
+    color: colors.black,
     fontSize: 16,
-    marginTop: 9
-    // marginLeft: 33,
+    marginTop: 9,
+    textAlign: 'center'
   },
   button2Row: {
     height: 39,
@@ -1005,12 +1007,10 @@ const styles = StyleSheet.create({
     // marginLeft: 29,
   },
   rect10: {
-    width: '100%',
-    // height: 101,
+    // width: '100%',
     flexDirection: 'row',
     marginTop: 25
-    // justifyContent: 'flex-end'
-    // marginLeft: 25,
+    // justifyContent: 'space-between'
   },
   icon: {
     color: colors.primary,
@@ -1038,13 +1038,8 @@ const styles = StyleSheet.create({
     height: 24,
     flexDirection: 'row',
     flex: 1,
-    justifyContent: 'space-between'
-    // marginRight: 4,
-    // marginLeft: 5,
-    // marginTop: 4,
-    // marginVertical: 10
-    // paddingBottom: -10
-    // marginBottom: -100
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   rect11: {
     width: 195,
@@ -1111,6 +1106,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ tempListing }) => ({
-  spaceAvailable: tempListing.spaceAvailable
+  spaceAvailable: tempListing.spaceAvailable,
+  validated: tempListing.validated
 });
 export default connect(mapStateToProps, { tempListingSpaceA })(SpaceAvailable);

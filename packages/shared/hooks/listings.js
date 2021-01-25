@@ -904,9 +904,6 @@ export const useAddOneListing = () => {
         activeIndex === 4 ||
         activeIndex === 5 ||
         (activeIndex === 6 && qtyOfSpaces > 0) ||
-        // (activeIndex === 7 &&
-        //   sameSizeSpaces != null &&
-        //   (heightRestriction ? height1.value > 0 : true)) ||
         (activeIndex === 7 &&
           (motorcycle || compact || midsized || large || oversized) &&
           (sameSizeSpaces ||

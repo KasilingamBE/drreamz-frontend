@@ -29,6 +29,7 @@ import AddressModal from '../../components/listing/addListing/AddressModal';
 import CountryModal from '../../components/listing/addListing/CountryModal';
 import OutlineButton from '../../components/common/OutlineButton';
 import InputButton from '../../components/listing/addListing/InputButton';
+import colors from '@parkyourself-frontend/shared/config/colors';
 
 const countryCodes = [
   { code: '+1', country: 'United States' },
@@ -144,16 +145,16 @@ const featureList = [
 ];
 
 function AddListingLocation({
-  onBackButtonPress,
   locationDetails,
   tempListingLocationD,
   updateTempListing,
-  navigation,
   activeIndex,
-  setActiveIndex
+  validated,
+  listingTypeOptions,
+  propertyTypeOptions
 }) {
   const scrollRef = useRef();
-  const [validate, setValidate] = useState(false);
+  // const [validated, setvalidated] = useState(false);
 
   const [showAddressModal, setShowAddressModal] = useState(false);
   const [showCountryModal, setShowCountryModal] = useState(false);
@@ -248,57 +249,8 @@ function AddListingLocation({
     });
   };
 
-  const onSubmitHandler = () => {
-    try {
-      if (
-        (activeIndex == 1 && locationDetails.propertyName) ||
-        (activeIndex == 2 &&
-          locationDetails.country &&
-          locationDetails.address &&
-          // locationDetails.unitNum &&
-          locationDetails.city &&
-          locationDetails.state &&
-          locationDetails.postalCode &&
-          locationDetails.code &&
-          locationDetails.phone) ||
-        (activeIndex == 3 &&
-          locationDetails.country &&
-          locationDetails.address &&
-          // locationDetails.unitNum &&
-          locationDetails.city &&
-          locationDetails.state &&
-          locationDetails.postalCode &&
-          locationDetails.code &&
-          locationDetails.phone) ||
-        activeIndex === 4 ||
-        activeIndex === 5 ||
-        activeIndex === 6
-      ) {
-        setValidate(false);
-        setActiveIndex(activeIndex + 1);
-        scrollRef.current.scrollTo({
-          y: 0,
-          animated: true
-        });
-        // setWidth(width + 20);
-      } else {
-        setValidate(true);
-      }
-    } catch (error) {
-      // console.log('Error', error);
-      Alert.alert('Something Went wrong!', 'Unable to add location data');
-    }
-  };
-
   return (
     <>
-      <AddListingHeader
-        onPress={onBackButtonPress}
-        icon="arrowleft"
-        width={`${activeIndex * 5.2}%`}
-        navigation={navigation}
-        activeIndex={activeIndex}
-      />
       <ScrollView
         keyboardShouldPersistTaps="always"
         contentContainerStyle={styles.container}
@@ -313,9 +265,9 @@ function AddListingLocation({
                 onValueChange={(itemValue, itemIndex) =>
                   tempListingLocationD({ listingType: itemValue })
                 }>
-                <Picker.Item label="Business" value="Business" />
-                <Picker.Item label="Residential" value="Residential" />
-                <Picker.Item label="Others" value="Others" />
+                {listingTypeOptions.map((o, i) => (
+                  <Picker.Item key={i} label={o.label} value={o.value} />
+                ))}
               </Picker>
             </View>
             <Input
@@ -323,12 +275,12 @@ function AddListingLocation({
               placeholderTextColor="rgba(182,182,182,1)"
               style={styles.textInput}
               value={locationDetails.propertyName}
-              validate={validate}
+              validated={validated}
               onChangeText={(input) => tempListingLocationD({ propertyName: input })}
             />
           </>
         )}
-        {activeIndex == 2 && (
+        {activeIndex === 2 && (
           <>
             <Text style={styles.heading}>Listing Address</Text>
             <OutlineButton label="Search your address" onPress={() => setShowAddressModal(true)} />
@@ -399,7 +351,7 @@ function AddListingLocation({
               placeholderTextColor="rgba(182,182,182,1)"
               style={styles.placeholder}
               value={locationDetails.address}
-              validate={validate}
+              validated={validated}
               onChangeText={(input) => tempListingLocationD({ address: input })}
             />
             <Input
@@ -407,7 +359,7 @@ function AddListingLocation({
               placeholderTextColor="rgba(182,182,182,1)"
               style={styles.placeholder}
               value={locationDetails.unitNum}
-              // validate={validate}
+              // validated={validated}
               onChangeText={(input) => tempListingLocationD({ unitNum: input })}
             />
             <Input
@@ -415,7 +367,7 @@ function AddListingLocation({
               placeholderTextColor="rgba(182,182,182,1)"
               style={styles.placeholder}
               value={locationDetails.city}
-              validate={validate}
+              validated={validated}
               onChangeText={(input) => tempListingLocationD({ city: input })}
             />
             <Input
@@ -423,7 +375,7 @@ function AddListingLocation({
               placeholderTextColor="rgba(182,182,182,1)"
               style={styles.placeholder}
               value={locationDetails.state}
-              validate={validate}
+              validated={validated}
               onChangeText={(input) => tempListingLocationD({ state: input })}
             />
             <Input
@@ -431,7 +383,7 @@ function AddListingLocation({
               placeholderTextColor="rgba(182,182,182,1)"
               style={styles.placeholder}
               value={locationDetails.postalCode}
-              validate={validate}
+              validated={validated}
               onChangeText={(input) => tempListingLocationD({ postalCode: input })}
             />
             <View style={{ flexDirection: 'row' }}>
@@ -442,23 +394,21 @@ function AddListingLocation({
                 style={styles.placeholder}
                 value={locationDetails.phone}
                 keyboardType="number-pad"
-                validate={validate}
+                validated={validated}
                 onChangeText={(input) => tempListingLocationD({ phone: input })}
               />
             </View>
-          </>
-        )}
-        {activeIndex == 3 && (
-          <>
-            <Text style={styles.heading}>Mark your location on the map</Text>
+            <Text
+              style={{
+                color: colors.secondary,
+                fontWeight: 'bold',
+                marginTop: 20,
+                marginBottom: 5,
+                fontSize: 17
+              }}>
+              Mark Location on Map
+            </Text>
             <MapView
-              style={styles.map}
-              initialRegion={{
-                latitude: locationDetails.marker.coordinates[1],
-                longitude: locationDetails.marker.coordinates[0],
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421
-              }}
               onPress={(event) => {
                 tempListingLocationD({
                   marker: {
@@ -470,177 +420,23 @@ function AddListingLocation({
                   }
                 });
               }}
-              customMapStyle={[
-                {
-                  elementType: 'geometry',
-                  stylers: [
-                    {
-                      color: '#f5f5f5'
-                    }
-                  ]
-                },
-                {
-                  elementType: 'labels.icon',
-                  stylers: [
-                    {
-                      visibility: 'off'
-                    }
-                  ]
-                },
-                {
-                  elementType: 'labels.text.fill',
-                  stylers: [
-                    {
-                      color: '#616161'
-                    }
-                  ]
-                },
-                {
-                  elementType: 'labels.text.stroke',
-                  stylers: [
-                    {
-                      color: '#f5f5f5'
-                    }
-                  ]
-                },
-                {
-                  featureType: 'administrative.land_parcel',
-                  elementType: 'labels.text.fill',
-                  stylers: [
-                    {
-                      color: '#bdbdbd'
-                    }
-                  ]
-                },
-                {
-                  featureType: 'poi',
-                  elementType: 'geometry',
-                  stylers: [
-                    {
-                      color: '#eeeeee'
-                    }
-                  ]
-                },
-                {
-                  featureType: 'poi',
-                  elementType: 'labels.text.fill',
-                  stylers: [
-                    {
-                      color: '#757575'
-                    }
-                  ]
-                },
-                {
-                  featureType: 'poi.park',
-                  elementType: 'geometry',
-                  stylers: [
-                    {
-                      color: '#e5e5e5'
-                    }
-                  ]
-                },
-                {
-                  featureType: 'poi.park',
-                  elementType: 'labels.text.fill',
-                  stylers: [
-                    {
-                      color: '#9e9e9e'
-                    }
-                  ]
-                },
-                {
-                  featureType: 'road',
-                  elementType: 'geometry',
-                  stylers: [
-                    {
-                      color: '#ffffff'
-                    }
-                  ]
-                },
-                {
-                  featureType: 'road.arterial',
-                  elementType: 'labels.text.fill',
-                  stylers: [
-                    {
-                      color: '#757575'
-                    }
-                  ]
-                },
-                {
-                  featureType: 'road.highway',
-                  elementType: 'geometry',
-                  stylers: [
-                    {
-                      color: '#dadada'
-                    }
-                  ]
-                },
-                {
-                  featureType: 'road.highway',
-                  elementType: 'labels.text.fill',
-                  stylers: [
-                    {
-                      color: '#616161'
-                    }
-                  ]
-                },
-                {
-                  featureType: 'road.local',
-                  elementType: 'labels.text.fill',
-                  stylers: [
-                    {
-                      color: '#9e9e9e'
-                    }
-                  ]
-                },
-                {
-                  featureType: 'transit.line',
-                  elementType: 'geometry',
-                  stylers: [
-                    {
-                      color: '#e5e5e5'
-                    }
-                  ]
-                },
-                {
-                  featureType: 'transit.station',
-                  elementType: 'geometry',
-                  stylers: [
-                    {
-                      color: '#eeeeee'
-                    }
-                  ]
-                },
-                {
-                  featureType: 'water',
-                  elementType: 'geometry',
-                  stylers: [
-                    {
-                      color: '#c9c9c9'
-                    }
-                  ]
-                },
-                {
-                  featureType: 'water',
-                  elementType: 'labels.text.fill',
-                  stylers: [
-                    {
-                      color: '#9e9e9e'
-                    }
-                  ]
-                }
-              ]}
-              style={styles.mapView}>
+              style={{ flex: 1, height: 400, marginBottom: 50 }}
+              region={{
+                latitude: locationDetails.marker.coordinates[1],
+                longitude: locationDetails.marker.coordinates[0],
+                latitudeDelta: 0.05,
+                longitudeDelta: 0.05
+              }}>
               <Marker
                 coordinate={{
-                  latitude: locationDetails.marker.coordinates[1],
-                  longitude: locationDetails.marker.coordinates[0]
-                }}></Marker>
+                  longitude: locationDetails.marker.coordinates[0],
+                  latitude: locationDetails.marker.coordinates[1]
+                }}
+              />
             </MapView>
           </>
         )}
-
-        {activeIndex == 4 && (
+        {activeIndex === 3 && (
           <>
             <Text style={styles.heading}>Choose a Property Type</Text>
             <View style={styles.pickerContainer}>
@@ -648,19 +444,22 @@ function AddListingLocation({
                 selectedValue={locationDetails.propertyType}
                 style={styles.picker}
                 onValueChange={(itemValue) => tempListingLocationD({ propertyType: itemValue })}>
-                <Picker.Item label="Driveway" value="Driveway" />
+                {propertyTypeOptions.map((o, i) => (
+                  <Picker.Item key={i} label={o.label} value={o.value} />
+                ))}
+                {/* <Picker.Item label="Driveway" value="Driveway" />
                 <Picker.Item label="Residential Garage" value="Residential Garage" />
                 <Picker.Item label="Open Air Lot" value="Open Air Lot" />
                 <Picker.Item
                   label="Commercial Parking Structure"
                   value="Commercial Parking Structure"
-                />
+                /> */}
               </Picker>
             </View>
           </>
         )}
 
-        {activeIndex == 5 && (
+        {activeIndex === 4 && (
           <>
             <Text style={styles.heading}>Add photos of this Listing</Text>
             <View style={styles.imageRow}>
@@ -730,7 +529,7 @@ function AddListingLocation({
           </>
         )}
 
-        {activeIndex === 6 && (
+        {activeIndex === 5 && (
           <>
             <Text style={styles.heading}>What features will you offer?</Text>
             <View style={styles.features}>
@@ -750,7 +549,6 @@ function AddListingLocation({
           </>
         )}
       </ScrollView>
-      <NextButton onPress={onSubmitHandler} />
     </>
   );
 }
@@ -1517,7 +1315,10 @@ const styles = StyleSheet.create({
 // };
 
 const mapStateToProps = ({ tempListing }) => ({
-  locationDetails: tempListing.locationDetails
+  locationDetails: tempListing.locationDetails,
+  validated: tempListing.validated,
+  listingTypeOptions: tempListing.listingTypeOptions,
+  propertyTypeOptions: tempListing.listingTypeOptions
 });
 
 export default connect(mapStateToProps, { tempListingLocationD, updateTempListing })(

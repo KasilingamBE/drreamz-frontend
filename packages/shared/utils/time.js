@@ -27,7 +27,7 @@ export const convertToMilliseconds = (value, unit) => {
   } else if (unit === 'Days') {
     newValue = value * oneDay;
   }
-  return newValue;
+  return parseInt(newValue);
 };
 
 export const timeTo12HrFormat = (hour, minute) => {

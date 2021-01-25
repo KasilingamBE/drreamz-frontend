@@ -21,7 +21,6 @@ import VehicleSizesModal from '../../components/SpaceOwner/VehicleSizesModal';
 import { addListingSpaceDetails } from '../../actions/listing';
 import { connect } from 'react-redux';
 import { Picker } from '@react-native-community/picker';
-import NextButton from '../../components/SpaceOwner/NextButton';
 import AddListingHeader from '../../components/SpaceOwner/AddListingHeader';
 import Input from '../../components/Input';
 import RadioListItem from '../../components/RadioListItem';
@@ -34,92 +33,87 @@ function AddListingSpaceDetails({
   tempListingSpaceD,
   navigation,
   activeIndex,
-  setActiveIndex
+  setActiveIndex,
+  validated
 }) {
   const scrollRef = useRef();
 
   // const [activeIndex, setActiveIndex] = useState(1);
 
-  const [width, setWidth] = useState(0);
-
-  const [validate, setValidate] = useState(false);
-
-  const [parkingSpaceType, setParkingSpaceType] = useState(
-    spaceDetails && spaceDetails.spaceType ? spaceDetails.spaceType : 'Tandem'
-  );
-  const [qtyOfSpaces, setQtyOfSpaces] = useState(
-    spaceDetails && spaceDetails.qtyOfSpaces ? spaceDetails.qtyOfSpaces : ''
-  );
-  const [vehicleHeightLimit, setVehicleHeightLimit] = useState(
-    spaceDetails && spaceDetails.vehicleHeightLimit ? spaceDetails.vehicleHeightLimit : ''
-  );
-  const [sameSizeSpaces, setSameSizeSpaces] = useState(
-    spaceDetails && spaceDetails.sameSizeSpaces ? spaceDetails.sameSizeSpaces : false
-  );
-  const [motorcycle, setMotorcycle] = useState(
-    spaceDetails && spaceDetails.vehicleSizes ? spaceDetails.vehicleSizes.motorcycle : false
-  );
-  const [compact, setCompact] = useState(
-    spaceDetails && spaceDetails.vehicleSizes ? spaceDetails.vehicleSizes.compact : false
-  );
-  const [midsized, setMidSized] = useState(
-    spaceDetails && spaceDetails.vehicleSizes ? spaceDetails.vehicleSizes.midsized : false
-  );
-  const [large, setLarge] = useState(
-    spaceDetails && spaceDetails.vehicleSizes ? spaceDetails.vehicleSizes.large : false
-  );
-  const [oversized, setOversized] = useState(
-    spaceDetails && spaceDetails.vehicleSizes ? spaceDetails.vehicleSizes.oversized : false
-  );
   const [visible, setVisible] = useState(false);
-  const [motorcycleSpaces, setMotorcycleSpaces] = useState(
-    spaceDetails && spaceDetails.motorcycleSpaces ? spaceDetails.motorcycleSpaces : ''
-  );
-  const [compactSpaces, setCompactSpaces] = useState(
-    spaceDetails && spaceDetails.compactSpaces ? spaceDetails.compactSpaces : ''
-  );
-  const [midsizedSpaces, setMidsizedSpaces] = useState(
-    spaceDetails && spaceDetails.midsizedSpaces ? spaceDetails.midsizedSpaces : ''
-  );
-  const [largeSpaces, setLargeSpaces] = useState(
-    spaceDetails && spaceDetails.largeSpaces ? spaceDetails.largeSpaces : ''
-  );
-  const [oversizedSpaces, setOversizedSpaces] = useState(
-    spaceDetails && spaceDetails.oversizedSpaces ? spaceDetails.oversizedSpaces : ''
-  );
-  const [isLabelled, setIsLabelled] = useState(
-    spaceDetails && spaceDetails.isLabelled ? spaceDetails.isLabelled : true
-  );
-  const [spaceLabels, setSpaceLabels] = useState(
-    spaceDetails && spaceDetails.spaceLabels ? spaceDetails.spaceLabels : []
-  );
-  const [aboutSpace, setAboutSpace] = useState(
-    spaceDetails && spaceDetails.aboutSpace ? spaceDetails.aboutSpace : ''
-  );
-  const [accessInstructions, setAccessInstructions] = useState(
-    spaceDetails && spaceDetails.accessInstructions ? spaceDetails.accessInstructions : ''
-  );
 
-  const setParkingSpaceInputs = (qty) => {
-    var num = parseInt(qty);
-    let arr = [];
-    for (let i = 0; i < num; i++) {
-      arr.push({
-        id: i + 1,
-        label: '',
-        largestSize: oversized
-          ? 'Over Sized'
-          : large
-          ? 'Large'
-          : midsized
-          ? 'Mid Sized'
-          : compact
-          ? 'Compact'
-          : 'Motorcycle'
-      });
-    }
-    setSpaceLabels(arr);
-  };
+  // const [validated, setvalidated] = useState(false);
+
+  // const [vehicleHeightLimit, setVehicleHeightLimit] = useState(
+  //   spaceDetails && spaceDetails.vehicleHeightLimit ? spaceDetails.vehicleHeightLimit : ''
+  // );
+  // const [sameSizeSpaces, setSameSizeSpaces] = useState(
+  //   spaceDetails && spaceDetails.sameSizeSpaces ? spaceDetails.sameSizeSpaces : false
+  // );
+  // const [motorcycle, setMotorcycle] = useState(
+  //   spaceDetails && spaceDetails.vehicleSizes ? spaceDetails.vehicleSizes.motorcycle : false
+  // );
+  // const [compact, setCompact] = useState(
+  //   spaceDetails && spaceDetails.vehicleSizes ? spaceDetails.vehicleSizes.compact : false
+  // );
+  // const [midsized, setMidSized] = useState(
+  //   spaceDetails && spaceDetails.vehicleSizes ? spaceDetails.vehicleSizes.midsized : false
+  // );
+  // const [large, setLarge] = useState(
+  //   spaceDetails && spaceDetails.vehicleSizes ? spaceDetails.vehicleSizes.large : false
+  // );
+  // const [oversized, setOversized] = useState(
+  //   spaceDetails && spaceDetails.vehicleSizes ? spaceDetails.vehicleSizes.oversized : false
+  // );
+  // const [visible, setVisible] = useState(false);
+  // const [motorcycleSpaces, setMotorcycleSpaces] = useState(
+  //   spaceDetails && spaceDetails.motorcycleSpaces ? spaceDetails.motorcycleSpaces : ''
+  // );
+  // const [compactSpaces, setCompactSpaces] = useState(
+  //   spaceDetails && spaceDetails.compactSpaces ? spaceDetails.compactSpaces : ''
+  // );
+  // const [midsizedSpaces, setMidsizedSpaces] = useState(
+  //   spaceDetails && spaceDetails.midsizedSpaces ? spaceDetails.midsizedSpaces : ''
+  // );
+  // const [largeSpaces, setLargeSpaces] = useState(
+  //   spaceDetails && spaceDetails.largeSpaces ? spaceDetails.largeSpaces : ''
+  // );
+  // const [oversizedSpaces, setOversizedSpaces] = useState(
+  //   spaceDetails && spaceDetails.oversizedSpaces ? spaceDetails.oversizedSpaces : ''
+  // );
+  // const [isLabelled, setIsLabelled] = useState(
+  //   spaceDetails && spaceDetails.isLabelled ? spaceDetails.isLabelled : true
+  // );
+  // const [spaceLabels, setSpaceLabels] = useState(
+  //   spaceDetails && spaceDetails.spaceLabels ? spaceDetails.spaceLabels : []
+  // );
+  // const [aboutSpace, setAboutSpace] = useState(
+  //   spaceDetails && spaceDetails.aboutSpace ? spaceDetails.aboutSpace : ''
+  // );
+  // const [accessInstructions, setAccessInstructions] = useState(
+  //   spaceDetails && spaceDetails.accessInstructions ? spaceDetails.accessInstructions : ''
+  // );
+
+  // const setParkingSpaceInputs = (qty) => {
+  //   var num = parseInt(qty);
+  //   let arr = [];
+  //   for (let i = 0; i < num; i++) {
+  //     arr.push({
+  //       id: i + 1,
+  //       label: '',
+  //       largestSize: oversized
+  //         ? 'Over Sized'
+  //         : large
+  //         ? 'Large'
+  //         : midsized
+  //         ? 'Mid Sized'
+  //         : compact
+  //         ? 'Compact'
+  //         : 'Motorcycle'
+  //     });
+  //   }
+  //   setSpaceLabels(arr);
+  // };
 
   const setLabelById = (idx, label) => {
     setSpaceLabels(
@@ -154,32 +148,6 @@ function AddListingSpaceDetails({
     return flag;
   };
 
-  const checkTotalCount = () => {
-    var flag = true;
-    var sum = 0;
-    if (motorcycle) {
-      sum += parseInt(motorcycleSpaces);
-    }
-    if (compact) {
-      sum += parseInt(compactSpaces);
-    }
-    if (midsized) {
-      sum += parseInt(midsizedSpaces);
-    }
-    if (large) {
-      sum += parseInt(largeSpaces);
-    }
-    if (oversized) {
-      sum += parseInt(oversizedSpaces);
-    }
-
-    if (sum != parseInt(qtyOfSpaces)) {
-      flag = false;
-    }
-
-    return flag;
-  };
-
   // const backButtonHandler = () => {
   //   if (activeIndex != 1) {
   //     setActiveIndex(activeIndex - 1);
@@ -193,67 +161,90 @@ function AddListingSpaceDetails({
   //   }
   // };
 
-  const onSubmitHandler = () => {
-    try {
-      // if (activeIndex != 6) {
-      if (
-        (activeIndex === 7 && spaceDetails.qtyOfSpaces) ||
-        activeIndex === 8 ||
-        (activeIndex === 9 &&
-          (spaceDetails.motorcycle ||
-            spaceDetails.compact ||
-            spaceDetails.midsized ||
-            spaceDetails.large ||
-            spaceDetails.oversized) &&
-          (sameSizeSpaces || spacesSum === qtyOfSpaces)) ||
-        (activeIndex === 10 && (!spaceDetails.isLabelled || checkAllSpaceLabels())) ||
-        (activeIndex === 11 && spaceDetails.aboutSpace) ||
-        (activeIndex === 12 && spaceDetails.accessInstructions)
-      ) {
-        setValidate(false);
-        setActiveIndex(activeIndex + 1);
-        scrollRef.current.scrollTo({
-          y: 0,
-          animated: true
-        });
-        // setWidth(width + 20);
-      } else {
-        setValidate(true);
-      }
-      // } else {
-      //   if (spaceDetails.accessInstructions) {
-      //     // let spaceDetails = {
-      //     //   spaceType: parkingSpaceType,
-      //     //   qtyOfSpaces,
-      //     //   sameSizeSpaces,
-      //     //   vehicleHeightLimit,
-      //     //   vehicleSizes: {
-      //     //     motorcycle: motorcycle,
-      //     //     compact: compact,
-      //     //     midsized: midsized,
-      //     //     large: large,
-      //     //     oversized: oversized,
-      //     //   },
-      //     //   motorcycleSpaces,
-      //     //   compactSpaces,
-      //     //   midsizedSpaces,
-      //     //   largeSpaces,
-      //     //   oversizedSpaces,
-      //     //   isLabelled,
-      //     //   spaceLabels,
-      //     //   aboutSpace,
-      //     //   accessInstructions,
-      //     // };
-      //     // addListingSpaceDetails(spaceDetails);
-      //     onNextButtonPress();
-      //   } else {
-      //     setValidate(true);
-      //   }
-      // }
-    } catch (error) {
-      Alert.alert('Something Went wrong!', 'Unable to add space details');
-    }
-  };
+  // const onSubmitHandler = () => {
+  //   try {
+  //     if (
+  //       (activeIndex === 6 && spaceDetails.qtyOfSpaces) ||
+  //       activeIndex === 7 ||
+  //       (activeIndex === 8 &&
+  //         (spaceDetails.motorcycle ||
+  //           spaceDetails.compact ||
+  //           spaceDetails.midsized ||
+  //           spaceDetails.large ||
+  //           spaceDetails.oversized) &&
+  //         (sameSizeSpaces || spacesSum === qtyOfSpaces)) ||
+  //       (activeIndex === 9 && (!spaceDetails.isLabelled || checkAllSpaceLabels())) ||
+  //       (activeIndex === 10 && spaceDetails.aboutSpace) ||
+  //       (activeIndex === 11 && spaceDetails.accessInstructions)
+  //     ) {
+  //       setvalidated(false);
+  //       setActiveIndex(activeIndex + 1);
+  //       scrollRef.current.scrollTo({
+  //         y: 0,
+  //         animated: true
+  //       });
+  //       // setWidth(width + 20);
+  //     } else {
+  //       setvalidated(true);
+  //     }
+  //     // } else {
+  //     //   if (spaceDetails.accessInstructions) {
+  //     //     // let spaceDetails = {
+  //     //     //   spaceType: parkingSpaceType,
+  //     //     //   qtyOfSpaces,
+  //     //     //   sameSizeSpaces,
+  //     //     //   vehicleHeightLimit,
+  //     //     //   vehicleSizes: {
+  //     //     //     motorcycle: motorcycle,
+  //     //     //     compact: compact,
+  //     //     //     midsized: midsized,
+  //     //     //     large: large,
+  //     //     //     oversized: oversized,
+  //     //     //   },
+  //     //     //   motorcycleSpaces,
+  //     //     //   compactSpaces,
+  //     //     //   midsizedSpaces,
+  //     //     //   largeSpaces,
+  //     //     //   oversizedSpaces,
+  //     //     //   isLabelled,
+  //     //     //   spaceLabels,
+  //     //     //   aboutSpace,
+  //     //     //   accessInstructions,
+  //     //     // };
+  //     //     // addListingSpaceDetails(spaceDetails);
+  //     //     onNextButtonPress();
+  //     //   } else {
+  //     //     setvalidated(true);
+  //     //   }
+  //     // }
+  //   } catch (error) {
+  //     Alert.alert('Something Went wrong!', 'Unable to add space details');
+  //   }
+  // };
+
+  const {
+    parkingSpaceType,
+    qtyOfSpaces,
+    heightRestriction,
+    height1,
+    height2,
+    sameSizeSpaces,
+    largestSize,
+    motorcycle,
+    compact,
+    midsized,
+    large,
+    oversized,
+    motorcycleSpaces,
+    compactSpaces,
+    midsizedSpaces,
+    largeSpaces,
+    oversizedSpaces,
+    isLabelled,
+    spaceLabels,
+    aboutSpace,
+    accessInstructions
+  } = spaceDetails;
 
   const spacesSum =
     parseInt(spaceDetails.motorcycleSpaces) +
@@ -263,16 +254,10 @@ function AddListingSpaceDetails({
     parseInt(spaceDetails.oversizedSpaces);
   return (
     <>
-      <AddListingHeader
-        onPress={onBackButtonPress}
-        width={`${activeIndex * 5.2}%`}
-        navigation={navigation}
-      />
       <ScrollView ref={scrollRef} contentContainerStyle={styles.container}>
-        {activeIndex === 7 && (
+        {activeIndex === 6 && (
           <>
             <Text style={styles.heading}>Choose a Parking Space type</Text>
-
             <View style={styles.pickerContainer}>
               <Picker
                 selectedValue={spaceDetails.parkingSpaceType}
@@ -288,30 +273,49 @@ function AddListingSpaceDetails({
             <Input
               placeholder="Total Quantity of Parking Spaces"
               placeholderTextColor="rgba(182,182,182,1)"
-              value={spaceDetails.qtyOfSpaces.toString()}
-              validate={validate}
+              value={spaceDetails.qtyOfSpaces ? spaceDetails.qtyOfSpaces.toString() : ''}
+              validated={validated}
               keyboardType="number-pad"
-              onChangeText={(input) => {
-                if (input == '0') {
-                  Alert.alert("Total quantity of spaces can't be zero", 'Please input again');
-                } else {
-                  tempListingSpaceD({
-                    qtyOfSpaces: input,
-                    spaceLabels: [],
-                    isLabelled: false,
-                    motorcycleSpaces: 0,
-                    compactSpaces: 0,
-                    midsizedSpaces: 0,
-                    largeSpaces: 0,
-                    oversizedSpaces: 0
-                  });
-                }
-              }}
+              onChangeText={(input) =>
+                tempListingSpaceD({
+                  qtyOfSpaces: input == '' ? 0 : parseInt(input),
+                  spaceLabels: [],
+                  isLabelled: false,
+                  motorcycleSpaces: 0,
+                  compactSpaces: 0,
+                  midsizedSpaces: 0,
+                  largeSpaces: 0,
+                  oversizedSpaces: 0
+                })
+              }
               style={styles.textInput}
             />
+            {qtyOfSpaces > 0 && (
+              <>
+                <Text style={styles.heading}>Are all parking spaces of same size?</Text>
+                <RadioListItem
+                  label="Yes"
+                  checked={spaceDetails.sameSizeSpaces}
+                  onPress={() =>
+                    tempListingSpaceD({
+                      sameSizeSpaces: !spaceDetails.sameSizeSpaces
+                    })
+                  }
+                />
+                <RadioListItem
+                  label="No, some are different"
+                  checked={!spaceDetails.sameSizeSpaces}
+                  onPress={() =>
+                    tempListingSpaceD({
+                      sameSizeSpaces: !spaceDetails.sameSizeSpaces
+                    })
+                  }
+                />
+              </>
+            )}
           </>
         )}
-        {activeIndex === 8 && (
+        {/* {activeIndex === 80 && (
           <>
             <Text style={styles.heading}>Are all parking spaces of same size?</Text>
             <RadioListItem
@@ -350,7 +354,7 @@ function AddListingSpaceDetails({
                     style={styles.placeholder}
                     value={spaceDetails.height1.value.toString()}
                     keyboardType="number-pad"
-                    validate={validate}
+                    validated={validated}
                     onChangeText={(input) =>
                       tempListingSpaceD({
                         height1: { ...spaceDetails.height1.value, value: input }
@@ -379,7 +383,7 @@ function AddListingSpaceDetails({
                     style={styles.placeholder}
                     value={spaceDetails.height2.value.toString()}
                     keyboardType="number-pad"
-                    validate={validate}
+                    validated={validated}
                     onChangeText={(input) =>
                       tempListingSpaceD({
                         height2: { ...spaceDetails.height2.value, value: input }
@@ -403,9 +407,9 @@ function AddListingSpaceDetails({
               </>
             )}
           </>
-        )}
+        )} */}
 
-        {activeIndex === 9 && (
+        {activeIndex === 7 && (
           <>
             <Text style={styles.heading}>Vehicle Sizes</Text>
             <Text style={styles.description}>
@@ -417,7 +421,7 @@ function AddListingSpaceDetails({
                   Sum of Entered Spaces / Total Qty. of Spaces : {spacesSum} /{' '}
                   {spaceDetails.qtyOfSpaces}
                 </Text>
-                {validate && parseInt(spacesSum) !== parseInt(qtyOfSpaces) && (
+                {validated && parseInt(spacesSum) !== parseInt(qtyOfSpaces) && (
                   <Text style={styles.requiredText}>
                     Sum of all spaces must equal the total quantity of spaces
                   </Text>
@@ -452,7 +456,7 @@ function AddListingSpaceDetails({
                 value={
                   spaceDetails.motorcycleSpaces == 0 ? '' : spaceDetails.motorcycleSpaces.toString()
                 }
-                validate={validate}
+                validated={validated}
                 keyboardType="number-pad"
                 onChangeText={(input) => {
                   tempListingSpaceD({
@@ -488,7 +492,7 @@ function AddListingSpaceDetails({
                 placeholder="No of Compact Spaces"
                 placeholderTextColor="rgba(182,182,182,1)"
                 value={spaceDetails.compactSpaces == 0 ? '' : spaceDetails.compactSpaces.toString()}
-                validate={validate}
+                validated={validated}
                 keyboardType="number-pad"
                 onChangeText={(input) => {
                   tempListingSpaceD({
@@ -526,7 +530,7 @@ function AddListingSpaceDetails({
                 value={
                   spaceDetails.midsizedSpaces == 0 ? '' : spaceDetails.midsizedSpaces.toString()
                 }
-                validate={validate}
+                validated={validated}
                 keyboardType="number-pad"
                 onChangeText={(input) => {
                   tempListingSpaceD({
@@ -562,7 +566,7 @@ function AddListingSpaceDetails({
                 placeholder="No of Large Spaces"
                 placeholderTextColor="rgba(182,182,182,1)"
                 value={spaceDetails.largeSpaces == 0 ? '' : spaceDetails.largeSpaces.toString()}
-                validate={validate}
+                validated={validated}
                 keyboardType="number-pad"
                 onChangeText={(input) => {
                   tempListingSpaceD({
@@ -600,7 +604,7 @@ function AddListingSpaceDetails({
                 value={
                   spaceDetails.oversizedSpaces == 0 ? '' : spaceDetails.oversizedSpaces.toString()
                 }
-                validate={validate}
+                validated={validated}
                 keyboardType="number-pad"
                 onChangeText={(input) => {
                   tempListingSpaceD({
@@ -611,7 +615,7 @@ function AddListingSpaceDetails({
               />
             )}
 
-            {validate &&
+            {validated &&
               !(
                 spaceDetails.motorcycle ||
                 spaceDetails.compact ||
@@ -628,7 +632,7 @@ function AddListingSpaceDetails({
             </Modal>
           </>
         )}
-        {activeIndex === 10 && (
+        {activeIndex === 8 && (
           <>
             <Text style={styles.heading}>Are the spaces numbered or labelled ?</Text>
             <RadioListItem
@@ -667,7 +671,7 @@ function AddListingSpaceDetails({
                   placeholderTextColor="rgba(182,182,182,1)"
                   // defaultValue={e.label}
                   value={e.label}
-                  validate={validate}
+                  validated={validated}
                   onChangeText={(input) => setLabel(input, i)}
                   style={styles.textInput}
                 />
@@ -681,7 +685,7 @@ function AddListingSpaceDetails({
                       placeholder="Space Label/Number"
                       placeholderTextColor="rgba(182,182,182,1)"
                       value={item.label}
-                      validate={validate}
+                      validated={validated}
                       onChangeText={(input) => {
                         setLabelById(index, input);
                       }}
@@ -714,7 +718,7 @@ function AddListingSpaceDetails({
           </>
         )}
 
-        {activeIndex === 11 && (
+        {activeIndex === 9 && (
           <>
             <Text style={styles.heading}>Tell Guests about your space</Text>
             <Input
@@ -728,7 +732,7 @@ function AddListingSpaceDetails({
               selectTextOnFocus={true}
               style={styles.placeholder}
               value={spaceDetails.aboutSpace}
-              validate={validate}
+              validated={validated}
               onChangeText={(input) =>
                 tempListingSpaceD({
                   aboutSpace: input
@@ -736,7 +740,7 @@ function AddListingSpaceDetails({
               }></Input>
           </>
         )}
-        {activeIndex === 12 && (
+        {activeIndex === 10 && (
           <>
             <Text style={styles.heading}>Tell Guests what to do when they arrive?</Text>
             <Input
@@ -750,7 +754,7 @@ function AddListingSpaceDetails({
               selectTextOnFocus={true}
               style={styles.placeholder}
               value={spaceDetails.accessInstructions}
-              validate={validate}
+              validated={validated}
               onChangeText={(input) =>
                 tempListingSpaceD({
                   accessInstructions: input
@@ -759,7 +763,6 @@ function AddListingSpaceDetails({
           </>
         )}
       </ScrollView>
-      <NextButton onPress={onSubmitHandler} />
     </>
   );
 }
@@ -1392,7 +1395,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ tempListing }) => ({
-  spaceDetails: tempListing.spaceDetails
+  spaceDetails: tempListing.spaceDetails,
+  validated: tempListing.validated
 });
 
 export default connect(mapStateToProps, { tempListingSpaceD })(AddListingSpaceDetails);
