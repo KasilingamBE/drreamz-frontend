@@ -4,14 +4,15 @@ import { IoIosStar, IoIosStarHalf } from 'react-icons/io';
 import { FaMotorcycle, FaCarSide, FaCar, FaShuttleVan } from 'react-icons/fa';
 import { AiFillCar } from 'react-icons/ai';
 // import MapContainer from '../app/components/MapContainer';
-import MapContainer2 from '../app/components/listings/MapContainer';
 import { Button, Table } from 'react-bootstrap';
-import { gql, useQuery } from '@apollo/client';
-import { client } from '../app/graphql/index';
+import { gql } from '@apollo/client';
+// import { client } from '../app/graphql/index';
+import { convertToUnit } from '@parkyourself-frontend/shared/utils/time';
 import moment from 'moment';
 import Link from 'next/link';
 import StarRatings from 'react-star-ratings';
-import { useGetOneListing } from '../../../shared/hooks/listings';
+import { useGetOneListing } from '@parkyourself-frontend/shared/hooks/listings';
+import MapContainer2 from '../app/components/listings/MapContainer';
 
 const GET_LISTING_REVIEWS = gql`
   query GetListingReviews($listingId: String!) {
@@ -31,10 +32,6 @@ const GET_LISTING_REVIEWS = gql`
 
 const MoreDetails = ({ id, listings, isSpaceOwner }) => {
   const { loading, error, data } = useGetOneListing(id);
-
-  // const { loading, error, data } = useQuery(GET_LISTING, {
-  //   variables: { id: id }
-  // });
 
   const [rating, setRating] = useState(0);
 
@@ -59,23 +56,6 @@ const MoreDetails = ({ id, listings, isSpaceOwner }) => {
   if (error || !data || data.getListing == null) {
     return <div className="loading">No Results Found!</div>;
   }
-
-  // console.log(data, error, loading);
-
-  // useEffect(() => {
-  //   getListing();
-  // }, []);
-
-  // useEffect(() => {
-  //   let id = match.params.id;
-  //   let listingData = listings.filter((item) => item._id == id);
-  //   if (listingData.length == 1) {
-  //     setListing(listingData[0]);
-  //     setLoading(false);
-  //     setIsFound(true);
-  //   }
-  //   console.log(listingData[0]);
-  // }, []);
 
   const {
     _id,
@@ -138,18 +118,6 @@ const MoreDetails = ({ id, listings, isSpaceOwner }) => {
     instantBooking
   } = spaceAvailable;
   const { pricingRates, pricingType } = pricingDetails;
-  const streetViewImageArray = streetViewImages.map((item) => ({
-    original: item,
-    thumbnail: item
-  }));
-  const parkingEntranceImageArray = parkingEntranceImages.map((item) => ({
-    original: item,
-    thumbnail: item
-  }));
-  const parkingSpaceImageArray = parkingSpaceImages.map((item) => ({
-    original: item,
-    thumbnail: item
-  }));
   return (
     <div className="dg__account">
       {address && city && state && postalCode && country && <h1 className="heading">{address}</h1>}
@@ -484,7 +452,7 @@ const MoreDetails = ({ id, listings, isSpaceOwner }) => {
         <div className="detail-item">
           <h4>How much notice time space owner needs before you arrive?</h4>
           <p className="lead">
-            {noticeTime.value} {noticeTime.unit}
+            {convertToUnit(noticeTime.value, noticeTime.unit)} {noticeTime.unit}
           </p>
         </div>
       )}
@@ -492,7 +460,8 @@ const MoreDetails = ({ id, listings, isSpaceOwner }) => {
         <div className="detail-item">
           <h4>How far in advance you can book?</h4>
           <p className="lead">
-            {advanceBookingTime.value} {advanceBookingTime.unit}
+            {convertToUnit(advanceBookingTime.value, advanceBookingTime.unit)}{' '}
+            {advanceBookingTime.unit}
           </p>
         </div>
       )}
@@ -500,10 +469,10 @@ const MoreDetails = ({ id, listings, isSpaceOwner }) => {
         <div className="detail-item">
           <h4>How long you can stay?</h4>
           <p className="lead">
-            Minimum : {minTime.value} {minTime.unit}
+            Minimum : {convertToUnit(minTime.value, minTime.unit)} {minTime.unit}
           </p>
           <p className="lead">
-            Maximum : {maxTime.value} {maxTime.unit}
+            Maximum : {convertToUnit(maxTime.value, maxTime.unit)} {maxTime.unit}
           </p>
         </div>
       )}
@@ -594,24 +563,10 @@ const MoreDetails = ({ id, listings, isSpaceOwner }) => {
               <Link href={`/book-now/${_id}`}>
                 <Button variant="primary">Book Now</Button>
               </Link>
-              {/* <StripeBookNow
-                // address={address}
-                // description={`This parking has total ${qtyOfSpaces} quantity of space`}
-                // spaceId={_id}
-                space={{
-                  name: address,
-                  _id: _id,
-                  description: `This parking has total ${qtyOfSpaces} quantity of space`,
-                  ownerId: userId,
-                }}
-                images={streetViewImages}
-              /> */}
-              {/* <CheckoutForm ownerId={} */}
             </>
           )}
         </div>
       )}
-      {/* <CheckoutForm /> */}
     </div>
   );
 };

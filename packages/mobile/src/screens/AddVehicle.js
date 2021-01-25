@@ -1,4 +1,4 @@
-import React, {Component, useState, useRef} from 'react';
+import React, { Component, useState, useRef } from 'react';
 import {
   StyleSheet,
   View,
@@ -9,22 +9,22 @@ import {
   Modal,
   ScrollView,
   Dimensions,
-  Image,
+  Image
 } from 'react-native';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialButtonPrimary from '../components/MaterialButtonPrimary';
 import NextButton from '../components/SpaceOwner/NextButton';
-import {Picker} from '@react-native-community/picker';
+import { Picker } from '@react-native-community/picker';
 import ImagePicker from 'react-native-image-picker';
 import AddListingHeader from '../components/SpaceOwner/AddListingHeader';
 import Input from '../components/Input';
 import VehicleSizesModal from '../components/SpaceOwner/VehicleSizesModal';
-import {addVehicle} from '../actions/user';
+import { addVehicle } from '../actions/user';
 
-function AddVehicle({navigation, route, addVehicle}) {
-  const {vehicle} = route.params;
+function AddVehicle({ navigation, route, addVehicle }) {
+  const { vehicle } = route.params;
 
   const scrollRef = useRef();
 
@@ -37,32 +37,24 @@ function AddVehicle({navigation, route, addVehicle}) {
   const [visible, setVisible] = useState(true);
   const [visible2, setVisible2] = useState(false);
 
-  const [image, setImage] = useState(
-    vehicle && vehicle.image ? vehicle.image : null,
-  );
+  const [image, setImage] = useState(vehicle && vehicle.image ? vehicle.image : null);
   const [licensePlate, setLicensePlate] = useState(
-    vehicle && vehicle.licensePlate ? vehicle.licensePlate : '',
+    vehicle && vehicle.licensePlate ? vehicle.licensePlate : ''
   );
   const [type, setType] = useState(vehicle && vehicle.type ? vehicle.type : '');
   const [make, setMake] = useState(vehicle && vehicle.make ? vehicle.make : '');
-  const [model, setModel] = useState(
-    vehicle && vehicle.model ? vehicle.model : '',
-  );
+  const [model, setModel] = useState(vehicle && vehicle.model ? vehicle.model : '');
   const [year, setYear] = useState(vehicle && vehicle.year ? vehicle.year : '');
-  const [size, setSize] = useState(
-    vehicle && vehicle.size ? vehicle.size : 'Motorcycle',
-  );
-  const [color, setColor] = useState(
-    vehicle && vehicle.color ? vehicle.color : '',
-  );
+  const [size, setSize] = useState(vehicle && vehicle.size ? vehicle.size : 'Motorcycle');
+  const [color, setColor] = useState(vehicle && vehicle.color ? vehicle.color : '');
 
   const options = {
     title: 'Select Photo',
     // customButtons: [{name: 'fb', title: 'Choose Photo from Facebook'}],
     storageOptions: {
       skipBackup: true,
-      path: 'images',
-    },
+      path: 'images'
+    }
   };
 
   const imagePickerHandler = () => {
@@ -76,7 +68,7 @@ function AddVehicle({navigation, route, addVehicle}) {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        const source = {uri: response.uri};
+        const source = { uri: response.uri };
 
         setImage(source);
 
@@ -91,26 +83,26 @@ function AddVehicle({navigation, route, addVehicle}) {
       licensePlate: 'DL13OG7584',
       make: 'Toyota',
       model: 'Corolla',
-      year: '2012',
+      year: '2012'
     },
     {
       licensePlate: 'GT93PY4981',
       make: 'BMW',
       model: 'M3',
-      year: '2015',
+      year: '2015'
     },
     {
       licensePlate: 'US59TM3815',
       make: 'Mercedes',
       model: 'Benz',
-      year: '2017',
+      year: '2017'
     },
     {
       licensePlate: 'MY20RM6923',
       make: 'Ford',
       model: 'Figo',
-      year: '2013',
-    },
+      year: '2013'
+    }
   ]);
 
   const [searchResults, setSearchResults] = useState([]);
@@ -127,7 +119,7 @@ function AddVehicle({navigation, route, addVehicle}) {
       setActiveIndex(activeIndex - 1);
       scrollRef.current.scrollTo({
         y: 0,
-        animated: true,
+        animated: true
       });
       setWidth(width - 12);
     } else {
@@ -151,7 +143,7 @@ function AddVehicle({navigation, route, addVehicle}) {
           setActiveIndex(activeIndex + 1);
           scrollRef.current.scrollTo({
             y: 0,
-            animated: true,
+            animated: true
           });
           setWidth(width + 12);
         } else {
@@ -166,7 +158,7 @@ function AddVehicle({navigation, route, addVehicle}) {
           model,
           year,
           size,
-          color,
+          color
         };
 
         addVehicle(vehicle);
@@ -191,9 +183,7 @@ function AddVehicle({navigation, route, addVehicle}) {
         {activeIndex == 1 && (
           <>
             <Text style={styles.heading}>Add photo of your vehicle</Text>
-            <TouchableOpacity
-              style={styles.addPhotoBtn}
-              onPress={imagePickerHandler}>
+            <TouchableOpacity style={styles.addPhotoBtn} onPress={imagePickerHandler}>
               <Text style={styles.addPhotoBtnText}>+ Add Photo</Text>
             </TouchableOpacity>
 
@@ -240,8 +230,7 @@ function AddVehicle({navigation, route, addVehicle}) {
                       setShowSearchResults(false);
                     }}>
                     <Text style={styles.searchResultText}>
-                      {item.licensePlate}, {item.make}, {item.model},{' '}
-                      {item.year}
+                      {item.licensePlate}, {item.make}, {item.model}, {item.year}
                     </Text>
                   </TouchableOpacity>
                 ))}
@@ -439,21 +428,21 @@ const styles = StyleSheet.create({
     padding: 20,
     minHeight: Dimensions.get('window').height,
     zIndex: 0,
-    paddingVertical: 80,
+    paddingVertical: 80
   },
   addAVehicle: {
     // fontFamily: 'roboto-500',
     color: 'rgba(11,64,148,1)',
     fontSize: 24,
     marginTop: 22,
-    marginLeft: 26,
+    marginLeft: 26
   },
   heading: {
     // fontFamily: 'roboto-500',
     color: 'rgba(11,64,148,1)',
     fontSize: 30,
     fontWeight: '700',
-    marginBottom: 10,
+    marginBottom: 10
   },
   addPhotoBtn: {
     borderColor: '#0b4094',
@@ -466,27 +455,27 @@ const styles = StyleSheet.create({
     width: 150,
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 20,
+    marginVertical: 20
   },
   addPhotoBtnText: {
     color: '#0b4094',
     fontWeight: '700',
-    fontSize: 16,
+    fontSize: 16
   },
   imageList: {},
   image: {
     width: '100%',
     height: 200,
     borderRadius: 10,
-    marginVertical: 10,
+    marginVertical: 10
   },
   pickerContainer: {
     borderBottomColor: '#d6d6d6',
     borderBottomWidth: 1,
-    marginBottom: 10,
+    marginBottom: 10
   },
   picker: {
-    width: '100%',
+    width: '100%'
     // marginVertical: 10,
     // fontSize: 18,
   },
@@ -496,7 +485,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(221,219,219,1)',
     marginTop: 28,
-    marginLeft: 26,
+    marginLeft: 26
   },
   icon: {
     color: 'rgba(214,214,214,1)',
@@ -504,14 +493,14 @@ const styles = StyleSheet.create({
     height: 61,
     width: 56,
     marginTop: 37,
-    marginLeft: 134,
+    marginLeft: 134
   },
   uploadImage: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(214,214,214,1)',
     fontSize: 20,
     marginTop: 7,
-    marginLeft: 102,
+    marginLeft: 102
   },
   licensePlate: {
     // fontFamily: 'roboto-regular',
@@ -520,14 +509,14 @@ const styles = StyleSheet.create({
     width: 326,
     fontSize: 20,
     marginTop: 18,
-    marginLeft: 26,
+    marginLeft: 26
   },
   searchResults: {},
   searchResultText: {
     paddingVertical: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#d6d6d6',
-    fontSize: 16,
+    fontSize: 16
   },
   button2: {
     width: 326,
@@ -535,14 +524,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(214,214,214,1)',
     marginTop: 11,
-    marginLeft: 26,
+    marginLeft: 26
   },
   vehicleType: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(214,214,214,1)',
     fontSize: 20,
     marginTop: 14,
-    marginLeft: 1,
+    marginLeft: 1
   },
   button3: {
     width: 326,
@@ -550,14 +539,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(214,214,214,1)',
     marginTop: 13,
-    marginLeft: 26,
+    marginLeft: 26
   },
   make: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(214,214,214,1)',
     fontSize: 20,
     marginTop: 14,
-    marginLeft: 1,
+    marginLeft: 1
   },
   button4: {
     width: 326,
@@ -565,14 +554,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(214,214,214,1)',
     marginTop: 13,
-    marginLeft: 26,
+    marginLeft: 26
   },
   model: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(214,214,214,1)',
     fontSize: 20,
     marginTop: 14,
-    marginLeft: 2,
+    marginLeft: 2
   },
   placeholder: {
     // fontFamily: 'roboto-regular',
@@ -581,38 +570,38 @@ const styles = StyleSheet.create({
     width: 326,
     fontSize: 20,
     marginTop: 15,
-    marginLeft: 26,
+    marginLeft: 26
   },
   vehicleSize: {
     // fontFamily: 'roboto-regular',
     color: '#121212',
-    fontSize: 20,
+    fontSize: 20
   },
   loremIpsum: {
     // fontFamily: 'roboto-500',
     color: 'rgba(39,170,225,1)',
     textDecorationLine: 'underline',
     fontSize: 15,
-    marginTop: 15,
+    marginTop: 15
   },
   vehicleSizeRow: {
     height: 25,
     flexDirection: 'row',
     marginTop: 32,
     marginLeft: 26,
-    marginRight: 21,
+    marginRight: 21
   },
   rect: {
     top: 0,
     left: 1,
     width: 327,
     height: 201,
-    position: 'absolute',
+    position: 'absolute'
   },
   button5: {
     width: 103,
     height: 96,
-    backgroundColor: 'rgba(39,170,225,0.3)',
+    backgroundColor: 'rgba(39,170,225,0.3)'
   },
   icon2: {
     color: 'rgba(39,170,225,1)',
@@ -620,20 +609,20 @@ const styles = StyleSheet.create({
     height: 40,
     width: 51,
     marginTop: 17,
-    marginLeft: 28,
+    marginLeft: 28
   },
   motorcycle: {
     // fontFamily: 'roboto-regular',
     color: '#121212',
     fontSize: 13,
     marginTop: 5,
-    marginLeft: 20,
+    marginLeft: 20
   },
   button6: {
     width: 103,
     height: 96,
     backgroundColor: 'rgba(39,170,225,0.3)',
-    marginLeft: 9,
+    marginLeft: 9
   },
   icon3: {
     top: 0,
@@ -642,7 +631,7 @@ const styles = StyleSheet.create({
     color: 'rgba(39,170,225,1)',
     fontSize: 58,
     height: 63,
-    width: 58,
+    width: 58
   },
   compact: {
     top: 57,
@@ -650,19 +639,19 @@ const styles = StyleSheet.create({
     position: 'absolute',
     // fontFamily: 'roboto-regular',
     color: '#121212',
-    fontSize: 13,
+    fontSize: 13
   },
   icon3Stack: {
     width: 58,
     height: 73,
     marginTop: 5,
-    marginLeft: 22,
+    marginLeft: 22
   },
   button7: {
     width: 103,
     height: 96,
     backgroundColor: 'rgba(39,170,225,0.3)',
-    marginLeft: 9,
+    marginLeft: 9
   },
   icon4: {
     top: 0,
@@ -671,7 +660,7 @@ const styles = StyleSheet.create({
     color: 'rgba(39,170,225,1)',
     fontSize: 58,
     height: 63,
-    width: 58,
+    width: 58
   },
   midSized: {
     top: 56,
@@ -679,24 +668,24 @@ const styles = StyleSheet.create({
     position: 'absolute',
     // fontFamily: 'roboto-regular',
     color: '#121212',
-    fontSize: 13,
+    fontSize: 13
   },
   icon4Stack: {
     width: 58,
     height: 72,
     marginTop: 8,
-    marginLeft: 23,
+    marginLeft: 23
   },
   button5Row: {
     height: 96,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   button8: {
     width: 103,
     height: 96,
     backgroundColor: 'rgba(39,170,225,0.3)',
     marginTop: 8,
-    marginLeft: 111,
+    marginLeft: 111
   },
   icon6: {
     color: 'rgba(39,170,225,1)',
@@ -704,14 +693,14 @@ const styles = StyleSheet.create({
     height: 50,
     width: 50,
     marginTop: 11,
-    marginLeft: 26,
+    marginLeft: 26
   },
   oversized: {
     // fontFamily: 'roboto-regular',
     color: '#121212',
     fontSize: 13,
     marginTop: 3,
-    marginLeft: 25,
+    marginLeft: 25
   },
   button9: {
     top: 104,
@@ -719,7 +708,7 @@ const styles = StyleSheet.create({
     width: 103,
     height: 96,
     position: 'absolute',
-    backgroundColor: 'rgba(39,170,225,0.3)',
+    backgroundColor: 'rgba(39,170,225,0.3)'
   },
   icon5: {
     top: 0,
@@ -728,7 +717,7 @@ const styles = StyleSheet.create({
     color: 'rgba(39,170,225,1)',
     fontSize: 58,
     height: 63,
-    width: 58,
+    width: 58
   },
   large: {
     top: 55,
@@ -736,19 +725,19 @@ const styles = StyleSheet.create({
     position: 'absolute',
     // fontFamily: 'roboto-regular',
     color: '#121212',
-    fontSize: 13,
+    fontSize: 13
   },
   icon5Stack: {
     width: 58,
     height: 71,
     marginTop: 8,
-    marginLeft: 23,
+    marginLeft: 23
   },
   rectStack: {
     width: 328,
     height: 201,
     marginTop: 21,
-    marginLeft: 27,
+    marginLeft: 27
   },
   placeholder2: {
     // fontFamily: 'roboto-regular',
@@ -757,7 +746,7 @@ const styles = StyleSheet.create({
     width: 327,
     fontSize: 20,
     marginTop: 29,
-    marginLeft: 28,
+    marginLeft: 28
   },
   materialButtonPrimary: {
     width: 170,
@@ -765,7 +754,7 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0,0,0,1)',
     shadowOffset: {
       height: 10,
-      width: 10,
+      width: 10
     },
     elevation: 20,
     shadowOpacity: 0.1,
@@ -774,28 +763,28 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: '#0b4094',
     paddingVertical: 15,
-    borderRadius: 10,
+    borderRadius: 10
   },
   rect6Stack: {
     width: '100%',
     // height: 201,
-    marginTop: 28,
+    marginTop: 28
     // marginLeft: 25,
   },
   rect6: {
-    width: '100%',
+    width: '100%'
     // height: 201,
     // position: 'absolute',
   },
   motorcycle1StackStackRow: {
     height: 96,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   oversized1StackStack: {
     width: 103,
     height: 96,
     marginTop: 25,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   activeBtn: {
     width: 120,
@@ -804,16 +793,16 @@ const styles = StyleSheet.create({
     // marginLeft: 9,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 10,
+    marginRight: 10
   },
   activeText: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(255,255,255,1)',
-    fontSize: 13,
+    fontSize: 13
   },
   activeIcon: {
     color: 'rgba(255,255,255,1)',
-    fontSize: 58,
+    fontSize: 58
     // height: 63,
     // width: 58,
   },
@@ -823,19 +812,19 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(39,170,225,0.2)',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 10,
+    marginRight: 10
   },
   inactiveText: {
     // fontFamily: 'roboto-regular',
     color: '#121212',
-    fontSize: 11,
+    fontSize: 11
   },
   inactiveIcon: {
     color: 'rgba(39,170,225,1)',
-    fontSize: 60,
+    fontSize: 60
     // height: 65,
     // width: 49,
-  },
+  }
 });
 
-export default connect(null, {addVehicle})(AddVehicle);
+export default connect(null, { addVehicle })(AddVehicle);
