@@ -12,12 +12,12 @@ import {
   Image
 } from 'react-native';
 import { connect } from 'react-redux';
+import { Picker } from '@react-native-community/picker';
+import ImagePicker from 'react-native-image-picker';
 import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialButtonPrimary from '../components/MaterialButtonPrimary';
 import NextButton from '../components/SpaceOwner/NextButton';
-import { Picker } from '@react-native-community/picker';
-import ImagePicker from 'react-native-image-picker';
 import AddListingHeader from '../components/SpaceOwner/AddListingHeader';
 import Input from '../components/Input';
 import VehicleSizesModal from '../components/SpaceOwner/VehicleSizesModal';
@@ -408,15 +408,18 @@ function AddVehicle({ navigation, route, addVehicle }) {
               value={color}
               onChangeText={(input) => setColor(input)}
               validate={validate}
-              style={styles.placeholder2}></Input>
+              style={styles.placeholder2}
+            />
 
             <MaterialButtonPrimary
               onPress={onSubmitHandler}
               caption="ADD VEHICLE"
-              style={styles.materialButtonPrimary}></MaterialButtonPrimary>
+              style={styles.materialButtonPrimary}
+            />
           </>
         )}
       </ScrollView>
+
       {activeIndex != 8 && <NextButton onPress={onSubmitHandler} />}
     </Modal>
   );

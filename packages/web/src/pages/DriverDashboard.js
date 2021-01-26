@@ -1,42 +1,30 @@
-import React, { useEffect, useState } from "react";
-import {
-  Accordion,
-  Card,
-  Form,
-  Button,
-  Nav,
-  ListGroup,
-  Table,
-} from "react-bootstrap";
-import {
-  IoIosArrowUp,
-  IoIosArrowDown,
-  IoIosArrowForward,
-} from "react-icons/io";
-import { MdEdit, MdDelete, MdInfoOutline } from "react-icons/md";
-import { connect } from "react-redux";
-import AddVehicleModal from "../app/components/AddVehicleModal";
-import { toggleLoading, toggleProfileType } from "../app/redux/actions/user";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useEffect, useState } from 'react';
+import { Accordion, Card, Form, Button, Nav, ListGroup, Table } from 'react-bootstrap';
+import { IoIosArrowUp, IoIosArrowDown, IoIosArrowForward } from 'react-icons/io';
+import { MdEdit, MdDelete, MdInfoOutline } from 'react-icons/md';
+import { connect } from 'react-redux';
+import AddVehicleModal from '../app/components/AddVehicleModal';
+import { toggleLoading, toggleProfileType } from '../app/redux/actions/user';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   addVehicleLocal,
   loadUserVehicles,
   updateVehicleLocal,
-  deleteVehicleLocal,
-} from "../app/redux/actions/vehicle";
+  deleteVehicleLocal
+} from '../app/redux/actions/vehicle';
 import {
   createBusinessProfileLocal,
   loadUserBusinessProfile,
   updateBusinessProfileLocal,
-  deleteBusinessProfileLocal,
-} from "../app/redux/actions/businessProfile";
-import { gql, useMutation } from "@apollo/client";
-import { client } from "../app/graphql";
-import BusinessProfileModal from "../app/components/BusinessProfileModal";
-import VehicleDetailsModal from "../app/components/VehicleDetailsModal";
-import Link from "next/link";
-import PersonalProfileModal from "../app/components/PersonalProfileModal";
+  deleteBusinessProfileLocal
+} from '../app/redux/actions/businessProfile';
+import { gql, useMutation } from '@apollo/client';
+import { client } from '../app/graphql';
+import BusinessProfileModal from '../app/components/BusinessProfileModal';
+import VehicleDetailsModal from '../app/components/VehicleDetailsModal';
+import Link from 'next/link';
+import PersonalProfileModal from '../app/components/PersonalProfileModal';
 
 const GET_USER_VEHICLES = gql`
   query GetUserVehicles($userId: String!) {
@@ -234,7 +222,7 @@ const DriverDashboard = ({
   businessProfile,
   loadUserBusinessProfile,
   updateBusinessProfileLocal,
-  deleteBusinessProfileLocal,
+  deleteBusinessProfileLocal
 }) => {
   const [createVehicle] = useMutation(CREATE_VEHICLE);
   const [updateVehicle] = useMutation(UPDATE_VEHICLE);
@@ -246,21 +234,17 @@ const DriverDashboard = ({
 
   const { vehicles, loading } = vehicle;
   const { name, email, sub } = userData;
-  const [activeKey, setActiveKey] = useState("");
+  const [activeKey, setActiveKey] = useState('');
   const [showPersonalForm, setShowPersonalForm] = useState(false);
   const [showBusinessForm, setShowBusinessForm] = useState(false);
   // const [profileType,setProfileType] = useState('personal');
   const [showVehicles, setShowVehicles] = useState(false);
   const [showVehicleModal, setShowVehicleModal] = useState(false);
   const [vehicleEdit, setVehicleEdit] = useState(false);
-  const [vehicleId, setVehicleId] = useState("");
+  const [vehicleId, setVehicleId] = useState('');
 
-  const [showBusinessProfileModal, setShowBusinessProfileModal] = useState(
-    false
-  );
-  const [showPersonalProfileModal, setShowPersonalProfileModal] = useState(
-    false
-  );
+  const [showBusinessProfileModal, setShowBusinessProfileModal] = useState(false);
+  const [showPersonalProfileModal, setShowPersonalProfileModal] = useState(false);
   const [businessProfileEdit, setBusinessProfileEdit] = useState(false);
 
   const [showVehicleDetails, setShowVehicleDetails] = useState(false);
@@ -273,32 +257,32 @@ const DriverDashboard = ({
       client
         .query({
           query: GET_USER_VEHICLES,
-          variables: { userId: sub },
+          variables: { userId: sub }
         })
         .then(({ data }) => {
-          console.log(data.getUserVehicles);
+          // console.log(data.getUserVehicles);
           loadUserVehicles(data.getUserVehicles);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           toggleLoading();
         });
     };
 
     const getBusinessProfileData = () => {
-      console.log("getting business profile");
+      // console.log('getting business profile');
       toggleLoading();
       client
         .query({
           query: GET_USER_BUSINESS_PROFILE,
-          variables: { userId: sub },
+          variables: { userId: sub }
         })
         .then(({ data }) => {
-          console.log(data.getUserBusinessProfile);
+          // console.log(data.getUserBusinessProfile);
           loadUserBusinessProfile(data.getUserBusinessProfile);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           toggleLoading();
         });
     };
@@ -312,123 +296,123 @@ const DriverDashboard = ({
         return;
       }
       await toggleProfileType();
-      if (type == "personal") {
-        toast.success("Switched to Personal Profile");
+      if (type == 'personal') {
+        // toast.success('Switched to Personal Profile');
       } else {
-        toast.success("Switched to Business Profile");
+        // toast.success('Switched to Business Profile');
       }
     } catch (error) {
-      toast.warn("Something Went Wrong!");
+      // toast.warn('Something Went Wrong!');
     }
   };
 
   const addVehicleHandler = async (data) => {
     try {
       const response = await createVehicle({
-        variables: data,
+        variables: data
       });
       addVehicleLocal(response.data.createVehicle);
 
-      console.log(response.data.createVehicle);
-      toast.success("Vehicle Added Successfully");
+      // console.log(response.data.createVehicle);
+      // toast.success('Vehicle Added Successfully');
     } catch (error) {
-      toast.warn("Something Went Wrong!");
+      // toast.warn('Something Went Wrong!');
     }
   };
 
   const updateVehicleHandler = async (data) => {
     try {
       const response = await updateVehicle({
-        variables: data,
+        variables: data
       });
       updateVehicleLocal(response.data.updateVehicle);
       setVehicleEdit(false);
-      setVehicleId("");
-      console.log(response.data.updateVehicle);
-      toast.success("Vehicle Updated Successfully");
+      setVehicleId('');
+      // console.log(response.data.updateVehicle);
+      // toast.success('Vehicle Updated Successfully');
     } catch (error) {
-      toast.warn("Something Went Wrong!");
+      // toast.warn('Something Went Wrong!');
     }
   };
 
   const vehicleEditButtonHandler = async (id) => {
-    console.log("in edit handler", id);
+    // console.log('in edit handler', id);
     setVehicleEdit(true);
     setVehicleId(id);
     setShowVehicleModal(true);
   };
 
   const vehicleInfoButtonHandler = async (id) => {
-    console.log("in edit handler", id);
+    // console.log('in edit handler', id);
     setVehicleId(id);
     setShowVehicleDetails(true);
   };
 
   const businessProfileEditButtonHandler = async () => {
-    console.log("in edit handler");
+    // console.log('in edit handler');
     setBusinessProfileEdit(true);
     setShowBusinessProfileModal(true);
   };
 
   const personalProfileEditButtonHandler = async () => {
-    console.log("in edit handler");
+    // console.log('in edit handler');
     setShowPersonalProfileModal(true);
   };
 
   const deleteVehicleHandler = async (id) => {
     try {
       const response = await deleteVehicle({
-        variables: { id: id },
+        variables: { id: id }
       });
       deleteVehicleLocal(id);
-      console.log(response.data.deleteVehicle);
-      toast.success("Vehicle Deleted Successfully");
+      // console.log(response.data.deleteVehicle);
+      // toast.success("Vehicle Deleted Successfully");
     } catch (error) {
-      toast.warn("Something Went Wrong!");
+      // toast.warn("Something Went Wrong!");
     }
   };
 
   const createBusinessProfileHandler = async (data) => {
     try {
       const response = await createBusinessProfile({
-        variables: data,
+        variables: data
       });
       createBusinessProfileLocal(response.data.createBusinessProfile);
 
-      console.log(response.data.createBusinessProfile);
-      toast.success("Business Profile Created Successfully");
+      // console.log(response.data.createBusinessProfile);
+      // toast.success('Business Profile Created Successfully');
     } catch (error) {
-      toast.warn("Something Went Wrong!");
-      console.log(error);
+      // toast.warn('Something Went Wrong!');
+      // console.log(error);
     }
   };
 
   const updateBusinessProfileHandler = async (data) => {
     try {
       const response = await updateBusinessProfile({
-        variables: data,
+        variables: data
       });
       updateBusinessProfileLocal(response.data.updateBusinessProfile);
       setBusinessProfileEdit(false);
-      console.log(response.data.updateBusinessProfile);
-      toast.success("Business Profile Updated Successfully");
+      // console.log(response.data.updateBusinessProfile);
+      // toast.success('Business Profile Updated Successfully');
     } catch (error) {
-      toast.warn("Something Went Wrong!");
-      console.log(error);
+      // toast.warn('Something Went Wrong!');
+      // console.log(error);
     }
   };
 
   const deleteBusinessProfileHandler = async (id) => {
     try {
       const response = await deleteBusinessProfile({
-        variables: { id: id },
+        variables: { id: id }
       });
       deleteBusinessProfileLocal(id);
-      console.log(response.data.deleteVehicle);
-      toast.success("Business Profile Deleted Successfully");
+      // console.log(response.data.deleteVehicle);
+      // toast.success('Business Profile Deleted Successfully');
     } catch (error) {
-      toast.warn("Something Went Wrong!");
-      console.log(error);
+      // toast.warn('Something Went Wrong!');
+      // console.log(error);
     }
   };
 
@@ -453,11 +437,10 @@ const DriverDashboard = ({
             as={Card.Header}
             eventKey="personal"
             onClick={() => {
-              setActiveKey("personal");
+              setActiveKey('personal');
               setShowPersonalForm(!showPersonalForm);
               setShowBusinessForm(false);
-            }}
-          >
+            }}>
             <div className="setup-profile">
               <div>
                 <p className="lead">Personal Profile</p>
@@ -484,8 +467,7 @@ const DriverDashboard = ({
                 variant="outline-primary"
                 onClick={() => {
                   personalProfileEditButtonHandler();
-                }}
-              >
+                }}>
                 Edit
               </Button>
               <PersonalProfileModal
@@ -502,18 +484,17 @@ const DriverDashboard = ({
             as={Card.Header}
             eventKey="business"
             onClick={() => {
-              setActiveKey("business");
+              setActiveKey('business');
               setShowPersonalForm(false);
               setShowBusinessForm(!showBusinessForm);
-            }}
-          >
+            }}>
             <div className="setup-profile">
               <div>
                 <p className="lead">Business Profile</p>
                 <p>
                   {businessProfile.data
                     ? businessProfile.data.businessEmail
-                    : "Set Up your Business Profile"}
+                    : 'Set Up your Business Profile'}
                 </p>
               </div>
               {showBusinessForm ? <IoIosArrowUp /> : <IoIosArrowDown />}
@@ -537,7 +518,7 @@ const DriverDashboard = ({
                         <td>Mobile Number</td>
                         <td>
                           {businessProfile.data.businessMobileCode}-
-                          {businessProfile.data.businessMobile}{" "}
+                          {businessProfile.data.businessMobile}{' '}
                         </td>
                       </tr>
                     </tbody>
@@ -546,17 +527,15 @@ const DriverDashboard = ({
                     variant="outline-primary"
                     onClick={() => {
                       businessProfileEditButtonHandler();
-                    }}
-                  >
+                    }}>
                     Edit
                   </Button>
                   <Button
                     variant="outline-danger"
-                    style={{ marginLeft: "10px" }}
+                    style={{ marginLeft: '10px' }}
                     onClick={() => {
                       deleteBusinessProfileHandler(businessProfile.data._id);
-                    }}
-                  >
+                    }}>
                     Delete
                   </Button>
                 </>
@@ -566,8 +545,7 @@ const DriverDashboard = ({
                   onClick={() => {
                     setBusinessProfileEdit(false);
                     setShowBusinessProfileModal(true);
-                  }}
-                >
+                  }}>
                   Create a Business Profile
                 </Button>
               )}
@@ -588,15 +566,14 @@ const DriverDashboard = ({
       <Card>
         <Card.Body>
           <div className="profile-type">
-            Profile Type{" "}
+            Profile Type{' '}
             <Nav variant="pills" activeKey={profileType}>
               <Nav.Item>
                 <Nav.Link
                   eventKey="personal"
                   onClick={() => {
-                    changeProfileType("personal");
-                  }}
-                >
+                    changeProfileType('personal');
+                  }}>
                   Personal
                 </Nav.Link>
               </Nav.Item>
@@ -604,13 +581,12 @@ const DriverDashboard = ({
                 <Nav.Link
                   eventKey="business"
                   onClick={() => {
-                    changeProfileType("business");
-                  }}
-                >
+                    changeProfileType('business');
+                  }}>
                   Business
                 </Nav.Link>
               </Nav.Item>
-            </Nav>{" "}
+            </Nav>{' '}
           </div>
         </Card.Body>
       </Card>
@@ -618,12 +594,12 @@ const DriverDashboard = ({
       <h4>More Information</h4>
       <div className="more-info-btns">
         <Link href="/bookings/my">
-        <Card>
-          <Card.Body>
-            <div>My Bookings</div>
-            <IoIosArrowForward />
-          </Card.Body>
-        </Card>
+          <Card>
+            <Card.Body>
+              <div>My Bookings</div>
+              <IoIosArrowForward />
+            </Card.Body>
+          </Card>
         </Link>
         <Accordion>
           <Card>
@@ -633,8 +609,7 @@ const DriverDashboard = ({
               eventKey="0"
               onClick={() => {
                 setShowVehicles(!showVehicles);
-              }}
-            >
+              }}>
               <div>Vehicles</div>
               {showVehicles ? <IoIosArrowDown /> : <IoIosArrowForward />}
             </Accordion.Toggle>
@@ -644,38 +619,34 @@ const DriverDashboard = ({
                   {loading ? (
                     <ListGroup.Item>Loading...</ListGroup.Item>
                   ) : vehicles.length > 0 ? (
-                    vehicles.filter((item) => item.profileType === profileType)
-                      .length > 0 ? (
+                    vehicles.filter((item) => item.profileType === profileType).length > 0 ? (
                       vehicles
                         .filter((item) => item.profileType === profileType)
                         .map((v) => (
                           <ListGroup.Item>
                             <div className="vehicle-name">
                               {v.year} {v.make} {v.model}
-                            </div>{" "}
+                            </div>{' '}
                             <div className="vehicle-control-btns">
                               <Button
                                 variant="secondary"
                                 onClick={() => {
                                   vehicleInfoButtonHandler(v._id);
-                                }}
-                              >
+                                }}>
                                 <MdInfoOutline />
                               </Button>
                               <Button
                                 variant="primary"
                                 onClick={() => {
                                   vehicleEditButtonHandler(v._id);
-                                }}
-                              >
+                                }}>
                                 <MdEdit />
                               </Button>
                               <Button
                                 variant="danger"
                                 onClick={() => {
                                   deleteVehicleHandler(v._id);
-                                }}
-                              >
+                                }}>
                                 <MdDelete />
                               </Button>
                             </div>
@@ -684,18 +655,18 @@ const DriverDashboard = ({
                     ) : (
                       <ListGroup.Item>
                         <div>
-                          {profileType === "personal"
-                            ? "No Personal Vehicles Added"
-                            : "No Business Vehicles Added"}
+                          {profileType === 'personal'
+                            ? 'No Personal Vehicles Added'
+                            : 'No Business Vehicles Added'}
                         </div>
                       </ListGroup.Item>
                     )
                   ) : (
                     <ListGroup.Item>
                       <div>
-                        {profileType === "personal"
-                          ? "No Personal Vehicles Added"
-                          : "No Business Vehicles Added"}
+                        {profileType === 'personal'
+                          ? 'No Personal Vehicles Added'
+                          : 'No Business Vehicles Added'}
                       </div>
                     </ListGroup.Item>
                   )}
@@ -703,8 +674,7 @@ const DriverDashboard = ({
                     variant="outline-primary"
                     onClick={() => {
                       setShowVehicleModal(true);
-                    }}
-                  >
+                    }}>
                     Add New Vehicle
                   </Button>
                   <AddVehicleModal
@@ -780,7 +750,7 @@ const mapStateToProps = ({ vehicle, user, auth, businessProfile }) => ({
   vehicle,
   profileType: user.profileType,
   userData: auth.data.attributes,
-  businessProfile,
+  businessProfile
 });
 
 export default connect(mapStateToProps, {
@@ -792,5 +762,5 @@ export default connect(mapStateToProps, {
   createBusinessProfileLocal,
   loadUserBusinessProfile,
   updateBusinessProfileLocal,
-  deleteBusinessProfileLocal,
+  deleteBusinessProfileLocal
 })(DriverDashboard);

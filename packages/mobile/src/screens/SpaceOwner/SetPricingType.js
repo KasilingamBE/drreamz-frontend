@@ -83,8 +83,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
     padding: 20,
-    minHeight: Dimensions.get('window').height
-    // paddingTop: 50
+    // minHeight: Dimensions.get('window').height,
+    paddingTop: 0
   },
   setPricing: {
     // fontFamily: 'roboto-500',
@@ -94,9 +94,9 @@ const styles = StyleSheet.create({
   heading: {
     color: 'rgba(11,64,148,1)',
     fontSize: 30,
-    fontWeight: '700',
+    fontWeight: '700'
     // marginTop: 30,
-    marginVertical: 20
+    // marginVertical: 20
   },
   subHeading: {
     color: '#000',

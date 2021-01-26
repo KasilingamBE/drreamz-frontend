@@ -46,30 +46,22 @@ const UserStack = () => {
       <Stack.Screen
         name="MyBookings"
         component={MyBookings}
-        options={({ navigation }) => ({
-          headerTitle: () => <HeaderLogo />
-        })}
+        options={{ headerTitle: () => <HeaderLogo /> }}
       />
       <Stack.Screen
         name="AddVehicle"
         component={AddVehicle}
-        options={({ navigation }) => ({
-          headerTitle: () => <HeaderLogo />
-        })}
+        options={{ headerTitle: () => <HeaderLogo /> }}
       />
       <Stack.Screen
         name="Payments"
         component={Payments}
-        options={({ navigation }) => ({
-          headerTitle: () => <HeaderLogo />
-        })}
+        options={{ headerTitle: () => <HeaderLogo /> }}
       />
       <Stack.Screen
         name="AddCreditDebitCard"
         component={AddCreditDebitCard}
-        options={({ navigation }) => ({
-          headerTitle: () => <HeaderLogo />
-        })}
+        options={{ headerTitle: () => <HeaderLogo /> }}
       />
       {/* <Stack.Screen
         name="Inbox"
@@ -82,73 +74,83 @@ const UserStack = () => {
       <Stack.Screen
         name="ChatScreen"
         component={ChatScreen}
-        options={({ navigation }) => ({
-          headerTitle: () => <HeaderLogo />
-        })}
+        options={{ headerTitle: () => <HeaderLogo /> }}
       />
       <Stack.Screen
         name="MyReviews"
         component={MyReviews}
-        options={({ navigation }) => ({
-          headerTitle: () => <HeaderLogo />
-        })}
+        options={{ headerTitle: () => <HeaderLogo /> }}
       />
       <Stack.Screen
         name="ReviewDetails"
         component={ReviewDetails}
-        options={({ navigation }) => ({
-          headerTitle: () => <HeaderLogo />
-        })}
+        options={{ headerTitle: () => <HeaderLogo /> }}
       />
       <Stack.Screen
         name="ReferFriend"
         component={ReferFriend}
-        options={({ navigation }) => ({
-          headerTitle: () => <HeaderLogo />
-        })}
+        options={{ headerTitle: () => <HeaderLogo /> }}
       />
       <Stack.Screen
         name="FAQ"
         component={FAQScreen}
-        options={({ navigation }) => ({
-          headerTitle: () => <HeaderLogo />
-        })}
+        options={{ headerTitle: () => <HeaderLogo /> }}
       />
       <Stack.Screen
         name="FAQDetails"
         component={FAQDetails}
-        options={({ navigation }) => ({
-          headerTitle: () => <HeaderLogo />
-        })}
+        options={{ headerTitle: () => <HeaderLogo /> }}
       />
       <Stack.Screen
         name="Settings"
         component={Settings}
-        options={({ navigation }) => ({
-          headerTitle: () => <HeaderLogo />
-        })}
+        options={{ headerTitle: () => <HeaderLogo /> }}
       />
       <Stack.Screen
         name="TermsAndConditions"
         component={TermsAndConditions}
-        options={({ navigation }) => ({
-          headerTitle: () => <HeaderLogo />
-        })}
+        options={{ headerTitle: () => <HeaderLogo /> }}
       />
       <Stack.Screen
         name="PrivacyPolicy"
         component={PrivacyPolicy}
-        options={({ navigation }) => ({
-          headerTitle: () => <HeaderLogo />
-        })}
+        options={{ headerTitle: () => <HeaderLogo /> }}
       />
-      <Stack.Screen name="PayNow" component={PayNowScreen} />
-      <Stack.Screen name="DetailsScreen" component={MoreDetails} />
-      <Stack.Screen name="Reviews" component={Reviews} />
-      <Stack.Screen name="SuccessfullyBooked" component={SuccessfullyBooked} />
-      <Stack.Screen name="CodeScreen" component={CodeScreen} />
-      <Stack.Screen name="CreateSpaceOwnerProfile" component={CreateSpaceOwnerProfile} />
-      <Stack.Screen name="WithdrawalSettings" component={WithdrawalSettings} />
+      <Stack.Screen
+        name="PayNow"
+        component={PayNowScreen}
+        options={{ headerTitle: () => <HeaderLogo /> }}
+      />
+      <Stack.Screen
+        name="DetailsScreen"
+        component={MoreDetails}
+        options={{ headerTitle: () => <HeaderLogo /> }}
+      />
+      <Stack.Screen
+        name="Reviews"
+        component={Reviews}
+        options={{ headerTitle: () => <HeaderLogo /> }}
+      />
+      <Stack.Screen
+        name="SuccessfullyBooked"
+        component={SuccessfullyBooked}
+        options={{ headerTitle: () => <HeaderLogo /> }}
+      />
+      <Stack.Screen
+        name="CodeScreen"
+        component={CodeScreen}
+        options={{ headerTitle: () => <HeaderLogo /> }}
+      />
+      <Stack.Screen
+        name="CreateSpaceOwnerProfile"
+        component={CreateSpaceOwnerProfile}
+        options={{ headerTitle: () => <HeaderLogo /> }}
+      />
+      <Stack.Screen
+        name="WithdrawalSettings"
+        component={WithdrawalSettings}
+        options={{ headerTitle: () => <HeaderLogo /> }}
+      />
     </Stack.Navigator>
   );
 };

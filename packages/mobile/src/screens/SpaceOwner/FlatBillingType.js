@@ -116,7 +116,8 @@ const styles = StyleSheet.create({
     // flex: 1,
     backgroundColor: colors.white,
     padding: 20,
-    minHeight: Dimensions.get('window').height
+    // minHeight: Dimensions.get('window').height,
+    paddingTop: 0
   },
   setPricing1: {
     // fontFamily: 'roboto-500',
@@ -126,9 +127,9 @@ const styles = StyleSheet.create({
   heading: {
     color: 'rgba(11,64,148,1)',
     fontSize: 30,
-    fontWeight: '700',
+    fontWeight: '700'
     // marginTop: 30,
-    marginVertical: 20
+    // marginVertical: 20
   },
   subHeading: {
     color: '#27aae1',

@@ -41,7 +41,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.white,
     padding: 20,
-    paddingBottom: 50
+    paddingBottom: 50,
+    paddingTop: 0
   },
   item: { marginTop: 20 },
   label: { color: colors.black, fontSize: 20, fontWeight: 'bold' }

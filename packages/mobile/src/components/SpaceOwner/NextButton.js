@@ -2,10 +2,10 @@ import colors from '@parkyourself-frontend/shared/config/colors';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const NextButton = ({ onPress }) => {
+const NextButton = ({ onPress, label = 'Next' }) => {
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
-      <Text style={styles.text}>NEXT</Text>
+      <Text style={styles.text}>{label}</Text>
     </TouchableOpacity>
   );
 };
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     elevation: 10,
     position: 'absolute',
-    bottom: 80,
+    bottom: 40,
     right: 20,
     borderRadius: 10,
     zIndex: 10000000

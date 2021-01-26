@@ -20,7 +20,6 @@ import MapView, { Marker } from 'react-native-maps';
 import { connect } from 'react-redux';
 import { Picker } from '@react-native-community/picker';
 import { launchImageLibrary } from 'react-native-image-picker';
-import NextButton from '../../components/SpaceOwner/NextButton';
 import countries from '@parkyourself-frontend/shared/config/countries';
 import AddListingHeader from '../../components/SpaceOwner/AddListingHeader';
 import Input from '../../components/Input';
@@ -447,13 +446,6 @@ function AddListingLocation({
                 {propertyTypeOptions.map((o, i) => (
                   <Picker.Item key={i} label={o.label} value={o.value} />
                 ))}
-                {/* <Picker.Item label="Driveway" value="Driveway" />
-                <Picker.Item label="Residential Garage" value="Residential Garage" />
-                <Picker.Item label="Open Air Lot" value="Open Air Lot" />
-                <Picker.Item
-                  label="Commercial Parking Structure"
-                  value="Commercial Parking Structure"
-                /> */}
               </Picker>
             </View>
           </>
@@ -478,7 +470,7 @@ function AddListingLocation({
                 </View>
               ) : (
                 <TouchableOpacity style={styles.addPhotoBtn} onPress={streetViewImagePickerHandler}>
-                  <Text style={styles.addPhotoBtnText}>+ Add Photos</Text>
+                  <Text style={styles.addPhotoBtnText}>+ Add Photo</Text>
                 </TouchableOpacity>
               )}
             </View>
@@ -500,7 +492,7 @@ function AddListingLocation({
                 <TouchableOpacity
                   style={styles.addPhotoBtn}
                   onPress={parkingEntranceImagePickerHandler}>
-                  <Text style={styles.addPhotoBtnText}>+ Add Photos</Text>
+                  <Text style={styles.addPhotoBtnText}>+ Add Photo</Text>
                 </TouchableOpacity>
               )}
             </View>
@@ -522,7 +514,7 @@ function AddListingLocation({
                 <TouchableOpacity
                   style={styles.addPhotoBtn}
                   onPress={parkingSpaceImagePickerHandler}>
-                  <Text style={styles.addPhotoBtnText}>+ Add Photos</Text>
+                  <Text style={styles.addPhotoBtnText}>+ Add Photo</Text>
                 </TouchableOpacity>
               )}
             </View>
@@ -565,21 +557,19 @@ const styles = StyleSheet.create({
     left: 5
   },
   container: {
-    backgroundColor: '#fff',
+    // flex: 1,
+    backgroundColor: colors.white,
     padding: 20,
-    minHeight: Dimensions.get('window').height,
-    zIndex: 0,
-    paddingBottom: 50
+    paddingBottom: 50,
+    paddingTop: 0
   },
   heading: {
-    // fontFamily: 'roboto-500',
     color: 'rgba(11,64,148,1)',
     fontSize: 30,
     fontWeight: '700',
     marginBottom: 10
   },
   location: {
-    // fontFamily: 'roboto-500',
     color: 'rgba(11,64,148,1)',
     fontSize: 24,
     marginTop: 17,
@@ -899,7 +889,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
     elevation: 6,
-    width: 150,
+    width: 200,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 25,
@@ -910,7 +900,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 16
   },
-  imageList: {},
   image: {
     width: '100%',
     height: 200,

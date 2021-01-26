@@ -17,6 +17,7 @@ import FlatBillingType from './FlatBillingType';
 import AddListingMenu from './AddListingMenu';
 import AddListingHeader from '../../components/SpaceOwner/AddListingHeader';
 import NextButton from '../../components/SpaceOwner/NextButton';
+import colors from '@parkyourself-frontend/shared/config/colors';
 
 const AddListing = ({ navigation, tempListing, updateTempListing, deleteTempListing }) => {
   const { handleSubmit, handleNext } = useAddOneListing();
@@ -48,7 +49,7 @@ const AddListing = ({ navigation, tempListing, updateTempListing, deleteTempList
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ backgroundColor: colors.white, flex: 1 }}>
       <AddListingHeader
         onPress={onBackButtonPress}
         icon={activeIndex == 0 ? 'close' : 'arrowleft'}

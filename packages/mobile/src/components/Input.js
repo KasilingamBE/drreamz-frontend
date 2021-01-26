@@ -11,7 +11,7 @@ export default function Input({ validated, value, ...rest }) {
             ? { ...styles.inputContainer, ...styles.required }
             : styles.inputContainer
         }>
-        <Text style={styles.label}>{rest.placeholder}</Text>
+        <Text style={styles.label}>{rest.label || rest.placeholder}</Text>
         <TextInput value={value} {...rest} style={styles.textInput} />
       </View>
       {validated && !value && <Text style={styles.requiredText}>This field is required</Text>}

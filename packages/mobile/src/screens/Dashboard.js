@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  Switch,
-  ScrollView,
-  TouchableOpacity
-} from 'react-native';
+import { StyleSheet, View, Text, TextInput, ScrollView, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import SimpleLineIconsIcon from 'react-native-vector-icons/SimpleLineIcons';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
@@ -17,12 +9,21 @@ import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import EvilIconsIcon from 'react-native-vector-icons/EvilIcons';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
+import { useCRUDVehicle } from '@parkyourself-frontend/shared/hooks/vehicle';
 import ProfileButtons from '../components/common/ProfileButtons';
+import AddVehicleModal from '../components/vehicle/AddVehicleModal';
 
-function Dashboard({ navigation, vehicles }) {
+function Dashboard({ navigation }) {
+  const {
+    allData: { vehicles },
+    handleDeleteVehicle
+  } = useCRUDVehicle();
   const [showPersonalForm, setShowPersonalForm] = useState(false);
   const [showBusinessForm, setShowBusinessForm] = useState(false);
   const [showVehicles, setShowVehicles] = useState(false);
+  const [showAddVehicleModal, setShowAddVehicleModal] = useState(false);
+
+  // console.log('Wvwvehicles', vehicles);
 
   const navigationHandler = (screen) => {
     navigation.navigate(screen);
@@ -65,7 +66,7 @@ function Dashboard({ navigation, vehicles }) {
           style={styles.rect2}
           onPress={() => setShowBusinessForm(!showBusinessForm)}>
           <View style={styles.wrapper}>
-            <SimpleLineIconsIcon name="briefcase" style={styles.icon}></SimpleLineIconsIcon>
+            <SimpleLineIconsIcon name="briefcase" style={styles.icon} />
             <View style={styles.profileColumn}>
               <Text style={styles.profile}>BUSINESS PROFILE</Text>
               <Text style={styles.email}>Set Up Business Profile</Text>
@@ -89,16 +90,6 @@ function Dashboard({ navigation, vehicles }) {
         )}
       </View>
       <Text style={styles.moreInformation}>MORE INFORMATION</Text>
-      <TouchableOpacity style={styles.rect2} onPress={() => navigationHandler('My Bookings')}>
-        <View style={styles.wrapper}>
-          <MaterialCommunityIconsIcon
-            name="calendar-clock"
-            style={styles.icon}></MaterialCommunityIconsIcon>
-          <Text style={styles.btnText}>My Bookings</Text>
-        </View>
-
-        <FontAwesomeIcon name="arrow-right" style={styles.icon2} />
-      </TouchableOpacity>
       <View style={styles.rect}>
         <TouchableOpacity style={styles.rect2} onPress={() => setShowVehicles(!showVehicles)}>
           <View style={styles.wrapper}>
@@ -111,12 +102,11 @@ function Dashboard({ navigation, vehicles }) {
             style={styles.icon2}
           />
         </TouchableOpacity>
-
         {showVehicles && (
           <View style={styles.form}>
             {vehicles &&
               vehicles.map((item) => (
-                <View style={styles.vehicle} key={item.id}>
+                <View style={styles.vehicle} key={item._id}>
                   <Text style={styles.vehicleName}>
                     {item.year} {item.make} {item.model}
                   </Text>
@@ -128,25 +118,27 @@ function Dashboard({ navigation, vehicles }) {
                       style={styles.iconBtn}>
                       <EvilIconsIcon name="pencil" size={28} color="#888" />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => {}} style={styles.iconBtn}>
+                    <TouchableOpacity
+                      onPress={() => handleDeleteVehicle(item._id)}
+                      style={styles.iconBtn}>
                       <EvilIconsIcon name="trash" size={28} color="#888" />
                     </TouchableOpacity>
                   </View>
                 </View>
               ))}
-
+            <AddVehicleModal
+              visible={showAddVehicleModal}
+              onHide={() => setShowAddVehicleModal(false)}
+            />
             <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('AddVehicle', { vehicle: null });
-              }}
+              onPress={() => setShowAddVehicleModal(true)}
               style={styles.addVehicleBtn}>
-              <EntypoIcon name="circle-with-plus" style={styles.icon5}></EntypoIcon>
+              <EntypoIcon name="circle-with-plus" style={styles.icon5} />
               <Text style={styles.addVehicle}>Add New Vehicles</Text>
             </TouchableOpacity>
           </View>
         )}
       </View>
-
       <TouchableOpacity
         style={styles.rect2}
         onPress={() => {
@@ -155,19 +147,6 @@ function Dashboard({ navigation, vehicles }) {
         <View style={styles.wrapper}>
           <FontAwesomeIcon name="credit-card" style={styles.icon} />
           <Text style={styles.btnText}>Payment</Text>
-        </View>
-
-        <FontAwesomeIcon name="arrow-right" style={styles.icon2} />
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.rect2}
-        onPress={() => {
-          navigationHandler('Inbox');
-        }}>
-        <View style={styles.wrapper}>
-          <FeatherIcon name="mail" style={styles.icon} />
-          <Text style={styles.btnText}>Messages</Text>
         </View>
 
         <FontAwesomeIcon name="arrow-right" style={styles.icon2} />

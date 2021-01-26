@@ -36,20 +36,20 @@ function SpaceOwnerDashboard({ navigation }) {
         </View>
       </TouchableOpacity>
       <Text style={styles.dashboard}>DASHBOARD</Text>
-      <TouchableOpacity style={styles.rect2} onPress={() => navigationHandler('My Listings')}>
+      {/* <TouchableOpacity style={styles.rect2} onPress={() => navigationHandler('My Listings')}>
         <View style={styles.wrapper}>
           <MaterialCommunityIconsIcon name="calendar-clock" style={styles.icon} />
           <Text style={styles.btnText}>My Listings</Text>
         </View>
         <FontAwesomeIcon name="arrow-right" style={styles.icon2} />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.rect2} onPress={() => navigationHandler('Parking Orders')}>
+      </TouchableOpacity> */}
+      {/* <TouchableOpacity style={styles.rect2} onPress={() => navigationHandler('Parking Orders')}>
         <View style={styles.wrapper}>
           <FontAwesomeIcon name="car" style={styles.icon} />
           <Text style={styles.btnText}>Parking Orders Recieved</Text>
         </View>
         <FontAwesomeIcon name="arrow-right" style={styles.icon2} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <TouchableOpacity
         style={styles.rect2}
         onPress={() => addListingNavigationHandler('AddListing')}>
