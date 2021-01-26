@@ -34,7 +34,7 @@ const AdminStack = () => {
         name="AdminDashboard"
         component={AdminDashboard}
         options={({ navigation }) => ({
-          headerLeft: () => <MenuButton navigation={navigation} />,
+          // headerLeft: () => <MenuButton navigation={navigation} />,
           headerTitleAlign: 'center'
         })}
       />
@@ -113,10 +113,12 @@ const AdminStack = () => {
   );
 };
 
-export default function SpaceOwnerDrawer() {
-  return (
-    <drawer.Navigator drawerContent={() => <AppDrawer />}>
-      <drawer.Screen name="AdminStack" component={AdminStack} />
-    </drawer.Navigator>
-  );
-}
+// export default function SpaceOwnerDrawer() {
+//   return (
+//     <drawer.Navigator drawerContent={() => <AppDrawer />}>
+//       <drawer.Screen name="AdminStack" component={AdminStack} />
+//     </drawer.Navigator>
+//   );
+// }
+
+export default AdminStack;

@@ -11,13 +11,13 @@ import {
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import SimpleLineIconsIcon from 'react-native-vector-icons/SimpleLineIcons';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import EvilIconsIcon from 'react-native-vector-icons/EvilIcons';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
+import ProfileButtons from '../components/common/ProfileButtons';
 
 function Dashboard({ navigation, vehicles }) {
   const [showPersonalForm, setShowPersonalForm] = useState(false);
@@ -36,9 +36,7 @@ function Dashboard({ navigation, vehicles }) {
           style={styles.rect2}
           onPress={() => setShowPersonalForm(!showPersonalForm)}>
           <View style={styles.wrapper}>
-            <MaterialCommunityIconsIcon
-              name="google"
-              style={styles.icon}></MaterialCommunityIconsIcon>
+            <MaterialCommunityIconsIcon name="google" style={styles.icon} />
             <View style={styles.profileColumn}>
               <Text style={styles.profile}>PERSONAL PROFILE</Text>
               <Text style={styles.email}>example@gmail.com</Text>
@@ -46,24 +44,17 @@ function Dashboard({ navigation, vehicles }) {
           </View>
           <FontAwesomeIcon
             name={showPersonalForm ? 'arrow-up' : 'arrow-down'}
-            style={styles.icon2}></FontAwesomeIcon>
+            style={styles.icon2}
+          />
         </TouchableOpacity>
         {showPersonalForm && (
           <View style={styles.form}>
-            <TextInput
-              placeholder="First Name"
-              placeholderTextColor="rgba(211,211,211,1)"></TextInput>
-            <TextInput
-              placeholder="Last Name"
-              placeholderTextColor="rgba(211,211,211,1)"></TextInput>
-            <TextInput placeholder="Email" placeholderTextColor="rgba(211,211,211,1)"></TextInput>
-            <TextInput
-              placeholder="Mobile Number"
-              placeholderTextColor="rgba(211,211,211,1)"></TextInput>
+            <TextInput placeholder="First Name" placeholderTextColor="rgba(211,211,211,1)" />
+            <TextInput placeholder="Last Name" placeholderTextColor="rgba(211,211,211,1)" />
+            <TextInput placeholder="Email" placeholderTextColor="rgba(211,211,211,1)" />
+            <TextInput placeholder="Mobile Number" placeholderTextColor="rgba(211,211,211,1)" />
             <View style={styles.placeholderStack}>
-              <TextInput
-                placeholder="Password"
-                placeholderTextColor="rgba(211,211,211,1)"></TextInput>
+              <TextInput placeholder="Password" placeholderTextColor="rgba(211,211,211,1)" />
               <Text style={styles.change}>Change</Text>
             </View>
           </View>
@@ -82,30 +73,23 @@ function Dashboard({ navigation, vehicles }) {
           </View>
           <FontAwesomeIcon
             name={showBusinessForm ? 'arrow-up' : 'arrow-down'}
-            style={styles.icon2}></FontAwesomeIcon>
+            style={styles.icon2}
+          />
         </TouchableOpacity>
         {showBusinessForm && (
           <View style={styles.form}>
-            <TextInput
-              placeholder="Business Name"
-              placeholderTextColor="rgba(211,211,211,1)"></TextInput>
-            <TextInput
-              placeholder="Business Email"
-              placeholderTextColor="rgba(211,211,211,1)"></TextInput>
-            <TextInput
-              placeholder="Mobile Number"
-              placeholderTextColor="rgba(211,211,211,1)"></TextInput>
+            <TextInput placeholder="Business Name" placeholderTextColor="rgba(211,211,211,1)" />
+            <TextInput placeholder="Business Email" placeholderTextColor="rgba(211,211,211,1)" />
+            <TextInput placeholder="Mobile Number" placeholderTextColor="rgba(211,211,211,1)" />
             <View style={styles.placeholderStack}>
-              <TextInput
-                placeholder="Password"
-                placeholderTextColor="rgba(211,211,211,1)"></TextInput>
+              <TextInput placeholder="Password" placeholderTextColor="rgba(211,211,211,1)" />
               <Text style={styles.change}>Change</Text>
             </View>
           </View>
         )}
       </View>
       <Text style={styles.moreInformation}>MORE INFORMATION</Text>
-      <TouchableOpacity style={styles.rect2} onPress={() => navigationHandler('MyBookings')}>
+      <TouchableOpacity style={styles.rect2} onPress={() => navigationHandler('My Bookings')}>
         <View style={styles.wrapper}>
           <MaterialCommunityIconsIcon
             name="calendar-clock"
@@ -113,18 +97,19 @@ function Dashboard({ navigation, vehicles }) {
           <Text style={styles.btnText}>My Bookings</Text>
         </View>
 
-        <FontAwesomeIcon name="arrow-right" style={styles.icon2}></FontAwesomeIcon>
+        <FontAwesomeIcon name="arrow-right" style={styles.icon2} />
       </TouchableOpacity>
       <View style={styles.rect}>
         <TouchableOpacity style={styles.rect2} onPress={() => setShowVehicles(!showVehicles)}>
           <View style={styles.wrapper}>
-            <FontAwesomeIcon name="car" style={styles.icon}></FontAwesomeIcon>
+            <FontAwesomeIcon name="car" style={styles.icon} />
             <Text style={styles.btnText}>Vehicles</Text>
           </View>
 
           <FontAwesomeIcon
             name={showVehicles ? 'arrow-down' : 'arrow-right'}
-            style={styles.icon2}></FontAwesomeIcon>
+            style={styles.icon2}
+          />
         </TouchableOpacity>
 
         {showVehicles && (
@@ -168,11 +153,11 @@ function Dashboard({ navigation, vehicles }) {
           navigationHandler('Payments');
         }}>
         <View style={styles.wrapper}>
-          <FontAwesomeIcon name="credit-card" style={styles.icon}></FontAwesomeIcon>
+          <FontAwesomeIcon name="credit-card" style={styles.icon} />
           <Text style={styles.btnText}>Payment</Text>
         </View>
 
-        <FontAwesomeIcon name="arrow-right" style={styles.icon2}></FontAwesomeIcon>
+        <FontAwesomeIcon name="arrow-right" style={styles.icon2} />
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -181,11 +166,11 @@ function Dashboard({ navigation, vehicles }) {
           navigationHandler('Inbox');
         }}>
         <View style={styles.wrapper}>
-          <FeatherIcon name="mail" style={styles.icon}></FeatherIcon>
+          <FeatherIcon name="mail" style={styles.icon} />
           <Text style={styles.btnText}>Messages</Text>
         </View>
 
-        <FontAwesomeIcon name="arrow-right" style={styles.icon2}></FontAwesomeIcon>
+        <FontAwesomeIcon name="arrow-right" style={styles.icon2} />
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.rect2}
@@ -193,19 +178,19 @@ function Dashboard({ navigation, vehicles }) {
           navigationHandler('MyReviews');
         }}>
         <View style={styles.wrapper}>
-          <FontAwesomeIcon name="star-o" style={styles.icon}></FontAwesomeIcon>
+          <FontAwesomeIcon name="star-o" style={styles.icon} />
           <Text style={styles.btnText}>Reviews</Text>
         </View>
 
-        <FontAwesomeIcon name="arrow-right" style={styles.icon2}></FontAwesomeIcon>
+        <FontAwesomeIcon name="arrow-right" style={styles.icon2} />
       </TouchableOpacity>
       <TouchableOpacity style={styles.rect2}>
         <View style={styles.wrapper}>
-          <FeatherIcon name="gift" style={styles.icon}></FeatherIcon>
+          <FeatherIcon name="gift" style={styles.icon} />
           <Text style={styles.btnText}>Send a Gift</Text>
         </View>
 
-        <FontAwesomeIcon name="arrow-right" style={styles.icon2}></FontAwesomeIcon>
+        <FontAwesomeIcon name="arrow-right" style={styles.icon2} />
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.rect2}
@@ -217,7 +202,7 @@ function Dashboard({ navigation, vehicles }) {
           <Text style={styles.btnText}>Refer a Friend</Text>
         </View>
 
-        <FontAwesomeIcon name="arrow-right" style={styles.icon2}></FontAwesomeIcon>
+        <FontAwesomeIcon name="arrow-right" style={styles.icon2} />
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.rect2}
@@ -225,11 +210,11 @@ function Dashboard({ navigation, vehicles }) {
           navigationHandler('FAQ');
         }}>
         <View style={styles.wrapper}>
-          <FeatherIcon name="help-circle" style={styles.icon}></FeatherIcon>
+          <FeatherIcon name="help-circle" style={styles.icon} />
           <Text style={styles.btnText}>FAQs</Text>
         </View>
 
-        <FontAwesomeIcon name="arrow-right" style={styles.icon2}></FontAwesomeIcon>
+        <FontAwesomeIcon name="arrow-right" style={styles.icon2} />
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.rect2}
@@ -237,25 +222,13 @@ function Dashboard({ navigation, vehicles }) {
           navigationHandler('Settings');
         }}>
         <View style={styles.wrapper}>
-          <FeatherIcon name="settings" style={styles.icon}></FeatherIcon>
+          <FeatherIcon name="settings" style={styles.icon} />
           <Text style={styles.btnText}>Settings</Text>
         </View>
 
-        <FontAwesomeIcon name="arrow-right" style={styles.icon2}></FontAwesomeIcon>
+        <FontAwesomeIcon name="arrow-right" style={styles.icon2} />
       </TouchableOpacity>
-      {/* <View style={styles.rect12}>
-        <Switch
-          value={isSpaceOwner}
-          style={styles.switch}
-          onValueChange={toggleUserType}></Switch>
-        <Text style={styles.loremIpsum2}>Switch to SPACE OWNER</Text>
-      </View>
-      <TouchableOpacity style={styles.rect13} onPress={() => {}}>
-        <View style={styles.icon17Row}>
-          <IoniconsIcon name="ios-log-out" style={styles.icon17}></IoniconsIcon>
-          <Text style={styles.logOut}>LOG OUT</Text>
-        </View>
-      </TouchableOpacity> */}
+      <ProfileButtons />
     </ScrollView>
   );
 }

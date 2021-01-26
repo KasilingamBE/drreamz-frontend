@@ -5,6 +5,8 @@ import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommun
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useDispatch } from 'react-redux';
 import { tempListingMobileInitial } from '@parkyourself-frontend/shared/redux/actions/tempListing';
+import colors from '@parkyourself-frontend/shared/config/colors';
+import ProfileButtons from '../../components/common/ProfileButtons';
 
 function SpaceOwnerDashboard({ navigation }) {
   const dispatch = useDispatch();
@@ -34,25 +36,20 @@ function SpaceOwnerDashboard({ navigation }) {
         </View>
       </TouchableOpacity>
       <Text style={styles.dashboard}>DASHBOARD</Text>
-
       <TouchableOpacity style={styles.rect2} onPress={() => navigationHandler('My Listings')}>
         <View style={styles.wrapper}>
           <MaterialCommunityIconsIcon name="calendar-clock" style={styles.icon} />
           <Text style={styles.btnText}>My Listings</Text>
         </View>
-
         <FontAwesomeIcon name="arrow-right" style={styles.icon2} />
       </TouchableOpacity>
-
-      <TouchableOpacity style={styles.rect2} onPress={() => navigationHandler('ParkingOrders')}>
+      <TouchableOpacity style={styles.rect2} onPress={() => navigationHandler('Parking Orders')}>
         <View style={styles.wrapper}>
           <FontAwesomeIcon name="car" style={styles.icon} />
           <Text style={styles.btnText}>Parking Orders Recieved</Text>
         </View>
-
         <FontAwesomeIcon name="arrow-right" style={styles.icon2} />
       </TouchableOpacity>
-
       <TouchableOpacity
         style={styles.rect2}
         onPress={() => addListingNavigationHandler('AddListing')}>
@@ -94,21 +91,7 @@ function SpaceOwnerDashboard({ navigation }) {
 
         <FontAwesomeIcon name="arrow-right" style={styles.icon2} />
       </TouchableOpacity>
-
-      {/* <View style={styles.rect13}>
-        <Switch
-          value={isSpaceOwner}
-          trackColor={{true: 'rgba(74,144,226,1)', false: 'rgba(0,0,0,1)'}}
-          style={styles.switch}
-          onValueChange={toggleUserType}></Switch>
-        <Text style={styles.switchToDriver}>Switch to DRIVER</Text>
-      </View>
-      <TouchableOpacity style={styles.rect12} onPress={() => {}}>
-        <View style={styles.icon21Row}>
-          <IoniconsIcon name="ios-log-out" style={styles.icon21}></IoniconsIcon>
-          <Text style={styles.logOut1}>LOG OUT</Text>
-        </View>
-      </TouchableOpacity> */}
+      <ProfileButtons />
     </ScrollView>
   );
 }
@@ -432,9 +415,14 @@ const styles = StyleSheet.create({
 //   isSpaceOwner: PropTypes.bool.isRequired,
 // };
 
-// const mapStateToProps = (state) => ({
-//   isSpaceOwner: state.user.isSpaceOwner,
+// const mapStateToProps = ({ user, auth }) => ({
+//   admin: auth.data.admin,
+//   isSpaceOwner: user.isSpaceOwner,
+//   userName: auth.authenticated ? auth.data.attributes.name : null,
+//   adminMode: user.adminMode
 // });
 
-// export default connect(mapStateToProps, {toggleUserType})(SpaceOwnerDashboard);
+// export default connect(mapStateToProps, { toggleUserType, unsetAuthUser, toggleAdminMode })(
+//   SpaceOwnerDashboard
+// );
 export default SpaceOwnerDashboard;

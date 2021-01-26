@@ -33,9 +33,12 @@ function MyBookings({ bookings, navigation }) {
           </TouchableOpacity>
         </View>
       </View>
+      <View style={styles.noItemsFound}>
+        <Text style={styles.notFoundText}>No Bookings found</Text>
+      </View>
       {/* <View style={styles.scrollAreaStack}> */}
       {/* <View style={styles.scrollArea}> */}
-      {activeIndex == 1 ? (
+      {/* {activeIndex == 1 ? (
         // <ScrollView
         //   horizontal={false}
         //   contentContainerStyle={styles.scrollArea_contentContainerStyle}>
@@ -54,7 +57,7 @@ function MyBookings({ bookings, navigation }) {
         <View style={styles.noItemsFound}>
           <Text style={styles.notFoundText}>No items found</Text>
         </View>
-      )}
+      )} */}
 
       {/* </View> */}
       {/* </View> */}

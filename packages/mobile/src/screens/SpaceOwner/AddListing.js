@@ -36,7 +36,7 @@ const AddListing = ({ navigation, tempListing, updateTempListing, deleteTempList
       if (tempListing.edit) {
         navigation.navigate('My Listings');
       } else {
-        navigation.navigate('Dashboard');
+        navigation.navigate('Profile');
       }
     }
   };

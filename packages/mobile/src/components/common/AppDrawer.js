@@ -15,12 +15,11 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
-import { toggleUserType } from '@parkyourself-frontend/shared/redux/actions/user';
+import { toggleUserType, toggleAdminMode } from '@parkyourself-frontend/shared/redux/actions/user';
 import { unsetAuthUser } from '@parkyourself-frontend/shared/redux/actions/auth';
 import colors from '@parkyourself-frontend/shared/config/colors';
 import ToggleButton from './ToggleButton';
 import MenuItem from './MenuItem';
-import { toggleAdminMode } from '@parkyourself-frontend/shared/redux/actions/user';
 
 function AppDrawer({
   navigation,

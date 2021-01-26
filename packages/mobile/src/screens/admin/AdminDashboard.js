@@ -2,10 +2,11 @@ import React from 'react';
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import MenuItem from '../../components/common/MenuItem';
-import MenuItemDrop from '../../components/common/MenuItemDrop';
 import colors from '@parkyourself-frontend/shared/config/colors';
 import FeatherIcon from 'react-native-vector-icons/Feather';
+import MenuItem from '../../components/common/MenuItem';
+import MenuItemDrop from '../../components/common/MenuItemDrop';
+import ProfileButtons from '../../components/common/ProfileButtons';
 import ScreenTittle from '../../components/common/ScreenTittle';
 
 const settings = [
@@ -46,10 +47,7 @@ function SpaceOwnerDashboard({ navigation }) {
           onPress={() => navigation.navigate('AdminRegStats')}>
           <MaterialCommunityIconsIcon name="clipboard-text-outline" style={styles.materialCIcon} />
         </MenuItem>
-        <MenuItem
-          style={styles.menuItem}
-          label="Messages"
-          onPress={() => navigation.navigate('DatePicker')}>
+        <MenuItem style={styles.menuItem} label="Messages" onPress={() => {}}>
           <FeatherIcon name="mail" style={styles.featherIcon} />
         </MenuItem>
         <MenuItem style={styles.menuItem} label="Cashouts">
@@ -62,6 +60,7 @@ function SpaceOwnerDashboard({ navigation }) {
           navigation={navigation}>
           <FeatherIcon name="settings" style={styles.featherIcon} />
         </MenuItemDrop>
+        <ProfileButtons />
       </ScrollView>
     </View>
   );

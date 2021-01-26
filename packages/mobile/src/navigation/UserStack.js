@@ -10,7 +10,7 @@ import MyBookings from '../screens/MyBookings';
 import AddVehicle from '../screens/AddVehicle';
 import Payments from '../screens/Payments';
 import AddCreditDebitCard from '../screens/AddCreditDebitCard';
-import InboxScreen from '../screens/InboxScreen';
+// import InboxScreen from '../screens/InboxScreen';
 import ChatScreen from '../screens/ChatScreen';
 import MyReviews from '../screens/MyReviews';
 import ReviewDetails from '../screens/ReviewDetails';
@@ -28,7 +28,7 @@ import PayNowScreen from '../screens/PayNowScreen';
 import CreateSpaceOwnerProfile from '../screens/SpaceOwner/CreateSpaceOwnerProfile';
 import WithdrawalSettings from '../screens/SpaceOwner/WithdrawalSettings';
 
-const drawer = createDrawerNavigator();
+// const drawer = createDrawerNavigator();
 
 const Stack = createStackNavigator();
 
@@ -71,14 +71,14 @@ const UserStack = () => {
           headerTitle: () => <HeaderLogo />
         })}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Inbox"
         component={InboxScreen}
         options={({ navigation }) => ({
           title: '',
           headerTitle: () => <HeaderLogo />
         })}
-      />
+      /> */}
       <Stack.Screen
         name="ChatScreen"
         component={ChatScreen}
@@ -153,10 +153,12 @@ const UserStack = () => {
   );
 };
 
-export default function UserDrawer() {
-  return (
-    <drawer.Navigator drawerContent={() => <AppDrawer />}>
-      <drawer.Screen name="UserStack" component={UserStack} />
-    </drawer.Navigator>
-  );
-}
+export default UserStack;
+
+// export default function UserDrawer() {
+//   return (
+//     <drawer.Navigator drawerContent={() => <AppDrawer />}>
+//       <drawer.Screen name="UserStack" component={UserStack} />
+//     </drawer.Navigator>
+//   );
+// }

@@ -24,6 +24,7 @@ import { Picker } from '@react-native-community/picker';
 import AddListingHeader from '../../components/SpaceOwner/AddListingHeader';
 import Input from '../../components/Input';
 import RadioListItem from '../../components/RadioListItem';
+import { parse } from 'react-native-svg';
 
 function AddListingSpaceDetails({
   onBackButtonPress,
@@ -290,7 +291,7 @@ function AddListingSpaceDetails({
               }
               style={styles.textInput}
             />
-            {qtyOfSpaces > 0 && (
+            {qtyOfSpaces > 1 && (
               <>
                 <Text style={styles.heading}>Are all parking spaces of same size?</Text>
                 <RadioListItem

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/Ionicons';
 import colors from '@parkyourself-frontend/shared/config/colors';
 import { Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -14,6 +14,7 @@ import MyBookings from '../screens/MyBookings';
 // import FindParking from '../screens/FindParking';
 import FindParking from '../screens/FindParkingScreen';
 import DriverDashboard from '../screens/Dashboard';
+import InboxScreen from '../screens/InboxScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -26,49 +27,74 @@ export default function UserTabs() {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
           if (route.name === 'My Listings') {
-            iconName = 'calendar-clock';
+            iconName = focused ? 'calendar' : 'calendar-outline';
           } else if (route.name === 'Parking Orders') {
-            iconName = 'car-hatchback';
-          } else if (route.name === 'Dashboard') {
-            iconName = 'view-dashboard-outline';
+            iconName = focused ? 'car' : 'car-outline';
+          } else if (route.name === 'Profile') {
+            iconName = focused ? 'person-circle' : 'person-circle-outline';
+          } else if (route.name === 'Inbox') {
+            iconName = focused ? 'chatbox' : 'chatbox-outline';
           } else if (route.name === 'My Bookings') {
-            iconName = 'calendar-clock';
+            iconName = focused ? 'calendar' : 'calendar-outline';
           } else if (route.name === 'Find Parking') {
-            iconName = 'car-hatchback';
-          } else if (route.name === 'Dashboard') {
-            iconName = 'view-dashboard-outline';
+            iconName = focused ? 'car' : 'car-outline';
           }
           return <Icon name={iconName} size={30} color={color} />;
         }
       })}
       tabBarOptions={{
         keyboardHidesTabBar: true,
-        activeTintColor: colors.secondary,
+        activeTintColor: colors.primary,
         inactiveTintColor: colors.primary,
         tabStyle: {
-          paddingBottom: Platform.OS === 'ios' ? 0 : 5
+          paddingBottom: Platform.OS === 'ios' ? 0 : 3
         }
       }}
       swipeEnabled
       animationEnabled
-      initialRouteName="Dashboard">
+      initialRouteName="Profile">
       {isSpaceOwner ? (
         <>
-          <Tab.Screen name="My Listings" component={MyListingsStack} />
+          <Tab.Screen
+            name="My Listings"
+            component={MyListingsStack}
+            options={{ tabBarLabel: 'Listings' }}
+          />
           <Tab.Screen name="Parking Orders" component={ParkingOrdersStack} />
-          <Tab.Screen name="Dashboard" component={SpaceOwnerDashboardStack} />
+          <Tab.Screen name="Inbox" component={InboxStack} />
+          <Tab.Screen name="Profile" component={SpaceOwnerDashboardStack} />
         </>
       ) : (
         <>
           <Tab.Screen name="My Bookings" component={MyBookingsStack} />
           <Tab.Screen name="Find Parking" component={FindParkingStack} />
-          <Tab.Screen name="Dashboard" component={DriverDashboardStack} />
+          <Tab.Screen name="Inbox" component={InboxStack} />
+          <Tab.Screen name="Profile" component={DriverDashboardStack} />
         </>
       )}
     </Tab.Navigator>
   );
 }
 
+function InboxStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="InboxStack"
+        component={InboxScreen}
+        options={({ navigation }) => ({
+          headerStyle: {
+            elevation: 0,
+            shadowOpacity: 0
+          },
+          headerTitle: () => <HeaderLogo />,
+          // headerLeft: () => <MenuButton navigation={navigation} />,
+          headerTitleAlign: 'center'
+        })}
+      />
+    </Stack.Navigator>
+  );
+}
 function MyBookingsStack() {
   return (
     <Stack.Navigator>
@@ -81,7 +107,7 @@ function MyBookingsStack() {
             shadowOpacity: 0
           },
           headerTitle: () => <HeaderLogo />,
-          headerLeft: () => <MenuButton navigation={navigation} />,
+          // headerLeft: () => <MenuButton navigation={navigation} />,
           headerTitleAlign: 'center'
         })}
       />
@@ -101,7 +127,7 @@ function FindParkingStack() {
             shadowOpacity: 0
           },
           headerTitle: () => <HeaderLogo />,
-          headerLeft: () => <MenuButton navigation={navigation} />,
+          // headerLeft: () => <MenuButton navigation={navigation} />,
           headerTitleAlign: 'center'
         })}
       />
@@ -121,7 +147,7 @@ function DriverDashboardStack() {
             shadowOpacity: 0
           },
           headerTitle: () => <HeaderLogo />,
-          headerLeft: () => <MenuButton navigation={navigation} />,
+          // headerLeft: () => <MenuButton navigation={navigation} />,
           headerTitleAlign: 'center'
         })}
       />
@@ -141,7 +167,7 @@ function MyListingsStack() {
             shadowOpacity: 0
           },
           headerTitle: () => <HeaderLogo />,
-          headerLeft: () => <MenuButton navigation={navigation} />,
+          // headerLeft: () => <MenuButton navigation={navigation} />,
           headerTitleAlign: 'center'
         })}
       />
@@ -161,7 +187,7 @@ function ParkingOrdersStack() {
             shadowOpacity: 0
           },
           headerTitle: () => <HeaderLogo />,
-          headerLeft: () => <MenuButton navigation={navigation} />,
+          // headerLeft: () => <MenuButton navigation={navigation} />,
           headerTitleAlign: 'center'
         })}
       />
@@ -181,7 +207,7 @@ function SpaceOwnerDashboardStack() {
             shadowOpacity: 0
           },
           headerTitle: () => <HeaderLogo />,
-          headerLeft: () => <MenuButton navigation={navigation} />,
+          // headerLeft: () => <MenuButton navigation={navigation} />,
           headerTitleAlign: 'center'
         })}
       />

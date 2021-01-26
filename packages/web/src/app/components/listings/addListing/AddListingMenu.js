@@ -95,13 +95,13 @@ const AddListingMenu = ({ activeIndex, setActiveIndex, spaceDetails }) => {
         <li
           className={activeIndex === 9 ? 'active-menu-item' : ' '}
           onClick={() => setActiveIndex(9)}>
-          Instruction
+          Space Details
           <ChevronsRight className="add-listing-arrow" size={24} />
         </li>
         <li
           className={activeIndex === 10 ? 'active-menu-item' : ' '}
           onClick={() => setActiveIndex(10)}>
-          Instruction
+          Space Instruction
           <ChevronsRight className="add-listing-arrow" size={24} />
         </li>
         <li
@@ -125,7 +125,7 @@ const AddListingMenu = ({ activeIndex, setActiveIndex, spaceDetails }) => {
         <li
           className={activeIndex === 14 ? 'active-menu-item' : ' '}
           onClick={() => setActiveIndex(14)}>
-          Max Stay Time
+          Max Min Stay Time
           <ChevronsRight className="add-listing-arrow" size={24} />
         </li>
         <li
