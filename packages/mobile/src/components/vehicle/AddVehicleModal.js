@@ -14,24 +14,20 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import colors from '@parkyourself-frontend/shared/config/colors';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { Picker } from '@react-native-community/picker';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
 import ScreenTittle from '../common/ScreenTittle';
 import Input from '../Input';
 import NextButton from '../SpaceOwner/NextButton';
-import EntypoIcon from 'react-native-vector-icons/Entypo';
 
-export default function CountryModal({ visible = false, onHide }) {
+export default function CountryModal({
+  visible = false,
+  onHide,
+  payload,
+  setPayload,
+  addVehicleHandler,
+  disabled
+}) {
   const [validated, setValidated] = useState(false);
-  const [payload, setPayload] = useState({
-    licensePlate: 'licensePlate',
-    type: '',
-    make: '',
-    model: '',
-    year: '',
-    size: '',
-    color: '',
-    image: '',
-    imageFile: null
-  });
   const options = {
     // title: 'Select Photo',
     // storageOptions: {
@@ -55,21 +51,26 @@ export default function CountryModal({ visible = false, onHide }) {
     });
   };
 
-  const onSave = () => {
-    if (
-      payload.licensePlate &&
-      payload.type &&
-      payload.make &&
-      payload.model &&
-      payload.year &&
-      payload.size &&
-      payload.color
-    ) {
-      setValidated(false);
-      onHide();
-    } else {
-      // Alert.alert('Complete');
-      setValidated(true);
+  const onSave = async () => {
+    try {
+      if (
+        payload.licensePlate &&
+        payload.type &&
+        payload.make &&
+        payload.model &&
+        payload.year &&
+        payload.size &&
+        payload.color
+      ) {
+        setValidated(false);
+        await addVehicleHandler();
+        onHide();
+      } else {
+        // Alert.alert('Complete');
+        setValidated(true);
+      }
+    } catch (error) {
+      Alert.alert('Modal Error', error.message);
     }
   };
 
@@ -82,9 +83,8 @@ export default function CountryModal({ visible = false, onHide }) {
               <TouchableOpacity onPress={onHide} style={styles.closeButton}>
                 <AntDesignIcon name="close" size={28} color={colors.secondary} />
               </TouchableOpacity>
-              <ScreenTittle title="Add Vehicle" />
+              <ScreenTittle title={`${payload.edit ? 'Update' : 'Add'} Vehicle`} />
             </View>
-
             <ScrollView
               contentContainerStyle={styles.scrollView}
               showsVerticalScrollIndicator={false}>
@@ -164,16 +164,16 @@ export default function CountryModal({ visible = false, onHide }) {
                   selectedValue={payload.size}
                   style={styles.picker}
                   onValueChange={(itemValue) => setPayload({ ...payload, size: itemValue })}>
-                  <Picker.Item label="Motorcycle" value="Motorcycle" />
+                  <Picker.Item label="Motorcycle" value="motorcycle" />
                   <Picker.Item label="Compact" value="compact" />
-                  <Picker.Item label="Mid Sized" value="Mid Sized" />
-                  <Picker.Item label="Large" value="Large" />
-                  <Picker.Item label="Over Sized" value="Over Sized" />
+                  <Picker.Item label="Mid Sized" value="midsized" />
+                  <Picker.Item label="Large" value="large" />
+                  <Picker.Item label="Over Sized" value="oversized" />
                 </Picker>
               </View>
               <View style={styles.inputGroup}>
                 <Text style={styles.label}>Add Photo of your Vehicle</Text>
-                {payload.image ? (
+                {payload.image && payload.image != '' ? (
                   <View style={styles.imageList}>
                     <View style={styles.iconContainer}>
                       <TouchableOpacity
@@ -181,7 +181,11 @@ export default function CountryModal({ visible = false, onHide }) {
                         <EntypoIcon name="circle-with-cross" style={styles.deleteIcon} />
                       </TouchableOpacity>
                     </View>
-                    <Image source={{ uri: payload.image }} style={styles.image} />
+                    <Image
+                      source={{ uri: payload.image }}
+                      style={styles.image}
+                      resizeMode="contain"
+                    />
                   </View>
                 ) : (
                   <TouchableOpacity style={styles.addPhotoBtn} onPress={imagePickerHandler}>
@@ -192,15 +196,15 @@ export default function CountryModal({ visible = false, onHide }) {
             </ScrollView>
           </View>
         </SafeAreaView>
-        <NextButton label="Save" onPress={onSave} />
+        <NextButton label="Save" onPress={onSave} disabled={disabled} />
       </View>
     </Modal>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20, flex: 1, paddingTop: 0 },
-  header: { flexDirection: 'row', alignItems: 'center' },
+  container: { padding: 10, flex: 1, paddingTop: 0 },
+  header: { flexDirection: 'row', alignItems: 'center', paddingTop: 10 },
   closeButton: { marginRight: 5 },
   scrollView: {
     marginTop: 10,
@@ -234,5 +238,22 @@ const styles = StyleSheet.create({
     color: '#0b4094',
     fontWeight: '700',
     fontSize: 16
+  },
+  deleteIcon: {
+    fontSize: 40,
+    color: 'red'
+  },
+  imageList: { marginVertical: 10 },
+  image: {
+    width: '100%',
+    height: 300,
+    borderRadius: 5
+    // marginBottom: 25
+  },
+  iconContainer: {
+    position: 'absolute',
+    zIndex: 3,
+    top: 10,
+    left: 5
   }
 });

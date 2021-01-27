@@ -1,11 +1,15 @@
 import colors from '@parkyourself-frontend/shared/config/colors';
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const NextButton = ({ onPress, label = 'Next' }) => {
+const NextButton = ({ onPress, label = 'Next', disabled = false }) => {
   return (
-    <TouchableOpacity onPress={onPress} style={styles.container}>
-      <Text style={styles.text}>{label}</Text>
+    <TouchableOpacity onPress={onPress} style={styles.container} disabled={disabled}>
+      {disabled ? (
+        <ActivityIndicator color={colors.white} size="small" />
+      ) : (
+        <Text style={styles.text}>{label}</Text>
+      )}
     </TouchableOpacity>
   );
 };

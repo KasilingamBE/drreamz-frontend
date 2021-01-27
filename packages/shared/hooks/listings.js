@@ -8,7 +8,6 @@ import { addListingLocal, updateListingLocal } from '../redux/actions/user';
 import { deleteTempListing, updateTempListing } from '../redux/actions/tempListing';
 import { updateFindParkingData } from '../redux/actions/findParking';
 import guid from '../utils/guid';
-
 import config from '../aws-exports';
 
 const { aws_user_files_s3_bucket_region: region, aws_user_files_s3_bucket: bucket } = config;

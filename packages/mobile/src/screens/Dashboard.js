@@ -16,7 +16,11 @@ import AddVehicleModal from '../components/vehicle/AddVehicleModal';
 function Dashboard({ navigation }) {
   const {
     allData: { vehicles },
-    handleDeleteVehicle
+    payload,
+    setPayload,
+    disabled,
+    deleteVehicleHandler,
+    addVehicleHandler
   } = useCRUDVehicle();
   const [showPersonalForm, setShowPersonalForm] = useState(false);
   const [showBusinessForm, setShowBusinessForm] = useState(false);
@@ -113,13 +117,14 @@ function Dashboard({ navigation }) {
                   <View style={styles.iconBtnRow}>
                     <TouchableOpacity
                       onPress={() => {
-                        navigation.navigate('AddVehicle', { vehicle: item });
+                        setPayload({ ...payload, ...item, id: item._id, mobile: true, edit: true });
+                        setShowAddVehicleModal(true);
                       }}
                       style={styles.iconBtn}>
                       <EvilIconsIcon name="pencil" size={28} color="#888" />
                     </TouchableOpacity>
                     <TouchableOpacity
-                      onPress={() => handleDeleteVehicle(item._id)}
+                      onPress={() => deleteVehicleHandler(item._id)}
                       style={styles.iconBtn}>
                       <EvilIconsIcon name="trash" size={28} color="#888" />
                     </TouchableOpacity>
@@ -129,9 +134,29 @@ function Dashboard({ navigation }) {
             <AddVehicleModal
               visible={showAddVehicleModal}
               onHide={() => setShowAddVehicleModal(false)}
+              payload={payload}
+              setPayload={setPayload}
+              addVehicleHandler={addVehicleHandler}
+              disabled={disabled}
             />
             <TouchableOpacity
-              onPress={() => setShowAddVehicleModal(true)}
+              onPress={() => {
+                setPayload({
+                  id: '',
+                  mobile: true,
+                  edit: false,
+                  licensePlate: 'licensePlate',
+                  type: 'type',
+                  make: 'make',
+                  model: 'model',
+                  year: '2021',
+                  size: 'Large',
+                  color: 'red',
+                  image: '',
+                  imageFile: null
+                });
+                setShowAddVehicleModal(true);
+              }}
               style={styles.addVehicleBtn}>
               <EntypoIcon name="circle-with-plus" style={styles.icon5} />
               <Text style={styles.addVehicle}>Add New Vehicles</Text>
@@ -177,7 +202,7 @@ function Dashboard({ navigation }) {
           navigationHandler('ReferFriend');
         }}>
         <View style={styles.wrapper}>
-          <FontAwesome5Icon name="hands-helping" style={styles.icon}></FontAwesome5Icon>
+          <FontAwesome5Icon name="hands-helping" style={styles.icon} />
           <Text style={styles.btnText}>Refer a Friend</Text>
         </View>
 

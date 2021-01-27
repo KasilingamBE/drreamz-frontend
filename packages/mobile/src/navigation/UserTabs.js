@@ -45,7 +45,7 @@ export default function UserTabs() {
       tabBarOptions={{
         keyboardHidesTabBar: true,
         activeTintColor: colors.primary,
-        inactiveTintColor: colors.primary,
+        inactiveTintColor: colors.grey,
         tabStyle: {
           paddingBottom: Platform.OS === 'ios' ? 0 : 3
         }
