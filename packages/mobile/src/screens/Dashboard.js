@@ -10,10 +10,12 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 import EvilIconsIcon from 'react-native-vector-icons/EvilIcons';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import { useCRUDVehicle } from '@parkyourself-frontend/shared/hooks/vehicle';
+import { toggleProfileType } from '@parkyourself-frontend/shared/redux/actions/user';
 import ProfileButtons from '../components/common/ProfileButtons';
 import AddVehicleModal from '../components/vehicle/AddVehicleModal';
+import ToggleButton from '../components/common/ToggleButton';
 
-function Dashboard({ navigation }) {
+function Dashboard({ navigation, profileType, toggleProfileType }) {
   const {
     allData: { vehicles },
     payload,
@@ -92,6 +94,17 @@ function Dashboard({ navigation }) {
             </View>
           </View>
         )}
+        <View style={{ marginTop: 10 }}>
+          <ToggleButton
+            value={profileType === 'personal'}
+            onChange={() => toggleProfileType()}
+            label={
+              profileType === 'personal'
+                ? 'Switch to Business Profile'
+                : 'Switch to Personal Profile'
+            }
+          />
+        </View>
       </View>
       <Text style={styles.moreInformation}>MORE INFORMATION</Text>
       <View style={styles.rect}>
@@ -370,85 +383,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginLeft: 24
   }
-  // rect12: {
-  //   // width: 260,
-  //   // height: 50,
-  //   backgroundColor: 'rgba(20,222,113,1)',
-  //   shadowColor: 'rgba(180,177,177,1)',
-  //   shadowOffset: {
-  //     width: 3,
-  //     height: 3,
-  //   },
-  //   elevation: 30,
-  //   shadowOpacity: 1,
-  //   shadowRadius: 10,
-  //   flexDirection: 'row',
-  //   marginTop: 300,
-  //   // marginLeft: 66,
-  //   alignSelf: 'center',
-  //   justifyContent: 'center',
-  //   paddingVertical: 10,
-  //   paddingHorizontal: 20,
-  // },
-  // switch: {
-  //   // marginLeft: 19,
-  //   // marginTop: 11,
-  // },
-  // loremIpsum2: {
-  //   // fontFamily: 'roboto-regular',
-  //   color: 'rgba(255,255,255,1)',
-  //   marginLeft: 14,
-  //   // marginTop: 15,
-  // },
-  // rect13: {
-  //   width: 150,
-  //   height: 45,
-  //   backgroundColor: 'rgba(39,170,225,1)',
-  //   shadowColor: 'rgba(180,179,179,1)',
-  //   shadowOffset: {
-  //     width: 3,
-  //     height: 3,
-  //   },
-  //   elevation: 30,
-  //   shadowOpacity: 1,
-  //   shadowRadius: 10,
-  //   flexDirection: 'row',
-  //   marginTop: 16,
-  //   marginBottom: 80,
-  //   alignSelf: 'center',
-  //   // paddingVertical: 10,
-  //   // paddingHorizontal: 20,
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  // },
-  // icon17: {
-  //   color: 'rgba(254,253,253,1)',
-  //   fontSize: 24,
-  //   height: 27,
-  //   width: 19,
-  // },
-  // logOut: {
-  //   // fontFamily: 'roboto-500',
-  //   color: 'rgba(255,255,255,1)',
-  //   marginLeft: 13,
-  //   marginTop: 6,
-  // },
-  // icon17Row: {
-  //   height: 27,
-  //   flexDirection: 'row',
-  //   flex: 1,
-  //   marginRight: 33,
-  //   marginLeft: 28,
-  //   marginTop: 6,
-  // },
 });
 
 // Dashboard.propTypes = {
 //   vehicles: PropTypes.array.isRequired,
 // };
 
-const mapStateToProps = (state) => ({
-  vehicles: state.user.vehicles
+const mapStateToProps = ({ user }) => ({
+  profileType: user.profileType
 });
 
-export default connect(mapStateToProps, null)(Dashboard);
+export default connect(mapStateToProps, { toggleProfileType })(Dashboard);

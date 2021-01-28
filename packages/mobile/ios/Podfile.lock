@@ -330,6 +330,7 @@ PODS:
     - React
   - RNVectorIcons (7.1.0):
     - React
+  - Stripe (19.4.0)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -398,6 +399,7 @@ DEPENDENCIES:
   - RNScreens (from `../../../node_modules/react-native-screens`)
   - RNSVG (from `../../../node_modules/react-native-svg`)
   - RNVectorIcons (from `../../../node_modules/react-native-vector-icons`)
+  - Stripe
   - Yoga (from `../../../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -413,6 +415,7 @@ SPEC REPOS:
     - Flipper-RSocket
     - FlipperKit
     - OpenSSL-Universal
+    - Stripe
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -557,9 +560,10 @@ SPEC CHECKSUMS:
   RNScreens: 3d682bcaba69a4f8e55543d90818704f34338db1
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
+  Stripe: 92f1c73a9dbd3c54277ed06a1fea6e08f20414c6
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: b8b89b3798d2b6ab9676d9b1782350f3044cdeed
+PODFILE CHECKSUM: e4e553b1331c31cf0d7dea02be99eadac71001e4
 
 COCOAPODS: 1.10.0

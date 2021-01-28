@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>mobile.ipa</key>
+	<array>
+		<dict>
+			<key>architectures</key>
+			<array>
+				<string>arm64</string>
+			</array>
+			<key>certificate</key>
+			<dict>
+				<key>SHA1</key>
+				<string>F11BC2E75BA05540C9E912B1A60083088E7B4BD8</string>
+				<key>dateExpires</key>
+				<string>15/12/21</string>
+				<key>type</key>
+				<string>Apple Development</string>
+			</dict>
+			<key>entitlements</key>
+			<dict>
+				<key>application-identifier</key>
+				<string>88UG6FKDTH.com.parkyourself.dev</string>
+				<key>com.apple.developer.team-identifier</key>
+				<string>88UG6FKDTH</string>
+				<key>get-task-allow</key>
+				<true/>
+				<key>keychain-access-groups</key>
+				<array>
+					<string>88UG6FKDTH.com.parkyourself.dev</string>
+				</array>
+			</dict>
+			<key>name</key>
+			<string>mobile.app</string>
+			<key>profile</key>
+			<dict>
+				<key>UUID</key>
+				<string>fd4419f7-16d3-47eb-b313-26b05e315e53</string>
+				<key>name</key>
+				<string>Parkyourself</string>
+			</dict>
+			<key>team</key>
+			<dict>
+				<key>id</key>
+				<string>88UG6FKDTH</string>
+				<key>name</key>
+				<string>sumithra jonnalagadda</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

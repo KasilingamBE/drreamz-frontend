@@ -15,6 +15,6 @@ export default function NoFound({ loading = false, count = 0, label = 'Records' 
 }
 
 const styles = StyleSheet.create({
-  box: { flex: 1, justifyContent: 'center' },
+  box: { flex: 1, justifyContent: 'center', marginTop: 50 },
   text: { textAlign: 'center', opacity: 0.3, fontWeight: 'bold', fontSize: 20 }
 });

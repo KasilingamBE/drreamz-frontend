@@ -6,7 +6,6 @@ import { Storage } from 'aws-amplify';
 import { v4 as uuid } from 'uuid';
 import guid from '../utils/guid';
 import config from '../aws-exports';
-import { Alert } from 'react-native';
 
 const { aws_user_files_s3_bucket_region: region, aws_user_files_s3_bucket: bucket } = config;
 

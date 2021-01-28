@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { Spinner, Button, Modal, Card } from "react-bootstrap";
-import { CheckCircle, Trash, X } from "react-feather";
-import { gql } from "@apollo/client";
-import { client } from "../../graphql/index";
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { Spinner, Button, Modal, Card } from 'react-bootstrap';
+import { CheckCircle, Trash, X } from 'react-feather';
+import { gql } from '@apollo/client';
+import { client } from '../../graphql/index';
 // import "./css/stripestyle.css";
 
 const Create_Setup_Intent = gql`
@@ -14,12 +14,7 @@ const Create_Setup_Intent = gql`
     $email: String!
     $type: String!
   ) {
-    stripeCreateSetupIntent(
-      driverId: $driverId
-      name: $name
-      email: $email
-      type: $type
-    )
+    stripeCreateSetupIntent(driverId: $driverId, name: $name, email: $email, type: $type)
   }
 `;
 
@@ -46,7 +41,7 @@ const CustomCardElement = (props) => {
   const elements = useElements();
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [cardError, setError] = useState(" ");
+  const [cardError, setError] = useState(' ');
   const [cards, setCards] = useState([]);
 
   const [show, setShow] = useState(false);
@@ -60,8 +55,8 @@ const CustomCardElement = (props) => {
       query: stripe_List_User_Cards,
       variables: {
         driverId: props.driverId,
-        type: props.type,
-      },
+        type: props.type
+      }
     });
     if (JSON.parse(tempCards.data.stripeListUserCards) !== null) {
       setCards(JSON.parse(tempCards.data.stripeListUserCards));
@@ -75,8 +70,8 @@ const CustomCardElement = (props) => {
       let tempCard = await client.query({
         query: stripe_Get_Payment_Method,
         variables: {
-          payment_method,
-        },
+          payment_method
+        }
       });
 
       if (JSON.parse(tempCard.data.stripeGetPaymentMethod)) {
@@ -109,8 +104,8 @@ const CustomCardElement = (props) => {
           driverId: props.driverId,
           name: props.name,
           email: props.email,
-          type: props.type,
-        },
+          type: props.type
+        }
       });
 
       const client_secret = data.stripeCreateSetupIntent;
@@ -119,9 +114,9 @@ const CustomCardElement = (props) => {
         payment_method: {
           card: elements.getElement(CardElement),
           billing_details: {
-            name: props.driverName,
-          },
-        },
+            name: props.driverName
+          }
+        }
       });
 
       if (result.error) {
@@ -129,13 +124,13 @@ const CustomCardElement = (props) => {
       } else {
         getCard(result.setupIntent.payment_method);
         setShow(false);
-        alert("Your card is saved");
+        alert('Your card is saved');
       }
       setDisabled(false);
     } catch (error) {
       setDisabled(false);
-      alert("Something went wrong!");
-      console.log("error ", error);
+      alert('Something went wrong!');
+      console.log('error ', error);
     }
   };
 
@@ -149,21 +144,21 @@ const CustomCardElement = (props) => {
 
   const handleDeleteCard = async (id) => {
     try {
-      if (window.confirm("Are you sure you want to delete this card?")) {
+      if (window.confirm('Are you sure you want to delete this card?')) {
         setDisabled(true);
         await client.query({
           query: stripe_Detach_Payment_Method,
           variables: {
-            payment_method: id,
-          },
+            payment_method: id
+          }
         });
         setCards(cards.filter((c) => c.id !== id));
         setDisabled(false);
       }
     } catch (error) {
       setDisabled(false);
-      alert("Something went wrong!");
-      console.log("error ", error);
+      alert('Something went wrong!');
+      console.log('error ', error);
     }
   };
 
@@ -178,9 +173,8 @@ const CustomCardElement = (props) => {
         <Button
           variant="primary"
           onClick={handleShow}
-          style={{ pointerEvents: disabled ? "none" : "auto" }}
-          className="mb-3"
-        >
+          style={{ pointerEvents: disabled ? 'none' : 'auto' }}
+          className="mb-3">
           Add New Card
         </Button>
         <div>
@@ -190,10 +184,9 @@ const CustomCardElement = (props) => {
                 <div className="position-relative">
                   <div
                     className="position-absolute"
-                    style={{ zIndex: 101, right: "10px", top: "10px" }}
-                  >
+                    style={{ zIndex: 101, right: '10px', top: '10px' }}>
                     <Trash
-                      style={{ pointerEvents: disabled ? "none" : "auto" }}
+                      style={{ pointerEvents: disabled ? 'none' : 'auto' }}
                       onClick={() => handleDeleteCard(c.id)}
                       className="cursor-pointer text-danger"
                     />
@@ -202,7 +195,7 @@ const CustomCardElement = (props) => {
                 <Card>
                   <Card.Body>
                     <h6>
-                      <span className="text-capitalize">{c.card.brand} </span>{" "}
+                      <span className="text-capitalize">{c.card.brand} </span>{' '}
                       {` **** **** **** ${c.card.last4}`}
                     </h6>
                     <p className="mb-0 pb-0">
@@ -225,14 +218,11 @@ const CustomCardElement = (props) => {
 
       <Modal show={show} centered>
         <Modal.Body>
-          <div
-            className="position-absolute"
-            style={{ right: "10px", top: "10px" }}
-          >
+          <div className="position-absolute" style={{ right: '10px', top: '10px' }}>
             <X
               onClick={handleClose}
               className="cursor-pointer"
-              style={{ pointerEvents: disabled ? "none" : "auto" }}
+              style={{ pointerEvents: disabled ? 'none' : 'auto' }}
             />
           </div>
           <div className="text-center py-3">
@@ -245,16 +235,9 @@ const CustomCardElement = (props) => {
               className="stripe-button"
               type="submit"
               disabled={cardError ? true : false}
-              style={{ pointerEvents: disabled ? "none" : "auto" }}
-            >
+              style={{ pointerEvents: disabled ? 'none' : 'auto' }}>
               {disabled ? (
-                <Spinner
-                  as="span"
-                  animation="border"
-                  size="sm"
-                  role="status"
-                  aria-hidden="true"
-                />
+                <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
               ) : (
                 `Save Card`
               )}
@@ -272,7 +255,7 @@ const mapStateToProps = ({ auth, user }) => {
     name: auth.authenticated ? auth.data.attributes.name : null,
     email: auth.authenticated ? auth.data.attributes.email : null,
     driverId: auth.authenticated ? auth.data.attributes.sub : null,
-    type: user.profileType,
+    type: user.profileType
   };
 };
 

@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, { Component, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,12 +8,12 @@ import {
   TouchableOpacity,
   CheckBox,
   ScrollView,
-  Alert,
+  Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialButtonPrimary from '../components/MaterialButtonPrimary';
 
-function AddCreditDebitCard({navigation}) {
+function AddCreditDebitCard({ navigation }) {
   const [cardNumber, setCardNumber] = useState('');
   const [expiry, setExpiry] = useState('');
   const [name, setName] = useState('');
@@ -26,9 +26,9 @@ function AddCreditDebitCard({navigation}) {
           cardNumber,
           expiry,
           name,
-          isDefault,
+          isDefault
         };
-        navigation.goBack({card: card});
+        navigation.goBack({ card: card });
       } else {
         Alert.alert('Missing Inputs', 'Please fill all inputs');
       }
@@ -40,12 +40,10 @@ function AddCreditDebitCard({navigation}) {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.loremIpsum}>Add Credit/Debit card</Text>
-      <ImageBackground
-        style={styles.rect}
-        source={require('../assets/images/gradient.jpg')}>
-        <Icon name="cc-visa" style={styles.icon}></Icon>
-        <Text style={styles.platinum}>Platinum</Text>
-        <Text style={styles.loremIpsum2}>xxxxxxxx0212</Text>
+      <ImageBackground style={styles.rect} source={require('../assets/images/gradient.jpg')}>
+        {/* <Icon name="cc-visa" style={styles.icon} /> */}
+        {/* <Text style={styles.platinum}>Platinum</Text> */}
+        <Text style={styles.loremIpsum2}>{cardNumber ? `${cardNumber}` : '************'}</Text>
       </ImageBackground>
       <TextInput
         placeholder="xxxx-xxxx-xxxx-xxxx"
@@ -55,7 +53,8 @@ function AddCreditDebitCard({navigation}) {
         value={cardNumber}
         onChangeText={(input) => {
           setCardNumber(input);
-        }}></TextInput>
+        }}
+      />
       <View style={styles.buttonRow}>
         <TouchableOpacity style={styles.button}>
           <Text style={styles.mmYy}>MM/YY</Text>
@@ -67,13 +66,15 @@ function AddCreditDebitCard({navigation}) {
           value={name}
           onChangeText={(input) => {
             setName(input);
-          }}></TextInput>
+          }}
+        />
       </View>
       <View style={styles.rect2Stack}>
         <CheckBox
           onValueChange={() => setIsDefault(!isDefault)}
           style={styles.materialCheckbox1}
-          value={isDefault}></CheckBox>
+          value={isDefault}
+        />
         <View style={styles.rect2}>
           <Text style={styles.setAsDefault}>Set as Default</Text>
         </View>
@@ -81,7 +82,8 @@ function AddCreditDebitCard({navigation}) {
       <TextInput
         placeholder="Profile Category"
         placeholderTextColor="rgba(214,214,214,1)"
-        style={styles.profileCategory}></TextInput>
+        style={styles.profileCategory}
+      />
       <MaterialButtonPrimary
         onPress={onSubmitHandler}
         caption="ADD CARD"
@@ -93,12 +95,12 @@ function AddCreditDebitCard({navigation}) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
-    padding: 20,
+    padding: 20
   },
   loremIpsum: {
     // fontFamily: 'roboto-500',
     color: 'rgba(11,64,148,1)',
-    fontSize: 24,
+    fontSize: 24
   },
   rect: {
     width: '100%',
@@ -107,13 +109,13 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0,0,0,1)',
     shadowOffset: {
       width: 3,
-      height: 3,
+      height: 3
     },
     elevation: 20,
     shadowOpacity: 0.3,
     shadowRadius: 30,
     marginTop: 28,
-    overflow: 'hidden',
+    overflow: 'hidden'
   },
   icon: {
     fontSize: 58,
@@ -121,7 +123,7 @@ const styles = StyleSheet.create({
     height: 58,
     width: 75,
     marginTop: 18,
-    marginLeft: 26,
+    marginLeft: 26
   },
   platinum: {
     // fontFamily: 'roboto-300',
@@ -129,14 +131,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     letterSpacing: 2,
     marginTop: 8,
-    marginLeft: 25,
+    marginLeft: 25
   },
   loremIpsum2: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(255,255,255,1)',
     fontSize: 18,
     marginTop: 64,
-    marginLeft: 26,
+    marginLeft: 26
   },
   placeholder: {
     // fontFamily: 'roboto-regular',
@@ -146,21 +148,21 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 35,
     borderBottomColor: '#d6d6d6',
-    borderBottomWidth: 1,
+    borderBottomWidth: 1
   },
   button: {
     width: '25%',
     height: 45,
     borderBottomWidth: 1,
     borderColor: 'rgba(214,214,214,1)',
-    backgroundColor: '#fff',
+    backgroundColor: '#fff'
   },
   mmYy: {
     // fontFamily: 'roboto-regular',
     color: 'rgba(214,214,214,1)',
     fontSize: 18,
     marginTop: 12,
-    marginLeft: 19,
+    marginLeft: 19
   },
   nameOnCard: {
     // fontFamily: 'roboto-regular',
@@ -171,35 +173,35 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginLeft: 14,
     borderBottomWidth: 1,
-    borderColor: 'rgba(214,214,214,1)',
+    borderColor: 'rgba(214,214,214,1)'
   },
   buttonRow: {
     width: '100%',
     height: 45,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 20,
+    marginTop: 20
   },
   rect2: {
     width: 211,
-    height: 51,
+    height: 51
   },
   setAsDefault: {
     // fontFamily: 'roboto-regular',
     color: '#121212',
     fontSize: 20,
-    marginTop: 14,
+    marginTop: 14
   },
   materialCheckbox1: {
     height: 40,
-    width: 40,
+    width: 40
   },
   rect2Stack: {
     width: '100%',
     height: 51,
     marginTop: 28,
     alignItems: 'center',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   profileCategory: {
     // fontFamily: 'roboto-regular',
@@ -209,7 +211,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 9,
     borderBottomWidth: 1,
-    borderColor: 'rgba(214,214,214,1)',
+    borderColor: 'rgba(214,214,214,1)'
   },
   materialButtonPrimary: {
     width: 120,
@@ -217,15 +219,15 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0,0,0,1)',
     shadowOffset: {
       width: 3,
-      height: 3,
+      height: 3
     },
     elevation: 20,
     shadowOpacity: 0.3,
     shadowRadius: 30,
     marginVertical: 52,
     alignSelf: 'center',
-    backgroundColor: '#27aae1',
-  },
+    backgroundColor: '#27aae1'
+  }
 });
 
 export default AddCreditDebitCard;

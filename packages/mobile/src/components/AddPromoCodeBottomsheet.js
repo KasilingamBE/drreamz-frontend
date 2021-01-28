@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {StyleSheet, View, Text, TextInput} from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, View, Text, TextInput } from 'react-native';
 import MaterialButtonPrimary from '../components/MaterialButtonPrimary';
 
 function AddPromoCode(props) {
@@ -28,14 +28,14 @@ const styles = StyleSheet.create({
     height: 200,
     borderWidth: 1,
     borderColor: '#000000',
-    marginTop: 323,
+    marginTop: 323
   },
   addPromoCode: {
     // fontFamily: 'roboto-500',
     color: 'rgba(11,64,148,1)',
     fontSize: 22,
     marginTop: 18,
-    marginLeft: 22,
+    marginLeft: 22
   },
   textInput: {
     // fontFamily: 'roboto-regular',
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     width: 331,
     fontSize: 20,
     marginTop: 16,
-    marginLeft: 24,
+    marginLeft: 24
   },
   rect2: {
     width: 140,
@@ -52,17 +52,17 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0,0,0,1)',
     shadowOffset: {
       width: 3,
-      height: 3,
+      height: 3
     },
     elevation: 60,
     shadowOpacity: 0.3,
-    shadowRadius: 20,
+    shadowRadius: 20
   },
   cancel: {
     // fontFamily: 'roboto-500',
     color: 'rgba(39,170,225,1)',
     marginTop: 12,
-    marginLeft: 44,
+    marginLeft: 44
   },
   materialButtonPrimary: {
     width: 140,
@@ -70,21 +70,21 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0,0,0,1)',
     shadowOffset: {
       width: 3,
-      height: 3,
+      height: 3
     },
     elevation: 60,
     shadowOpacity: 0.3,
     shadowRadius: 20,
     marginLeft: 26,
-    marginTop: 1,
+    marginTop: 1
   },
   rect2Row: {
     height: 41,
     flexDirection: 'row',
     marginTop: 17,
     marginLeft: 26,
-    marginRight: 43,
-  },
+    marginRight: 43
+  }
 });
 
 export default AddPromoCode;
