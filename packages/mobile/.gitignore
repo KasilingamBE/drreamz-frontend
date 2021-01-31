@@ -21,6 +21,11 @@ DerivedData
 *.ipa
 *.xcuserstate
 
+
+android/java_pid1077.hprof
+*.hprof
+*.apk
+
 # Android/IntelliJ
 #
 build/

@@ -17,17 +17,17 @@ import colors from '@parkyourself-frontend/shared/config/colors';
 import ScreenTittle from '../common/ScreenTittle';
 import Input from '../Input';
 
-var StripeBridge = NativeModules.StripeBridge;
+const { StripeBridge } = NativeModules;
 
 export default function CountryModal({ visible = false, onHide, createSetupIntent, onComplete }) {
   const [disabled, setDisabled] = useState(false);
   const [validated, setValidated] = useState(false);
   const [payload, setPayload] = useState({
-    ccname: '',
-    year: '',
-    ccnumber: '',
-    month: '',
-    cvc: ''
+    ccname: 'Sumi',
+    year: '24',
+    ccnumber: '4242424242424242',
+    month: '12',
+    cvc: '123'
   });
 
   const onPress = async () => {
@@ -41,13 +41,24 @@ export default function CountryModal({ visible = false, onHide, createSetupInten
         if (Platform.OS === 'ios') {
           StripeBridge.confirmSetupIntend(secret, ccnumber, month, year, cvc, (error, res) => {
             if (res == 'SUCCESS') {
-              // setDisabled(false);
               onComplete();
+              setDisabled(false);
             } else {
               Alert.alert('Error', 'Please enter correct card details');
               setDisabled(false);
             }
           });
+        } else {
+          const cardDetails = {
+            number: ccnumber,
+            expMonth: parseInt(month),
+            expYear: parseInt(year),
+            cvc
+          };
+          // const isCardValid = StripeBridge.isCardValid(cardDetails);
+          await StripeBridge.confirmSetupIntend(secret, cardDetails);
+          await onComplete();
+          setDisabled(false);
         }
         // setDisabled(false);
       } else {

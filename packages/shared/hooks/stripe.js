@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { client } from '../graphql';
 
 const ownerId = '8e2783ed-f09d-48e8-8158-43e7d42c7378';
-const amount = 10000;
+const amount = 110000;
 const fee = 1500;
 const driverName = 'Vivek Thakur';
 
@@ -57,7 +57,8 @@ export function useStripeCreatePaymentIntent() {
         ownerId,
         amount,
         fee
-      }
+      },
+      fetchPolicy: 'network-only'
     });
     return res;
   };
@@ -120,7 +121,8 @@ export function useCardCRUD() {
         name,
         email,
         type
-      }
+      },
+      fetchPolicy: 'network-only'
     });
   };
 
@@ -129,7 +131,8 @@ export function useCardCRUD() {
       query: stripe_Detach_Payment_Method,
       variables: {
         payment_method: id
-      }
+      },
+      fetchPolicy: 'network-only'
     });
     setCards(cards.filter((c) => c.id !== id));
   };

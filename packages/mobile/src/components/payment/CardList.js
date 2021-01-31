@@ -99,14 +99,14 @@ const styles = StyleSheet.create({
     width: '100%',
     shadowColor: 'rgba(0,0,0,1)',
     shadowOffset: {
-      width: 3,
-      height: 3
+      width: 1,
+      height: 1
     },
-    elevation: 30,
+    elevation: 2,
     shadowOpacity: 0.15,
-    shadowRadius: 10,
+    shadowRadius: 1,
     borderWidth: 1,
-    borderColor: 'rgba(214,214,214,1)',
+    borderColor: colors.lightGrey,
     backgroundColor: colors.white,
     flexDirection: 'row',
     alignItems: 'center',

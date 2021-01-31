@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { NativeModules, Button, Alert, View, Text } from 'react-native';
+import { NativeModules, Button, View, Text } from 'react-native';
 
 // const { CalendarModule } = NativeModules;
-const Encryptor = NativeModules.Encryptor;
+const { StripeBridge } = NativeModules;
 
 const NewModuleButton = () => {
   const [text, setText] = useState('Sample Text');
@@ -18,7 +18,7 @@ const NewModuleButton = () => {
 
   const encrypt = (plainText) => {
     // Add your additional custom logic here
-    return Encryptor.encrypt(plainText);
+    return StripeBridge.encrypt(plainText);
   };
 
   return (

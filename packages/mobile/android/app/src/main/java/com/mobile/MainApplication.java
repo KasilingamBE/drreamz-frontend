@@ -11,7 +11,8 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import com.mobile.EncryptionPackage;
+import com.stripe.android.PaymentConfiguration;
+import com.mobile.StripeBridgePackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -28,7 +29,7 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
-          packages.add(new EncryptionPackage()); 
+          packages.add(new StripeBridgePackage()); 
           return packages;
         }
 
@@ -46,6 +47,7 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
+    PaymentConfiguration.init(getApplicationContext(), "pk_test_517LnJnDPrb5EfwdRchW3z9AVO6xddwRZtSHqD311B4HW5j9Ouh9dmzU6UDiwH5Hwgh7jWSaqiQn7phQGitMPS0C500jhmK4yHw");
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
   }
