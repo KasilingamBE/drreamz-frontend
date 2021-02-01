@@ -307,7 +307,7 @@ export function useCRUDPropertyType(id) {
       dispatch(hideLoading());
       // alert('Something went wrong!');
     }
-  };
+  // };
 
   return {
     setForm,
@@ -369,3 +369,5 @@ export function useCRUDPropertyType(id) {
 // //   const data = useQuery(GET_ONE);
 // //   return data;
 // // }
+
+  };
