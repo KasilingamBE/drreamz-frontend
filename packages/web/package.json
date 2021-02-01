@@ -63,6 +63,7 @@
     "react-toast-notifications": "^2.4.0",
     "react-toastify": "^6.0.9",
     "react-visibility-sensor": "^5.1.1",
+    "reactstrap": "^8.9.0",
     "recompose": "^0.30.0",
     "redux": "^4.0.5",
     "redux-persist": "^4.10.2",
