@@ -118,6 +118,7 @@ export function useCRUDPropertyType(id) {
       dispatch(hideLoading());
     }
   };
+<<<<<<< HEAD
 
   const handleChangeFormOption = (value) => {
     let tempA = [...payload.options];
@@ -221,3 +222,151 @@ export function useCRUDPropertyType(id) {
     handlePublish
   };
 }
+=======
+
+  const handleChangeFormOption = (value) => {
+    let tempA = [...payload.options];
+    tempA = tempA.map((a, i) => {
+      if (i === payload.index) {
+        let tempa = a;
+        tempa.value = value;
+        tempa.label = value;
+        return tempa;
+      } else {
+        return a;
+      }
+    });
+    setPayload({
+      ...payload,
+      options: tempA
+    });
+  };
+
+  const handleDelete = async (index) => {
+    try {
+      updateDisabled(true);
+      dispatch(showLoading());
+      const tempOptions = oneData.options.filter((o, i) => i !== index);
+      let { data } = await updateOneFormOption({
+        variables: {
+          id,
+          options: tempOptions.map((i) => ({
+            value: i.value,
+            label: i.label,
+            published: i.published
+          })),
+          updatedBy: userId
+        }
+      });
+      setOneData({
+        ...oneData,
+        options: data.updateOneFormOption.options
+      });
+      updateDisabled(false);
+      dispatch(hideLoading());
+    } catch (err) {
+      updateDisabled(false);
+      dispatch(hideLoading());
+    }
+  };
+
+  const handlePublish = async (index) => {
+    try {
+      updateDisabled(true);
+      dispatch(showLoading());
+      let { data } = await updateOneFormOption({
+        variables: {
+          id,
+          options: oneData.options.map((o, i) => {
+            if (i === index) {
+              console.log('Changed Status');
+              return {
+                value: o.value,
+                label: o.label,
+                published: !o.published
+              };
+            } else {
+              return {
+                value: o.value,
+                label: o.label,
+                published: o.published
+              };
+            }
+          }),
+          updatedBy: userId
+        }
+      });
+      setOneData({
+        ...oneData,
+        options: data.updateOneFormOption.options
+      });
+      updateDisabled(false);
+      dispatch(hideLoading());
+    } catch (er) {
+      updateDisabled(false);
+      dispatch(hideLoading());
+      // alert('Something went wrong!');
+    }
+  };
+
+  return {
+    setForm,
+    payload,
+    data,
+    loading,
+    error,
+    handleDelete,
+    handleChangeFormOption,
+    handleSubmit,
+    handleAddNew,
+    handleEdit,
+    form,
+    disabled,
+    oneData,
+    handlePublish
+  };
+}
+
+
+// import { useState, useEffect } from 'react';
+// import { useQuery, gql } from '@apollo/client';
+
+// const GET_ONE = gql`
+//   query Query {
+//     getOneFee {
+//       fee
+//     }
+//   }
+// `;
+
+// const GET_ONE_PROPERTY = gql`
+//   query GetOneFormOption($id: ID!) {
+//     getOneFormOption(id: $id) {
+//       _id
+//       title
+//       options {
+//         label
+//         value
+//         published
+//       }
+//       formName
+//       published
+//     }
+//   }
+// `;
+
+// export function useAppFee() {
+//   const data = useQuery(GET_ONE);
+//   return data;
+// }
+
+// export function usePropertyType(id) {
+//   const data = useQuery(GET_ONE_PROPERTY, { variables: { id: id } });
+//   return data;
+// }
+
+// // export function useAppFee() {
+// //   const data = useQuery(GET_ONE);
+// //   return data;
+// // }
+>>>>>>> 81d9a8c092b128339f396c9d36db8f62347d19f2
