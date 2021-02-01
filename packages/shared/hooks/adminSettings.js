@@ -118,7 +118,7 @@ export function useCRUDPropertyType(id) {
       dispatch(hideLoading());
     }
   };
-<<<<<<< HEAD
+
 
   const handleChangeFormOption = (value) => {
     let tempA = [...payload.options];
@@ -222,7 +222,7 @@ export function useCRUDPropertyType(id) {
     handlePublish
   };
 }
-=======
+
 
   const handleChangeFormOption = (value) => {
     let tempA = [...payload.options];
@@ -325,7 +325,7 @@ export function useCRUDPropertyType(id) {
     oneData,
     handlePublish
   };
-}
+
 
 
 // import { useState, useEffect } from 'react';
@@ -369,4 +369,3 @@ export function useCRUDPropertyType(id) {
 // //   const data = useQuery(GET_ONE);
 // //   return data;
 // // }
->>>>>>> 81d9a8c092b128339f396c9d36db8f62347d19f2
