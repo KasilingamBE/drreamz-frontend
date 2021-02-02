@@ -35,11 +35,11 @@ const HomePage = ({ dispatch, authenticated, userId }) => {
           
           dispatch(hideLoading());
           setDisabled(false);
-          if (response.data.runHomepageEmailTask.includes("Submitting Email")) {
-            alert("Submitting Email");
-          } else {
-            alert("Something went wrong please try again");
-          }
+          // if (response.data.runHomepageEmailTask.includes("Submitting Email")) {
+          alert("Submitting Email");
+          // } else {
+          //   alert("Something went wrong please try again");
+          // }
         } catch (error) {
           dispatch(hideLoading());
           setDisabled(false);
