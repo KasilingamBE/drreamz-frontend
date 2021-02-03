@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
-import logo from '../../assets/images/logo2.png';
+import logo from '../../assets/images/drreamz_logo.png';
 import { useRouter } from 'next/router';
 import AuthRequired from './AuthRequired';
 import { Menu, X } from 'react-feather';

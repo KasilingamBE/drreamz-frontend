@@ -8,7 +8,7 @@ import { Button, Navbar, Nav } from 'react-bootstrap';
 import { unsetAuthUser } from '../../redux/actions/auth';
 import { setRedirectPath } from '../../redux/actions/redirect';
 import { toggleUserType, toggleLoading } from '../../redux/actions/user';
-import logo from '../../assets/images/logo2.png';
+import logo from '../../assets/images/drreamz_logo.png';
 
 const NavC = (props) => {
   const handleLogout = () => {
