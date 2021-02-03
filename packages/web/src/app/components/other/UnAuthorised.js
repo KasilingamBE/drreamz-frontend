@@ -13,7 +13,7 @@ const UnAuthorised = ({ dispatch, redirectPath }) => {
     <div className="mt-3 py-5">
       <h2 className="text-center">Please Login to access this page!</h2>
       <div className="d-flex justify-content-center errorPageContentWrap">
-        <Link onClick={handleRedirect} href="/">
+        <Link onClick={handleRedirect} href="/login_page">
           <Button>Login</Button>
         </Link>
       </div>
