@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { IoIosArrowDown, IoIosMenu } from 'react-icons/io';
 import { FaUserCircle } from 'react-icons/fa';
@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { Auth } from 'aws-amplify';
 import { Button, Navbar, Nav } from 'react-bootstrap';
 import { unsetAuthUser } from '../../redux/actions/auth';
-import { setRedirectPath } from '../../redux/actions/redirect';
 import { toggleUserType, toggleLoading } from '../../redux/actions/user';
 import logo from '../../assets/images/drreamz_logo.png';
 
@@ -116,7 +115,7 @@ const NavC = (props) => {
           ) : (
             props.initial && (
               <Nav.Item>
-                <Link href="/">
+                <Link href="/login">
                   <Button variant="outline-dark">Login</Button>
                 </Link>
               </Nav.Item>
