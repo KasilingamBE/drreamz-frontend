@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Button, Form, FormGroup, Input, Spinner } from 'reactstrap';
 import { showLoading, hideLoading } from 'react-redux-loading';
@@ -11,7 +11,7 @@ const RUN_HOMEPAGE_EMAIL_TASK = gql`
   }
 `;
 
-const HomePage = ({ dispatch, authenticated, userId }) => {
+const WaitlistForm = ({ dispatch, authenticated, userId }) => {
   const [runHomepageEmailTask] = useMutation(RUN_HOMEPAGE_EMAIL_TASK);
   const [disabled, setDisabled] = useState(false);
   const [payload, setPayload] = useState({
@@ -36,9 +36,6 @@ const HomePage = ({ dispatch, authenticated, userId }) => {
     } catch (error) {
       dispatch(hideLoading());
       setDisabled(false);
-      // console.log(response)
-      // console.log(userId);
-      // console.log(error);
       alert('Something went wrong please try againnnnnn');
     }
   };
@@ -51,7 +48,7 @@ const HomePage = ({ dispatch, authenticated, userId }) => {
           <Input
             type="text"
             name="Email_id"
-            placeholder="Email_id"
+            placeholder="Email"
             value={payload.Email_id}
             onChange={(e) => setPayload({ ...payload, Email_id: e.target.value })}
             required
@@ -80,11 +77,7 @@ const mapStateToProps = ({ auth }) => {
   };
 };
 
-export default connect(mapStateToProps)(HomePage);
-
-
-
-
+export default connect(mapStateToProps)(WaitlistForm);
 
 // import React, { useState, useEffect } from "react";
 // import { connect } from "react-redux";
@@ -95,7 +88,7 @@ export default connect(mapStateToProps)(HomePage);
 
 // const RUN_HOMEPAGE_EMAIL_TASK = gql`
 //   mutation RunHomepageEmailTask(
-//     $Email_id: String!  
+//     $Email_id: String!
 //   ) {
 //     runHomepageEmailTask(
 //       Email_id: $Email_id
@@ -120,7 +113,7 @@ export default connect(mapStateToProps)(HomePage);
 //               Email_id: payload.Email_id,
 //             },
 //           });
-          
+
 //           dispatch(hideLoading());
 //           setDisabled(false);
 //           // if (response.data.runHomepageEmailTask.includes("Submitting Email")) {
@@ -143,7 +136,7 @@ export default connect(mapStateToProps)(HomePage);
 //       <h1 className="text-center">Home Page</h1>
 
 //       <Form className="mt-3 container" onSubmit={handleSubmit}>
-        
+
 //         <FormGroup>
 //           <Input
 //             type="text"
@@ -175,19 +168,17 @@ export default connect(mapStateToProps)(HomePage);
 //           )}
 //         </Button>
 //       </Form>
-      
-              
+
 //     </div>
 //   );
 // };
-    
+
 // const mapStateToProps = ({ auth }) => {
 //   return {
 //     authenticated: auth.authenticated,
 //     userId: auth.authenticated ? auth.data.attributes.sub : null,
-    
+
 //   };
 // };
 
 // export default connect(mapStateToProps)(HomePage);
-    
