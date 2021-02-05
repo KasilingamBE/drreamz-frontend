@@ -211,3 +211,51 @@
     margin-left: 3px;
   }
 }
+
+// Home Page Main Header
+
+.home-nav-div {
+  width: 100%;
+  z-index: 10;
+}
+
+.home-main-div {
+  // margin-top: -85px;
+  // background-color: #27aae1;
+  min-height: calc(100vh - 80px);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.home-shape-div {
+  width: 55%;
+  background-color: #3fbf7b;
+  border-bottom-right-radius: 40%;
+  border-top-right-radius: 40%;
+  min-height: 100vh;
+  // min-height: calc(100vh - 80px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  h2 {
+    color: white;
+    font-size: 60px;
+  }
+  p {
+    color: white;
+  }
+  button {
+    color: white;
+    background-color: #0f1a8c;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+
+    &:hover {
+      // cursor: pointer;
+      background-color: #1825b9;
+    }
+  }
+}

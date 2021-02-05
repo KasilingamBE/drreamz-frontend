@@ -1,5 +1,4 @@
 import UserLayout from '../../src/app/components/other/UserLayout';
-import HomePage from '../../src/app/components/home/HomePage';
 
 export default function Home() {
   return (

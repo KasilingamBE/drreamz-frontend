@@ -7,7 +7,7 @@ const UserLayout = (props) => {
   return (
     <div>
       <Head>
-        <title>{props.title ? props.title : "Parkyourself"}</title>
+        <title>{props.title ? props.title : "Drreamz"}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Nav />

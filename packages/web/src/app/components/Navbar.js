@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Link from 'next/link';
-import logo from '../assets/images/logo1.png';
+import logo from '../assets/images/drreamz_logo.png';
 
 const Navbar = ({ isSpaceOwner }) => {
   return (
