@@ -115,9 +115,9 @@ const NavC = (props) => {
           ) : (
             props.initial && (
               <Nav.Item>
-                <Link href="/login">
+               {/*  <Link href="/login">
                   <Button variant="outline-dark">Login</Button>
-                </Link>
+                </Link> */}
               </Nav.Item>
             )
           )}
