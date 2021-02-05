@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import { connect } from 'react-redux';
+import { Col, Row } from 'react-bootstrap';
 import LoginRegister from '../src/app/components/auth/LoginRegister';
 import InitialLoading from '../src/app/components/other/InitialLoading';
 import { useRouter } from 'next/router';
@@ -23,10 +24,15 @@ function Home(props) {
   }
   if (props.initial && !props.authenticated) {
     return (
-      <UserLayout pageTitle="Dreamjobpal | Linkedin">
+      <UserLayout pageTitle="Drreamz">
          
           <div className="container pt-3 pb-3">
+          <Row>
+            <Col></Col>
+            <Col>
               <HomePage/>
+              </Col>
+          </Row>
               <Services />
           </div>
           {/* <div className="container pt-3 pb-3">

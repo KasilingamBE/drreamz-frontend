@@ -45,7 +45,7 @@ const HomePage = ({ dispatch, authenticated, userId }) => {
 
   return (
     <div className="py-5">
-      <h1 className="text-center">Home Page</h1>
+      <h1 className="text-center">Join Waitlist</h1>
       <Form className="mt-3 container" onSubmit={handleSubmit}>
         <FormGroup>
           <Input
