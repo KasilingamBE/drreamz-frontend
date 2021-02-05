@@ -28,12 +28,13 @@ function Home(props) {
          
           <div className="container pt-3 pb-3">
           <Row>
-            <Col></Col>
+            <Col>Smart Coach</Col>
             <Col>
               <HomePage/>
               </Col>
           </Row>
               <Services />
+              
           </div>
           {/* <div className="container pt-3 pb-3">
             <LoginRegister />
