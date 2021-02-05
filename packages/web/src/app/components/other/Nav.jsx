@@ -18,7 +18,7 @@ const NavC = (props) => {
   return (
     <Navbar expand="lg">
       <Navbar.Brand>
-        <Link href="/dashboard">
+        <Link href="/">
           <img src={logo} alt="parkyourself" className="img-fluid" />
         </Link>
       </Navbar.Brand>
