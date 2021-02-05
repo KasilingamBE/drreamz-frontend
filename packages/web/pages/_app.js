@@ -24,6 +24,9 @@ import '../src/app/assets/css/App.css';
 import '../styles/styles.scss';
 import '../src/app/assets/css/stripestyles.css';
 
+import "../src/app/assets/css/style.css";
+import "../src/app/assets/css/zimed-icon.css"
+
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 

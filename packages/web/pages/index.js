@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import Nav from '../src/app/components/other/Nav';
 import HomePage from "../src/app/components/home/HomePage";
 import UserLayout from "../src/app/components/other/UserLayout";
+import Services from "../src/app/components/Services";
 
 
 
@@ -26,6 +27,7 @@ function Home(props) {
          
           <div className="container pt-3 pb-3">
               <HomePage/>
+              <Services />
           </div>
           {/* <div className="container pt-3 pb-3">
             <LoginRegister />

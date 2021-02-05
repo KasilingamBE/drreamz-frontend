@@ -1,0 +1,89 @@
+.block-title h3 {
+	margin: 0;
+	color: var(--thm-black);
+	font-weight: 800;
+	font-size: 46px;
+}
+
+.block-title p {
+	margin: 0;
+	line-height: 1em;
+	color: #ee464b;
+	font-weight: 500;
+	font-size: 18px;
+}
+
+/*--------------------------------------------------------------
+# Service
+--------------------------------------------------------------*/
+
+.service-one {
+    padding-bottom: 90px;
+}
+
+.service-one__col {
+    padding-left: 15px;
+    padding-right: 15px;
+    flex: 1 1 20%;
+    text-align: center;
+}
+
+.service-one__single {
+    margin-bottom: 30px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(232, 232, 239);
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.04);
+}
+
+.service-one__single h3 {
+    color: var(--thm-black);
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.service-one__single i {
+    width: 111px;
+    height: 111px;
+    border-radius: 50%;
+    background-image: linear-gradient(90deg, #4a0e8f 0%, #b430a7 51%, #4a0e8f 100%);
+    font-size: 64px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 15px;
+    background-size: 200% auto;
+    transition: all 500ms ease;
+}
+
+.service-one__single:hover i {
+    background-position: right center;
+}
+
+.service-one__col:nth-child(1) .service-one__single i {
+    background-image: linear-gradient(90deg, #4a0e8f 0%, #b430a7 51%, #4a0e8f 100%);
+}
+
+.service-one__col:nth-child(2) .service-one__single i {
+    background-image: linear-gradient(90deg, #4453ac 0%, #03a9db 51%, #4453ac 100%);
+}
+
+.service-one__col:nth-child(3) .service-one__single i {
+    background-image: linear-gradient(90deg, #0349a6 0%, #15c27b 51%, #0349a6 100%);
+}
+
+.service-one__col:nth-child(4) .service-one__single i {
+    background-image: linear-gradient(90deg, #e41256 0%, #ffa337 51%, #e41256 100%);
+}
+
+.service-one__col:nth-child(5) .service-one__single i {
+    background-image: linear-gradient(90deg, #03a631 0%, #d6c10f 51%, #03a631 100%);
+}
