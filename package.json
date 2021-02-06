@@ -1,0 +1,41 @@
+{
+  "name": "monorepo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "xcode": "open packages/mobile/ios/mobile.xcworkspace",
+    "android:cd": "cd ./packages/mobile/android",
+    "mobile": "yarn workspace @parkyourself-frontend/mobile run start",
+    "android": "yarn workspace @parkyourself-frontend/mobile run android",
+    "ios": "yarn workspace @parkyourself-frontend/mobile run ios",
+    "web": "yarn workspace @parkyourself-frontend/web run dev",
+    "web:build": "yarn workspace @parkyourself-frontend/web run build",
+    "web:start": "yarn workspace @parkyourself-frontend/web run start",
+    "web:deploy": "yarn workspace @parkyourself-frontend/web run deploy",
+    "lint": "eslint .",
+    "format": "prettier --write \"**/*.{js,jsx,json}\""
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": []
+  },
+  "dependencies": {
+    "react-native": "*"
+  },
+  "author": "vivekvt",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^7.16.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-prettier": "^3.3.0",
+    "prettier": "^2.2.1"
+  }
+}
